@@ -1,0 +1,52 @@
+{
+  "name": "agel-form",
+  "version": "0.1.1",
+  "main": "lib/agel-form.umd.min.js",
+  "description": "a easy form of element-ui form",
+  "homepage": "https://github.com/agrass-GitHub/agel-form",
+  "private": false,
+  "license": "MIT",
+  "author": "agrass",
+  "keywords": [
+    "element-ui",
+    "element-ui form",
+    "easy form",
+    "vue"
+  ],
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "serve-docs": "vuepress dev docs",
+    "build-docs": "vuepress build docs",
+    "lint": "vue-cli-service lint",
+    "publish": "vue-cli-service build --target lib --name agel-form --dest lib ./src/index.js && npm publish",
+    "deploy": "npm run build && gh-pages -d dist"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "core-js": ">=2.6.5",
+    "element-ui": ">=2.12.0",
+    "vue": ">=2.6.10"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^3.11.0",
+    "@vue/cli-service": "^3.11.0",
+    "agrass-test-lib": "^1.0.0",
+    "babel-eslint": "^10.0.1",
+    "element-ui": "^2.13.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "gh-pages": "^2.1.1",
+    "vue-template-compiler": "^2.6.10",
+    "vuepress": "^1.2.0"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
