@@ -1,5 +1,5 @@
 <template>
-  <el-upload class="agel-upload" v-bind="$attrs" :file-list="value" :on-remove="remove" v-on="on">
+  <el-upload ref="ref" class="agel-upload" v-bind="$attrs" :file-list="value" :on-remove="remove" v-on="on">
     <template v-if="$attrs.drag">
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">
@@ -19,16 +19,14 @@ export default {
   mixins: [formMixin],
   inheritAttrs: false,
   props: {
-    value: Array,
+    value: {
+      type: Array,
+      default: () => [],
+    },
     tip: String,
   },
   data() {
     return {};
-  },
-  created() {
-    if (this.value == undefined) {
-      this.$emit("input", []);
-    }
   },
   methods: {
     remove(file, list) {

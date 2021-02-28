@@ -7,13 +7,14 @@ export default {
     }
   },
   data() {
-    return {
-
-    }
+    return {}
   },
   methods: {
     input(v) {
       this.$emit("input", v);
+    },
+    getRef() {
+      return this.$refs.ref;
     }
   }
 };

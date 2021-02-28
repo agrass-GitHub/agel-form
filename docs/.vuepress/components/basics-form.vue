@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="demo">
     <agel-form v-model="form"> </agel-form>
-    <el-button @click="form.data.tree1=[1,2]">测试</el-button>
+    <el-button type="primary" @click="submitForm">立即创建</el-button>
   </div>
 </template>
  
@@ -10,53 +10,80 @@ export default {
   data() {
     return {
       form: {
-        test: () => {},
-        title: "在这种",
-        show: false,
-        loading: false,
         "label-position": "right",
         "label-width": "80px",
-        data: {
-          tree1: 1,
-          tree0: [1, 2],
-          select: [],
-        },
+        span: 18,
+        data: {},
         items: {
-          select: {
-            label: "select",
+          name: {
+            label: "活动名称",
+            required: true, // 设置 required 会自动生成必填 rules
+          },
+          region: {
+            label: "活动区域",
             component: "el-select",
-            multiple: true,
-            span: 8,
-            clearable: true,
             options: [
-              { label: "测试3", value: 3 },
-              { label: "测试4", value: 4 },
-              { label: "测试5", value: 5 },
+              { label: "区域一", value: "shanghai" },
+              { label: "区域二", value: "beijing" },
+            ],
+            rules: [
+              { required: true, message: "请选择活动区域", trigger: "change" },
             ],
           },
-          tree0: {
-            component: "el-input-tree",
-            label: "多选树",
-            span: 8,
-            nodeKey: "value",
-            showCheckbox: true,
-            collapseTags: true,
-            clearable: true,
-            data: [
-              { label: "测试1", value: 1 },
+          date: {
+            component: "el-date-picker",
+            label: "活动时间",
+            type: "date",
+            placeholder: "选择日期",
+          },
+          delivery: {
+            component: "el-switch",
+            label: "即时配送",
+          },
+          type: {
+            component: "el-checkbox-group",
+            label: "活动性质",
+            options: [
+              { label: "美食/餐厅线上活动", value: "1" },
+              { label: "地推活动", value: "2" },
+              { label: "线下主题活动", value: "3" },
+              { label: "单纯品牌曝光", value: "4" },
+            ],
+            rules: [
               {
-                label: "测试2",
-                value: 2,
-                children: [
-                  { label: "测试3", value: 3 },
-                  { label: "测试4", value: 4 },
-                ],
+                type: "array",
+                required: true,
+                message: "请至少选择一个活动性质",
+                trigger: "change",
               },
             ],
+          },
+          resource: {
+            component: "el-radio-group",
+            label: "特殊资源",
+            options: [
+              { label: "线上品牌商赞助", value: "1" },
+              { label: "线下场地免费", value: "2" },
+            ],
+            rules: [
+              { required: true, message: "请选择活动资源", trigger: "change" },
+            ],
+          },
+          desc: {
+            label: "活动形式",
+            type: "textarea",
+            required: true,
           },
         },
       },
     };
+  },
+  methods: {
+    submitForm() {
+      this.form.validate(() => {
+        alert("submit!");
+      });
+    },
   },
 };
 </script>

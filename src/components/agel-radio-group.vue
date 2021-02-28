@@ -1,5 +1,5 @@
 <template>
-  <el-radio-group class="agel-radio-group" :value="value" v-bind="$attrs" v-on='on' @input="input">
+  <el-radio-group ref="ref" class="agel-radio-group" :value="value" v-bind="$attrs" v-on='on' @input="input">
     <component v-for="option of options" v-bind="option" :is="radioComponent" :key="option.value" :label="option.value">
       {{option.label}}
     </component>

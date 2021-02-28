@@ -6,8 +6,8 @@
       </agel-form-item>
     </template>
     <el-row v-else :gutter="value.gutter">
-      <el-col v-for="(item, key) in items" :span="item.span" :offset="item.offset" :key="key">
-        <agel-form-item :prop="key" :item="item" :data="value.data">
+      <el-col v-for="(item, key) in items" :span="item.span||value.span" :offset="item.offset" :key="key">
+        <agel-form-item :prop="key" :item="item" :data="value.data" :ref="key">
           <slot :name="key"></slot>
         </agel-form-item>
       </el-col>
@@ -40,10 +40,13 @@ const formProps = function () {
     items: {},
     on: {},
     gutter: 15, // 继承自 el-row gutter
+    span: 24, // 继承自 el-col span
     valueFormatter: (v) => v,
-    resetFields: this.resetFields,
     getFormData: this.getFormData,
-    validate: this.getFormData,
+    getRef: this.getRef,
+    resetFields: this.resetFields,
+    validate: this.validate,
+    clearValidate: this.clearValidate,
   };
 };
 
@@ -63,8 +66,8 @@ const itemProps = function () {
     required: undefined,
     rules: undefined,
     // 继承 el-row
-    span: 24,
-    offset: 0,
+    span: undefined,
+    offset: undefined,
   };
 };
 
@@ -147,6 +150,10 @@ export default {
         }
       });
     },
+    getRef(prop) {
+      if (prop == undefined) return this.$refs.form;
+      return this.$refs[prop] ? this.$refs[prop][0].getRef() : null;
+    },
     getFormData() {
       let data = this.value.data;
       let newData = JSON.parse(JSON.stringify(this.value.data));
@@ -158,10 +165,12 @@ export default {
       }
       return this.value.valueFormatter(newData);
     },
-    validate(callback) {
+    validate(callback, erroCallback) {
       this.$refs.form.validate((is) => {
         if (is) {
           callback && callback(this.value.getFormData());
+        } else {
+          erroCallback && erroCallback();
         }
       });
     },
@@ -172,6 +181,9 @@ export default {
           this.value.data[key] = [];
         }
       }
+    },
+    clearValidate(props) {
+      this.$refs.form.clearValidate(props);
     },
   },
 };

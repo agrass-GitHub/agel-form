@@ -1,5 +1,5 @@
 <template>
-  <el-checkbox-group class="agel-checkbox-group" :value="value" v-bind="$attrs" v-on='on' @input="input">
+  <el-checkbox-group ref="ref" class="agel-checkbox-group" :value="value" v-bind="$attrs" v-on='on' @input="input">
     <component v-for="option of options" v-bind="option" :is="checkboxComponent" :key="option.value" :label="option.value">
       {{option.label}}
     </component>
@@ -13,6 +13,10 @@ export default {
   name: "agel-checkbox-group",
   mixins: [formMixin],
   props: {
+    value: {
+      type: Array,
+      default: () => [],
+    },
     options: {
       type: Array,
       default: () => [],
@@ -25,11 +29,7 @@ export default {
   data() {
     return {};
   },
-  created() {
-    if (this.value == undefined) {
-      this.$emit("input", []);
-    }
-  },
+  created() {},
   computed: {
     checkboxComponent() {
       return this.button ? "el-checkbox-button" : "el-checkbox";

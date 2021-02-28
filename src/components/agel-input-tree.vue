@@ -5,7 +5,7 @@
       <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini"></el-input>
     </div>
     <el-option value="tree-option-value">
-      <el-tree ref="tree" class="tree-option" :highlight-current="!multiple" :expand-on-click-node="false" :filter-node-method="handleFilterNode"
+      <el-tree ref="ref" class="tree-option" :highlight-current="!multiple" :expand-on-click-node="false" :filter-node-method="handleFilterNode"
         v-bind="$attrs" v-on='on' @current-change="handleCurrentChange" @check-change="handleCheckChange">
       </el-tree>
     </el-option>
@@ -36,11 +36,11 @@ export default {
     multiple() {
       return this.$attrs.showCheckbox;
     },
-    nodeKey() {
-      return this.$attrs.nodeKey;
-    },
     labelKey() {
-      return this.$refs.tree.props.label;
+      return this.$refs.ref.props.label;
+    },
+    nodeKey() {
+      return this.$attrs.nodeKey || this.labelKey;
     },
     treePopperClass() {
       return `agel-input-tree-popper ${this.popperClass}`;
@@ -51,7 +51,7 @@ export default {
       this.selectedTree();
     },
     filterText(val) {
-      this.$refs.tree.filter(val);
+      this.$refs.ref.filter(val);
     },
   },
   mounted() {
@@ -63,10 +63,10 @@ export default {
       if (this.value === undefined) return;
       if (data && data.length > 0) {
         if (this.multiple) {
-          this.$refs.tree.setCheckedKeys(this.value);
+          this.$refs.ref.setCheckedKeys(this.value);
         } else {
-          this.$refs.tree.setCurrentKey(this.value);
-          let node = this.$refs.tree.getCurrentNode();
+          this.$refs.ref.setCurrentKey(this.value);
+          let node = this.$refs.ref.getCurrentNode();
           this.text = node ? node[this.labelKey] : this.value;
         }
       } else if (this.$attrs.lazy) {
@@ -83,7 +83,7 @@ export default {
       }
     },
     handleCheckChange(data, checked, indeterminate) {
-      const list = this.$refs.tree.getCheckedNodes();
+      const list = this.$refs.ref.getCheckedNodes();
       const value = list.map((v) => v[this.nodeKey]);
       this.text = list.map((v) => v[this.labelKey]);
       this.$emit("input", value);
@@ -102,8 +102,8 @@ export default {
     handleClear() {
       this.text = "";
       this.$emit("input", this.multiple ? [] : "");
-      this.$refs.tree.setCurrentKey(null);
-      this.$refs.tree.setCheckedKeys([]);
+      this.$refs.ref.setCurrentKey(null);
+      this.$refs.ref.setCheckedKeys([]);
     },
     initScroll(event) {
       setTimeout(() => {
