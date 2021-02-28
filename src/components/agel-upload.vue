@@ -1,5 +1,5 @@
 <template>
-  <el-upload v-bind="$attrs" :file-list="value" ref="upload">
+  <el-upload class="agel-upload" v-bind="$attrs" :file-list="value" :on-remove="remove" v-on="on">
     <template v-if="$attrs.drag">
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">
@@ -13,23 +13,52 @@
 </template>
 
 <script>
-import formMixin from "@/mixins/formMixin";
-
+import formMixin from "./formMixin";
 export default {
   name: "agel-upload",
   mixins: [formMixin],
+  inheritAttrs: false,
   props: {
-    value: {
-      type: Array,
-      default: () => []
-    },
-    tip: String
+    value: Array,
+    tip: String,
   },
   data() {
     return {};
   },
+  created() {
+    if (this.value == undefined) {
+      this.$emit("input", []);
+    }
+  },
   methods: {
-   
-  }
+    remove(file, list) {
+      this.$emit("input", list);
+      if (this.events["on-remove"]) {
+        this.events["on-remove"](file, list);
+      }
+    },
+  },
 };
 </script>
+<style lang="scss" >
+.agel-upload {
+  .el-upload-dragger {
+    width: 100%;
+    max-width: 360px;
+  }
+  .el-upload-dragger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 130px;
+  }
+  .el-upload-dragger .el-icon-upload {
+    font-size: 50px;
+    margin: 0px;
+  }
+  .el-upload-dragger .el-upload__text {
+    font-size: 12px;
+  }
+}
+</style>

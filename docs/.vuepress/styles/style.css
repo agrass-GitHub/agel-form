@@ -1,0 +1,28 @@
+/*
+  覆盖 vuepress 默认样式给 el-table 的副作用
+*/
+
+.agel-table{
+  margin:20px 0px;
+}
+
+.el-table table {
+  margin: 0px;
+}
+
+.el-table td, .el-table th {
+  border: 0px;
+}
+
+.el-table td{
+  padding:5px 0px !important;
+}
+
+.demo{
+  margin:20px 0px;
+}
+
+.el-table tr:nth-child(2n){
+  background: transparent;
+}
+

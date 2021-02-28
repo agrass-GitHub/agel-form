@@ -1,156 +1,185 @@
 <template>
-  <div class="agel-form" v-if="LOAD">
-    <el-form ref="form" :model="value.data" v-bind="attrs">
-      <el-row :gutter="value.gutter">
-        <el-col
-          v-for="(item, key) in items"
-          v-show="item.show"
-          :span="item.span"
-          :offset="item.offset"
-          :key="key"
-        >
-          <el-form-item
-            :prop="key"
-            :label="item.label"
-            :label-width="item.labelWidth"
-            :required="item.required"
-            :rules="item.rules"
-          >
-            <component
-              :is="item.component"
-              :events="item.on"
-              v-bind="item.attrs"
-              v-model="value.data[key]"
-              v-on="item.on"
-            ></component>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-    <div class="agel-buttons">
-      <el-button :loading="value.loading" type="primary" @click="submit"
-        >提交</el-button
-      >
-      <el-button>模拟数据</el-button>
-    </div>
-  </div>
+  <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs">
+    <template v-if="value.inline">
+      <agel-form-item v-for="(item, key) in items" :key="key" :prop="key" :item="item" :data="value.data">
+        <slot :name="key"></slot>
+      </agel-form-item>
+    </template>
+    <el-row v-else :gutter="value.gutter">
+      <el-col v-for="(item, key) in items" :span="item.span" :offset="item.offset" :key="key">
+        <agel-form-item :prop="key" :item="item" :data="value.data">
+          <slot :name="key"></slot>
+        </agel-form-item>
+      </el-col>
+    </el-row>
+  </el-form>
 </template>
 
 <script>
-import getApi from "./api.js";
+import agelFormItem from "./agel-form-item";
 
-const components = {
-  "agel-radio": () => import("./components/agel-radio.vue"),
-  "agel-checkbox": () => import("./components/agel-checkbox.vue"),
-  "agel-select": () => import("./components/agel-select.vue"),
-  "agel-upload": () => import("./components/agel-upload.vue")
+const defaultProps = [
+  "model",
+  "rules",
+  "inline",
+  "label-position",
+  "label-width",
+  "label-suffix",
+  "hide-required-asterisk",
+  "show-message",
+  "inline-message",
+  "status-icon",
+  "validate-on-rule-change",
+  "size",
+  "disabled",
+];
+
+const formProps = function () {
+  return {
+    data: {},
+    items: {},
+    on: {},
+    gutter: 15, // 继承自 el-row gutter
+    valueFormatter: (v) => v,
+    resetFields: this.resetFields,
+    getFormData: this.getFormData,
+    validate: this.getFormData,
+  };
 };
+
+const itemProps = function () {
+  return {
+    // 扩展属性
+    component: "el-input", // 组件名称 String
+    display: true, // 是否渲染 Boolean
+    show: true, // 是否显示 Boolean
+    slot: false, // 是否自定义 Boolean  RenderFunction
+    defaultValue: undefined, // 默认值
+    valueFormatter: undefined, // 格式化 Funciton
+    on: undefined, // event 事件 Object
+    // 继承 el-form-item
+    label: undefined,
+    "label-width": undefined,
+    required: undefined,
+    rules: undefined,
+    // 继承 el-row
+    span: 24,
+    offset: 0,
+  };
+};
+
+const kebabcase = (v) => v.replace(/([A-Z])/g, "-$1").toLowerCase();
 
 export default {
   name: "agel-form",
-  components,
+  components: {
+    agelFormItem,
+  },
+  props: {
+    value: Object,
+  },
   install(vue, opts = {}) {
     vue.prototype.$agelFormConfig = opts;
     vue.component(opts.name || this.name, this);
   },
-  props: {
-    value: Object
-  },
   data() {
-    return {
-      LOAD: false,
-      API: {}
-    };
+    return {};
   },
   created() {
-    this.initApi();
+    this.insertExtendApi();
   },
   computed: {
     attrs() {
-      return this.getAttrs();
-    },
-    items() {
-      return this.getItems();
-    }
-  },
-  methods: {
-    initApi() {
-      let api = getApi.call(this);
-      let items = {};
-      Object.keys(api.localApi.items).forEach(key => {
-        let item = api.localApi.items[key];
-        let newItem = {
-          ...api.itemExtendApi,
-          ...api.globalItemApi,
-          ...(api.config[item.component] || {}),
-          ...item
-        };
-        if (
-          newItem.defaultValue !== undefined &&
-          this.value.data[key] === undefined
-        ) {
-          this.$set(this.value.data, key, newItem.defaultValue);
-        }
-        items[key] = newItem;
-      });
-
-      this.$emit("input", {
-        ...api.defaultApi,
-        ...api.extendApi,
-        ...api.globalApi,
-        ...api.localApi,
-        items
-      });
-      this.API = api;
-      if (this.LOAD) return;
-      this.$nextTick()
-        .then(() => (this.LOAD = true))
-        .then(() => {
-          this.value.$ref = this.$refs.form;
-        });
-    },
-    getAttrs() {
       let attrs = {};
       for (const key in this.value) {
-        if (!this.API.extendApi.hasOwnProperty(key)) {
+        if (
+          defaultProps.includes(key) ||
+          defaultProps.includes(kebabcase(key))
+        ) {
           attrs[key] = this.value[key];
         }
       }
       return attrs;
     },
-    getItems() {
+    // 表单项
+    items() {
       let items = {};
-      let extend = this.API.itemExtendApi;
       for (const prop in this.value.items) {
-        let item = this.value.items[prop];
-        if (item.display === false) continue;
-        let newItem = { attrs: {} };
+        let extendApi = itemProps(); // 扩展属性
+        let item = this.value.items[prop]; // 组件配置
+        let newItem = { attrs: {}, ...extendApi };
+        let itemName = item.component || extendApi.component;
+        let globalApi = this.$agelFormConfig[itemName] || {}; // 全局组件配置
+
+        if (typeof globalApi == "function") {
+          globalApi = globalApi(prop, item, this.value);
+        }
+        for (const key in globalApi) {
+          if (!item.hasOwnProperty(key)) item[key] = globalApi[key];
+        }
         for (const key in item) {
-          let obj = extend.hasOwnProperty(key) ? newItem : newItem.attrs;
+          let obj = extendApi.hasOwnProperty(key) ? newItem : newItem.attrs;
           obj[key] = item[key];
         }
-        let agName = "ag" + item.component;
-        newItem.component = components[agName] ? agName : item.component;
+        if (newItem.required && newItem.rules == undefined) {
+          newItem.required = false;
+          newItem.rules = {
+            required: true,
+            message: item.label + "必填",
+            trigger: "blur",
+          };
+        }
+        if (item.display === false) continue;
         items[prop] = newItem;
       }
       return items;
     },
-    submit() {
-      this.$refs.form.validate(is => {
-        if (is) {
-          this.value.loading = true;
-          let data = this.value.getFormData();
-          this.value.submit(data);
+  },
+  methods: {
+    insertExtendApi() {
+      let extendApi = Object.assign(
+        formProps.call(this),
+        this.$agelFormConfig.form || {}
+      );
+      Object.keys(extendApi).forEach((key) => {
+        if (!this.value.hasOwnProperty(key)) {
+          this.$set(this.value, key, extendApi[key]);
         }
       });
-    }
-  }
+    },
+    getFormData() {
+      let data = this.value.data;
+      let newData = JSON.parse(JSON.stringify(this.value.data));
+      for (const key in this.items) {
+        let item = this.items[key];
+        if (item.valueFormatter) {
+          newData[key] = item.valueFormatter(data[key], data, item);
+        }
+      }
+      return this.value.valueFormatter(newData);
+    },
+    validate(callback) {
+      this.$refs.form.validate((is) => {
+        if (is) {
+          callback && callback(this.value.getFormData());
+        }
+      });
+    },
+    resetFields() {
+      this.$refs.form.resetFields();
+      for (const key in this.items) {
+        if (this.items[key].component == "el-upload") {
+          this.value.data[key] = [];
+        }
+      }
+    },
+  },
 };
 </script>
 
 <style lang="stylus">
 .agel-form {
-  .el-date-editor.el-input, .el-date-editor.el-input__inner, .el-select, .el-cascader {
+  .el-date-editor.el-input, .el-date-editor.el-input__inner, .el-select, .el-cascader, .el-input-number {
     width: 100%;
   }
 
@@ -159,14 +188,7 @@ export default {
   }
 
   .el-form-item {
-    margin-bottom: 20px;
-  }
-
-  .agel-buttons {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    margin-bottom: 15px;
   }
 }
 </style>

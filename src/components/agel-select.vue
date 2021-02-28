@@ -1,24 +1,18 @@
 <template>
-  <el-select v-model="newVal" v-bind="$attrs" v-on='events'>
-    <el-option
-      v-for="option of options"
-      v-bind='option'
-      :key="option.value"
-      :label="option.label"
-    >
+  <el-select class="agel-select" :value="value" v-bind="$attrs" v-on='on' @input="input">
+    <el-option v-for="option of options" v-bind='option' :key="option.value">
     </el-option>
   </el-select>
 </template>
 
 <script>
-import formMixin from '@/mixins/formMixin'
+import formMixin from "./formMixin";
 export default {
   name: "agel-select",
-  mixins:[formMixin],
+  mixins: [formMixin],
+  inheritAttrs: false,
   props: {
-    value: [Boolean, Number, String],
     options: Array,
   },
-  
 };
 </script>

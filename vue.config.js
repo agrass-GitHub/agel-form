@@ -1,22 +1,22 @@
-const path = require("path");
-const resolve = dir => path.join(__dirname, dir);
-const production = process.env.NODE_ENV === "production";
+const path = require('path');
+const resolve = (dir) => path.join(__dirname, dir);
+const production = process.env.NODE_ENV === 'production';
 
 module.exports = {
-  publicPath: production ? "./" : "/",
+  publicPath: production ? './' : '/',
   productionSourceMap: production ? false : true,
   css: {
     extract: false
   },
-  chainWebpack: config => {
-    config.resolve.alias.set("@", resolve("src"));
+  chainWebpack: (config) => {
+    config.resolve.alias.set('@', resolve('src'));
   },
   configureWebpack: {
-    entry: {
-      app: "./example/index.js"
-    },
     output: {
-      libraryExport: "default"
+      libraryExport: 'default'
     }
   }
 };
+
+// npm config set registry http://registry.npm.taobao.org/
+// npm config set registry https://registry.npmjs.org/
