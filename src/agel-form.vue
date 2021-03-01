@@ -1,5 +1,5 @@
 <template>
-  <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs">
+  <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs" v-on="value.on">
     <template v-if="value.inline">
       <agel-form-item v-for="(item, key) in items" :key="key" :prop="key" :item="item" :data="value.data">
         <slot :name="key"></slot>
@@ -41,8 +41,6 @@ const formProps = function () {
     on: {},
     gutter: 15, // 继承自 el-row gutter
     span: 24, // 继承自 el-col span
-    valueFormatter: (v) => v,
-    getFormData: this.getFormData,
     getRef: this.getRef,
     resetFields: this.resetFields,
     validate: this.validate,
@@ -58,7 +56,6 @@ const itemProps = function () {
     show: true, // 是否显示 Boolean
     slot: false, // 是否自定义 Boolean  RenderFunction
     defaultValue: undefined, // 默认值
-    valueFormatter: undefined, // 格式化 Funciton
     on: undefined, // event 事件 Object
     // 继承 el-form-item
     label: undefined,
@@ -79,7 +76,15 @@ export default {
     agelFormItem,
   },
   props: {
-    value: Object,
+    value: {
+      required: true,
+      type: Object,
+      default: () => new Object(),
+    },
+    attach: {
+      type: Object,
+      default: () => new Object(),
+    },
   },
   install(vue, opts = {}) {
     vue.prototype.$agelFormConfig = opts;
@@ -90,6 +95,19 @@ export default {
   },
   created() {
     this.insertExtendApi();
+  },
+  watch: {
+    attach: {
+      deep: true,
+      immediate: true,
+      handler: function () {
+        for (let key in this.attach) {
+          if (this.attach[key] !== undefined) {
+            this.$set(this.value, key, this.attach[key]);
+          }
+        }
+      },
+    },
   },
   computed: {
     attrs() {
@@ -154,21 +172,10 @@ export default {
       if (prop == undefined) return this.$refs.form;
       return this.$refs[prop] ? this.$refs[prop][0].getRef() : null;
     },
-    getFormData() {
-      let data = this.value.data;
-      let newData = JSON.parse(JSON.stringify(this.value.data));
-      for (const key in this.items) {
-        let item = this.items[key];
-        if (item.valueFormatter) {
-          newData[key] = item.valueFormatter(data[key], data, item);
-        }
-      }
-      return this.value.valueFormatter(newData);
-    },
     validate(callback, erroCallback) {
       this.$refs.form.validate((is) => {
         if (is) {
-          callback && callback(this.value.getFormData());
+          callback && callback(this.value.data);
         } else {
           erroCallback && erroCallback();
         }

@@ -1,6 +1,6 @@
 <template>
   <el-upload ref="ref" class="agel-upload" v-bind="$attrs" :file-list="value" :on-remove="remove" v-on="on">
-    <template v-if="$attrs.drag">
+    <template v-if="drag">
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">
         将文件拖到此处，或
@@ -23,6 +23,7 @@ export default {
       type: Array,
       default: () => [],
     },
+    drag: Boolean,
     tip: String,
   },
   data() {

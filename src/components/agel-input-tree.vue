@@ -5,8 +5,8 @@
       <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini"></el-input>
     </div>
     <el-option value="tree-option-value">
-      <el-tree ref="ref" class="tree-option" :highlight-current="!multiple" :expand-on-click-node="false" :filter-node-method="handleFilterNode"
-        v-bind="$attrs" v-on='on' @current-change="handleCurrentChange" @check-change="handleCheckChange">
+      <el-tree ref="ref" class="tree-option" :highlight-current="!multiple" :nodeKey="nodeKey" :expand-on-click-node="false"
+        :filter-node-method="handleFilterNode" v-bind="$attrs" v-on='on' @current-change="handleCurrentChange" @check-change="handleCheckChange">
       </el-tree>
     </el-option>
   </el-select>
@@ -25,6 +25,8 @@ export default {
     filter: Boolean,
     clearable: Boolean,
     popperClass: String,
+    leafOnly: Boolean,
+    includeHalfChecked: Boolean,
   },
   data() {
     return {
@@ -37,7 +39,8 @@ export default {
       return this.$attrs.showCheckbox;
     },
     labelKey() {
-      return this.$refs.ref.props.label;
+      let props = this.$attrs.props || {};
+      return props.label || "label";
     },
     nodeKey() {
       return this.$attrs.nodeKey || this.labelKey;
@@ -83,7 +86,10 @@ export default {
       }
     },
     handleCheckChange(data, checked, indeterminate) {
-      const list = this.$refs.ref.getCheckedNodes();
+      const list = this.$refs.ref.getCheckedNodes(
+        this.leafOnly,
+        this.includeHalfChecked
+      );
       const value = list.map((v) => v[this.nodeKey]);
       this.text = list.map((v) => v[this.labelKey]);
       this.$emit("input", value);

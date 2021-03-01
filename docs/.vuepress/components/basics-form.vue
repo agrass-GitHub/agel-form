@@ -1,7 +1,8 @@
 <template>
   <div class="demo">
     <agel-form v-model="form"> </agel-form>
-    <el-button type="primary" @click="submitForm">立即创建</el-button>
+    <el-button type="primary" @click="submit">立即创建</el-button>
+    <el-button type="primary" @click="rest">初始化表单</el-button>
   </div>
 </template>
  
@@ -13,7 +14,11 @@ export default {
         "label-position": "right",
         "label-width": "80px",
         span: 18,
-        data: {},
+        data: {
+          name: "agel-from",
+          delivery: true,
+          desc: "学习如何使用",
+        },
         items: {
           name: {
             label: "活动名称",
@@ -79,10 +84,13 @@ export default {
     };
   },
   methods: {
-    submitForm() {
+    submit() {
       this.form.validate(() => {
         alert("submit!");
       });
+    },
+    rest() {
+      this.form.resetFields();
     },
   },
 };
