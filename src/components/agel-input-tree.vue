@@ -111,7 +111,7 @@ export default {
       this.$refs.ref.setCurrentKey(null);
       this.$refs.ref.setCheckedKeys([]);
     },
-    initScroll(event) {
+    initScroll() {
       setTimeout(() => {
         this.$nextTick(() => {
           let scrollBar = document.querySelectorAll(
