@@ -16,7 +16,7 @@ module.exports = {
       //     { text: '更新日志', link: '/log' }
       //   ]
       // },
-      { text: 'Github', link: 'https://github.com/agrass-GitHub/agel-from' }
+      { text: 'Github', link: 'https://github.com/agrass-GitHub/agel-form' }
     ],
   },
 };
