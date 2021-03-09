@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[16],{361:function(e,n,o){"use strict";o.r(n);var t={data:function(){return{form:{}}}},r=o(15),a=Object(r.a)(t,(function(){var e=this,n=e.$createElement;return(e._self._c||n)("agel-form",{staticClass:"demo",model:{value:e.form,callback:function(n){e.form=n},expression:"form"}})}),[],!1,null,null,null);n.default=a.exports}}]);
