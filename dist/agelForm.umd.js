@@ -644,12 +644,12 @@ var agel_select_component = normalizeComponent(
 )
 
 /* harmony default export */ var agel_select = (agel_select_component.exports);
-// CONCATENATED MODULE: ./node_modules/_cache-loader@3.0.1@cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"83b24dc8-vue-loader-template"}!./node_modules/_vue-loader@15.9.6@vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/_cache-loader@3.0.1@cache-loader/dist/cjs.js??ref--0-0!./node_modules/_vue-loader@15.9.6@vue-loader/lib??vue-loader-options!./src/components/agel-upload.vue?vue&type=template&id=9fbeca84&
-var agel_uploadvue_type_template_id_9fbeca84_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('el-upload',_vm._g(_vm._b({ref:"ref",staticClass:"agel-upload",attrs:{"file-list":_vm.value,"on-remove":_vm.remove}},'el-upload',_vm.$attrs,false),_vm.on),[(_vm.drag)?_c('div',{staticClass:"el-upload-dragger"},[_c('i',{staticClass:"el-icon-upload"}),_c('div',{staticClass:"el-upload__text"},[_vm._v("\n      将文件拖到此处，或\n      "),_c('em',[_vm._v("点击上传")])])]):_vm._e(),_c('el-button',{attrs:{"size":"small","type":"primary"}},[_vm._v("选择上传")]),(_vm.tip)?_c('div',{staticClass:"el-upload__tip",attrs:{"slot":"tip"},slot:"tip"},[_vm._v(_vm._s(_vm.tip))]):_vm._e()],1)}
-var agel_uploadvue_type_template_id_9fbeca84_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/_cache-loader@3.0.1@cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"83b24dc8-vue-loader-template"}!./node_modules/_vue-loader@15.9.6@vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/_cache-loader@3.0.1@cache-loader/dist/cjs.js??ref--0-0!./node_modules/_vue-loader@15.9.6@vue-loader/lib??vue-loader-options!./src/components/agel-upload.vue?vue&type=template&id=98b5825c&
+var agel_uploadvue_type_template_id_98b5825c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('el-upload',_vm._g(_vm._b({ref:"ref",staticClass:"agel-upload",attrs:{"file-list":_vm.value,"on-remove":_vm.handleRemove}},'el-upload',_vm.$attrs,false),_vm.on),[(_vm.drag)?_c('div',{staticClass:"el-upload-dragger"},[_c('i',{staticClass:"el-icon-upload"}),_c('div',{staticClass:"el-upload__text"},[_vm._v("\n      将文件拖到此处，或\n      "),_c('em',[_vm._v("点击上传")])])]):_c('el-button',{attrs:{"size":"small","type":"primary"}},[_vm._v("选择上传")]),(_vm.tip)?_c('div',{staticClass:"el-upload__tip",attrs:{"slot":"tip"},slot:"tip"},[_vm._v(_vm._s(_vm.tip))]):_vm._e()],1)}
+var agel_uploadvue_type_template_id_98b5825c_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/agel-upload.vue?vue&type=template&id=9fbeca84&
+// CONCATENATED MODULE: ./src/components/agel-upload.vue?vue&type=template&id=98b5825c&
 
 // CONCATENATED MODULE: ./node_modules/_cache-loader@3.0.1@cache-loader/dist/cjs.js??ref--12-0!./node_modules/_thread-loader@2.1.3@thread-loader/dist/cjs.js!./node_modules/_babel-loader@8.2.2@babel-loader/lib!./node_modules/_cache-loader@3.0.1@cache-loader/dist/cjs.js??ref--0-0!./node_modules/_vue-loader@15.9.6@vue-loader/lib??vue-loader-options!./src/components/agel-upload.vue?vue&type=script&lang=js&
 //
@@ -685,11 +685,11 @@ var agel_uploadvue_type_template_id_9fbeca84_staticRenderFns = []
     return {};
   },
   methods: {
-    remove: function remove(file, list) {
+    handleRemove: function handleRemove(file, list) {
       this.$emit("input", list);
 
-      if (this.events["on-remove"]) {
-        this.events["on-remove"](file, list);
+      if (this.on["on-remove"]) {
+        this.on["on-remove"](file, list);
       }
     }
   }
@@ -710,8 +710,8 @@ var agel_uploadvue_type_style_index_0_lang_scss_ = __webpack_require__("ca82");
 
 var agel_upload_component = normalizeComponent(
   components_agel_uploadvue_type_script_lang_js_,
-  agel_uploadvue_type_template_id_9fbeca84_render,
-  agel_uploadvue_type_template_id_9fbeca84_staticRenderFns,
+  agel_uploadvue_type_template_id_98b5825c_render,
+  agel_uploadvue_type_template_id_98b5825c_staticRenderFns,
   false,
   null,
   null,
