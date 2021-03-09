@@ -3,6 +3,8 @@ title: 演示教程
 sidebar: auto
 ---
 
+<!-- <ClientOnly><test-form/></ClientOnly> -->
+
 # agel-form | 使 element-ui form 组件更简单
 
 ## 特性
@@ -43,6 +45,7 @@ export default {
           name: "agel-from",
           delivery: true,
           desc: "学习如何使用",
+          file: [{ name: "活动清单.xlsx", url: "xxx.jpg" }],
         },
         items: {
           name: {
@@ -104,6 +107,14 @@ export default {
             type: "textarea",
             required: true,
           },
+          file: {
+            label: "活动附件",
+            component: "el-upload",
+            drag: true,
+            required: true,
+            tip: "这是一个活动附件提示",
+            action: `/api/xxxx/upload`,
+          },
         },
       },
     };
@@ -150,7 +161,7 @@ export default {
           name: {
             label: "姓名",
             span: 10,
-            placeholder: "设置 span 6",
+            placeholder: "设置 span 10",
           },
           region: {
             label: "地址",

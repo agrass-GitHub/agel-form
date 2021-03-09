@@ -39,7 +39,7 @@ sidebar: auto
 | component   | String          | el-input    | 组件名称                | 
 | display     | Boolean         | true        | 是否渲染                 | 
 | show        | Boolean         | true        | 是否显示              | 
-| slot        | Boolean|Funciton| false       | 是否自定义/render函数                   | 
+| slot        | Boolean/Funciton| false       | 是否自定义/render函数                   | 
 | defaultValue| Any             | -           | 默认值                        |
 | on          | Object          | { }         | 子组件 evenet 事件  | 
 | label       | String          | -           | 继承 el-form-item  |

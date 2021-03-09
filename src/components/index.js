@@ -1,9 +1,15 @@
+import agelRadioGroup from "./agel-radio-group.vue";
+import agelCheckboxGroup from "./agel-checkbox-group.vue";
+import agelSelect from "./agel-select.vue";
+import agelUpload from "./agel-upload.vue";
+import agelInputTree from "./agel-input-tree.vue";
+
 export default {
-  "agel-radio-group": () => import("./agel-radio-group.vue"),
-  "agel-checkbox-group": () => import("./agel-checkbox-group.vue"),
-  "agel-select": () => import("./agel-select.vue"),
-  "agel-upload": () => import("./agel-upload.vue"),
-  "agel-input-tree": () => import("./agel-input-tree.vue"),
+  "agel-radio-group": agelRadioGroup,
+  "agel-checkbox-group": agelCheckboxGroup,
+  "agel-select": agelSelect,
+  "agel-upload": agelUpload,
+  "agel-input-tree": agelInputTree,
   "slot-render": {
     name: "solt-render",
     functional: true,

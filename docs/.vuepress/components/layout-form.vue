@@ -16,7 +16,7 @@ export default {
           name: {
             label: "姓名",
             span: 10,
-            placeholder: "设置 span 6",
+            placeholder: "设置 span 10",
           },
           region: {
             label: "地址",
