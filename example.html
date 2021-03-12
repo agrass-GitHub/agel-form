@@ -8,8 +8,8 @@
     
     <meta name="description" content="基于 element-ui form 的二次封装加强组件">
     
-    <link rel="preload" href="/agel-form/assets/css/0.styles.dac418b9.css" as="style"><link rel="preload" href="/agel-form/assets/js/app.cd564387.js" as="script"><link rel="preload" href="/agel-form/assets/js/2.65ec25d4.js" as="script"><link rel="preload" href="/agel-form/assets/js/16.08c5f626.js" as="script"><link rel="prefetch" href="/agel-form/assets/js/10.509d930e.js"><link rel="prefetch" href="/agel-form/assets/js/11.e3d99e8f.js"><link rel="prefetch" href="/agel-form/assets/js/12.1331e679.js"><link rel="prefetch" href="/agel-form/assets/js/13.073cbb82.js"><link rel="prefetch" href="/agel-form/assets/js/14.707203e4.js"><link rel="prefetch" href="/agel-form/assets/js/15.b7d3d0f4.js"><link rel="prefetch" href="/agel-form/assets/js/17.cb5ed746.js"><link rel="prefetch" href="/agel-form/assets/js/18.8e7b04a4.js"><link rel="prefetch" href="/agel-form/assets/js/3.768d757a.js"><link rel="prefetch" href="/agel-form/assets/js/4.787f781b.js"><link rel="prefetch" href="/agel-form/assets/js/5.23799345.js"><link rel="prefetch" href="/agel-form/assets/js/6.aa73686b.js"><link rel="prefetch" href="/agel-form/assets/js/7.6c73c3ad.js"><link rel="prefetch" href="/agel-form/assets/js/8.8f8df85d.js"><link rel="prefetch" href="/agel-form/assets/js/9.4ac21bf7.js">
-    <link rel="stylesheet" href="/agel-form/assets/css/0.styles.dac418b9.css">
+    <link rel="preload" href="/agel-form/assets/css/0.styles.c9d37eb1.css" as="style"><link rel="preload" href="/agel-form/assets/js/app.f0a5487c.js" as="script"><link rel="preload" href="/agel-form/assets/js/2.0007810e.js" as="script"><link rel="preload" href="/agel-form/assets/js/16.acc8800b.js" as="script"><link rel="prefetch" href="/agel-form/assets/js/10.2a6f3777.js"><link rel="prefetch" href="/agel-form/assets/js/11.01d3d5c1.js"><link rel="prefetch" href="/agel-form/assets/js/12.d38dca70.js"><link rel="prefetch" href="/agel-form/assets/js/13.a6634dab.js"><link rel="prefetch" href="/agel-form/assets/js/14.4bf76faa.js"><link rel="prefetch" href="/agel-form/assets/js/15.f8d65490.js"><link rel="prefetch" href="/agel-form/assets/js/17.80f678fa.js"><link rel="prefetch" href="/agel-form/assets/js/18.e5d790a2.js"><link rel="prefetch" href="/agel-form/assets/js/3.18322f78.js"><link rel="prefetch" href="/agel-form/assets/js/4.45d2a602.js"><link rel="prefetch" href="/agel-form/assets/js/5.8979e908.js"><link rel="prefetch" href="/agel-form/assets/js/6.d389e321.js"><link rel="prefetch" href="/agel-form/assets/js/7.5b78d5bb.js"><link rel="prefetch" href="/agel-form/assets/js/8.2a45ae89.js"><link rel="prefetch" href="/agel-form/assets/js/9.53fe56b6.js">
+    <link rel="stylesheet" href="/agel-form/assets/css/0.styles.c9d37eb1.css">
   </head>
   <body>
     <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/agel-form/" class="home-link router-link-active"><!----> <span class="site-name">agel-form | 使用文档</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/agel-form/" class="nav-link">
@@ -56,15 +56,53 @@
             required<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// 设置 required 会自动生成必填 rules</span>
           <span class="token punctuation">}</span><span class="token punctuation">,</span>
           region<span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token comment">// 可设置搜索，配置 group</span>
             label<span class="token operator">:</span> <span class="token string">&quot;活动区域&quot;</span><span class="token punctuation">,</span>
             component<span class="token operator">:</span> <span class="token string">&quot;el-select&quot;</span><span class="token punctuation">,</span>
+            filter<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+            clearable<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+            props<span class="token operator">:</span> <span class="token punctuation">{</span> label<span class="token operator">:</span> <span class="token string">&quot;name&quot;</span><span class="token punctuation">,</span> value<span class="token operator">:</span> <span class="token string">&quot;id&quot;</span><span class="token punctuation">,</span> options<span class="token operator">:</span> <span class="token string">&quot;options&quot;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
             options<span class="token operator">:</span> <span class="token punctuation">[</span>
-              <span class="token punctuation">{</span> label<span class="token operator">:</span> <span class="token string">&quot;区域一&quot;</span><span class="token punctuation">,</span> value<span class="token operator">:</span> <span class="token string">&quot;shanghai&quot;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-              <span class="token punctuation">{</span> label<span class="token operator">:</span> <span class="token string">&quot;区域二&quot;</span><span class="token punctuation">,</span> value<span class="token operator">:</span> <span class="token string">&quot;beijing&quot;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                name<span class="token operator">:</span> <span class="token string">&quot;热门城市&quot;</span><span class="token punctuation">,</span>
+                options<span class="token operator">:</span> <span class="token punctuation">[</span>
+                  <span class="token punctuation">{</span>
+                    id<span class="token operator">:</span> <span class="token string">&quot;Shanghai&quot;</span><span class="token punctuation">,</span>
+                    name<span class="token operator">:</span> <span class="token string">&quot;上海&quot;</span><span class="token punctuation">,</span>
+                  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                  <span class="token punctuation">{</span>
+                    id<span class="token operator">:</span> <span class="token string">&quot;Beijing&quot;</span><span class="token punctuation">,</span>
+                    name<span class="token operator">:</span> <span class="token string">&quot;北京&quot;</span><span class="token punctuation">,</span>
+                  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">]</span><span class="token punctuation">,</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                name<span class="token operator">:</span> <span class="token string">&quot;城市名&quot;</span><span class="token punctuation">,</span>
+                options<span class="token operator">:</span> <span class="token punctuation">[</span>
+                  <span class="token punctuation">{</span>
+                    id<span class="token operator">:</span> <span class="token string">&quot;Chengdu&quot;</span><span class="token punctuation">,</span>
+                    name<span class="token operator">:</span> <span class="token string">&quot;成都&quot;</span><span class="token punctuation">,</span>
+                  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                  <span class="token punctuation">{</span>
+                    id<span class="token operator">:</span> <span class="token string">&quot;Shenzhen&quot;</span><span class="token punctuation">,</span>
+                    name<span class="token operator">:</span> <span class="token string">&quot;深圳&quot;</span><span class="token punctuation">,</span>
+                  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                  <span class="token punctuation">{</span>
+                    id<span class="token operator">:</span> <span class="token string">&quot;Guangzhou&quot;</span><span class="token punctuation">,</span>
+                    name<span class="token operator">:</span> <span class="token string">&quot;广州&quot;</span><span class="token punctuation">,</span>
+                  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                  <span class="token punctuation">{</span>
+                    id<span class="token operator">:</span> <span class="token string">&quot;Dalian&quot;</span><span class="token punctuation">,</span>
+                    name<span class="token operator">:</span> <span class="token string">&quot;大连&quot;</span><span class="token punctuation">,</span>
+                  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">]</span><span class="token punctuation">,</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
             <span class="token punctuation">]</span><span class="token punctuation">,</span>
-            rules<span class="token operator">:</span> <span class="token punctuation">[</span>
-              <span class="token punctuation">{</span> required<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> message<span class="token operator">:</span> <span class="token string">&quot;请选择活动区域&quot;</span><span class="token punctuation">,</span> trigger<span class="token operator">:</span> <span class="token string">&quot;change&quot;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            on<span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token function-variable function">change</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">v</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+                console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
           <span class="token punctuation">}</span><span class="token punctuation">,</span>
           date<span class="token operator">:</span> <span class="token punctuation">{</span>
             component<span class="token operator">:</span> <span class="token string">&quot;el-date-picker&quot;</span><span class="token punctuation">,</span>
@@ -447,6 +485,6 @@ Vue<span class="token punctuation">.</span><span class="token function">use</spa
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <!----> </main></div><div class="global-ui"></div></div>
-    <script src="/agel-form/assets/js/app.cd564387.js" defer></script><script src="/agel-form/assets/js/2.65ec25d4.js" defer></script><script src="/agel-form/assets/js/16.08c5f626.js" defer></script>
+    <script src="/agel-form/assets/js/app.f0a5487c.js" defer></script><script src="/agel-form/assets/js/2.0007810e.js" defer></script><script src="/agel-form/assets/js/16.acc8800b.js" defer></script>
   </body>
 </html>
