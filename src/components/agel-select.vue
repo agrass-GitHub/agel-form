@@ -1,7 +1,21 @@
 <template>
-  <el-select ref="ref" class="agel-select" :value="value" v-bind="$attrs" v-on='on' @input="input">
-    <el-option v-for="option of options" v-bind='option' :key="option.value">
-    </el-option>
+  <el-select ref="ref" class="agel-select" v-bind="$attrs" :value="value" :popperClass="popperClass" v-on='on' @input="input">
+    <div class="filter-item" v-if="filter">
+      <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini" clearable></el-input>
+    </div>
+    <el-option v-if="filter && filterOptions.length==0" label="暂无数据" value="暂无数据" disabled> </el-option>
+    <template v-if="isGroup">
+      <el-option-group v-for="group in filterOptions" :key="group[props.label]" :label="group[props.label]">
+        <el-option v-for="(option) of group[props.options] || [] " v-bind='option' :key="option[props.label]" :label="option[props.label]"
+          :value="valueKey?option:option[props.value]">
+        </el-option>
+      </el-option-group>
+    </template>
+    <template v-else>
+      <el-option v-for="(option) of filterOptions" v-bind='option' :key="option[props.label]" :label="option[props.label]"
+        :value="valueKey?option:option[props.value]">
+      </el-option>
+    </template>
   </el-select>
 </template>
 
@@ -12,7 +26,65 @@ export default {
   mixins: [formMixin],
   inheritAttrs: false,
   props: {
-    options: Array,
+    filter: Boolean,
+    options: {
+      type: Array,
+      default: () => new Array(),
+    },
+    props: {
+      type: Object,
+      default: () => {
+        return { label: "label", value: "value", options: "options" };
+      },
+    },
+  },
+  data() {
+    return {
+      filterText: "",
+    };
+  },
+  computed: {
+    valueKey() {
+      return this.$attrs.valueKey || this.$attrs["value-key"];
+    },
+    isGroup() {
+      return this.options.some((v) => {
+        let options = v[this.props.options];
+        return options && Array.isArray(options);
+      });
+    },
+    popperClass() {
+      let className = this.$attrs.popperClass || this.$attrs["popper-class"];
+      return `agel-select-popper ${className}`;
+    },
+    filterOptions() {
+      return this.handleFilterNode(JSON.parse(JSON.stringify(this.options)));
+    },
+  },
+  methods: {
+    handleFilterNode(options) {
+      return options.filter((data) => {
+        let value = this.filterText.trim();
+        if (value === "") return true;
+        let key = this.props.options;
+        let options = data[key];
+        if (this.isGroup && options) {
+          data[key] = this.handleFilterNode(data.options);
+          return data[key].length > 0;
+        } else {
+          return String(data[this.props.label]).indexOf(value) !== -1;
+        }
+      });
+    },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.agel-select-popper {
+  .filter-item {
+    padding: 0px 10px;
+    margin-bottom: 10px;
+  }
+}
+</style>

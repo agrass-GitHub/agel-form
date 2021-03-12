@@ -29,12 +29,53 @@ export default {
           ],
         },
         items: {
-          region: { label: "活动区域" },
-          name: {
-            label: "活动名称",
-            component: "el-upload",
-            drag: true,
-            action: `/api/sp-upload/upload/upload`,
+          region: {
+            label: "活动区域",
+            component: "el-select",
+            filter: true,
+            clearable: true,
+            props: { label: "name", value: "id", options: "options" },
+            options: [
+              {
+                name: "热门城市",
+                options: [
+                  {
+                    id: "Shanghai",
+                    name: "上海",
+                  },
+                  {
+                    id: "Beijing",
+                    name: "北京",
+                  },
+                ],
+              },
+              {
+                name: "城市名",
+                options: [
+                  {
+                    id: "Chengdu",
+                    name: "成都",
+                  },
+                  {
+                    id: "Shenzhen",
+                    name: "深圳",
+                  },
+                  {
+                    id: "Guangzhou",
+                    name: "广州",
+                  },
+                  {
+                    id: "Dalian",
+                    name: "大连",
+                  },
+                ],
+              },
+            ],
+            on: {
+              change: (v) => {
+                console.log(v);
+              },
+            },
           },
         },
       },

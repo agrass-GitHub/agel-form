@@ -1,7 +1,7 @@
 <template>
   <el-form-item v-show="item.show" :prop="prop" :label="item.label" :label-width="item['label-width']" :required="item.required" :rules="item.rules">
     <slot-render v-if="item.slot" :render="$slots.default||item.slot"></slot-render>
-    <component v-else :is="componentName" :ref="prop" v-model="data[prop]" v-bind="item.attrs" v-on="item.on"> </component>
+    <component v-else :is="componentName" :ref="prop" v-model="data[prop]" v-bind="item.attrs" :on="item.on" v-on="item.on"> </component>
   </el-form-item>
 </template>
  

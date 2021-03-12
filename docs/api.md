@@ -48,6 +48,17 @@ sidebar: auto
 | span        | Number          | -           |  继承 el-row       |
 | offset      | Number          | -           |  继承 el-row       |
 
+## Select
+
+| 属性        | 类型         | 默认值  | 说明                                 | 
+| ----------- | ------------  | ------ | ------------------------------------ | 
+| ......      | ......          | .........   | All Element-ui Select Attributes      | 
+| filter      | Boolean         | false       | 是否开启过滤查询                | 
+| props       | Array   |  -     | option 配置项         | 
+| props       | Object   |  { label: "label", value: "value", options: "options" }       | 指定节点标签为节点对象的某个属性值          | 
+
+
+
 ## Input-Tree
 
 ::: tip
@@ -57,7 +68,7 @@ sidebar: auto
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
 | ......      | ......          | .........   | All Element-ui Tree Attributes      | 
-| filter      | Boolean         | false       | 是否过滤查询                | 
+| filter      | Boolean         | false       | 是否开启过滤查询                | 
 | leafOnly    | Boolean         | false       | 是否只是叶子节点，多选生效    | 
 | includeHalfChecked  | Boolean | true        | 是否包含半选节点，多选生效    | 
 | nodeKey     | Boolean         | false       | 继承 el-tree，必需          | 

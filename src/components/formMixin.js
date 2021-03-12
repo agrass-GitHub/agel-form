@@ -1,6 +1,8 @@
 export default {
   props: {
-    value: [Number, String, Array, Boolean],
+    value: {
+      required: true,
+    },
     on: {
       type: Object,
       default: () => new Object()

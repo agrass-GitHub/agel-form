@@ -97,8 +97,9 @@ export default {
         this.on.checkChange(data, checked, indeterminate);
       }
     },
-    handleFilterNode(value, data) {
-      if (!value) return true;
+    handleFilterNode(filterText, data) {
+      let value = filterText.trim();
+      if (value === "") return true;
       if (this.$attrs.filterNode) {
         return this.$attrs.filterNode(value, data);
       } else {

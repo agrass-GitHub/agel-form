@@ -26,15 +26,53 @@ export default {
             required: true, // 设置 required 会自动生成必填 rules
           },
           region: {
+            // 可设置搜索，配置 group
             label: "活动区域",
             component: "el-select",
+            filter: true,
+            clearable: true,
+            props: { label: "name", value: "id", options: "options" },
             options: [
-              { label: "区域一", value: "shanghai" },
-              { label: "区域二", value: "beijing" },
+              {
+                name: "热门城市",
+                options: [
+                  {
+                    id: "Shanghai",
+                    name: "上海",
+                  },
+                  {
+                    id: "Beijing",
+                    name: "北京",
+                  },
+                ],
+              },
+              {
+                name: "城市名",
+                options: [
+                  {
+                    id: "Chengdu",
+                    name: "成都",
+                  },
+                  {
+                    id: "Shenzhen",
+                    name: "深圳",
+                  },
+                  {
+                    id: "Guangzhou",
+                    name: "广州",
+                  },
+                  {
+                    id: "Dalian",
+                    name: "大连",
+                  },
+                ],
+              },
             ],
-            rules: [
-              { required: true, message: "请选择活动区域", trigger: "change" },
-            ],
+            on: {
+              change: (v) => {
+                console.log(v);
+              },
+            },
           },
           date: {
             component: "el-date-picker",
