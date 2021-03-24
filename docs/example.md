@@ -3,8 +3,6 @@ title: 演示教程
 sidebar: auto
 ---
 
-<!--<ClientOnly><test-form/></ClientOnly>-->
-
 # agel-form | 使 element-ui form 组件更简单
 
 ## 特性

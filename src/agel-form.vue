@@ -39,9 +39,11 @@ const formProps = function () {
     data: {},
     items: {},
     on: {},
+    labelWidth: "100px",
     gutter: 15, // 继承自 el-row gutter
     span: 24, // 继承自 el-col span
     getRef: this.getRef,
+    getItem: this.getItem,
     resetFields: this.resetFields,
     validate: this.validate,
     clearValidate: this.clearValidate,
@@ -52,6 +54,8 @@ const itemProps = function () {
   return {
     // 扩展属性
     component: "el-input", // 组件名称 String
+    is: undefined,
+    prop: undefined,
     display: true, // 是否渲染 Boolean
     show: true, // 是否显示 Boolean
     slot: false, // 是否自定义 Boolean  RenderFunction
@@ -59,7 +63,7 @@ const itemProps = function () {
     on: undefined, // event 事件 Object
     // 继承 el-form-item
     label: undefined,
-    "label-width": undefined,
+    labelWidth: undefined,
     required: undefined,
     rules: undefined,
     // 继承 el-row
@@ -125,11 +129,16 @@ export default {
     // 表单项
     items() {
       let items = {};
-      for (const prop in this.value.items) {
+      let valueItems = this.value.items;
+      if (Array.isArray(this.value.items)) {
+        valueItems = {};
+        this.value.items.forEach((v) => v.prop && (valueItems[v.prop] = v));
+      }
+      for (const prop in valueItems) {
         let extendApi = itemProps(); // 扩展属性
-        let item = this.value.items[prop]; // 组件配置
-        let newItem = { attrs: {}, ...extendApi };
-        let itemName = item.component || extendApi.component;
+        let item = valueItems[prop]; // 组件配置
+        let itemName = item.component || item.is || extendApi.component;
+        let newItem = { attrs: {}, ...extendApi, component: itemName };
         let globalApi = this.$agelFormConfig[itemName] || {}; // 全局组件配置
 
         if (typeof globalApi == "function") {
@@ -171,6 +180,13 @@ export default {
     getRef(prop) {
       if (prop == undefined) return this.$refs.form;
       return this.$refs[prop] ? this.$refs[prop][0].getRef() : null;
+    },
+    getItem(prop) {
+      if (Array.isArray(this.value.items)) {
+        return this.value.items.find((v) => (v.prop = prop));
+      } else {
+        return this.value.items[prop];
+      }
     },
     validate(callback, erroCallback) {
       this.$refs.form.validate((is) => {

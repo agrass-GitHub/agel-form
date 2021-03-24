@@ -1,12 +1,14 @@
 <template>
-  <el-form-item v-show="item.show" :prop="prop" :label="item.label" :label-width="item['label-width']" :required="item.required" :rules="item.rules">
+  <el-form-item v-show="item.show" :prop="prop" :label="item.label" :label-width="item.labelWidth" :required="item.required" :rules="item.rules">
     <slot-render v-if="item.slot" :render="$slots.default||item.slot"></slot-render>
-    <component v-else :is="componentName" :ref="prop" v-model="data[prop]" v-bind="item.attrs" :on="item.on" v-on="item.on"> </component>
+    <component v-else-if="isAgComponent" :is="componentName" :ref="prop" v-model="data[prop]" v-bind="item.attrs" :on="item.on">
+    </component>
+    <component v-else :is="componentName" :ref="prop" v-model="data[prop]" v-bind="item.attrs" v-on="item.on"> </component>
   </el-form-item>
 </template>
  
 <script>
-import components from "./components/index";
+import components from "./lib/index";
 
 export default {
   name: "agel-form-item",
@@ -22,9 +24,8 @@ export default {
       return agComponentKeys.includes("ag" + this.item.component);
     },
     componentName() {
-      return this.isAgComponent
-        ? "ag" + this.item.component
-        : this.item.component;
+      let name = this.item.component || this.item.is;
+      return this.isAgComponent ? "ag" + name : name;
     },
   },
   created() {
