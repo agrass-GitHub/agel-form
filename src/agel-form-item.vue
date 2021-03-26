@@ -1,9 +1,9 @@
 <template>
-  <el-form-item v-show="item.show" :prop="prop" :label="item.label" :label-width="item.labelWidth" :required="item.required" :rules="item.rules">
+  <el-form-item v-show="item.show" v-bind="item._formItem">
     <slot-render v-if="item.slot" :render="$slots.default||item.slot"></slot-render>
-    <component v-else-if="isAgComponent" :is="componentName" :ref="prop" v-model="data[prop]" v-bind="item.attrs" :on="item.on">
+    <component v-else-if="isAgComponent" :is="'ag'+item.component" :ref="item.prop" v-model="data[item.prop]" v-bind="item._component" :on="item.on">
     </component>
-    <component v-else :is="componentName" :ref="prop" v-model="data[prop]" v-bind="item.attrs" v-on="item.on"> </component>
+    <component v-else :is="item.component" :ref="item.prop" v-model="data[item.prop]" v-bind="item._component" v-on="item.on"> </component>
   </el-form-item>
 </template>
  
@@ -14,7 +14,6 @@ export default {
   name: "agel-form-item",
   components,
   props: {
-    prop: String,
     item: Object,
     data: Object,
   },
@@ -23,19 +22,15 @@ export default {
       let agComponentKeys = Object.keys(components);
       return agComponentKeys.includes("ag" + this.item.component);
     },
-    componentName() {
-      let name = this.item.component || this.item.is;
-      return this.isAgComponent ? "ag" + name : name;
-    },
   },
   created() {
-    if (!this.data.hasOwnProperty(this.prop)) {
-      this.$set(this.data, this.prop, this.item.defaultValue);
+    if (!this.data.hasOwnProperty(this.item.prop)) {
+      this.$set(this.data, this.item.prop, this.item.defaultValue);
     }
   },
   methods: {
     getRef() {
-      let ref = this.$refs[this.prop];
+      let ref = this.$refs[this.item.prop];
       return this.isAgComponent ? ref.getRef() : ref;
     },
   },

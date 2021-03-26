@@ -7,6 +7,8 @@
         <em>点击上传</em>
       </div>
     </div>
+    <i v-else-if="$attrs.listType=='picture-card'" class="el-icon-plus"></i>
+    <slot-render v-else-if="buttonRender" :render="buttonRender"></slot-render>
     <el-button v-else size="small" type="primary">选择上传</el-button>
     <div v-if="tip" slot="tip" class="el-upload__tip">{{ tip }}</div>
   </el-upload>
@@ -14,8 +16,12 @@
 
 <script>
 import formMixin from "./formMixin";
+import slotRender from "./slot-render.js";
 export default {
   name: "agel-upload",
+  components: {
+    slotRender,
+  },
   mixins: [formMixin],
   inheritAttrs: false,
   props: {
@@ -25,6 +31,7 @@ export default {
     },
     drag: Boolean,
     tip: String,
+    buttonRender: Function,
   },
   data() {
     return {};

@@ -22,7 +22,7 @@ sidebar: auto
 | ----------- | ------------ | ------ | ------------------------------------ | 
 | ......      | ......       | ...... | All Element-ui Form Attributes      | 
 | data        | Object       | { }    | 数据                                 | 
-| items       | Object       | { }    | 子表单配置                               | 
+| items       | Object/Array | { }    | 子表单配置                               | 
 | on          | Object       | { }    | Form 组件的 Event 事件      | 
 | gutter      | Number       | 15     | 继承自 el-row gutter                   | 
 | span        | Number       | 24     | 继承自 el-col span                         |
@@ -54,8 +54,22 @@ sidebar: auto
 | ----------- | ------------  | ------ | ------------------------------------ | 
 | ......      | ......          | .........   | All Element-ui Select Attributes      | 
 | filter      | Boolean         | false       | 是否开启过滤查询                | 
-| props       | Array   |  -     | option 配置项         | 
+| options       | Array   |  -     | option 配置项         | 
 | props       | Object   |  { label: "label", value: "value", options: "options" }       | 指定节点标签为节点对象的某个属性值          | 
+
+
+## Upload
+
+::: tip
+- 支持所有 Element-ui [Tree Attributes](https://element.eleme.cn/#/zh-CN/component/upload#upload-attributes)
+:::
+
+| 属性        | 类型         | 默认值  | 说明                                 | 
+| ----------- | ------------  | ------ | ------------------------------------ | 
+| ......      | ......          | .........   | All Element-ui upload Attributes      | 
+| drag        | Boolean         | false       | 是否开启拖拽                | 
+| tip         | String          | -           | 提示语                      | 
+| buttonRender  | Functin       | -           | 自定义按钮 slot，rendner函数    | 
 
 
 
@@ -78,3 +92,5 @@ sidebar: auto
 | collapseTags | Boolean          | -         | 继承 el-select  | 
 | clearable    | Boolean          | -         | 继承 el-select  |
 | popperClass  | String           | -         | 继承 el-select  | 
+
+

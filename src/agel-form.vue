@@ -1,13 +1,13 @@
 <template>
-  <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs" v-on="value.on">
+  <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs.form" v-on="value.on">
     <template v-if="value.inline">
-      <agel-form-item v-for="(item, key) in items" :key="key" :prop="key" :item="item" :data="value.data">
+      <agel-form-item v-for="(item, key) in items" :key="key" :item="item" :data="value.data">
         <slot :name="key"></slot>
       </agel-form-item>
     </template>
-    <el-row v-else :gutter="value.gutter">
-      <el-col v-for="(item, key) in items" :span="item.span||value.span" :offset="item.offset" :key="key">
-        <agel-form-item :prop="key" :item="item" :data="value.data" :ref="key">
+    <el-row v-else v-bind="attrs.row">
+      <el-col v-for="(item, key) in items" v-bind="item._col" :key="key">
+        <agel-form-item :item="item" :data="value.data" :ref="key">
           <slot :name="key"></slot>
         </agel-form-item>
       </el-col>
@@ -18,7 +18,7 @@
 <script>
 import agelFormItem from "./agel-form-item";
 
-const defaultProps = [
+const formProps = [
   "model",
   "rules",
   "inline",
@@ -34,14 +34,30 @@ const defaultProps = [
   "disabled",
 ];
 
-const formProps = function () {
+const formItemProps = ["prop", "label", "label-width", "required", "rules"];
+const rowProps = ["gutter", "type", "justify", "align", "tag"];
+const colPorps = [
+  "span",
+  "offset",
+  "push",
+  "pull",
+  "xs",
+  "sm",
+  "md",
+  "lg",
+  "xl",
+  "tag",
+];
+
+const agFormProps = function () {
   return {
     data: {},
     items: {},
     on: {},
+    labelPosition: "right",
     labelWidth: "100px",
-    gutter: 15, // 继承自 el-row gutter
-    span: 24, // 继承自 el-col span
+    type: "flex",
+    gutter: 15,
     getRef: this.getRef,
     getItem: this.getItem,
     resetFields: this.resetFields,
@@ -50,29 +66,23 @@ const formProps = function () {
   };
 };
 
-const itemProps = function () {
+const agFormItemProps = function () {
   return {
     // 扩展属性
     component: "el-input", // 组件名称 String
-    is: undefined,
-    prop: undefined,
     display: true, // 是否渲染 Boolean
     show: true, // 是否显示 Boolean
     slot: false, // 是否自定义 Boolean  RenderFunction
     defaultValue: undefined, // 默认值
-    on: undefined, // event 事件 Object
-    // 继承 el-form-item
-    label: undefined,
-    labelWidth: undefined,
-    required: undefined,
-    rules: undefined,
-    // 继承 el-row
-    span: undefined,
-    offset: undefined,
+    on: {}, // event 事件 Object
   };
 };
 
 const kebabcase = (v) => v.replace(/([A-Z])/g, "-$1").toLowerCase();
+
+const humpcase = (v) => {
+  return v.replace(/-(\w)/g, (all, letter) => letter.toUpperCase());
+};
 
 export default {
   name: "agel-form",
@@ -98,7 +108,15 @@ export default {
     return {};
   },
   created() {
-    this.insertExtendApi();
+    let extendApi = Object.assign(
+      agFormProps.call(this),
+      this.$agelFormConfig.form || {}
+    );
+    Object.keys(extendApi).forEach((key) => {
+      if (!this.value.hasOwnProperty(key)) {
+        this.$set(this.value, key, extendApi[key]);
+      }
+    });
   },
   watch: {
     attach: {
@@ -115,67 +133,92 @@ export default {
   },
   computed: {
     attrs() {
-      let attrs = {};
-      for (const key in this.value) {
-        if (
-          defaultProps.includes(key) ||
-          defaultProps.includes(kebabcase(key))
-        ) {
-          attrs[key] = this.value[key];
-        }
-      }
-      return attrs;
+      return {
+        form: this.getPorpObj(formProps, this.value),
+        row: this.getPorpObj(rowProps, this.value),
+      };
     },
     // 表单项
     items() {
       let items = {};
-      let valueItems = this.value.items;
-      if (Array.isArray(this.value.items)) {
-        valueItems = {};
-        this.value.items.forEach((v) => v.prop && (valueItems[v.prop] = v));
-      }
-      for (const prop in valueItems) {
-        let extendApi = itemProps(); // 扩展属性
-        let item = valueItems[prop]; // 组件配置
-        let itemName = item.component || item.is || extendApi.component;
-        let newItem = { attrs: {}, ...extendApi, component: itemName };
-        let globalApi = this.$agelFormConfig[itemName] || {}; // 全局组件配置
+      let cofnig = this.$agelFormConfig || {};
+      let itemsObj = this.value.items;
 
-        if (typeof globalApi == "function") {
-          globalApi = globalApi(prop, item, this.value);
+      if (Array.isArray(this.value.items)) {
+        itemsObj = {};
+        this.value.items.forEach((v) => v.prop && (itemsObj[v.prop] = v));
+      }
+      for (const prop in itemsObj) {
+        let item = itemsObj[prop];
+        let agItem = agFormItemProps();
+        // 注入全局配置
+        let name = item.component || agItem.component;
+        let itemConfig = cofnig[name];
+        if (itemConfig) {
+          if (typeof itemConfig == "function") {
+            itemConfig = itemConfig(prop, item, this.value);
+          }
+          for (const key in itemConfig) {
+            if (!item.hasOwnProperty(key)) item[key] = itemConfig[key];
+          }
         }
-        for (const key in globalApi) {
-          if (!item.hasOwnProperty(key)) item[key] = globalApi[key];
-        }
-        for (const key in item) {
-          let obj = extendApi.hasOwnProperty(key) ? newItem : newItem.attrs;
-          obj[key] = item[key];
-        }
-        if (newItem.required && newItem.rules == undefined) {
-          newItem.required = false;
-          newItem.rules = {
+        // 划分出 col，formitem，component，组件属性
+        let component = {};
+        let col = Object.assign(
+          this.getPorpObj(colPorps, this.value),
+          this.getPorpObj(colPorps, item)
+        );
+        let formItem = Object.assign(
+          this.getPorpObj(formItemProps, this.value),
+          this.getPorpObj(formItemProps, item)
+        );
+        // 自动添加 required rules
+        if (formItem.required && formItem.rules == undefined) {
+          formItem.required = false;
+          formItem.rules = {
             required: true,
             message: item.label + "必填",
             trigger: "blur",
           };
         }
-        if (item.display === false) continue;
-        items[prop] = newItem;
+        for (const key in item) {
+          if (
+            !agItem.hasOwnProperty(key) &&
+            !this.includeKey(colPorps, key) &&
+            !this.includeKey(formItemProps, key)
+          ) {
+            component[key] = item[key];
+          }
+        }
+        console.log(
+          this.getPorpObj(
+            Object.keys(agItem).concat(colPorps, formItemProps),
+            item,
+            false
+          ),
+          component
+        );
+        agItem._col = col;
+        agItem._formItem = formItem;
+        agItem._component = component;
+        agItem.prop = prop;
+        if (agItem.display === false) continue;
+        items[prop] = agItem;
       }
       return items;
     },
   },
   methods: {
-    insertExtendApi() {
-      let extendApi = Object.assign(
-        formProps.call(this),
-        this.$agelFormConfig.form || {}
-      );
-      Object.keys(extendApi).forEach((key) => {
-        if (!this.value.hasOwnProperty(key)) {
-          this.$set(this.value, key, extendApi[key]);
-        }
+    getPorpObj(arr, target, is = true) {
+      let obj = {};
+      arr.forEach((key) => {
+        let value = target[kebabcase(key)] || target[humpcase(key)];
+        is ? value && (obj[key] = value) : !value && (obj[key] = value);
       });
+      return obj;
+    },
+    includeKey(arr, key) {
+      return arr.includes(kebabcase(key)) || arr.includes(humpcase(key));
     },
     getRef(prop) {
       if (prop == undefined) return this.$refs.form;
@@ -212,9 +255,21 @@ export default {
 };
 </script>
 
-<style lang="stylus">
+<style lang="scss">
+.agel-form.el-form--inline {
+  display: inline-block;
+}
+
 .agel-form {
-  .el-date-editor.el-input, .el-date-editor.el-input__inner, .el-select, .el-cascader, .el-input-number {
+  .el-row--flex {
+    flex-wrap: wrap;
+  }
+
+  .el-date-editor.el-input,
+  .el-date-editor.el-input__inner,
+  .el-select,
+  .el-cascader,
+  .el-input-number {
     width: 100%;
   }
 

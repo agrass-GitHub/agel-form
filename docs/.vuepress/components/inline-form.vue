@@ -1,5 +1,12 @@
 <template>
-  <agel-form class="demo" v-model="form"> </agel-form>
+  <div class="demo">
+    <agel-form v-model="form"> </agel-form>
+    <el-button>查询</el-button>
+    <el-button>查询</el-button>
+    <el-button>查询</el-button>
+    <el-button>查询</el-button>
+    <el-button>查询</el-button>
+  </div>
 </template>
  
 <script>

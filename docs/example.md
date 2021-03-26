@@ -12,7 +12,7 @@ sidebar: auto
 
 ## 安装使用
 
-`cnpm install agel-from --save`
+`cnpm install agel-form --save`
 
 
 ## 典型表单 
@@ -40,7 +40,7 @@ export default {
         "label-width": "80px",
         span: 18,
         data: {
-          name: "agel-from",
+          name: "agel-form",
           delivery: true,
           desc: "学习如何使用",
           file: [{ name: "活动清单.xlsx", url: "xxx.jpg" }],
@@ -498,7 +498,7 @@ export default {
 可以很方便的为每一个 `el-date-pciker` 设置好日期格式化，也可以配置好公用的 `el-upload` 组件，至于其它的表单子组件就看自己需要去使用配置了。
 
 ```js
-import agelTable from "agel-from";
+import agelTable from "agel-form";
 
 Vue.use(agelForm, {
   form: {
