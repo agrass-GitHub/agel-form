@@ -143,7 +143,7 @@ export default {
       let items = {};
       let cofnig = this.$agelFormConfig || {};
       let itemsObj = this.value.items;
-
+      // 转成对象
       if (Array.isArray(this.value.items)) {
         itemsObj = {};
         this.value.items.forEach((v) => v.prop && (itemsObj[v.prop] = v));
@@ -162,7 +162,7 @@ export default {
             if (!item.hasOwnProperty(key)) item[key] = itemConfig[key];
           }
         }
-        // 划分出 col，formitem，component，组件属性
+        // 划分出 col，formitem，component组件 对应的属性
         let component = {};
         let col = Object.assign(
           this.getPorpObj(colPorps, this.value),
@@ -172,6 +172,10 @@ export default {
           this.getPorpObj(formItemProps, this.value),
           this.getPorpObj(formItemProps, item)
         );
+        let ignoreKeys = Object.keys(agItem).concat(colPorps, formItemProps);
+        for (const key in item) {
+          if (!this.includeKey(ignoreKeys, key)) component[key] = item[key];
+        }
         // 自动添加 required rules
         if (formItem.required && formItem.rules == undefined) {
           formItem.required = false;
@@ -181,23 +185,10 @@ export default {
             trigger: "blur",
           };
         }
-        for (const key in item) {
-          if (
-            !agItem.hasOwnProperty(key) &&
-            !this.includeKey(colPorps, key) &&
-            !this.includeKey(formItemProps, key)
-          ) {
-            component[key] = item[key];
-          }
+        // 自动设置 placeholder 属性
+        if (component.placeholder == undefined) {
+          component.placeholder = "请输入" + formItem.label;
         }
-        console.log(
-          this.getPorpObj(
-            Object.keys(agItem).concat(colPorps, formItemProps),
-            item,
-            false
-          ),
-          component
-        );
         agItem._col = col;
         agItem._formItem = formItem;
         agItem._component = component;
@@ -209,11 +200,11 @@ export default {
     },
   },
   methods: {
-    getPorpObj(arr, target, is = true) {
+    getPorpObj(arr, target) {
       let obj = {};
       arr.forEach((key) => {
         let value = target[kebabcase(key)] || target[humpcase(key)];
-        is ? value && (obj[key] = value) : !value && (obj[key] = value);
+        value && (obj[key] = value);
       });
       return obj;
     },

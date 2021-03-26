@@ -15,6 +15,9 @@ export default {
         span: 24, // 全局span
         xs: { span: 24 },
         items: {
+          xxx: {
+            label: "手机",
+          },
           name: {
             label: "姓名",
             span: 10,
