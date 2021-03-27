@@ -7,12 +7,12 @@ sidebar: auto
 
 ## 特性
 
-该组件的思想就是以一个 form 对象来做所有的操作，纯数据配置也有高度的灵活性，还有更方便的全局配置, 支持 element-ui 所有组件配置，也可以灵活搭配第三方或者自定义的组件进行使用。
+该组件的思想就是以一个 form 对象来做所有的操作，纯数据配置也有高度的灵活性，还有更方便的全局配置, 支持 element-ui 所有组件配置，也可以灵活搭配第三方或者自定义的组件进行使用, 也可灵活调整布局进行响应式排版。
 
 
 ## 安装使用
 
-`cnpm install agel-form --save`
+`cnpm install agel-form --save` 或者 [使用在线引用地址](https://www.jsdelivr.com/package/npm/agel-form)
 
 
 ## 典型表单 
@@ -498,12 +498,13 @@ export default {
 可以很方便的为每一个 `el-date-pciker` 设置好日期格式化，也可以配置好公用的 `el-upload` 组件，至于其它的表单子组件就看自己需要去使用配置了。
 
 ```js
-import agelTable from "agel-form";
+import agelForm from "agel-form";
 
 Vue.use(agelForm, {
   form: {
-    "label-width":"100px",
+    labelWidth:"100px",
     span:8,
+    xs:24,
   },
   "el-upload": function (prop, item, form) {
     const config = {

@@ -1,6 +1,6 @@
 <template>
   <el-checkbox-group ref="ref" class="agel-checkbox-group" :value="value" v-bind="$attrs" v-on='on' @input="input">
-    <component v-for="option of options" v-bind="option" :is="checkboxComponent" :key="option.value" :label="option.value">
+    <component :is="checkboxComponent" v-for="option of options" v-bind="option" :key="option.value" :label="option.value">
       {{option.label}}
     </component>
   </el-checkbox-group>

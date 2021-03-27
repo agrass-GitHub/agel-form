@@ -11,11 +11,10 @@ export default {
   data() {
     return {
       form: {
-        "label-position": "right",
-        "label-width": "80px",
+        labelWidth: "80px",
         span: 18,
         data: {
-          name: "agel-from",
+          name: "agel-form",
           delivery: true,
           desc: "学习如何使用",
           file: [{ name: "活动清单.xlsx", url: "xxx.jpg" }],
@@ -133,7 +132,7 @@ export default {
   methods: {
     submit() {
       this.form.validate(() => {
-        alert("submit!");
+        this.$message.success("成功");
       });
     },
     rest() {

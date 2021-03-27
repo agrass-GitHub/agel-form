@@ -33,7 +33,6 @@ const formProps = [
   "size",
   "disabled",
 ];
-
 const formItemProps = ["prop", "label", "label-width", "required", "rules"];
 const rowProps = ["gutter", "type", "justify", "align", "tag"];
 const colPorps = [
@@ -134,8 +133,8 @@ export default {
   computed: {
     attrs() {
       return {
-        form: this.getPorpObj(formProps, this.value),
-        row: this.getPorpObj(rowProps, this.value),
+        form: this.getPorpsObj(formProps, this.value),
+        row: this.getPorpsObj(rowProps, this.value),
       };
     },
     // 表单项
@@ -150,9 +149,11 @@ export default {
       }
       for (const prop in itemsObj) {
         let item = itemsObj[prop];
+        if (item.display === false) continue;
         let agItem = agFormItemProps();
-        // 注入全局配置
         let name = item.component || agItem.component;
+
+        // 注入全局配置, 改变原始对象 item
         let itemConfig = cofnig[name];
         if (itemConfig) {
           if (typeof itemConfig == "function") {
@@ -162,23 +163,30 @@ export default {
             if (!item.hasOwnProperty(key)) item[key] = itemConfig[key];
           }
         }
+
+        // 局部配置覆盖默认组件配置
+        for (const key in agItem) {
+          if (item[key]) agItem[key] = item[key];
+        }
+
         // 划分出 col，formitem，component组件 对应的属性
-        let component = {};
         let col = Object.assign(
-          this.getPorpObj(colPorps, this.value),
-          this.getPorpObj(colPorps, item)
+          this.getPorpsObj(colPorps, this.value),
+          this.getPorpsObj(colPorps, item)
         );
         let formItem = Object.assign(
-          this.getPorpObj(formItemProps, this.value),
-          this.getPorpObj(formItemProps, item)
+          this.getPorpsObj(formItemProps, this.value),
+          this.getPorpsObj(formItemProps, item)
         );
+        let component = {};
         let ignoreKeys = Object.keys(agItem).concat(colPorps, formItemProps);
         for (const key in item) {
-          if (!this.includeKey(ignoreKeys, key)) component[key] = item[key];
+          if (!this.includesKey(ignoreKeys, key)) component[key] = item[key];
         }
         // 自动添加 required rules
+        formItem.prop = prop;
         if (formItem.required && formItem.rules == undefined) {
-          formItem.required = false;
+          formItem.required = undefined;
           formItem.rules = {
             required: true,
             message: item.label + "必填",
@@ -187,29 +195,32 @@ export default {
         }
         // 自动设置 placeholder 属性
         if (component.placeholder == undefined) {
-          component.placeholder = "请输入" + formItem.label;
+          if (["el-input", "el-input-number"].includes(name)) {
+            component.placeholder = "请输入" + formItem.label;
+          }
+          if (["el-select", "el-cascader", "el-input-tree"].includes(name)) {
+            component.placeholder = "请选择" + formItem.label;
+          }
         }
         agItem._col = col;
         agItem._formItem = formItem;
         agItem._component = component;
-        agItem.prop = prop;
-        if (agItem.display === false) continue;
         items[prop] = agItem;
       }
       return items;
     },
   },
   methods: {
-    getPorpObj(arr, target) {
+    getPorpsObj(keys, target) {
       let obj = {};
-      arr.forEach((key) => {
+      keys.forEach((key) => {
         let value = target[kebabcase(key)] || target[humpcase(key)];
         value && (obj[key] = value);
       });
       return obj;
     },
-    includeKey(arr, key) {
-      return arr.includes(kebabcase(key)) || arr.includes(humpcase(key));
+    includesKey(keys, key) {
+      return keys.includes(kebabcase(key)) || keys.includes(humpcase(key));
     },
     getRef(prop) {
       if (prop == undefined) return this.$refs.form;
@@ -270,6 +281,9 @@ export default {
 
   .el-form-item {
     margin-bottom: 15px;
+  }
+  .agel-checkbox-group {
+    display: inline-block;
   }
 }
 </style>

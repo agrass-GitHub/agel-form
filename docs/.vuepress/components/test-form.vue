@@ -1,5 +1,9 @@
 <template>
-  <agel-form class="demo" v-model="form"> </agel-form>
+  <div class="demo">
+    <agel-form v-model="form"> </agel-form>
+    <el-button type="primary" @click="submit">立即创建</el-button>
+    <el-button type="primary" @click="rest">初始化表单</el-button>
+  </div>
 </template>
  
 <script>
@@ -7,40 +11,160 @@ export default {
   data() {
     return {
       form: {
-        "label-position": "right",
-        "label-width": "50px",
-        data: {},
-        labelSuffix: ":",
-        gutter: 5, // 栅格间距
-        span: 24, // 全局span
-        xs: { span: 24 },
+        labelWidth: "80px",
+        span: 18,
+        data: {
+          delivery: true,
+          desc: "学习如何使用",
+          file: [
+            {
+              name: "这是一个图片.png",
+              url:
+                "http://202.100.168.52:27014/AttachFiles/2020/06/anbiao_organization/1592448326447.png",
+            },
+            {
+              name: "这是一个doc文档.docx",
+              url: "https://view.xdocin.com/doc/preview.docx",
+            },
+            {
+              name: "这是一个视频文件.mp4",
+              url: "https://www.runoob.com/try/demo_source/movie.mp4",
+            },
+            {
+              name: "这是一个音频文件.mp3",
+              url: "https://www.runoob.com/try/demo_source/horse.mp3",
+            },
+            {
+              name: "这是一个不可预览的文件.zip",
+              url: "xxxx/xxx/xx.zip",
+            },
+          ],
+        },
         items: {
-          xxx: {
-            label: "手机",
-          },
           name: {
-            label: "姓名",
-            span: 10,
-            placeholder: "设置 span 10",
+            label: "活动名称",
+            required: true, // 设置 required 会自动生成必填 rules
+            defaultValue: "活动名称",
           },
           region: {
-            label: "地址",
-            span: 13,
-            push: 1,
-            placeholder: "设置 span 13 offset1",
+            // 可设置搜索，配置 group
+            label: "活动区域",
+            component: "el-select",
+            filter: true,
+            clearable: true,
+            props: { label: "name", value: "id", options: "options" },
+            options: [
+              {
+                name: "热门城市",
+                options: [
+                  {
+                    id: "Shanghai",
+                    name: "上海",
+                  },
+                  {
+                    id: "Beijing",
+                    name: "北京",
+                  },
+                ],
+              },
+              {
+                name: "城市名",
+                options: [
+                  {
+                    id: "Chengdu",
+                    name: "成都",
+                  },
+                  {
+                    id: "Shenzhen",
+                    name: "深圳",
+                  },
+                  {
+                    id: "Guangzhou",
+                    name: "广州",
+                  },
+                  {
+                    id: "Dalian",
+                    name: "大连",
+                  },
+                ],
+              },
+            ],
+            on: {
+              change: (v) => {
+                console.log(v);
+              },
+            },
           },
-          span: {
-            label: "介绍",
-            placeholder: "不设置则受全局 form span  label-width 影响",
+          date: {
+            component: "el-date-picker",
+            label: "活动时间",
+            type: "date",
+            placeholder: "选择日期",
           },
-          labelWidth: {
-            label: "标签很长很长",
-            labelWidth: "135px",
-            placeholder: "单独设置 label-width 135px",
+          delivery: {
+            component: "el-switch",
+            label: "即时配送",
+          },
+          type: {
+            component: "el-checkbox-group",
+            label: "活动性质",
+            options: [
+              { label: "美食/餐厅线上活动", value: "1" },
+              { label: "地推活动", value: "2" },
+              { label: "线下主题活动", value: "3" },
+              { label: "单纯品牌曝光", value: "4" },
+            ],
+            rules: [
+              {
+                type: "array",
+                required: true,
+                message: "请至少选择一个活动性质",
+                trigger: "change",
+              },
+            ],
+          },
+          resource: {
+            component: "el-radio-group",
+            label: "特殊资源",
+            options: [
+              { label: "线上品牌商赞助", value: "1" },
+              { label: "线下场地免费", value: "2" },
+            ],
+            rules: [
+              { required: true, message: "请选择活动资源", trigger: "change" },
+            ],
+          },
+          desc: {
+            label: "活动形式",
+            type: "textarea",
+            required: true,
+          },
+          file: {
+            label: "活动附件",
+            component: "el-upload",
+            drag: true,
+            required: true,
+            tip: "这是一个活动附件提示",
+            action: `/api/xxxx/upload`,
+            limitSize: 1024,
+            // limit: 1,
+            onExceed: (files) => {
+              console.log(files);
+            },
           },
         },
       },
     };
+  },
+  methods: {
+    submit() {
+      this.form.validate(() => {
+        this.$message.success("成功");
+      });
+    },
+    rest() {
+      this.form.resetFields();
+    },
   },
 };
 </script>
