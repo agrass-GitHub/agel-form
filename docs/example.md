@@ -36,8 +36,7 @@ export default {
   data() {
     return {
       form: {
-        "label-position": "right",
-        "label-width": "80px",
+        labelWidth: "80px",
         span: 18,
         data: {
           name: "agel-form",
@@ -143,14 +142,6 @@ export default {
             type: "textarea",
             required: true,
           },
-          file: {
-            label: "活动附件",
-            component: "el-upload",
-            drag: true,
-            required: true,
-            tip: "这是一个活动附件提示",
-            action: `/api/xxxx/upload`,
-          },
         },
       },
     };
@@ -158,7 +149,7 @@ export default {
   methods: {
     submit() {
       this.form.validate(() => {
-        alert("submit!");
+        this.$message.success("成功");
       });
     },
     rest() {
@@ -172,7 +163,7 @@ export default {
 
 ## 布局表单
 
-设置 `form.gutter`, `form.span`, `form['label-width']`来设置布局, 也可单独为某一项设置 `span`, `offset`, `label-width` 进行灵活调整，该属性继承 `el-row el-col el-form-item`。
+`Form` 可以设置 `el-row` `el-col` 的所有属性，进行灵活布局，也可设置用 `xs、sm、md、lg、xl`实现响应式布局，作为 `Form` 直接子元素会继承该值; 若 `Form-Item` 单独设置布局属性的优先级更高。
 
 <ClientOnly><layout-form/></ClientOnly>
 
@@ -187,11 +178,11 @@ export default {
   data() {
     return {
       form: {
-        "label-position": "right",
-        "label-width": "80px",
+        labelWidth: "80px",
         data: {},
         gutter: 5, // 栅格间距
-        span: 24, // 全局span
+        span: 20, // 全局span
+        xs: { span: 24, push: 0 }, // <768px 设置为 24 span
         items: {
           name: {
             label: "姓名",
@@ -200,18 +191,18 @@ export default {
           },
           region: {
             label: "地址",
-            span: 13,
-            offset: 1,
-            placeholder: "设置 span 13 offset1",
+            span: 9,
+            push: 1,
+            placeholder: "设置 span 9 push 1",
           },
           span: {
             label: "介绍",
-            placeholder: "不设置则受全局 form span  label-width 影响",
+            placeholder: "不设置则受全局 form 布局属性影响",
           },
           labelWidth: {
             label: "标签很长很长",
-            "label-width": "135px",
-            placeholder: "单独设置 label-width 135px",
+            labelWidth: "135px",
+            placeholder: "单独设置 labelWidth 135px",
           },
         },
       },
@@ -225,14 +216,14 @@ export default {
 
 ## 行内表单 
 
-设置为行内表单模式，`gutter` `offset` `span` 属性将会失效。
+设置`inline:true`为行内表单模式，`el-row`,`el-col` 的布局属性将会失效，一般用于列表的搜索查询。
 
 <ClientOnly><inline-form/></ClientOnly>
 
 ::: details 点击查看代码
 ```html
 <template>
-  <agel-form class="demo" v-model="form"> </agel-form>
+  <agel-form class="demo" v-model="form"></agel-form>
 </template>
  
 <script>
@@ -243,8 +234,19 @@ export default {
         inline: true,
         data: {},
         items: {
-          name: { label: "活动名称" },
-          region: { label: "活动区域" },
+          name: { label: "活动名称", style: "width:120px" },
+          www: { label: "活动网站" },
+          button: {
+            component: "el-button",
+            type: "primary",
+            icon: "el-icon-search",
+            slots: "查询",
+            on: {
+              click: () => {
+                this.$message.info("查询");
+              },
+            },
+          },
         },
       },
     };
@@ -252,7 +254,202 @@ export default {
 };
 </script>
 ```
-::: 
+:::
+
+## slot slots 插槽自定义
+
+:::tip
+`slot` 属性是自定义 `Form Item` 组件的插槽, 支持四种类型写法，template模板，render函数，string字符串，vnode对象。
+
+`slots` 属性是自定义 `Component` 组件的插槽，支持三种类型写法，render函数，string字符串，vnode对象，当存在多个插槽，必须定义一个具名对象。
+:::
+
+<ClientOnly><slot-form/></ClientOnly>
+
+::: details 点击查看代码
+```html
+<template>
+  <agel-form class="demo" v-model="form">
+    <template slot="template">
+      <span>这是一段 template 模板类型自定义插槽</span>
+    </template>
+  </agel-form>
+</template>
+ 
+<script>
+export default {
+  data() {
+    const h = this.$createElement;
+    return {
+      form: {
+        labelWidth: "50px",
+        span: 18,
+        data: {},
+        items: {
+          title: {
+            labelWidth: "0px",
+            component: "el-divider",
+            contentPosition: "left",
+            slots: "slot 使用演示，自定义Form Item的插槽",
+          },
+          template: { label: "插槽1", slot: true },
+          render: {
+            label: "插槽2",
+            slot: (h) => {
+              return h("span", {}, "这是一段 render 函数类型自定义插槽");
+            },
+          },
+          string: {
+            label: "插槽3",
+            slot: "这是一段 string 类型自定义插槽",
+          },
+          vnode: {
+            label: "插槽4",
+            slot: h("span", {}, "这是一段 vnode 对象类型自定义插槽"),
+          },
+          title2: {
+            labelWidth: "0px",
+            component: "el-divider",
+            contentPosition: "left",
+            slots: "slots 使用演示 ，自定义组件的子插槽",
+          },
+          slots: {
+            component: "el-input",
+            label: "事件",
+            slots: {
+              // slot name 名称和 key 保持一致
+              prepend: "Http://",
+              append: h("el-tag", { attrs: { type: "success" } }, ".com"),
+            },
+          },
+          button: {
+            label: "按钮",
+            component: "el-button",
+            type: "primary",
+            icon: "el-icon-search",
+            slots: "查询",
+          },
+        },
+      },
+    };
+  },
+};
+</script>
+```
+:::
+
+## attach 属性的使用
+
+:::tip
+在设计上，主张的是聚拢所有的参数为一个 form 对象，在组件初始化完成后会为 form 参数添加额外的内置属性和方法，因此该参数必须使用 `v-model`，且不可设为计算属性
+
+为了保持其灵活性，添加了 `attach` 参数，配置项与 form 一致，不仅可聚拢也可打散，也可为计算属性，当其发生变化时候，会同步合并到 form 对象中
+:::
+
+<ClientOnly><attach-form/></ClientOnly>
+
+::: details 点击查看代码
+```html
+<template>
+  <div class="demo">
+    <p>
+      <span>行内表单：</span>
+      <el-switch v-model="inline"></el-switch>
+      <span style="margin-left:20px" v-show="!inline">栅格span：</span>
+      <el-input-number v-show="!inline" v-model="span" :min="6" :max="24"></el-input-number>
+    </p>
+    <agel-form v-model="form" :attach="{items,inline,span}"> </agel-form>
+  </div>
+</template>
+ 
+<script>
+export default {
+  data() {
+    return {
+      inline: true,
+      span: 24,
+      form: {
+        data: {},
+      },
+    };
+  },
+  computed: {
+    items() {
+      return {
+        name: { label: "活动名称" },
+        region: { label: "活动区域" },
+        sex: { label: "性别" },
+        age: { label: "年龄", display: !this.inline },
+      };
+    },
+  },
+};
+</script>
+```
+:::
+
+## 全局配置的妙处
+
+:::tip
+支持所有属性，以下配置将被继承到每个表单上，也可单独为某个表单子组件设置全局配置
+:::
+
+可以很方便的为每一个 `el-date-pciker` 设置好日期格式化，也可以配置好公用的 `el-upload` 组件，至于其它的需求就发挥你的大脑去灵活配置了。
+
+```js
+import agelForm from "agel-form";
+
+const config = {
+ form: {
+    labelWidth:"100px",
+    span:8,
+    xs:24,
+  },
+  // 为 component 设置全局配置，必须是一个函数，参数： prop/item对象/form对象
+  "el-upload": function (prop, item, form) {
+    // 为 upload 设置全局上传参数
+    item.action = "/xxxx/upload";
+    item.headers = { token: store.getters.token };
+    item.data ={id: prop};
+    item.onSuccess = (res)=>{
+      if (res.code == 0) {
+        return res.data;
+      } else {
+        Message.error("上传报错");
+      }
+    }
+  },
+  "el-date-picker": function (prop, item) {
+    // 为 date-picker 设置全局 valueFormat 格式化属性
+    if (item.type == undefined || item.type == "daterange") item.valueFormat = "yyyy-MM-dd";
+    if (item.type == "datetime" || item.type == "datetimerange") item.valueFormat = "yyyy-MM-dd HH:mm:ss";
+    if (item.type == "month")  item.valueFormat = "yyyy-MM";
+
+    // 提供一个小 tips
+    // 当使用日期范围模式时，经常需要在调用接口的时候手动将数组date转换为开始/结束日期两个字段
+    // 使用如下配置，当变化时将自动关联上开始日期，结束日期两个字段
+    // proprange:['startTime','endTime']
+    if (item.type == "daterange" && item.proprange) {
+      let [startTimeProp, endTimeProp] = item.proprange;
+      form.data[startTimeProp] = "";
+      form.data[endTimeProp] = "";
+      item.on = item.on || {}
+      item.on.change = (value) => {
+        form.data[startTimeProp] = value ? value[0] : "";
+        form.data[endTimeProp] = value ? value[1] : "";
+      }
+    }
+  }
+}
+
+Vue.use(agelForm, config);
+
+// or
+
+Vue.prototype.$agelFormConfig = config;
+Vue.component('agel-form', agelForm);
+```
+
 
 ## 树形选择器
 
@@ -391,163 +588,6 @@ export default {
 ```
 ::: 
 
-## slot on 属性
 
-<ClientOnly><slot-form/></ClientOnly>
 
-::: details 点击查看代码
-```html
-<template>
-  <agel-form class="demo" v-model="form">
-    <template slot="region">
-      <span>这是一段 template 模板自定义文字</span>
-    </template>
-  </agel-form>
-</template>
- 
-<script>
-export default {
-  data() {
-    return {
-      form: {
-        "label-position": "right",
-        "label-width": "80px",
-        span: 18,
-        data: {},
-        items: {
-          name: {
-            label: "活动名称",
-            slot: (h) => {
-              return h("span", {}, "这是一段 render 函数自定义文字");
-            },
-          },
-          region: { label: "活动区域", slot: true },
-          slider: {
-            label: "触发事件",
-            component: "el-slider",
-            defaultValue: 10,
-            on: {
-              change: (v) => alert(v),
-            },
-          },
-        },
-      },
-    };
-  },
-};
-</script>
-```
-:::  
 
-## attach 属性
-
-:::tip
-在设计上，主张的是聚拢所有的参数为一个 form 对象，在组件初始化完成后会为 form 参数添加额外的内置属性和方法，因此该参数必须使用 `v-model`，且不可设为计算属性
-
-为了保持其灵活性，添加了 `attach` 参数，配置项与 form 一致，不仅可聚拢也可打散，也可为计算属性，当其发生变化时候，会同步合并到 form 对象中
-:::
-
-<ClientOnly><attach-form/></ClientOnly>
-
-::: details 点击查看代码
-```html
-<template>
-  <div class="demo">
-    <p>
-      <span>行内表单：</span>
-      <el-switch v-model="inline"></el-switch>
-      <span style="margin-left:20px" v-show="!inline">栅格span：</span>
-      <el-input-number v-show="!inline" v-model="span" :min="6" :max="24"></el-input-number>
-    </p>
-    <agel-form v-model="form" :attach="{items,inline,span}"> </agel-form>
-  </div>
-</template>
- 
-<script>
-export default {
-  data() {
-    return {
-      inline: true,
-      span: 24,
-      form: {
-        data: {},
-      },
-    };
-  },
-  computed: {
-    items() {
-      return {
-        name: { label: "活动名称" },
-        region: { label: "活动区域" },
-        sex: { label: "性别" },
-        age: { label: "年龄", display: !this.inline },
-      };
-    },
-  },
-};
-</script>
-```
-::: 
-
-## 全局配置的妙处
-
-:::tip
-支持所有属性，以下配置将应用到每个表单上，也可单独为某个表单子组件设置全局配置
-:::
-
-可以很方便的为每一个 `el-date-pciker` 设置好日期格式化，也可以配置好公用的 `el-upload` 组件，至于其它的表单子组件就看自己需要去使用配置了。
-
-```js
-import agelForm from "agel-form";
-
-Vue.use(agelForm, {
-  form: {
-    labelWidth:"100px",
-    span:8,
-    xs:24,
-  },
-  "el-upload": function (prop, item, form) {
-    const config = {
-      action: "/xxxx/upload",
-      headers: { token: store.getters.token },
-      data: { id: prop },
-      onSuccess: (res) => {
-        if (res.code == 0) {
-          form.data[prop].push(res.data);
-        } else {
-          Message.error("上传报错");
-        }
-      },
-      onError: () => {
-        Message.error("上传报错");
-      },
-      onPreview: (file) => {
-        let suffix = file.name.split(".").pop();
-        let isImg = ["png", "jpg", "PNG", "JPG"].includes(suffix);
-        let h = new Vue().$createElement;
-        MessageBox({
-          title: "附件预览",
-          message: (() => {
-            if (isImg) {
-              return <img src={file.url} class="upload-preview" />;
-            } else {
-              return <span>只可预览图片附件</span>;
-            }
-          })(),
-          confirmButtonText: "下载",
-        }).then(() => window.open(file.url, "_blank"));
-      },
-    }
-    return config
-  },
-  "el-date-picker": function (prop, item) {
-    let valueFormat = undefined;
-    if (item.type == undefined || item.type == "daterange") valueFormat = "yyyy-MM-dd";
-    if (item.type == "datetime" || item.type == "datetimerange") valueFormat = "yyyy-MM-dd HH:mm:ss";
-    if (item.type == "month") valueFormat = "yyyy-MM";
-    return {
-      valueFormat
-    }
-  }
-});
-```

@@ -3,7 +3,10 @@
     <slot-render v-if="item.slot" :render="$slots.default||item.slot"></slot-render>
     <component v-else-if="isAgComponent" :is="'ag'+ item.component" :ref="prop" v-model="data[prop]" v-bind="item._component" :on="item.on">
     </component>
-    <component v-else :is="item.component" :ref="prop" v-model="data[prop]" v-bind="item._component" v-on="item.on"> </component>
+    <component v-else :is="item.component" :ref="prop" v-model="data[prop]" v-bind="item._component" v-on="item.on">
+      <slot-render v-for="(componentSlot,name) in slots" :key="name" :slot="name" :render="componentSlot">
+      </slot-render>
+    </component>
   </el-form-item>
 </template>
  
@@ -20,6 +23,16 @@ export default {
   computed: {
     prop() {
       return this.item._formItem.prop;
+    },
+    slots() {
+      let slots = this.item.slots;
+      let isText = typeof slots == "string";
+      let isRender = typeof slots == "function";
+      let isVnode = typeof slots == "object" && slots.tag;
+      // 如果是单个，就包裹一层 default
+      return isText || isRender || isVnode
+        ? { default: this.item.slots }
+        : slots;
     },
     isAgComponent() {
       let agComponentKeys = Object.keys(components);

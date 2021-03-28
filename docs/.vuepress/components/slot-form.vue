@@ -1,7 +1,7 @@
 <template>
   <agel-form class="demo" v-model="form">
-    <template slot="region">
-      <span>这是一段 template 模板自定义文字</span>
+    <template slot="template">
+      <span>这是一段 template 模板类型自定义插槽</span>
     </template>
   </agel-form>
 </template>
@@ -9,27 +9,55 @@
 <script>
 export default {
   data() {
+    const h = this.$createElement;
     return {
       form: {
-        "label-position": "right",
-        "label-width": "80px",
+        labelWidth: "50px",
         span: 18,
         data: {},
         items: {
-          name: {
-            label: "活动名称",
+          title: {
+            labelWidth: "0px",
+            component: "el-divider",
+            contentPosition: "left",
+            slots: "slot 使用演示，自定义Form Item的插槽",
+          },
+          template: { label: "插槽1", slot: true },
+          render: {
+            label: "插槽2",
             slot: (h) => {
-              return h("span", {}, "这是一段 render 函数自定义文字");
+              return h("span", {}, "这是一段 render 函数类型自定义插槽");
             },
           },
-          region: { label: "活动区域", slot: true },
-          slider: {
-            label: "触发事件",
-            component: "el-slider",
-            defaultValue: 10,
-            on: {
-              change: (v) => alert(v),
+          string: {
+            label: "插槽3",
+            slot: "这是一段 string 类型自定义插槽",
+          },
+          vnode: {
+            label: "插槽4",
+            slot: h("span", {}, "这是一段 vnode 对象类型自定义插槽"),
+          },
+          title2: {
+            labelWidth: "0px",
+            component: "el-divider",
+            contentPosition: "left",
+            slots: "slots 使用演示 ，自定义组件的子插槽",
+          },
+          slots: {
+            component: "el-input",
+            label: "事件",
+            slots: {
+              // slot name 名称和 key 保持一致
+              prepend: "Http://",
+              append: h("el-tag", { attrs: { type: "success" } }, ".com"),
             },
+          },
+          button: {
+            label: "按钮",
+            component: "el-button",
+            type: "primary",
+            icon: "el-icon-search",
+            slots: "查询",
           },
         },
       },

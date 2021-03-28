@@ -1,12 +1,13 @@
 <template>
   <div class="demo">
+    <div><code>{{jsonstr}}</code></div>
     <p>
       <span>行内表单：</span>
       <el-switch v-model="inline"></el-switch>
       <span style="margin-left:20px" v-show="!inline">栅格span：</span>
       <el-input-number v-show="!inline" v-model="span" :min="6" :max="24"></el-input-number>
     </p>
-    <agel-form v-model="form" :attach="{items,inline,span}"> </agel-form>
+    <agel-form v-model="form" :attach="{data,items,inline,span}"> </agel-form>
   </div>
 </template>
  
@@ -14,11 +15,12 @@
 export default {
   data() {
     return {
-      inline: true,
-      span: 24,
       form: {
-        data: {},
+        labelWidth: "auto",
       },
+      data: {},
+      inline: false,
+      span: 13,
     };
   },
   computed: {
@@ -26,9 +28,18 @@ export default {
       return {
         name: { label: "活动名称" },
         region: { label: "活动区域" },
-        sex: { label: "性别" },
-        age: { label: "年龄", display: !this.inline },
+        button: {
+          label: "按钮",
+          component: "el-button",
+          type: "primary",
+          icon: "el-icon-search",
+          slots: "查询",
+          display: this.inline,
+        },
       };
+    },
+    jsonstr() {
+      return JSON.stringify(this.form);
     },
   },
 };

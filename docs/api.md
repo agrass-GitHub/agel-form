@@ -27,6 +27,8 @@ sidebar: auto
 | data        | Object       | { }    | 数据                                 | 
 | items       | Object/Array | { }    | 表单子组件配置                               | 
 | on          | Object       | { }    | Form 组件的 Event 事件      | 
+| labelPositon| String       | -      | 继承自 el-form  |
+| labelWidth  | String       | -      | 继承自 el-form  | 
 | type        | String       | flex           | 继承自 el-row       | 
 | justify     | String       | -           | 继承自 el-row       | 
 | align       | String       | -           | 继承自 el-row       | 
@@ -53,7 +55,7 @@ sidebar: auto
 
 ::: tip
 - 支持所有 Element-ui [Col Attributes](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)
-- 所有属性都是可选，请注意的默认值为【内置】的属性，请勿传递覆盖
+- 支持所有 Form 单组件，也支持单组件下面的 slots
 :::
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
@@ -63,9 +65,12 @@ sidebar: auto
 | component   | String          | el-input    | 组件名称                | 
 | display     | Boolean         | true        | 是否渲染                 | 
 | show        | Boolean         | true        | 是否显示              | 
-| slot        | Boolean/Funciton| false       | 是否自定义/render函数                   | 
+| slot        | Boolean/Funciton/Vnode/String | false       | Form Item 是否自定义| 
+| slots       | Object/Funciton/Vnode/String  | { }         | Component 组件下面的 slots | 
 | defaultValue| Any             | -           | 默认值                        |
 | on          | Object          | { }         | 子组件 evenet 事件  |
+| style       | String          | -           | style 样式         |
+| class       | String          | -           | clss 名称         |
 | prop        | String          | -           | 继承自 el-form-item，数组配置时该字段必填    | 
 | label       | String          | -           | 继承自 el-form-item  |
 | labelWidth  | String          | -           | 继承自 el-form-item  | 
@@ -95,7 +100,11 @@ sidebar: auto
 | options     | Array         |  -     | option 配置项         | 
 | props       | Object        |  { label: "label", value: "value", options: "options" }       | 指定节点标签为节点对象的某个属性值          | 
 
-## checkboxGroup RadioGroup 多选/单选
+## Component 单组件
+
+以下组件是经过二次封装的单组件,添加了额外的 api
+
+### CheckboxGroup RadioGroup 多单/选
 
 ::: tip
 - 支持所有 Element-ui [checkbox Attributes](https://element.eleme.cn/#/zh-CN/component/checkbox#duo-xuan-kuang-zu)，[radio Attributes](https://element.eleme.cn/#/zh-CN/component/radio#dan-xuan-kuang-zu)
@@ -108,7 +117,7 @@ sidebar: auto
 | button      | Boolean       |  -          | 是否开启 button 样式         | 
 
 
-## Upload 上传
+### Upload 上传
 
 ::: tip
 - 支持所有 Element-ui [Upload Attributes](https://element.eleme.cn/#/zh-CN/component/upload#upload-attributes)
@@ -125,7 +134,7 @@ sidebar: auto
 
 
 
-## Input-Tree 树形选择器
+### Input-Tree 树形选择器
 
 ::: tip
 - 支持所有 Element-ui [Tree Attributes](https://element.eleme.cn/#/zh-CN/component/tree#tree-attributes)

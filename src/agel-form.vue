@@ -53,8 +53,8 @@ const agFormProps = function () {
     data: {},
     items: {},
     on: {},
-    labelPosition: "right",
-    labelWidth: "100px",
+    labelPosition: undefined,
+    labelWidth: undefined,
     type: "flex",
     gutter: 15,
     getRef: this.getRef,
@@ -72,6 +72,7 @@ const agFormItemProps = function () {
     display: true, // 是否渲染 Boolean
     show: true, // 是否显示 Boolean
     slot: false, // 是否自定义 Boolean  RenderFunction
+    slots: {},
     defaultValue: undefined, // 默认值
     on: {}, // event 事件 Object
   };
@@ -154,15 +155,7 @@ export default {
         let name = item.component || agItem.component;
 
         // 注入全局配置, 改变原始对象 item
-        let itemConfig = cofnig[name];
-        if (itemConfig) {
-          if (typeof itemConfig == "function") {
-            itemConfig = itemConfig(prop, item, this.value);
-          }
-          for (const key in itemConfig) {
-            if (!item.hasOwnProperty(key)) item[key] = itemConfig[key];
-          }
-        }
+        cofnig[name] && cofnig[name](prop, item, this.value);
 
         // 局部配置覆盖默认组件配置
         for (const key in agItem) {

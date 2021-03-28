@@ -117,14 +117,6 @@ export default {
             type: "textarea",
             required: true,
           },
-          file: {
-            label: "活动附件",
-            component: "el-upload",
-            drag: true,
-            required: true,
-            tip: "这是一个活动附件提示",
-            action: `/api/xxxx/upload`,
-          },
         },
       },
     };

@@ -10,6 +10,7 @@ sidebar: auto
 - 自动添加 placeholder 属性
 - 支持所有 el-row el-col 所有属性,便于实现响应式布局
 - el-uploda 组件 listType,darg,主动上传 的样式兼容,添加预览文件功能
+- 支持单组件 slots 配置 
 
 
 ## v.0.0.1 - v.0.0.3
