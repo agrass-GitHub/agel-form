@@ -7,7 +7,7 @@ sidebar: auto
 
 ## 特性
 
-该组件的思想就是以一个 form 对象来做所有的操作，纯数据配置也有高度的灵活性，还有更方便的全局配置, 支持 element-ui 所有组件配置，也可以灵活搭配第三方或者自定义的组件进行使用, 也可灵活调整布局进行响应式排版。
+该组件的思想就是以一个 form 对象来做所有的操作，纯数据配置也有高度的灵活性，还有更方便的全局配置, 支持 element-ui 所有组件配置, 支持所有 evets 事件，也支持所有 slots，也可以灵活搭配第三方或者自定义的组件进行使用, 也可灵活调整布局进行响应式排版。
 
 
 ## 安装使用
@@ -580,7 +580,6 @@ export default {
               url: "https://www.runoob.com/try/demo_source/horse.mp3",
             },
             {
-              // 采用 XDOC文档预览云服务，提供 doc，xlx，pdf，ppt 文件预览
               name: "这是一个docx文件.docx",
               url: "https://view.xdocin.com/doc/preview.docx",
             },

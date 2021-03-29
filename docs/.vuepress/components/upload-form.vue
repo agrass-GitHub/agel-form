@@ -25,7 +25,6 @@ export default {
               url: "https://www.runoob.com/try/demo_source/horse.mp3",
             },
             {
-              // 采用 XDOC文档预览云服务，提供 doc，xlx，pdf，ppt 文件预览
               name: "这是一个docx文件.docx",
               url: "https://view.xdocin.com/doc/preview.docx",
             },

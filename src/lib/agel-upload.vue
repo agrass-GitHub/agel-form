@@ -125,7 +125,7 @@ export default {
         const h = this.$createElement;
         let suffix = file.url.split(".").pop().toLowerCase();
         let image = ["png", "jpg", "jpeg", "bmp", "gif"];
-        let xdoc = ["doc", "docx", "xls", "xlsx", "csv", "pdf", "pptx"];
+        let xdoc = ["doc", "docx", "xls", "xlsx", "csv"];
         let video = ["mp4", "ogg", "webm"];
         let audio = ["mp3", "wav", "ogg"];
         let message = null;
@@ -139,7 +139,7 @@ export default {
           message = h("iframe", {
             class: "agel-upload-preview-doc",
             attrs: {
-              src: `http://view.xdocin.com/xdoc?_xdoc=${url}`,
+              src: `https://view.officeapps.live.com/op/view.aspx?src=${url}`,
               border: 0,
             },
           });
