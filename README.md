@@ -6,8 +6,7 @@
 
 ## 文档
 
-- [官网 - 使用文档 ](https://agrass-github.github.io/agel-form/)（github 提供服务）
-- [官网 - 使用文档](https://agrass.gitee.io/agel-form/) （gitee 提供服务，国内较快）
+- [官网 - 使用文档](https://agrass.gitee.io/agel-form/) 
 
 ## 特性
 
