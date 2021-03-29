@@ -13,10 +13,22 @@ export default {
     return {
       form: {
         labelWidth: "50px",
-        span: 18,
+        span: 15,
         data: {},
         items: {
-          title: {
+          title1: {
+            labelWidth: "0px",
+            component: "el-divider",
+            contentPosition: "left",
+            slots: "label slot 使用演示，自定义Form Item Label的插槽",
+          },
+          label: {
+            labelWidth: "100px",
+            label: (h) => {
+              return h("el-button", {}, "自定义label");
+            },
+          },
+          title2: {
             labelWidth: "0px",
             component: "el-divider",
             contentPosition: "left",
@@ -37,17 +49,18 @@ export default {
             label: "插槽4",
             slot: h("span", {}, "这是一段 vnode 对象类型自定义插槽"),
           },
-          title2: {
+          title3: {
             labelWidth: "0px",
             component: "el-divider",
             contentPosition: "left",
-            slots: "slots 使用演示 ，自定义组件的子插槽",
+            slots: "slots 使用演示 ，自定义组件 Component 的插槽",
+            ignore: true,
           },
           slots: {
             component: "el-input",
-            label: "事件",
+            label: "网站",
             slots: {
-              // slot name 名称和 key 保持一致
+              // 多个插槽时， slot name 名称和 key 保持一致
               prepend: "Http://",
               append: h("el-tag", { attrs: { type: "success" } }, ".com"),
             },

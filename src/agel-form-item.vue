@@ -1,7 +1,9 @@
 <template>
-  <el-form-item v-show="item.show" v-bind="item._formItem">
+  <el-form-item v-show="item.show" v-bind="item._formItem" :label="label.text">
+    <slot-render v-if="label.slot" :render="label.slot" slot="label"></slot-render>
     <slot-render v-if="item.slot" :render="$slots.default||item.slot"></slot-render>
-    <component v-else-if="isAgComponent" :is="'ag'+ item.component" :ref="prop" v-model="data[prop]" v-bind="item._component" :on="item.on">
+    <component v-else-if="isAgComponent" :is="'ag'+ item.component" :ref="prop" v-model="data[prop]" v-bind="item._component" :on="item.on"
+      :slots="slots">
     </component>
     <component v-else :is="item.component" :ref="prop" v-model="data[prop]" v-bind="item._component" v-on="item.on">
       <slot-render v-for="(componentSlot,name) in slots" :key="name" :slot="name" :render="componentSlot">
@@ -21,6 +23,14 @@ export default {
     data: Object,
   },
   computed: {
+    label() {
+      let label = this.item._formItem.label;
+      if (typeof label === "string") {
+        return { text: label, slot: undefined };
+      } else {
+        return { text: undefined, slot: label };
+      }
+    },
     prop() {
       return this.item._formItem.prop;
     },
@@ -40,7 +50,7 @@ export default {
     },
   },
   created() {
-    if (!this.data.hasOwnProperty(this.prop)) {
+    if (!this.data.hasOwnProperty(this.prop) && this.item.ignore !== true) {
       this.$set(this.data, this.prop, this.item.defaultValue);
     }
   },

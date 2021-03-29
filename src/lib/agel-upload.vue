@@ -1,22 +1,30 @@
 <template>
   <el-upload ref="ref" class="agel-upload" v-bind="$attrs" :file-list="value" :before-upload="handleBeforeUpload" :on-success="handleSuccess"
     :on-remove="handleRemove" :on-exceed="handleExceed" :on-preview="handlePreview" :on-error="handleError" v-on="on">
-    <template v-if="$attrs.drag">
+
+    <div v-if="tip" slot="tip" class="el-upload__tip">{{ tip }}</div>
+
+    <template v-if="slotsIf.slots">
+      <slot-render v-for="(componentSlot,name) in slots" :key="name" :slot="name" :render="componentSlot">
+      </slot-render>
+    </template>
+
+    <el-button v-if="!slotsIf.slots&&slotsIf.customUpload" style="margin-left: 10px;" size="small" type="success" @click="handleUpload">上传到服务器
+    </el-button>
+
+    <template v-if="!slotsIf.slots&&slotsIf.drag">
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">
         将文件拖到此处，或
         <em>点击上传</em>
       </div>
     </template>
-    <i v-else-if="$attrs.listType=='picture-card'" class="el-icon-plus"></i>
-    <slot-render v-else-if="buttonRender" :render="buttonRender"></slot-render>
-    <template v-else>
-      <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-      <el-button v-if="$attrs.autoUpload===false||$attrs['auto-upload']===false" style="margin-left: 10px;" size="small" type="success"
-        @click="handleUpload">上传到服务器</el-button>
-    </template>
-    <!-- <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button> -->
-    <div v-if="tip" slot="tip" class="el-upload__tip">{{ tip }}</div>
+
+    <i v-if="!slotsIf.slots&&slotsIf.pictureCard" class="el-icon-plus"></i>
+
+    <el-button v-if="!slotsIf.slots&&!slotsIf.drag&&!slotsIf.pictureCard" slot="trigger" size="small" type="primary">点击上传
+    </el-button>
+
   </el-upload>
 </template>
 
@@ -45,10 +53,22 @@ export default {
     },
     limitSize: Number,
     tip: String,
-    buttonRender: Function,
   },
-  data() {
-    return {};
+  computed: {
+    slotsIf() {
+      let slots = Object.keys(this.slots).length != 0;
+      let drag = this.$attrs.drag;
+      let pictureCard = this.$attrs.listType == "picture-card";
+      let customUpload =
+        this.$attrs.autoUpload === false ||
+        this.$attrs["auto-upload"] === false;
+      return {
+        slots,
+        drag,
+        pictureCard,
+        customUpload,
+      };
+    },
   },
   methods: {
     onMessage(type, message) {

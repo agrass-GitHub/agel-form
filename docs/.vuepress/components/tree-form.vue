@@ -1,7 +1,8 @@
 <template>
   <div class="demo">
     <agel-form v-model="form"> </agel-form>
-    <el-button type="primary" @click="getRef">获取组件实例（控制台）</el-button>
+    <el-button type="primary" @click="getRef">获取组件实例（查看控制台）</el-button>
+    <el-button type="primary" @click="getItem">获取组件Item（查看控制台）</el-button>
   </div>
 
 </template>
@@ -62,14 +63,16 @@ export default {
           tree1: "2",
           tree2: ["1-1-1", "2-1-1"],
         },
-        items: {
-          tree1: {
+        items: [
+          {
+            prop: "tree1",
             label: "普通树形",
             component: "el-input-tree",
             nodeKey: "value",
             data: treeData,
           },
-          tree2: {
+          {
+            prop: "tree2",
             label: "多选树形",
             component: "el-input-tree",
             nodeKey: "value",
@@ -77,14 +80,16 @@ export default {
             leafOnly: true,
             data: treeData,
           },
-          tree3: {
+          {
+            prop: "tree3",
             label: "过滤树形",
             component: "el-input-tree",
             nodeKey: "value",
             filter: true,
             data: treeData,
           },
-          tree4: {
+          {
+            prop: "tree4",
             label: "懒加载树",
             component: "el-input-tree",
             nodeKey: "name",
@@ -113,13 +118,16 @@ export default {
               }, 500);
             },
           },
-        },
+        ],
       },
     };
   },
   methods: {
     getRef() {
       console.log(this.form.getRef("tree1"));
+    },
+    getItem() {
+      console.log(this.form.getItem("tree1"));
     },
   },
 };

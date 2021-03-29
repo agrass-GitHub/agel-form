@@ -26,10 +26,6 @@ export default {
       default: false,
     },
   },
-  data() {
-    return {};
-  },
-  created() {},
   computed: {
     checkboxComponent() {
       return this.button ? "el-checkbox-button" : "el-checkbox";

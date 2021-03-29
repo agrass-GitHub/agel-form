@@ -54,7 +54,7 @@ const agFormProps = function () {
     items: {},
     on: {},
     labelPosition: undefined,
-    labelWidth: undefined,
+    labelWidth: "auto",
     type: "flex",
     gutter: 15,
     getRef: this.getRef,
@@ -71,8 +71,9 @@ const agFormItemProps = function () {
     component: "el-input", // 组件名称 String
     display: true, // 是否渲染 Boolean
     show: true, // 是否显示 Boolean
-    slot: false, // 是否自定义 Boolean  RenderFunction
-    slots: {},
+    ignore: false, // 是否忽略，若为 ture 则不会注入到 fromData
+    slot: false, // 是否自定义 FormItem slot Boolean/Funciton/Vnode/String
+    slots: {}, // 是否自定义 Component slot Object/Funciton/Vnode/String
     defaultValue: undefined, // 默认值
     on: {}, // event 事件 Object
   };
@@ -104,14 +105,9 @@ export default {
     vue.prototype.$agelFormConfig = opts;
     vue.component(opts.name || this.name, this);
   },
-  data() {
-    return {};
-  },
   created() {
-    let extendApi = Object.assign(
-      agFormProps.call(this),
-      this.$agelFormConfig.form || {}
-    );
+    let config = this.$agelFormConfig || {};
+    let extendApi = Object.assign(agFormProps.call(this), config.form || {});
     Object.keys(extendApi).forEach((key) => {
       if (!this.value.hasOwnProperty(key)) {
         this.$set(this.value, key, extendApi[key]);
@@ -150,12 +146,13 @@ export default {
       }
       for (const prop in itemsObj) {
         let item = itemsObj[prop];
-        if (item.display === false) continue;
         let agItem = agFormItemProps();
         let name = item.component || agItem.component;
 
         // 注入全局配置, 改变原始对象 item
         cofnig[name] && cofnig[name](prop, item, this.value);
+
+        if (item.display === false) continue;
 
         // 局部配置覆盖默认组件配置
         for (const key in agItem) {
@@ -178,21 +175,30 @@ export default {
         }
         // 自动添加 required rules
         formItem.prop = prop;
+        let label = typeof formItem.label == "string" ? formItem.label : "";
         if (formItem.required && formItem.rules == undefined) {
           formItem.required = undefined;
           formItem.rules = {
             required: true,
-            message: item.label + "必填",
+            message: label + "必填",
             trigger: "blur",
           };
         }
         // 自动设置 placeholder 属性
         if (component.placeholder == undefined) {
           if (["el-input", "el-input-number"].includes(name)) {
-            component.placeholder = "请输入" + formItem.label;
+            component.placeholder = "请输入" + label;
           }
-          if (["el-select", "el-cascader", "el-input-tree"].includes(name)) {
-            component.placeholder = "请选择" + formItem.label;
+          if (
+            [
+              "el-select",
+              "el-cascader",
+              "el-input-tree",
+              "el-time-select",
+              "el-date-picker",
+            ].includes(name)
+          ) {
+            component.placeholder = "请选择" + label;
           }
         }
         agItem._col = col;

@@ -8,7 +8,7 @@ export default ({ Vue }) => {
   Vue.use(Element);
   Vue.use(agelForm, {
     "el-date-picker": function (prop, item, form) {
-      if (item.type == "daterange" && item.proprange) {
+      if ((item.type == "daterange" || item.type == "datetimerange") && item.proprange) {
         let [startTimeProp, endTimeProp] = item.proprange;
         form.data[startTimeProp] = "";
         form.data[endTimeProp] = "";

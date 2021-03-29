@@ -16,6 +16,8 @@ export default {
             component: "el-button",
             type: "primary",
             icon: "el-icon-search",
+            // 表明该组件是一个纯展示组件，prop 值则不会注入到 form.data
+            ignore: true,
             slots: "查询",
             on: {
               click: () => {

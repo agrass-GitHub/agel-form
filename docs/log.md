@@ -3,20 +3,23 @@ title: 更新日志
 sidebar: auto
 ---
 
-## 待更新
 
-## v.0.0.4
-- items 支持对象配置
-- 自动添加 placeholder 属性
-- 支持所有 el-row el-col 所有属性,便于实现响应式布局
-- el-uploda 组件 listType,darg,主动上传 的样式兼容,添加预览文件功能
-- 支持单组件 slots 配置 
+## v.0.1.0
+- `新增` items 支持数组配置，添加 getItem 内置方法
+- `优化` 全局配置逻辑修改
+- `新增` 自动添加 placeholder 属性
+- `新增` 支持所有 el-row el-col 所有属性,便于实现响应式布局
+- `新增` el-uploda 组件多种样式兼容,添加预览文件功能，添加钩子函数默认提醒
+- `新增` 支持组件 label slot 配置 
+- `新增` 支持组件 slots 配置 
+- `新增` 添加 ignore 属性
 
 
 ## v.0.0.1 - v.0.0.3
-- 纯数据配置表单
-- 封装 input-tree 组件
-- 封装 upload 组件
-- 封装 select 组件，支持过滤，组配置
-- 封装 checkbox-grou 组件
-- 封装 radio-group 组件
+- `新增` 纯数据配置表单
+- `新增` 封装 input-tree 组件
+- `新增` 封装 upload 组件
+- `新增` 封装 select 组件，支持过滤，组配置
+- `新增` 封装 checkbox-grou 组件
+- `新增` 封装 radio-group 组件
+- `新增` 根据 required 生成必填 rules

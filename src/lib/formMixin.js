@@ -3,13 +3,14 @@ export default {
     value: {
       required: true,
     },
+    slots: {
+      type: Object,
+      default: () => new Object()
+    },
     on: {
       type: Object,
       default: () => new Object()
     }
-  },
-  data() {
-    return {}
   },
   methods: {
     input(v) {

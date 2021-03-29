@@ -16,7 +16,6 @@ export default {
         data: {
           name: "agel-form",
           delivery: true,
-          desc: "学习如何使用",
           file: [{ name: "活动清单.xlsx", url: "xxx.jpg" }],
         },
         items: {
@@ -25,59 +24,17 @@ export default {
             required: true, // 设置 required 会自动生成必填 rules
           },
           region: {
-            // 可设置搜索，配置 group
             label: "活动区域",
             component: "el-select",
-            filter: true,
-            clearable: true,
-            props: { label: "name", value: "id", options: "options" },
             options: [
-              {
-                name: "热门城市",
-                options: [
-                  {
-                    id: "Shanghai",
-                    name: "上海",
-                  },
-                  {
-                    id: "Beijing",
-                    name: "北京",
-                  },
-                ],
-              },
-              {
-                name: "城市名",
-                options: [
-                  {
-                    id: "Chengdu",
-                    name: "成都",
-                  },
-                  {
-                    id: "Shenzhen",
-                    name: "深圳",
-                  },
-                  {
-                    id: "Guangzhou",
-                    name: "广州",
-                  },
-                  {
-                    id: "Dalian",
-                    name: "大连",
-                  },
-                ],
-              },
+              { label: "区域1", value: "区域1" },
+              { label: "区域2", value: "区域2" },
             ],
-            on: {
-              change: (v) => {
-                console.log(v);
-              },
-            },
           },
           date: {
             component: "el-date-picker",
             label: "活动时间",
             type: "date",
-            placeholder: "选择日期",
           },
           delivery: {
             component: "el-switch",

@@ -1,17 +1,21 @@
 <template>
   <el-select ref="ref" class="agel-select" v-bind="$attrs" :value="value" :popperClass="popperClass" v-on='on' @input="input">
-    <div class="filter-item" v-if="filter">
+
+    <slot-render v-for="(componentSlot,name) in slots" :key="name" :slot="name" :render="componentSlot">
+    </slot-render>
+
+    <div class="filter-item" v-if="!slots.default&&filter">
       <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini" clearable></el-input>
     </div>
-    <el-option v-if="filter && filterOptions.length==0" label="暂无数据" value="暂无数据" disabled> </el-option>
-    <template v-if="isGroup">
+    <el-option v-if="!slots.default&&filter && filterOptions.length==0" label="暂无数据" value="暂无数据" disabled> </el-option>
+    <template v-if="!slots.default&&isGroup">
       <el-option-group v-for="group in filterOptions" :key="group[props.label]" :label="group[props.label]">
         <el-option v-for="(option) of group[props.options] || [] " v-bind='option' :key="option[props.label]" :label="option[props.label]"
           :value="valueKey?option:option[props.value]">
         </el-option>
       </el-option-group>
     </template>
-    <template v-else>
+    <template v-if="!slots.default&&!isGroup">
       <el-option v-for="(option) of filterOptions" v-bind='option' :key="option[props.label]" :label="option[props.label]"
         :value="valueKey?option:option[props.value]">
       </el-option>
@@ -21,8 +25,12 @@
 
 <script>
 import formMixin from "./formMixin";
+import slotRender from "./slot-render.js";
 export default {
   name: "agel-select",
+  components: {
+    slotRender,
+  },
   mixins: [formMixin],
   inheritAttrs: false,
   props: {
@@ -54,7 +62,8 @@ export default {
       });
     },
     popperClass() {
-      let className = this.$attrs.popperClass || this.$attrs["popper-class"];
+      let className =
+        this.$attrs.popperClass || this.$attrs["popper-class"] || "";
       return `agel-select-popper ${className}`;
     },
     filterOptions() {
@@ -80,7 +89,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 .agel-select-popper {
   .filter-item {
     padding: 0px 10px;

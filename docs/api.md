@@ -28,7 +28,7 @@ sidebar: auto
 | items       | Object/Array | { }    | 表单子组件配置                               | 
 | on          | Object       | { }    | Form 组件的 Event 事件      | 
 | labelPositon| String       | -      | 继承自 el-form  |
-| labelWidth  | String       | -      | 继承自 el-form  | 
+| labelWidth  | String       | auto   | 继承自 el-form  | 
 | type        | String       | flex           | 继承自 el-row       | 
 | justify     | String       | -           | 继承自 el-row       | 
 | align       | String       | -           | 继承自 el-row       | 
@@ -62,17 +62,18 @@ sidebar: auto
 | ----------- | ------------  | ------ | ------------------------------------ |
 | ......      | ......       | ...... | All Element-ui Col Attributes      |   
 | ......      | ......          | .........   | Other Component Attributes      |
-| component   | String          | el-input    | 组件名称                | 
+| component   | String          | el-input    | 组件名称                |
+| label       | String/Funciton/Vnode          | -          | Form Item Label 自定义  |  
+| slot        | Boolean/String/Funciton/Vnode | false       | Form Item 是否自定义  | 
+| slots       | Object/String/Funciton/Vnode  | { }         | Component 组件下面的 slots | 
 | display     | Boolean         | true        | 是否渲染                 | 
-| show        | Boolean         | true        | 是否显示              | 
-| slot        | Boolean/Funciton/Vnode/String | false       | Form Item 是否自定义| 
-| slots       | Object/Funciton/Vnode/String  | { }         | Component 组件下面的 slots | 
+| show        | Boolean         | true        | 是否显示              |
+| ignore      | Boolean         | false       | 是否忽略该字段，用于纯展示组件              |  
 | defaultValue| Any             | -           | 默认值                        |
 | on          | Object          | { }         | 子组件 evenet 事件  |
 | style       | String          | -           | style 样式         |
-| class       | String          | -           | clss 名称         |
+| class       | String          | -           | class 名称         |
 | prop        | String          | -           | 继承自 el-form-item，数组配置时该字段必填    | 
-| label       | String          | -           | 继承自 el-form-item  |
 | labelWidth  | String          | -           | 继承自 el-form-item  | 
 | required    | Boolean         | -           | 继承自 el-form-item  |
 | rules       | Array/Object         | -      | 继承自 el-form-item  |
@@ -87,18 +88,6 @@ sidebar: auto
 | xl          | Number/Object   | -           | 继承自 el-col       |
 | tag         | String          | -           | 继承自 el-col       |
 
-## Select 选择器
-
-::: tip
-- 支持所有 Element-ui [Select Attributes](https://element.eleme.cn/#/zh-CN/component/select#select-attributes)
-:::
-
-| 属性        | 类型         | 默认值  | 说明                                 | 
-| ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......        | .........   | All Element-ui Select Attributes      | 
-| filter      | Boolean       | false       | 是否开启过滤查询                | 
-| options     | Array         |  -     | option 配置项         | 
-| props       | Object        |  { label: "label", value: "value", options: "options" }       | 指定节点标签为节点对象的某个属性值          | 
 
 ## Component 单组件
 
@@ -116,6 +105,20 @@ sidebar: auto
 | options     | Array         |  -          | option 配置项                | 
 | button      | Boolean       |  -          | 是否开启 button 样式         | 
 
+### Select 选择器
+
+::: tip
+- 支持所有 Element-ui [Select Attributes](https://element.eleme.cn/#/zh-CN/component/select#select-attributes)
+:::
+
+| 属性        | 类型         | 默认值  | 说明                                 | 
+| ----------- | ------------  | ------ | ------------------------------------ | 
+| ......      | ......        | .........   | All Element-ui Select Attributes      | 
+| filter      | Boolean       | false       | 是否开启过滤查询                | 
+| options     | Array         |  -     | option 配置项         | 
+| props       | Object        |  { label: "label", value: "value", options: "options" }       | 指定节点标签为节点对象的某个属性值          |
+| slots       | Object/String/Funciton/Vnode/ | -           | 自定义 slots    |  
+
 
 ### Upload 上传
 
@@ -128,9 +131,11 @@ sidebar: auto
 | ......      | ......          | .........   | All Element-ui upload Attributes      | 
 | drag        | Boolean         | false       | 是否开启拖拽                | 
 | tip         | String          | -           | 提示语                      | 
-| preview     | Boolean         | true        | 是否开启文件预览                      | 
 | limitSize   | Number          | -           | 文件大小限制,单位kb                     | 
-| buttonRender  | Functin       | -           | 自定义按钮 slot，rendner函数    | 
+| preview     | Boolean         | true        | 是否开启文件预览                      | 
+| message     | Boolean         | true        | 是否开启钩子函数的默认提示                   |
+| onSuccess   | Funciton        | -           | 需返回一个包含 {name,url} 的对象               |
+| slots       | Object/String/Funciton/Vnode/ | -           | 自定义 slots    | 
 
 
 

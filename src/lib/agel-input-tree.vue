@@ -46,7 +46,7 @@ export default {
       return this.$attrs.nodeKey || this.labelKey;
     },
     treePopperClass() {
-      return `agel-input-tree-popper ${this.popperClass}`;
+      return `agel-input-tree-popper ${this.popperClass || ""}`;
     },
   },
   watch: {
