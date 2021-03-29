@@ -171,9 +171,8 @@ export default {
           a = null;
         });
       }
-
       let emit = this.$attrs.onPreview || this.$attrs["on-preview"];
-      emit && emit(files, fileList);
+      emit && emit(file);
     },
   },
 };
