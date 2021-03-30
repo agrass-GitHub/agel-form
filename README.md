@@ -15,7 +15,7 @@
 
 ## 安装使用
 
-`cnpm install agel-form --save` 或者 [使用在线引用地址](https://www.jsdelivr.com/package/npm/agel-form)
+`npm install agel-form --save` 或者 [使用在线引用地址](https://www.jsdelivr.com/package/npm/agel-form)
 
 
 ### 如此简单

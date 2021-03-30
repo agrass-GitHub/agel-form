@@ -12,7 +12,7 @@ sidebar: auto
 
 ## 安装使用
 
-`cnpm install agel-form --save` 或者 [使用在线引用地址](https://www.jsdelivr.com/package/npm/agel-form)
+`npm install agel-form --save` 或者 [使用在线引用地址](https://www.jsdelivr.com/package/npm/agel-form)
 
 
 ## 典型表单 
@@ -403,7 +403,7 @@ const config = {
       return res.data;
     }
   },
-  "el-date-picker": function (prop, item) {
+  "el-date-picker": function (prop, item, form) {
     // 为 date-picker 设置全局 valueFormat 格式化属性
     if (item.type == undefined || item.type == "daterange") item.valueFormat = "yyyy-MM-dd";
     if (item.type == "datetime" || item.type == "datetimerange") item.valueFormat = "yyyy-MM-dd HH:mm:ss";
