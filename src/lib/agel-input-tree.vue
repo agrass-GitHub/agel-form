@@ -128,24 +128,25 @@ export default {
 };
 </script>
  
-<style lang="scss" >
-.agel-input-tree {
-  .el-tag__close {
-    display: none;
-  }
+<style>
+.agel-input-tree .el-tag__close {
+  display: none;
 }
 
-.agel-input-tree-popper {
-  .filter-item {
-    padding: 0px 10px;
-    margin-bottom: 10px;
-  }
-  .el-scrollbar .el-scrollbar__view .el-select-dropdown__item {
-    height: auto;
-    padding: 0;
-  }
-  .selected {
-    font-weight: inherit;
-  }
+.agel-input-tree-popper .filter-item {
+  padding: 0px 10px;
+  margin-bottom: 10px;
+}
+
+.agel-input-tree-popper
+  .el-scrollbar
+  .el-scrollbar__view
+  .el-select-dropdown__item {
+  height: auto;
+  padding: 0;
+}
+
+.agel-input-tree-popper .selected {
+  font-weight: inherit;
 }
 </style>

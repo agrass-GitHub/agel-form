@@ -89,11 +89,9 @@ export default {
 };
 </script>
 
-<style lang="scss" >
-.agel-select-popper {
-  .filter-item {
-    padding: 0px 10px;
-    margin-bottom: 10px;
-  }
+<style>
+.agel-select-popper .filter-item {
+  padding: 0px 10px;
+  margin-bottom: 10px;
 }
 </style>

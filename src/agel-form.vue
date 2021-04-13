@@ -256,33 +256,32 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
 .agel-form.el-form--inline {
   display: inline-block;
 }
 
-.agel-form {
-  .el-row--flex {
-    flex-wrap: wrap;
-  }
+.agel-form .el-row--flex {
+  flex-wrap: wrap;
+}
 
-  .el-date-editor.el-input,
-  .el-date-editor.el-input__inner,
-  .el-select,
-  .el-cascader,
-  .el-input-number {
-    width: 100%;
-  }
+.agel-form .el-form--label-top .el-form-item__label {
+  padding: 0px;
+}
 
-  .el-form--label-top .el-form-item__label {
-    padding: 0px;
-  }
+.agel-form .el-form-item {
+  margin-bottom: 15px;
+}
 
-  .el-form-item {
-    margin-bottom: 15px;
-  }
-  .agel-checkbox-group {
-    display: inline-block;
-  }
+.agel-form .el-date-editor.el-input,
+.agel-form .el-date-editor.el-input__inner,
+.agel-form .el-select,
+.agel-form .el-cascader,
+.agel-form .el-input-number {
+  width: 100%;
+}
+
+.agel-form .agel-checkbox-group {
+  display: inline-block;
 }
 </style>

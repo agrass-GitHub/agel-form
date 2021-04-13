@@ -178,47 +178,54 @@ export default {
 };
 </script>
 
-<style lang="scss" >
+<style>
+.agel-upload .el-upload-dragger {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 130px;
+  width: 100%;
+  padding: 0px 40px;
+}
+
+.agel-upload .el-upload-dragger .el-icon-upload {
+  font-size: 50px;
+  margin: 0px;
+}
+
+.agel-upload .el-upload-dragger .el-upload__text {
+  font-size: 12px;
+}
+
+.agel-upload .el-icon-close-tip {
+  display: none !important;
+}
+
 .agel-upload-preview-msgbox {
   width: auto;
   padding-bottom: 20px;
   min-width: 300px;
-
-  .el-message-box__header {
-    padding-top: 20px;
-  }
-  .agel-upload-preview-img {
-    max-width: 1000px;
-    max-height: 600px;
-  }
-  .agel-upload-preview-video {
-    max-width: 1000px;
-    max-height: 600px;
-  }
-  .agel-upload-preview-doc {
-    width: 1000px;
-    height: 600px;
-  }
 }
-.agel-upload {
-  .el-upload-dragger {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 130px;
-    width: 100%;
-    padding: 0px 40px;
-  }
-  .el-upload-dragger .el-icon-upload {
-    font-size: 50px;
-    margin: 0px;
-  }
-  .el-upload-dragger .el-upload__text {
-    font-size: 12px;
-  }
-  .el-icon-close-tip {
-    display: none !important;
-  }
+
+.agel-upload-preview-msgbox .el-message-box__header {
+  padding-top: 20px;
+}
+
+.agel-upload-preview-img {
+  padding-top: 20px;
+}
+
+.agel-upload-preview-img {
+  max-width: 1000px;
+  max-height: 600px;
+}
+.agel-upload-preview-video {
+  max-width: 1000px;
+  max-height: 600px;
+}
+.agel-upload-preview-doc {
+  width: 1000px;
+  height: 600px;
 }
 </style>
