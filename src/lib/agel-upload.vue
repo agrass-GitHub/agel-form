@@ -213,17 +213,15 @@ export default {
 }
 
 .agel-upload-preview-img {
-  padding-top: 20px;
-}
-
-.agel-upload-preview-img {
   max-width: 1000px;
   max-height: 600px;
 }
+
 .agel-upload-preview-video {
   max-width: 1000px;
   max-height: 600px;
 }
+
 .agel-upload-preview-doc {
   width: 1000px;
   height: 600px;
