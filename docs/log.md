@@ -3,6 +3,9 @@ title: 更新日志
 sidebar: auto
 ---
 
+## v.0.1.2
+- `修复` el-select 在开启 filter 且有分组的情况下，过滤报错的问题
+
 ## v.0.1.1
 - `修复` el-upload 在外网预览 doc 文件失败，由 xdocin 转为 微软 officeapps 服务提供在线预览
 
