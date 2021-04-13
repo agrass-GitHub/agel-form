@@ -71,14 +71,14 @@ export default {
     },
   },
   methods: {
-    handleFilterNode(options) {
+    handleFilterNode(options = []) {
       return options.filter((data) => {
         let value = this.filterText.trim();
         if (value === "") return true;
         let key = this.props.options;
         let options = data[key];
         if (this.isGroup && options) {
-          data[key] = this.handleFilterNode(data.options);
+          data[key] = this.handleFilterNode(options);
           return data[key].length > 0;
         } else {
           return String(data[this.props.label]).indexOf(value) !== -1;

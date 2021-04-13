@@ -654,7 +654,7 @@ export default {
             action: "/xxx/upload",
             tip: "点击 file list 查看预览样式,且最大只能上传 10kb 大小",
             limitSize: 10,
-            onSuccess: () => {
+            onSuccess: (res) => {
               // 需要 return 一个包含 name，url 的对象 {name:"xx.jpg",url:'http://xxx.jpg}
               return res.data;
             },
