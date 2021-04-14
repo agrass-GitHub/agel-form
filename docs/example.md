@@ -155,7 +155,7 @@ import agelTreeSelect from "agel-form/src/lib/agel-tree-select.vue";
 <<< @/docs/.vuepress/components/select-form.vue
 :::
 
-### checkboxGroup radioGroup 多单/选
+### checkboxGroup radioGroup 选择框
 
 开启 `button` 可实现按钮样式风格
 
