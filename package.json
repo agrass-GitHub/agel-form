@@ -18,7 +18,9 @@
     "publish": "npm publish",
     "serve": "vuepress dev docs",
     "builddocs": "vuepress build docs",
-    "publishdocs": "gh-pages -d distdocs"
+    "publishdocs": "gh-pages -d distdocs",
+    "setnpm": "npm config set registry https://registry.npmjs.org/",
+    "setnpmtb": "npm config set registry http://registry.npm.taobao.org/"
   },
   "dependencies": {},
   "peerDependencies": {},
@@ -31,10 +33,10 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "gh-pages": "^2.1.1",
-    "vue-template-compiler": "^2.6.10",
-    "vuepress": "^1.7.1",
     "node-sass": "^4.9.4",
-    "sass-loader": "^7.1.0"
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.6.10",
+    "vuepress": "^1.8.2"
   },
   "postcss": {
     "plugins": {

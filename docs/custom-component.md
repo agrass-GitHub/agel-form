@@ -50,7 +50,27 @@ export default {
 
 3. 第三步：根据需要，选择使用 `slot-render` 渲染组件插槽，然后就大工告成！ 
 
-<<< @/docs/.vuepress/components/custom-select.vue{5,6}
+```html{5,6}
+<template>
+  <el-select ref="ref" v-bind="$attrs" :value="value" v-on='on' @input="input">
+    <el-option v-for="(option) of options" :label="option.label" :value="option.value" :key="option.label">
+    </el-option>
+    <slot-render v-for="(render,name) in slots" :key="name" :slot="name" :render="render">
+    </slot-render>
+    <el-select>
+</template>
+
+<script>
+import formMixin from "agel-form/src/lib/formMixin.js";
+export default {
+  name: "custom-select",
+  mixins: [formMixin],
+  props: {
+    options: Array,
+  },
+};
+</script>
+```
 
 3. 第四步：注册到全局，配合 `agel-form` 使用，需设置 `custom` 为 `true`。
 
@@ -61,7 +81,7 @@ import customSelect from "@/components/customSelect"
 Vue.component(customSelect.name,customSelect);
 ```
 
-```html
+```html{14}
 <template>
   <agel-form v-model="form"></agel-form>
 </template>
@@ -86,5 +106,3 @@ export default {
 };
 </script>
 ```
-
-`custom-select` 例子源码地址 [链接](https://github.com/agrass-GitHub/agel-form/tree/master/docs/.vuepress/components/custom-select)
