@@ -72,7 +72,7 @@ export default {
 </script>
 ```
 
-3. 第四步：注册到全局，配合 `agel-form` 使用，需设置 `custom` 为 `true`。
+4. 第四步：注册到全局，配合 `agel-form` 使用，需设置 `custom` 为 `true`。
 
 ```js
 import Vue from 'vue';
