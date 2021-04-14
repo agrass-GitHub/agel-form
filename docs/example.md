@@ -101,11 +101,9 @@ import agelTreeSelect from "agel-form/src/lib/agel-tree-select.vue";
 
 ## slot slots 插槽自定义
 
-`slot` 属性是自定义 `Form Item` 组件的插槽, 支持四种类型写法，template模板，string字符串，render函数，vnode对象。
-
-`label` 属性是自定义 `Form Item` 组件的 `label` 插槽, 支持三种类型写法，string字符串，render函数，vnode对象。
-
-`slots` 属性是自定义 `Component` 组件的插槽，支持三种类型写法，string字符串，render函数，vnode对象，当存在多个插槽，必须定义一个具名对象。
+- `slot` 属性是自定义 `Form Item` 组件的插槽。
+- `label` 属性是自定义 `Form Item` 组件的 `label` 插槽。
+- `slots` 属性是自定义 `Component` 组件的插槽。
 
 <ClientOnly><slot-form/></ClientOnly>
 

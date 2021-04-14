@@ -1,5 +1,5 @@
 <template>
-  <agel-form class="demo" v-model="form">
+  <agel-form class="demo" v-model="form" style="padding:10px;border:1px solid #66b1ffb3;">
     <template slot="template">
       <span>这是一段 template 模板类型自定义插槽</span>
     </template>

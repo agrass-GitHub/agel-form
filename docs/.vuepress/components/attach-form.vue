@@ -1,6 +1,5 @@
 <template>
   <div class="demo">
-    <div><code>{{jsonstr}}</code></div>
     <p>
       <span>行内表单：</span>
       <el-switch v-model="inline"></el-switch>
@@ -37,9 +36,6 @@ export default {
           display: this.inline,
         },
       };
-    },
-    jsonstr() {
-      return JSON.stringify(this.form);
     },
   },
 };
