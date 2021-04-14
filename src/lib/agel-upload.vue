@@ -1,17 +1,12 @@
 <template>
-  <el-upload ref="ref" class="agel-upload" v-bind="$attrs" :file-list="value" :before-upload="handleBeforeUpload" :on-success="handleSuccess"
-    :on-remove="handleRemove" :on-exceed="handleExceed" :on-preview="handlePreview" :on-error="handleError" v-on="on">
-
+  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" v-bind="$attrs" :file-list="value"
+    :before-upload="handleBeforeUpload" :on-success="handleSuccess" :on-remove="handleRemove" :on-exceed="handleExceed" :on-preview="handlePreview"
+    :on-error="handleError" v-on="on">
     <div v-if="tip" slot="tip" class="el-upload__tip">{{ tip }}</div>
-
-    <template v-if="slotsIf.slots">
-      <slot-render v-for="(componentSlot,name) in slots" :key="name" :slot="name" :render="componentSlot">
-      </slot-render>
-    </template>
-
-    <el-button v-if="!slotsIf.slots&&slotsIf.customUpload" style="margin-left: 10px;" size="small" type="success" @click="handleUpload">上传到服务器
+    <!-- 按钮样式 -->
+    <el-button v-if="!slotsIf.slots&&!slotsIf.drag&&!slotsIf.pictureCard" slot="trigger" size="small" type="primary">点击上传
     </el-button>
-
+    <!-- 拖拽样式 -->
     <template v-if="!slotsIf.slots&&slotsIf.drag">
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">
@@ -19,23 +14,24 @@
         <em>点击上传</em>
       </div>
     </template>
-
+    <!-- picture-card 样式 -->
     <i v-if="!slotsIf.slots&&slotsIf.pictureCard" class="el-icon-plus"></i>
-
-    <el-button v-if="!slotsIf.slots&&!slotsIf.drag&&!slotsIf.pictureCard" slot="trigger" size="small" type="primary">点击上传
+    <!-- 主动上传样式样式 -->
+    <el-button v-if="!slotsIf.slots&&slotsIf.customUpload" style="margin-left: 10px;" size="small" type="success" @click="handleUpload">上传到服务器
     </el-button>
+    <!-- 自定义 slot -->
+    <template v-if="slotsIf.slots">
+      <slot-render v-for="(componentSlot,name) in slots" :key="name" :slot="name" :render="componentSlot">
+      </slot-render>
+    </template>
 
   </el-upload>
 </template>
 
 <script>
 import formMixin from "./formMixin";
-import slotRender from "./slot-render.js";
 export default {
   name: "agel-upload",
-  components: {
-    slotRender,
-  },
   mixins: [formMixin],
   inheritAttrs: false,
   props: {
@@ -44,7 +40,7 @@ export default {
       default: () => [],
     },
     preview: {
-      type: Boolean,
+      type: [Function, Boolean],
       default: true,
     },
     message: {
@@ -52,6 +48,7 @@ export default {
       default: true,
     },
     limitSize: Number,
+    limitHide: Boolean,
     tip: String,
   },
   computed: {
@@ -68,6 +65,9 @@ export default {
         pictureCard,
         customUpload,
       };
+    },
+    isLimitHideTrigger() {
+      return (this.limitHide && this.value.length >= this.$attrs.limit) || 0;
     },
   },
   methods: {
@@ -121,7 +121,11 @@ export default {
       emit && emit(files, fileList);
     },
     handlePreview(file) {
-      if (this.preview && this.$msgbox) {
+      let isPreview = this.preview;
+      if (typeof this.preview == "function") {
+        isPreview = this.preview(file);
+      }
+      if (isPreview && this.$msgbox) {
         const h = this.$createElement;
         let suffix = file.url.split(".").pop().toLowerCase();
         let image = ["png", "jpg", "jpeg", "bmp", "gif"];
@@ -179,6 +183,14 @@ export default {
 </script>
 
 <style>
+.agel-upload.limit-hide-trigger .el-upload {
+  display: none;
+}
+
+.agel-upload.limit-hide-trigger .el-upload-list__item:first-child {
+  margin-top: 0px;
+}
+
 .agel-upload .el-upload-dragger {
   display: flex;
   flex-direction: column;

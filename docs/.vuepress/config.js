@@ -7,16 +7,16 @@ module.exports = {
     updatePopup: true,
     nav: [
       { text: '首页', link: '/' },
-      { text: '教程', link: '/example' },
+      // { text: '教程', link: '/example' },
+      {
+        text: '教程',
+        items: [
+          { text: '使用教程', link: '/example' },
+          { text: '自定义组件', link: '/custom-component' }
+        ]
+      },
       { text: 'API', link: '/api' },
       { text: '更新日志', link: '/log' },
-      // {
-      //   text: '其他',
-      //   items: [
-      //     { text: '随便总结', link: '/sum' },
-      //     { text: '更新日志', link: '/log' }
-      //   ]
-      // },
       { text: 'Github', link: 'https://github.com/agrass-GitHub/agel-form' }
     ],
   },

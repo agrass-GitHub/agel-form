@@ -67,14 +67,14 @@ export default {
           {
             prop: "tree1",
             label: "普通树形",
-            component: "el-input-tree",
+            component: "el-tree-select",
             nodeKey: "value",
             data: treeData,
           },
           {
             prop: "tree2",
             label: "多选树形",
-            component: "el-input-tree",
+            component: "el-tree-select",
             nodeKey: "value",
             showCheckbox: true,
             leafOnly: true,
@@ -83,7 +83,7 @@ export default {
           {
             prop: "tree3",
             label: "过滤树形",
-            component: "el-input-tree",
+            component: "el-tree-select",
             nodeKey: "value",
             filter: true,
             data: treeData,
@@ -91,7 +91,7 @@ export default {
           {
             prop: "tree4",
             label: "懒加载树",
-            component: "el-input-tree",
+            component: "el-tree-select",
             nodeKey: "name",
             lazy: true,
             props: {

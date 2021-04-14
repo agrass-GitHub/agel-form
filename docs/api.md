@@ -69,6 +69,7 @@ sidebar: auto
 | display     | Boolean         | true        | 是否渲染                 | 
 | show        | Boolean         | true        | 是否显示              |
 | ignore      | Boolean         | false       | 是否忽略该字段，用于纯展示组件              |  
+| custom      | Boolean         | false       | 是否为自定义的组件             |  
 | defaultValue| Any             | -           | 默认值                        |
 | on          | Object          | { }         | 子组件 evenet 事件  |
 | style       | String          | -           | style 样式         |
@@ -132,14 +133,15 @@ sidebar: auto
 | drag        | Boolean         | false       | 是否开启拖拽                | 
 | tip         | String          | -           | 提示语                      | 
 | limitSize   | Number          | -           | 文件大小限制,单位kb                     | 
-| preview     | Boolean         | true        | 是否开启文件预览                      | 
+| limitHide   | Boolean         | false       | 超出允许上传个数，隐藏上传按钮               | 
+| preview     | Boolean/Funciton| true        | 是否开启文件预览                      | 
 | message     | Boolean         | true        | 是否开启钩子函数的默认提示                   |
 | onSuccess   | Funciton        | -           | 需返回一个包含 {name,url} 的对象               |
 | slots       | Object/String/Funciton/Vnode/ | -           | 自定义 slots    | 
 
 
 
-### Input-Tree 树形选择器
+### TreeSelect 树形选择器
 
 ::: tip
 - 支持所有 Element-ui [Tree Attributes](https://element.eleme.cn/#/zh-CN/component/tree#tree-attributes)

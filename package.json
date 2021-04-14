@@ -1,7 +1,7 @@
 {
   "name": "agel-form",
-  "version": "0.1.1",
-  "main": "dist/agelForm.umd.min.js",
+  "version": "0.1.2",
+  "main": "src/index.js",
   "description": "a easy form of element-ui form",
   "homepage": "https://github.com/agrass-GitHub/agel-form",
   "license": "MIT",

@@ -2,8 +2,7 @@
   <el-form-item v-show="item.show" v-bind="item._formItem" :label="label.text">
     <slot-render v-if="label.slot" :render="label.slot" slot="label"></slot-render>
     <slot-render v-if="item.slot" :render="$slots.default||item.slot"></slot-render>
-    <component v-else-if="isAgComponent" :is="'ag'+ item.component" :ref="prop" v-model="data[prop]" v-bind="item._component" :on="item.on"
-      :slots="slots">
+    <component v-else-if="item.custom" :is="item.component" :ref="prop" v-model="data[prop]" v-bind="item._component" :on="item.on" :slots="slots">
     </component>
     <component v-else :is="item.component" :ref="prop" v-model="data[prop]" v-bind="item._component" v-on="item.on">
       <slot-render v-for="(componentSlot,name) in slots" :key="name" :slot="name" :render="componentSlot">
@@ -44,10 +43,6 @@ export default {
         ? { default: this.item.slots }
         : slots;
     },
-    isAgComponent() {
-      let agComponentKeys = Object.keys(components);
-      return agComponentKeys.includes("ag" + this.item.component);
-    },
   },
   created() {
     if (!this.data.hasOwnProperty(this.prop) && this.item.ignore !== true) {
@@ -57,7 +52,7 @@ export default {
   methods: {
     getRef() {
       let ref = this.$refs[this.prop];
-      return this.isAgComponent ? ref.getRef() : ref;
+      return this.item.custom ? ref.getRef() : ref;
     },
   },
 };

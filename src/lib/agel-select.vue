@@ -1,9 +1,7 @@
 <template>
   <el-select ref="ref" class="agel-select" v-bind="$attrs" :value="value" :popperClass="popperClass" v-on='on' @input="input">
-
     <slot-render v-for="(componentSlot,name) in slots" :key="name" :slot="name" :render="componentSlot">
     </slot-render>
-
     <div class="filter-item" v-if="!slots.default&&filter">
       <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini" clearable></el-input>
     </div>
@@ -25,12 +23,8 @@
 
 <script>
 import formMixin from "./formMixin";
-import slotRender from "./slot-render.js";
 export default {
   name: "agel-select",
-  components: {
-    slotRender,
-  },
   mixins: [formMixin],
   inheritAttrs: false,
   props: {

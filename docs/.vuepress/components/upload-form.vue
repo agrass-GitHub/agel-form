@@ -32,6 +32,10 @@ export default {
               name: "这是一个不可预览文件.zip",
               url: "/xxx.zip",
             },
+            {
+              name: "这是一个没有预览弹窗文件.png",
+              url: "",
+            },
           ],
           files2: [
             {
@@ -53,9 +57,10 @@ export default {
             action: "/xxx/upload",
             tip: "点击 file list 查看预览样式,且最大只能上传 10kb 大小",
             limitSize: 10,
-            onSuccess: () => {
+            preview: (file) => (file.url ? true : false),
+            onSuccess: (res) => {
               // 需要 return 一个包含 name，url 的对象 {name:"xx.jpg",url:'http://xxx.jpg}
-              return res.data;
+              return { name: res.fileName, url: res.fileUrl };
             },
           },
           files2: {
@@ -63,6 +68,8 @@ export default {
             component: "el-upload",
             action: "/xxx/upload",
             listType: "picture-card",
+            limit: 1,
+            limitHide: true, // 超出允许上传个数，隐藏上传按钮
           },
           files3: {
             label: "picture 样式",
@@ -105,3 +112,4 @@ export default {
   },
 };
 </script>
+

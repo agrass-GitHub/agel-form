@@ -1,5 +1,5 @@
 <template>
-  <el-select class="agel-input-tree" :popper-class="treePopperClass" ref="select" :value="text" :multiple="multiple" :placeholder="placeholder"
+  <el-select class="agel-tree-select" :popper-class="treePopperClass" ref="select" :value="text" :multiple="multiple" :placeholder="placeholder"
     :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" v-on='on' @click.native="initScroll" @clear="handleClear">
     <div class="filter-item" v-if="filter">
       <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini"></el-input>
@@ -15,7 +15,7 @@
 <script>
 import formMixin from "./formMixin";
 export default {
-  name: "agel-input-tree",
+  name: "agel-tree-select",
   mixins: [formMixin],
   inheritAttrs: false,
   props: {
@@ -46,7 +46,7 @@ export default {
       return this.$attrs.nodeKey || this.labelKey;
     },
     treePopperClass() {
-      return `agel-input-tree-popper ${this.popperClass || ""}`;
+      return `agel-tree-select-popper ${this.popperClass || ""}`;
     },
   },
   watch: {
@@ -63,17 +63,18 @@ export default {
   methods: {
     selectedTree() {
       let data = this.$attrs.data;
-      if (this.value === undefined) return;
+      let value = this.value;
+      if (value === undefined || value == "") return;
       if (data && data.length > 0) {
         if (this.multiple) {
-          this.$refs.ref.setCheckedKeys(this.value);
+          this.$refs.ref.setCheckedKeys(value);
         } else {
-          this.$refs.ref.setCurrentKey(this.value);
+          this.$refs.ref.setCurrentKey(value);
           let node = this.$refs.ref.getCurrentNode();
-          this.text = node ? node[this.labelKey] : this.value;
+          this.text = node ? node[this.labelKey] : value;
         }
       } else if (this.$attrs.lazy) {
-        this.text = this.value;
+        this.text = value;
       }
     },
     handleCurrentChange(data, node) {
@@ -129,16 +130,16 @@ export default {
 </script>
  
 <style>
-.agel-input-tree .el-tag__close {
+.agel-tree-select .el-tag__close {
   display: none;
 }
 
-.agel-input-tree-popper .filter-item {
+.agel-tree-select-popper .filter-item {
   padding: 0px 10px;
   margin-bottom: 10px;
 }
 
-.agel-input-tree-popper
+.agel-tree-select-popper
   .el-scrollbar
   .el-scrollbar__view
   .el-select-dropdown__item {
@@ -146,7 +147,7 @@ export default {
   padding: 0;
 }
 
-.agel-input-tree-popper .selected {
+.agel-tree-select-popper .selected {
   font-weight: inherit;
 }
 </style>

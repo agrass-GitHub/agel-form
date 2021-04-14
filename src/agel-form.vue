@@ -17,6 +17,7 @@
 
 <script>
 import agelFormItem from "./agel-form-item";
+import components from "./lib/index";
 
 const formProps = [
   "model",
@@ -48,6 +49,14 @@ const colPorps = [
   "tag",
 ];
 
+const selectArr = [
+  "el-select",
+  "el-cascader",
+  "el-tree-select",
+  "el-time-select",
+  "el-date-picker",
+];
+
 const agFormProps = function () {
   return {
     data: {},
@@ -72,6 +81,7 @@ const agFormItemProps = function () {
     display: true, // 是否渲染 Boolean
     show: true, // 是否显示 Boolean
     ignore: false, // 是否忽略，若为 ture 则不会注入到 fromData
+    custom: false, // 是否为自定义组件
     slot: false, // 是否自定义 FormItem slot Boolean/Funciton/Vnode/String
     slots: {}, // 是否自定义 Component slot Object/Funciton/Vnode/String
     defaultValue: undefined, // 默认值
@@ -87,6 +97,7 @@ const humpcase = (v) => {
 
 export default {
   name: "agel-form",
+  inheritAttrs: false,
   components: {
     agelFormItem,
   },
@@ -139,6 +150,7 @@ export default {
       let items = {};
       let cofnig = this.$agelFormConfig || {};
       let itemsObj = this.value.items;
+      let agComponentKeys = Object.keys(components);
       // 转成对象
       if (Array.isArray(this.value.items)) {
         itemsObj = {};
@@ -189,18 +201,16 @@ export default {
           if (["el-input", "el-input-number"].includes(name)) {
             component.placeholder = "请输入" + label;
           }
-          if (
-            [
-              "el-select",
-              "el-cascader",
-              "el-input-tree",
-              "el-time-select",
-              "el-date-picker",
-            ].includes(name)
-          ) {
+          if (selectArr.includes(name)) {
             component.placeholder = "请选择" + label;
           }
         }
+        // 是否为二次封装组件
+        if (agComponentKeys.includes("ag" + name)) {
+          agItem.custom = true;
+          agItem.component = "ag" + name;
+        }
+
         agItem._col = col;
         agItem._formItem = formItem;
         agItem._component = component;

@@ -8,7 +8,6 @@
 
 <script>
 import formMixin from "./formMixin";
-
 export default {
   name: "agel-radio-group",
   mixins: [formMixin],

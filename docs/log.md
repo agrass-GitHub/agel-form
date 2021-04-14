@@ -5,6 +5,12 @@ sidebar: auto
 
 ## v.0.1.2
 - `修复` el-select 在开启 filter 且有分组的情况下，过滤报错的问题
+- `修复` agel-tree-select，value change 的时候没有自动回填
+- `新增` el-upload 添加 limitHide 属性，超出限制隐藏上传按钮
+- `新增` el-upload 添加 preview 属性可设置为函数
+- `新增` 方便自定义组件，新增 item 的 custom 属性
+- `新增` 取消打包为 lib.umd.js，包直接指向 src
+
 
 ## v.0.1.1
 - `修复` el-upload 在外网预览 doc 文件失败，由 xdocin 转为 微软 officeapps 服务提供在线预览
@@ -22,7 +28,7 @@ sidebar: auto
 
 ## v.0.0.1 - v.0.0.3
 - `新增` 纯数据配置表单
-- `新增` 封装 input-tree 组件
+- `新增` 封装 tree-select 组件
 - `新增` 封装 upload 组件
 - `新增` 封装 select 组件，支持过滤，组配置
 - `新增` 封装 checkbox-grou 组件

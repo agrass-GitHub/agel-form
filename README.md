@@ -10,12 +10,19 @@
 
 ## 特性
 
-该组件的思想就是以一个 form 对象来做所有的操作，纯数据配置也有高度的灵活性，还有更方便的全局配置, 支持 element-ui 所有组件配置, 支持所有 evets 事件，也支持所有 slots，也可以灵活搭配第三方或者自定义的组件进行使用, 也可灵活调整布局进行响应式排版。
+该组件的思想就是以一个 form 对象来做所有的操作，纯数据配置也有高度的灵活性。 
+
+- 支持 element-ui 所有表单组件 Attributes 配置
+- 支持 element-ui 所有表单组件 Events 事件
+- 支持 element-ui 所有表单组件 Slots 插槽
+- 支持 Row Col 组件属性，以此实现响应式布局
+- 方便的全局配置，应用到每一个表单
+- 可灵活搭配第三方组件或者自定义组件使用
 
 
 ## 安装使用
 
-`npm install agel-form --save` 或者 [使用在线引用地址](https://www.jsdelivr.com/package/npm/agel-form)
+`cnpm install agel-form --save` 
 
 
 ### 如此简单
