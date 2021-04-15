@@ -44,11 +44,6 @@ export default {
         : slots;
     },
   },
-  created() {
-    if (!this.data.hasOwnProperty(this.prop) && this.item.ignore !== true) {
-      this.$set(this.data, this.prop, this.item.defaultValue);
-    }
-  },
   methods: {
     getRef() {
       let ref = this.$refs[this.prop];

@@ -1,5 +1,5 @@
 <template>
-  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" v-bind="$attrs" :file-list="value"
+  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" v-bind="$attrs" :file-list="value||[]"
     :before-upload="handleBeforeUpload" :on-success="handleSuccess" :on-remove="handleRemove" :on-exceed="handleExceed" :on-preview="handlePreview"
     :on-error="handleError" v-on="on">
     <div v-if="tip" slot="tip" class="el-upload__tip">{{ tip }}</div>
@@ -35,10 +35,7 @@ export default {
   mixins: [formMixin],
   inheritAttrs: false,
   props: {
-    value: {
-      type: Array,
-      default: () => [],
-    },
+    value: Array,
     preview: {
       type: [Function, Boolean],
       default: true,
@@ -69,6 +66,9 @@ export default {
     isLimitHideTrigger() {
       return (this.limitHide && this.value.length >= this.$attrs.limit) || 0;
     },
+  },
+  created() {
+    if (this.value == undefined) this.input([]);
   },
   methods: {
     onMessage(type, message) {
@@ -104,8 +104,7 @@ export default {
       let emit = this.$attrs.onSuccess || this.$attrs["on-success"];
       if (emit) {
         let item = emit(file);
-        if (item && item.url) {
-          item.name = item.name || Math.floor(Math.random() * 100000);
+        if (item && item.url && item.name) {
           this.value.push(item);
         }
       }

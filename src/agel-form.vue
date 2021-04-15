@@ -1,7 +1,7 @@
 <template>
   <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs.form" v-on="value.on">
     <template v-if="value.inline">
-      <agel-form-item v-for="(item, key) in items" :key="key" :item="item" :data="value.data">
+      <agel-form-item v-for="(item, key) in items" :key="key" :item="item" :data="value.data" :ref="key">
         <slot :name="key"></slot>
       </agel-form-item>
     </template>
@@ -84,7 +84,6 @@ const agFormItemProps = function () {
     custom: false, // 是否为自定义组件
     slot: false, // 是否自定义 FormItem slot Boolean/Funciton/Vnode/String
     slots: {}, // 是否自定义 Component slot Object/Funciton/Vnode/String
-    defaultValue: undefined, // 默认值
     on: {}, // event 事件 Object
   };
 };
@@ -124,6 +123,7 @@ export default {
         this.$set(this.value, key, extendApi[key]);
       }
     });
+    this.initData();
   },
   watch: {
     attach: {
@@ -160,13 +160,12 @@ export default {
         let item = itemsObj[prop];
         let agItem = agFormItemProps();
         let name = item.component || agItem.component;
-
         // 注入全局配置, 改变原始对象 item
         cofnig[name] && cofnig[name](prop, item, this.value);
 
         if (item.display === false) continue;
 
-        // 局部配置覆盖默认组件配置
+        // 获取局部扩展配置
         for (const key in agItem) {
           if (item[key]) agItem[key] = item[key];
         }
@@ -220,6 +219,48 @@ export default {
     },
   },
   methods: {
+    initData() {
+      for (const prop in this.items) {
+        let item = this.items[prop];
+        let name = item.component;
+        let component = item._component;
+        let value = undefined;
+        if (item.ignore || this.value.data[prop] != undefined) continue;
+        let types = [
+          {
+            types: [
+              name == "agel-upload",
+              name == "agel-checkbox-group",
+              name == "agel-select" && component.multiple,
+              name == "el-cascader",
+              name == "el-transfer",
+            ],
+            value: [],
+          },
+          {
+            types: [name == "el-switch", name == "el-checkbox"],
+            value: false,
+          },
+          {
+            types: [name == "el-date-picker", name == "el-time-select"],
+            value: null,
+          },
+          {
+            types: [name == "el-input"],
+            value: "",
+          },
+          {
+            types: [name == "el-slider", name == "el-rate"],
+            value: 0,
+          },
+        ];
+        types.forEach((v) => v.types.includes(true) && (value = v.value));
+        this.$set(this.value.data, prop, value);
+      }
+    },
+    includesKey(keys, key) {
+      return keys.includes(kebabcase(key)) || keys.includes(humpcase(key));
+    },
     getPorpsObj(keys, target) {
       let obj = {};
       keys.forEach((key) => {
@@ -227,9 +268,6 @@ export default {
         value && (obj[key] = value);
       });
       return obj;
-    },
-    includesKey(keys, key) {
-      return keys.includes(kebabcase(key)) || keys.includes(humpcase(key));
     },
     getRef(prop) {
       if (prop == undefined) return this.$refs.form;

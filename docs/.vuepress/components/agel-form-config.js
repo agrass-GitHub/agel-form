@@ -20,21 +20,6 @@ const config = {
       if (item.type == "month") item.valueFormat = "yyyy-MM";
       if (item.type == "year") item.valueFormat = "yyyy";
     }
-
-    // 提供一个小 tip 
-    // 当使用日期范围模式时，经常需要在调用接口的时候手动将数组date转换为开始/结束日期两个字段
-    // 使用如下配置，可以当变化时将自动关联上开始日期，结束日期两个字段
-    // proprange:['startTime','endTime']
-    if ((item.type == "daterange" || item.type == "datetimerange") && item.proprange) {
-      let [startTimeProp, endTimeProp] = item.proprange;
-      form.data[startTimeProp] = "";
-      form.data[endTimeProp] = "";
-      item.on = item.on || {}
-      item.on.change = (value) => {
-        form.data[startTimeProp] = value ? value[0] : "";
-        form.data[endTimeProp] = value ? value[1] : "";
-      }
-    }
   }
 }
 
