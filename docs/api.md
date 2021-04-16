@@ -154,7 +154,7 @@ sidebar: auto
 | filter      | Boolean         | false       | 是否开启过滤查询                | 
 | leafOnly    | Boolean         | false       | 是否只是叶子节点，多选生效    | 
 | includeHalfChecked  | Boolean | true        | 是否包含半选节点，多选生效    | 
-| show-checkbox     | Boolean   | false       | 继承自 el-tree，是否多选          | 
+| multiple     | Boolean   | false       |     继承自 el-select，是否多选          | 
 | placeholder  | String         | -           | 继承自 el-select                   | 
 | disabled     | Boolean        | -           | 继承自 el-select                        |
 | collapseTags | Boolean        | -           | 继承自 el-select  | 

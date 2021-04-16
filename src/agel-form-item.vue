@@ -1,11 +1,12 @@
 <template>
-  <el-form-item v-show="item.show" v-bind="item._formItem" :label="label.text">
-    <slot-render v-if="label.slot" :render="label.slot" slot="label"></slot-render>
+  <el-form-item v-show="item.show" v-bind="item._formItem">
     <slot-render v-if="item.slot" :render="$slots.default||item.slot"></slot-render>
-    <component v-else-if="item.custom" :is="item.component" :ref="prop" v-model="data[prop]" v-bind="item._component" :on="item.on" :slots="slots">
+    <slot-render v-if="item.slotLabel" :render="item.slotLabel" slot="label"></slot-render>
+    <component v-else-if="item.custom" :is="item.component" :ref="prop" v-model="data[prop]" v-bind="item._component" :on="item.on"
+      :slots="item.slots">
     </component>
     <component v-else :is="item.component" :ref="prop" v-model="data[prop]" v-bind="item._component" v-on="item.on">
-      <slot-render v-for="(componentSlot,name) in slots" :key="name" :slot="name" :render="componentSlot">
+      <slot-render v-for="(componentSlot,name) in item.slots" :key="name" :slot="name" :render="componentSlot">
       </slot-render>
     </component>
   </el-form-item>
@@ -18,31 +19,9 @@ export default {
   name: "agel-form-item",
   components,
   props: {
-    item: Object,
+    prop: String,
     data: Object,
-  },
-  computed: {
-    label() {
-      let label = this.item._formItem.label;
-      if (typeof label === "string") {
-        return { text: label, slot: undefined };
-      } else {
-        return { text: undefined, slot: label };
-      }
-    },
-    prop() {
-      return this.item._formItem.prop;
-    },
-    slots() {
-      let slots = this.item.slots;
-      let isText = typeof slots == "string";
-      let isRender = typeof slots == "function";
-      let isVnode = typeof slots == "object" && slots.tag;
-      // 如果是单个，就包裹一层 default
-      return isText || isRender || isVnode
-        ? { default: this.item.slots }
-        : slots;
-    },
+    item: Object,
   },
   methods: {
     getRef() {

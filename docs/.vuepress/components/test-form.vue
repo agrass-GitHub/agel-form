@@ -31,8 +31,32 @@ export default {
       form: {
         labelWidth: "100px",
         span: 18,
-        data: {},
+        data: {
+          x1: "111111111",
+        },
         items: {
+          button1: {
+            component: "el-button",
+            ignore: true,
+            slots: "initData",
+            span: 6,
+            on: {
+              click: () => {
+                this.form.initData();
+              },
+            },
+          },
+          button2: {
+            component: "el-button",
+            ignore: true,
+            slots: "resetFields",
+            span: 6,
+            on: {
+              click: () => {
+                this.form.resetFields();
+              },
+            },
+          },
           x1: {
             label: "input",
           },

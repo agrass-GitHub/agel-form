@@ -5,8 +5,9 @@
       <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini"></el-input>
     </div>
     <el-option value="tree-option-value">
-      <el-tree ref="ref" class="tree-option" :highlight-current="!multiple" :nodeKey="nodeKey" :expand-on-click-node="false"
-        :filter-node-method="handleFilterNode" v-bind="$attrs" v-on='on' @current-change="handleCurrentChange" @check-change="handleCheckChange">
+      <el-tree ref="ref" class="tree-option" :show-checkbox="multiple" :highlight-current="!multiple" :node-key="nodeKey"
+        :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs" v-on='on' @current-change="handleCurrentChange"
+        @check-change="handleCheckChange">
       </el-tree>
     </el-option>
   </el-select>
@@ -21,9 +22,10 @@ export default {
   props: {
     placeholder: String,
     disabled: Boolean,
+    clearable: Boolean,
+    multiple: Boolean,
     collapseTags: Boolean,
     filter: Boolean,
-    clearable: Boolean,
     popperClass: String,
     leafOnly: Boolean,
     includeHalfChecked: Boolean,
@@ -35,9 +37,6 @@ export default {
     };
   },
   computed: {
-    multiple() {
-      return this.$attrs.showCheckbox;
-    },
     labelKey() {
       let props = this.$attrs.props || {};
       return props.label || "label";

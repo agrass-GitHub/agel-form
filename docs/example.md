@@ -15,6 +15,7 @@ sidebar: auto
 - 支持 Row Col 组件属性，以此实现响应式布局
 - 方便的全局配置，应用到每一个表单
 - 可灵活搭配第三方组件或者自定义组件使用
+- 自动设置 placeholder 属性，自动设置必填 rules 属性
 
 [自定义组件教程](/custom-component.md)
 

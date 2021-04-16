@@ -76,8 +76,9 @@ export default {
             label: "多选树形",
             component: "el-tree-select",
             nodeKey: "value",
-            showCheckbox: true,
+            multiple: true,
             leafOnly: true,
+            multipleLimit: 2,
             data: treeData,
           },
           {

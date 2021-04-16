@@ -1,14 +1,14 @@
 <template>
   <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs.form" v-on="value.on">
     <template v-if="value.inline">
-      <agel-form-item v-for="(item, key) in items" :key="key" :item="item" :data="value.data" :ref="key">
-        <slot :name="key"></slot>
+      <agel-form-item v-for="(item, prop) in items" :item="item" :data="value.data" :prop="prop" :ref="prop" :key="prop">
+        <slot :name="prop"></slot>
       </agel-form-item>
     </template>
     <el-row v-else v-bind="attrs.row">
-      <el-col v-for="(item, key) in items" v-bind="item._col" :key="key">
-        <agel-form-item :item="item" :data="value.data" :ref="key">
-          <slot :name="key"></slot>
+      <el-col v-for="(item, prop) in items" v-bind="item._col" :key="prop">
+        <agel-form-item :item="item" :data="value.data" :prop="prop" :ref="prop">
+          <slot :name="prop"></slot>
         </agel-form-item>
       </el-col>
     </el-row>
@@ -49,14 +49,6 @@ const colPorps = [
   "tag",
 ];
 
-const selectArr = [
-  "el-select",
-  "el-cascader",
-  "el-tree-select",
-  "el-time-select",
-  "el-date-picker",
-];
-
 const agFormProps = function () {
   return {
     data: {},
@@ -68,8 +60,9 @@ const agFormProps = function () {
     gutter: 15,
     getRef: this.getRef,
     getItem: this.getItem,
-    resetFields: this.resetFields,
+    initData: this.initData,
     validate: this.validate,
+    resetFields: this.resetFields,
     clearValidate: this.clearValidate,
   };
 };
@@ -83,6 +76,7 @@ const agFormItemProps = function () {
     ignore: false, // 是否忽略，若为 ture 则不会注入到 fromData
     custom: false, // 是否为自定义组件
     slot: false, // 是否自定义 FormItem slot Boolean/Funciton/Vnode/String
+    slotLabel: false, // 是否自定义 FormItemLabel slot Object/Funciton/Vnode/String
     slots: {}, // 是否自定义 Component slot Object/Funciton/Vnode/String
     on: {}, // event 事件 Object
   };
@@ -90,9 +84,7 @@ const agFormItemProps = function () {
 
 const kebabcase = (v) => v.replace(/([A-Z])/g, "-$1").toLowerCase();
 
-const humpcase = (v) => {
-  return v.replace(/-(\w)/g, (all, letter) => letter.toUpperCase());
-};
+const humpcase = (v) => v.replace(/-(\w)/g, (a, b) => b.toUpperCase());
 
 export default {
   name: "agel-form",
@@ -157,19 +149,23 @@ export default {
         this.value.items.forEach((v) => v.prop && (itemsObj[v.prop] = v));
       }
       for (const prop in itemsObj) {
-        let item = itemsObj[prop];
         let agItem = agFormItemProps();
+        let item = itemsObj[prop];
         let name = item.component || agItem.component;
         // 注入全局配置, 改变原始对象 item
         cofnig[name] && cofnig[name](prop, item, this.value);
-
         if (item.display === false) continue;
-
-        // 获取局部扩展配置
-        for (const key in agItem) {
-          if (item[key]) agItem[key] = item[key];
+        // 合并 agItem 属性
+        Object.assign(agItem, this.getPorpsObj(Object.keys(agItem), item));
+        // 是否为二次封装组件
+        if (agComponentKeys.includes("ag" + name)) {
+          agItem.custom = true;
+          agItem.component = "ag" + name;
         }
-
+        // 包裹默认 slots
+        if (agItem.slots.constructor !== Object || agItem.slots.tag) {
+          agItem.slots = { default: agItem.slots };
+        }
         // 划分出 col，formitem，component组件 对应的属性
         let col = Object.assign(
           this.getPorpsObj(colPorps, this.value),
@@ -184,32 +180,38 @@ export default {
         for (const key in item) {
           if (!this.includesKey(ignoreKeys, key)) component[key] = item[key];
         }
+        if (!agItem.ignore) formItem.prop = prop;
+        // 设置 slotLabel
+        if (typeof formItem.label !== "string") {
+          agItem.slotLabel = formItem.label;
+          formItem.label = "";
+        }
         // 自动添加 required rules
-        formItem.prop = prop;
-        let label = typeof formItem.label == "string" ? formItem.label : "";
         if (formItem.required && formItem.rules == undefined) {
           formItem.required = undefined;
           formItem.rules = {
             required: true,
-            message: label + "必填",
+            message: formItem.label + "必填",
             trigger: "blur",
           };
         }
         // 自动设置 placeholder 属性
         if (component.placeholder == undefined) {
-          if (["el-input", "el-input-number"].includes(name)) {
-            component.placeholder = "请输入" + label;
+          let inputArr = ["el-input", "el-input-number"];
+          let selectArr = [
+            "agel-select",
+            "agel-tree-select",
+            "el-cascader",
+            "el-time-select",
+            "el-date-picker",
+          ];
+          if (inputArr.includes(name)) {
+            component.placeholder = "请输入" + formItem.label;
           }
           if (selectArr.includes(name)) {
-            component.placeholder = "请选择" + label;
+            component.placeholder = "请选择" + formItem.label;
           }
         }
-        // 是否为二次封装组件
-        if (agComponentKeys.includes("ag" + name)) {
-          agItem.custom = true;
-          agItem.component = "ag" + name;
-        }
-
         agItem._col = col;
         agItem._formItem = formItem;
         agItem._component = component;
@@ -225,18 +227,8 @@ export default {
         let name = item.component;
         let component = item._component;
         let value = undefined;
-        if (item.ignore || this.value.data[prop] != undefined) continue;
+        if (item.ignore || this.value.data.hasOwnProperty(prop)) continue;
         let types = [
-          {
-            types: [
-              name == "agel-upload",
-              name == "agel-checkbox-group",
-              name == "agel-select" && component.multiple,
-              name == "el-cascader",
-              name == "el-transfer",
-            ],
-            value: [],
-          },
           {
             types: [name == "el-switch", name == "el-checkbox"],
             value: false,
@@ -246,15 +238,29 @@ export default {
             value: null,
           },
           {
-            types: [name == "el-input"],
+            types: [name == "el-input", "el-select", "agel-tree-select"],
             value: "",
           },
           {
             types: [name == "el-slider", name == "el-rate"],
             value: 0,
           },
+          {
+            types: [
+              name == "agel-upload",
+              name == "agel-checkbox-group",
+              name == "el-cascader",
+              name == "el-transfer",
+              name == "agel-select" && component.multiple,
+              name == "agel-tree-select" && component.showCheckbox,
+            ],
+            value: [],
+          },
         ];
-        types.forEach((v) => v.types.includes(true) && (value = v.value));
+        types.forEach((v) => {
+          let is = v.types.includes(true);
+          if (is && value == undefined) value = v.value;
+        });
         this.$set(this.value.data, prop, value);
       }
     },
