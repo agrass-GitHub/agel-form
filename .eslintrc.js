@@ -9,7 +9,8 @@ module.exports = {
     parser: 'babel-eslint'
   },
   rules: {
-    'no-console': 0
+    'no-console': 0,
+    "vue/no-use-v-if-with-v-for": 0,
   },
   plugins: ['vue']
 };

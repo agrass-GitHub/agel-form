@@ -1,14 +1,12 @@
-import slotRender from "./slot-render.js";
+import slotRender from "../lib/slot-render.js";
 
 export default {
   components: {
     slotRender,
   },
   props: {
-    // 表单所绑定的值
-    value: {
-      required: true,
-    },
+    // 表单绑定的值
+    value: {},
     // 组件的插槽对象
     slots: {
       type: Object,
@@ -24,8 +22,5 @@ export default {
     input(v) {
       this.$emit("input", v);
     },
-    getRef() {
-      return this.$refs.ref;
-    }
   }
 };

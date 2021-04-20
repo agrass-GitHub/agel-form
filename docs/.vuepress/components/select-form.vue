@@ -16,11 +16,11 @@ export default {
             component: "el-select",
             filter: true,
             clearable: true,
-            props: { label: "name", value: "id", options: "children" },
+            props: { label: "name", value: "id" },
             options: [
               {
                 name: "热门城市",
-                children: [
+                options: [
                   {
                     id: "Shanghai",
                     name: "上海",
@@ -34,7 +34,7 @@ export default {
               },
               {
                 name: "城市名",
-                children: [
+                options: [
                   {
                     id: "Chengdu",
                     name: "成都",

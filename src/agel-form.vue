@@ -1,13 +1,13 @@
 <template>
   <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs.form" v-on="value.on">
     <template v-if="value.inline">
-      <agel-form-item v-for="(item, prop) in items" :item="item" :data="value.data" :prop="prop" :ref="prop" :key="prop">
+      <agel-form-item v-for="(item, prop) in items" :item="item" :data="value.data" :prop="prop" :ref="prop" :key="prop" @update-item="updateItem">
         <slot :name="prop"></slot>
       </agel-form-item>
     </template>
     <el-row v-else v-bind="attrs.row">
       <el-col v-for="(item, prop) in items" v-bind="item._col" :key="prop">
-        <agel-form-item :item="item" :data="value.data" :prop="prop" :ref="prop">
+        <agel-form-item :item="item" :data="value.data" :prop="prop" :ref="prop" @update-item="updateItem">
           <slot :name="prop"></slot>
         </agel-form-item>
       </el-col>
@@ -71,6 +71,7 @@ const agFormItemProps = function () {
   return {
     // 扩展属性
     component: "el-input", // 组件名称 String
+    vif: () => {},
     display: true, // 是否渲染 Boolean
     show: true, // 是否显示 Boolean
     ignore: false, // 是否忽略，若为 ture 则不会注入到 fromData
@@ -115,7 +116,6 @@ export default {
         this.$set(this.value, key, extendApi[key]);
       }
     });
-    this.initData();
   },
   watch: {
     attach: {
@@ -128,6 +128,10 @@ export default {
           }
         }
       },
+    },
+    "value.data": {
+      immediate: true,
+      handler: "initData",
     },
   },
   computed: {
@@ -154,7 +158,15 @@ export default {
         let name = item.component || agItem.component;
         // 注入全局配置, 改变原始对象 item
         cofnig[name] && cofnig[name](prop, item, this.value);
-        if (item.display === false) continue;
+        // if (item.display === false) continue;
+        if (item.vif(this.value.data) === false) continue;
+        if (
+          (typeof item.display == "function" &&
+            item.display(this.value.data) == false) ||
+          (typeof item.display == "boolean" && item.display === false)
+        ) {
+          continue;
+        }
         // 合并 agItem 属性
         Object.assign(agItem, this.getPorpsObj(Object.keys(agItem), item));
         // 是否为二次封装组件
@@ -205,10 +217,10 @@ export default {
             "el-time-select",
             "el-date-picker",
           ];
-          if (inputArr.includes(name)) {
+          if (inputArr.includes(agItem.component)) {
             component.placeholder = "请输入" + formItem.label;
           }
-          if (selectArr.includes(name)) {
+          if (selectArr.includes(agItem.component)) {
             component.placeholder = "请选择" + formItem.label;
           }
         }
@@ -230,7 +242,7 @@ export default {
         if (item.ignore || this.value.data.hasOwnProperty(prop)) continue;
         let types = [
           {
-            types: [name == "el-switch", name == "el-checkbox"],
+            types: [name == "el-switch", name == "agel-checkbox"],
             value: false,
           },
           {
@@ -238,7 +250,7 @@ export default {
             value: null,
           },
           {
-            types: [name == "el-input", "el-select", "agel-tree-select"],
+            types: [name == "el-input", "agel-select", "agel-tree-select"],
             value: "",
           },
           {
@@ -247,19 +259,18 @@ export default {
           },
           {
             types: [
-              name == "agel-upload",
-              name == "agel-checkbox-group",
               name == "el-cascader",
               name == "el-transfer",
+              name == "agel-upload",
+              name == "agel-checkbox" && component.options != undefined,
               name == "agel-select" && component.multiple,
-              name == "agel-tree-select" && component.showCheckbox,
+              name == "agel-tree-select" && component.multiple,
             ],
             value: [],
           },
         ];
         types.forEach((v) => {
-          let is = v.types.includes(true);
-          if (is && value == undefined) value = v.value;
+          v.types.includes(true) && (value = v.value);
         });
         this.$set(this.value.data, prop, value);
       }
@@ -305,6 +316,16 @@ export default {
     },
     clearValidate(props) {
       this.$refs.form.clearValidate(props);
+    },
+    updateItem(prop, attrs) {
+      let item = this.getItem(prop);
+      for (const key in attrs) {
+        if (item.hasOwnProperty(key)) {
+          item[key] = attrs[key];
+        } else {
+          this.$set(item, key, attrs[key]);
+        }
+      }
     },
   },
 };

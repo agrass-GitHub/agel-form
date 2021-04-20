@@ -9,10 +9,11 @@ sidebar: auto
 
 该组件的思想就是以一个 form 对象来做所有的操作，纯数据配置也有高度的灵活性。 
 
+- 简洁，无其他第三方依赖
 - 支持 element-ui 所有表单组件 Attributes 配置
 - 支持 element-ui 所有表单组件 Events 事件
 - 支持 element-ui 所有表单组件 Slots 插槽
-- 支持 Row Col 组件属性，以此实现响应式布局
+- 支持 element-ui Row Col 组件属性，以此实现响应式布局
 - 方便的全局配置，应用到每一个表单
 - 可灵活搭配第三方组件或者自定义组件使用
 - 自动设置 placeholder 属性，自动设置必填 rules 属性

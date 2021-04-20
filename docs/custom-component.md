@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import formMixin from "agel-form/src/lib/formMixin.js";
+import formMixin from "agel-form/src/utils/formMixin.js";
 export default {
   name:"custom-select"
   mixins: [formMixin],
@@ -23,7 +23,7 @@ export default {
 ```
 
 ::: details 为了更好的理解，请点击查看 formMixin.js 源码,
-<<< @/src/lib/formMixin.js
+<<< @/src/utils/formMixin.js
 ::: 
 
 2. 第二步：定义组件的 `props` 属性，挂载 `ref` 属性到模板，若是二次封装组件则使用 `v-bind` `v-on` 绑定属性和事件。

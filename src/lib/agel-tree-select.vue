@@ -14,12 +14,13 @@
 </template>
  
 <script>
-import formMixin from "./formMixin";
+import formMixin from "../utils/formMixin";
 export default {
   name: "agel-tree-select",
   mixins: [formMixin],
   inheritAttrs: false,
   props: {
+    value: [String, Number, Array],
     placeholder: String,
     disabled: Boolean,
     clearable: Boolean,

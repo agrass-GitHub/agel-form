@@ -21,15 +21,13 @@
     </el-button>
     <!-- 自定义 slot -->
     <template v-if="slotsIf.slots">
-      <slot-render v-for="(componentSlot,name) in slots" :key="name" :slot="name" :render="componentSlot">
-      </slot-render>
+      <slot-render v-for="(render,slot) in slots" :key="slot" :slot="slot" :render="render"></slot-render>
     </template>
-
   </el-upload>
 </template>
 
 <script>
-import formMixin from "./formMixin";
+import formMixin from "../utils/formMixin";
 export default {
   name: "agel-upload",
   mixins: [formMixin],

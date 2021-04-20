@@ -12,7 +12,7 @@ export default {
         items: {
           radio: {
             label: "性别",
-            component: "el-radio-group",
+            component: "el-radio",
             options: [
               { label: "男", value: "男" },
               { label: "女", value: "女" },
@@ -21,7 +21,7 @@ export default {
           },
           checkbox: {
             label: "取向",
-            component: "el-checkbox-group",
+            component: "el-checkbox",
             options: [
               { label: "男", value: "男" },
               { label: "女", value: "女" },
@@ -30,7 +30,7 @@ export default {
           },
           radiobutton: {
             label: "button 样式",
-            component: "el-radio-group",
+            component: "el-radio",
             button: true,
             options: [
               { label: "男", value: "男" },
