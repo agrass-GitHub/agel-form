@@ -1,83 +1,68 @@
 <template>
-  <agel-form v-model="form" class="demo"></agel-form>
+  <div class="full">
+    <agel-form :style="{width:form.data.width+'px'}" v-model="form"> </agel-form>
+  </div>
 </template>
  
 <script>
 export default {
-  name: "upload-form",
   data() {
     return {
       form: {
-        labelWidth: "100px",
-        span: 18,
+        responsive: true,
+        label: "活动名称",
+        labelWidth: "120px",
         data: {
-          x1: "111111111",
+          width: 1000,
+          name: "agel-form",
+          delivery: true,
+          file: [{ name: "活动清单.xlsx", url: "xxx.jpg" }],
         },
         items: {
-          // button: {
-          //   component: "el-button",
-          //   slots: "刷新",
-          //   on: {
-          //     click: () => {
-          //       this.form.getRef("select").getOptions();
-          //     },
-          //   },
-          // },
-          // radio: {
-          //   component: "el-radio",
-          //   label: "选择",
-          //   options: this.getOp,
-          //   slots: (h, { value }) => {
-          //     return <span>{value}</span>;
-          //   },
-          // },
-          // checkbox: {
-          //   component: "el-checkbox",
-          //   label: "选择",
-          //   options: this.getOp,
-          // },
-          // select: {
-          //   label: "测试",
-          //   component: "el-select",
-          //   clearable: true,
-          //   show: false,
-          //   display: true,
-          //   options: this.getOp,
-          //   span: 12,
-          // },
-          girlfriend: {
-            component: "el-radio",
-            label: "是否有女朋友",
-            options: [
-              { label: "有", value: true },
-              { label: "无", value: false },
-            ],
-            vif(data) {
-              return true;
-            },
+          width: {
+            label: "容器宽度",
+            component: "el-input-number",
+            min: 200,
+            max: 2000,
           },
-          girlfriendName: {
-            component: "el-input",
-            label: "女朋友名字",
-            // 当 data.girlfriend 为 true 时显示
-            vif(data) {
-              console.log(data);
-              return data.girlfriend === true;
-            },
-          },
+          name: {},
+          name1: {},
+          name2: {},
+          name3: {},
+          name4: {},
+          name5: {},
+          name6: {},
+          name7: {},
+          name8: {},
+          name9: {},
         },
       },
     };
   },
   methods: {
-    getOp() {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve([Math.random(), Math.random(), Math.random()]);
-        }, 2000);
+    submit() {
+      this.form.validate(() => {
+        this.$message.success("成功");
       });
+    },
+    rest() {
+      this.form.resetFields();
     },
   },
 };
 </script>
-
+<style scoped>
+.full {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+  top: 0px;
+  left: 0px;
+  z-index: 999;
+  padding: 20px 20px;
+}
+.agel-form {
+  border: 1px solid #ccc;
+}
+</style>

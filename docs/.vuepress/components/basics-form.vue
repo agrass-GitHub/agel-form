@@ -41,7 +41,7 @@ export default {
             label: "即时配送",
           },
           type: {
-            component: "el-checkbox-group",
+            component: "el-checkbox",
             label: "活动性质",
             options: [
               { label: "美食/餐厅线上活动", value: "1" },
@@ -59,7 +59,7 @@ export default {
             ],
           },
           resource: {
-            component: "el-radio-group",
+            component: "el-radio",
             label: "特殊资源",
             options: [
               { label: "线上品牌商赞助", value: "1" },
