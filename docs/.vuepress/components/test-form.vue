@@ -1,20 +1,23 @@
 <template>
   <div class="full">
-    <agel-form :style="{width:form.data.width+'px'}" v-model="form"> </agel-form>
+    <el-input-number v-model="form.data.width"></el-input-number>
+    <el-checkbox v-model="form.data.show">显示</el-checkbox>
+    <agel-form v-show="form.data.show" :style="{width:form.data.width+'px'}" v-model="form"> </agel-form>
   </div>
 </template>
  
 <script>
 export default {
   data() {
+    const h = this.$createElement;
     return {
       form: {
         responsive: true,
         label: "活动名称",
         labelWidth: "120px",
         data: {
+          show: true,
           width: 1000,
-          name: "agel-form",
           delivery: true,
           file: [{ name: "活动清单.xlsx", url: "xxx.jpg" }],
         },
@@ -25,10 +28,33 @@ export default {
             min: 200,
             max: 2000,
           },
-          name: {},
-          name1: {},
-          name2: {},
-          name3: {},
+          button: {
+            component: "el-button",
+            slots: "测试",
+            on: {
+              click: () => {
+                let x = this.form.getItem("width");
+                console.log(1, x);
+              },
+            },
+          },
+          name: {
+            component: "el-select",
+            options: [],
+            loading: true,
+          },
+          name1: {
+            component: "el-checkbox",
+            options: [],
+            loading: true,
+          },
+          name2: {
+            component: "el-button",
+            slots: h("a", null, "测试"),
+          },
+          name3: {
+            label: "xxx",
+          },
           name4: {},
           name5: {},
           name6: {},
@@ -53,10 +79,10 @@ export default {
 </script>
 <style scoped>
 .full {
-  position: fixed;
+  /* position: fixed;
   width: 100vw;
   height: 100vh;
-  background: #fff;
+  background: #fff; */
   top: 0px;
   left: 0px;
   z-index: 999;

@@ -15,6 +15,7 @@
  
 <script>
 import formMixin from "../utils/formMixin";
+
 export default {
   name: "agel-tree-select",
   mixins: [formMixin],

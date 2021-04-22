@@ -20,92 +20,20 @@ import {
   addResizeListener,
   removeResizeListener,
 } from "element-ui/src/utils/resize-event";
-// isVnode 导入判断
+import { isVNode } from "element-ui/src/utils/vdom";
 
+import {
+  agFormProps,
+  agItemProps,
+  formPropKeys,
+  itemPropKyes,
+  rowPropsKeys,
+  colPorpKeys,
+  agItemPropKyes,
+} from "./utils/props";
+import { getIncludeAttrs, getExcludeAttrs } from "./utils/utils";
 import agelFormItem from "./agel-form-item";
 import components from "./lib/index";
-
-const formProps = [
-  "rules",
-  "inline",
-  "label-position",
-  "label-width",
-  "label-suffix",
-  "hide-required-asterisk",
-  "show-message",
-  "inline-message",
-  "status-icon",
-  "validate-on-rule-change",
-  "size",
-  "disabled",
-];
-
-const formItemProps = ["prop", "label", "label-width", "required", "rules"];
-
-const rowProps = ["gutter", "type", "justify", "align", "tag"];
-
-const colPorps = [
-  "span",
-  "offset",
-  "push",
-  "pull",
-  "xs",
-  "sm",
-  "md",
-  "lg",
-  "xl",
-  "tag",
-];
-
-const agFormProps = function () {
-  return {
-    // Object 表单数据
-    data: {},
-    // Object/Array 表单配置项
-    items: {},
-    // Object 表单事件
-    on: undefined,
-    // Boolean 是否开启响应式
-    responsive: undefined,
-    // Funciton 自定义响应式规则
-    responsiveMethod: undefined,
-    // 默认布局属性 继承自 FormItem，Row 属性
-    labelWidth: "auto",
-    type: "flex",
-    gutter: 15,
-    // 暴露出去的方法
-    getRef: this.getRef,
-    getItem: this.getItem,
-    validate: this.validate,
-    resetFields: this.resetFields,
-    clearValidate: this.clearValidate,
-  };
-};
-
-const agFormItemProps = function () {
-  return {
-    // String 组件名称
-    component: "el-input",
-    // Boolean/Functiion 是否渲染
-    display: true,
-    // Boolean 是否忽略，若为 ture 则不会关联表单
-    ignore: false,
-    // Boolean 是否为自定义组件
-    custom: false,
-    // Funciton/Vnode/String 是否自定义 FormItemLabel slot
-    label: "",
-    // Boolean/Funciton/Vnode/String 是否自定义 FormItem slot
-    slot: false,
-    // Object/Funciton/Vnode/String 是否自定义 Component slot
-    slots: {},
-    // Object 组件 event 事件
-    on: {},
-  };
-};
-
-const kebabcase = (v) => v.replace(/([A-Z])/g, "-$1").toLowerCase();
-
-const humpcase = (v) => v.replace(/-(\w)/g, (a, b) => b.toUpperCase());
 
 export default {
   name: "agel-form",
@@ -130,7 +58,6 @@ export default {
   },
   created() {
     this.injectConfig();
-    this.initData();
   },
   mounted() {
     if (this.value.responsive) {
@@ -144,8 +71,8 @@ export default {
   computed: {
     attrs() {
       return {
-        form: this.getPorpsObj(formProps, this.value),
-        row: this.getPorpsObj(rowProps, this.value),
+        form: getIncludeAttrs(formPropKeys, this.value),
+        row: getIncludeAttrs(rowPropsKeys, this.value),
       };
     },
     items() {
@@ -167,22 +94,20 @@ export default {
     injectConfig() {
       let config = this.$agelFormConfig || {};
       let extendApi = Object.assign(agFormProps.call(this), config.form || {});
-      this.extend(this.value, extendApi);
-      this.each(this.value.items, (item, prop) => {
-        let name = item.component || agFormItemProps().component;
+      this.extend(this.value, extendApi, false);
+      this.eachItems((item, prop) => {
+        let name = item.component || agItemProps().component;
         let itemConfig = config[name] || {};
         if (itemConfig && itemConfig.constructor == Function) {
           itemConfig = itemConfig(prop, item, this.value);
         }
         if (itemConfig && itemConfig.constructor == Object) {
-          this.extend(item, itemConfig);
+          this.extend(item, itemConfig, false);
         }
       });
     },
     asyncConfig() {
-      this.each(this.attach, (item, key) => {
-        item && this.$set(this.value, key, item);
-      });
+      this.extend(this.value, this.attach);
     },
     initData() {
       for (const prop in this.items) {
@@ -226,63 +151,41 @@ export default {
         this.$set(this.value.data, prop, value);
       }
     },
-    includesKey(keys, key) {
-      return keys.includes(kebabcase(key)) || keys.includes(humpcase(key));
-    },
-    getPorpsObj(keys, target) {
-      let obj = {};
-      keys.forEach((key) => {
-        let value = target[kebabcase(key)] || target[humpcase(key)];
-        value && (obj[key] = value);
-      });
-      return obj;
-    },
-    getRef(prop) {
-      if (prop == undefined) return this.$refs.form;
-      return this.$refs[prop] ? this.$refs[prop][0].getRef() : null;
-    },
-    getItem(prop) {
-      if (Array.isArray(this.value.items)) {
-        return this.value.items.find((v) => (v.prop = prop));
-      } else {
-        return this.value.items[prop];
-      }
-    },
     getAgItems() {
       let agItems = {};
       let agComponentKeys = Object.keys(components);
-      this.each(this.value.items, (item, prop) => {
-        let agItem = agFormItemProps();
+      this.eachItems((item, prop) => {
+        let agItem = agItemProps();
         let name = item.component || agItem.component;
         // 是否渲染
         let display = item.display;
         if (typeof display == "function") display = display(this.value.data);
         if (display === false) return;
         // 合并 agItem 属性
-        Object.assign(agItem, this.getPorpsObj(Object.keys(agItem), item));
+        Object.assign(agItem, getIncludeAttrs(agItemPropKyes, item));
         // 是否为二次封装组件
         if (agComponentKeys.includes("ag" + name)) {
           agItem.custom = true;
           agItem.component = "ag" + name;
         }
         // 包裹默认 slots
-        if (agItem.slots.constructor !== Object || agItem.slots.tag) {
+        if (agItem.slots.constructor !== Object || isVNode(agItem.slots)) {
           agItem.slots = { default: agItem.slots };
         }
-        // 划分出 col，formitem，component组件 对应的属性
+        // 获取 col，formitem，component组件对应的属性
         let col = Object.assign(
-          this.getPorpsObj(colPorps, this.value),
-          this.getPorpsObj(colPorps, item)
+          getIncludeAttrs(colPorpKeys, this.value),
+          getIncludeAttrs(colPorpKeys, item)
         );
         let formItem = Object.assign(
-          this.getPorpsObj(formItemProps, this.value),
-          this.getPorpsObj(formItemProps, item)
+          // 考虑是否在 this.value 上取消支持所有 itemPropKyes ["label-width", "required"]
+          getIncludeAttrs(itemPropKyes, this.value),
+          getIncludeAttrs(itemPropKyes, item)
         );
-        let component = {};
-        let ignoreKeys = Object.keys(agItem).concat(colPorps, formItemProps);
-        for (const key in item) {
-          if (!this.includesKey(ignoreKeys, key)) component[key] = item[key];
-        }
+        let component = getExcludeAttrs(
+          [].concat(colPorpKeys, itemPropKyes, agItemPropKyes),
+          item
+        );
         if (!agItem.ignore) formItem.prop = prop;
         // 设置 slotLabel
         if (typeof formItem.label !== "string") {
@@ -322,6 +225,60 @@ export default {
       });
       return agItems;
     },
+    resize() {
+      let width = this.$refs.form.$el.clientWidth;
+      if (!this.value.responsive || width == 0) return;
+      let method = this.value.responsiveMethod || this.responsiveMethod;
+      let [span, labelPosition] = method(width);
+      this.$set(this.value, "span", span);
+      this.$set(this.value, "labelPosition", labelPosition);
+    },
+    responsiveMethod(w) {
+      if (w <= 400) return [24, "top"];
+      if (w > 400 && w <= 600) return [24, "right"];
+      if (w > 400 && w <= 900) return [12, "right"];
+      if (w > 900 && w <= 1200) return [8, "right"];
+      if (w > 1200 && w <= 1600) return [6, "right"];
+      if (w >= 1600) return [4, "right"];
+    },
+    eachItems(fn) {
+      let items = this.value.items;
+      if (items.constructor == Array) {
+        return items.forEach((item) => fn(item, item.prop));
+      }
+      if (items.constructor == Object) {
+        for (const prop in items) fn(items[prop], prop);
+      }
+    },
+    extend(obj, target, cover = true) {
+      for (const key in target) {
+        if ((obj.hasOwnProperty(key) && !cover) || target[key] == undefined)
+          continue;
+        this.$set(obj, key, target[key]);
+      }
+    },
+    updateItem(prop, attrs) {
+      let item = this.getItem(prop);
+      for (const key in attrs) {
+        if (item.hasOwnProperty(key)) {
+          item[key] = attrs[key];
+        } else {
+          this.$set(item, key, attrs[key]);
+        }
+      }
+    },
+    // 暴露出去的功能函数
+    getRef(prop) {
+      if (prop == undefined) return this.$refs.form;
+      return this.$refs[prop] ? this.$refs[prop][0].getRef() : null;
+    },
+    getItem(prop) {
+      if (Array.isArray(this.value.items)) {
+        return this.value.items.find((v) => (v.prop = prop));
+      } else {
+        return this.value.items[prop];
+      }
+    },
     validate(callback, erroCallback) {
       this.$refs.form.validate((is) => {
         if (is) {
@@ -341,45 +298,6 @@ export default {
     },
     clearValidate(props) {
       this.$refs.form.clearValidate(props);
-    },
-    resize() {
-      if (!this.value.responsive) return;
-      let w = this.$refs.form.$el.clientWidth;
-      let method = this.value.responsiveMethod || this.responsiveMethod;
-      let [span, labelPosition] = method(w);
-      this.$set(this.value, "span", span);
-      this.$set(this.value, "labelPosition", labelPosition);
-    },
-    responsiveMethod(w) {
-      if (w <= 400) return [24, "top"];
-      if (w > 400 && w <= 600) return [24, "right"];
-      if (w > 400 && w <= 900) return [12, "right"];
-      if (w > 900 && w <= 1200) return [8, "right"];
-      if (w > 1200 && w <= 1600) return [6, "right"];
-      if (w >= 1600) return [4, "right"];
-    },
-    updateItem(prop, attrs) {
-      let item = this.getItem(prop);
-      for (const key in attrs) {
-        if (item.hasOwnProperty(key)) {
-          item[key] = attrs[key];
-        } else {
-          this.$set(item, key, attrs[key]);
-        }
-      }
-    },
-    each(target, fn) {
-      if (target.constructor == Array) target.forEach(fn);
-      if (target.constructor == Object) {
-        for (const key in target) fn(target[key], key);
-      }
-    },
-    extend(target, form) {
-      for (const key in form) {
-        if (!target.hasOwnProperty(key) && form[key] !== undefined) {
-          this.$set(target, key, form[key]);
-        }
-      }
     },
   },
 };

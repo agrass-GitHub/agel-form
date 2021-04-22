@@ -28,12 +28,17 @@
 
 <script>
 import formMixin from "../utils/formMixin";
+import { getProp } from "../utils/utils";
+
 export default {
   name: "agel-upload",
   mixins: [formMixin],
   inheritAttrs: false,
   props: {
-    value: Array,
+    value: {
+      type: Array,
+      default: () => new Array(),
+    },
     preview: {
       type: [Function, Boolean],
       default: true,
@@ -50,10 +55,8 @@ export default {
     slotsIf() {
       let slots = Object.keys(this.slots).length != 0;
       let drag = this.$attrs.drag;
-      let pictureCard = this.$attrs.listType == "picture-card";
-      let customUpload =
-        this.$attrs.autoUpload === false ||
-        this.$attrs["auto-upload"] === false;
+      let pictureCard = getProp(this.$attrs, "listType") == "picture-card";
+      let customUpload = getProp(this.$attrs, "autoUpload");
       return {
         slots,
         drag,
@@ -85,7 +88,7 @@ export default {
           return false;
         }
       }
-      let emit = this.$attrs.beforeUploa || this.$attrs["before-upload"];
+      let emit = getProp(this.$attrs, "beforeUploa");
       if (emit) return emit(file);
       return true;
     },
@@ -94,12 +97,12 @@ export default {
     },
     handleRemove(file, list) {
       this.$emit("input", list);
-      let emit = this.$attrs.onRemove || this.$attrs["on-remove"];
+      let emit = getProp(this.$attrs, "onRemove");
       emit && emit(file, list);
     },
     handleSuccess(file) {
       // 需经过函数返回一个 {name:"xx",url:"xxx"} 结构的对象
-      let emit = this.$attrs.onSuccess || this.$attrs["on-success"];
+      let emit = getProp(this.$attrs, "onSuccess");
       if (emit) {
         let item = emit(file);
         if (item && item.url && item.name) {
@@ -109,12 +112,12 @@ export default {
     },
     handleError(err, file, fileList) {
       this.onMessage("error", `文件上传失败`);
-      let emit = this.$attrs.onError || this.$attrs["on-error"];
+      let emit = getProp(this.$attrs, "onError");
       emit && emit(err, file, fileList);
     },
     handleExceed(files, fileList) {
       this.onMessage("warning", "最大允许上传个数：" + this.$attrs.limit);
-      let emit = this.$attrs.onExceed || this.$attrs["on-exceed"];
+      let emit = getProp(this.$attrs, "onExceed");
       emit && emit(files, fileList);
     },
     handlePreview(file) {
@@ -172,7 +175,7 @@ export default {
           a = null;
         });
       }
-      let emit = this.$attrs.onPreview || this.$attrs["on-preview"];
+      let emit = getProp(this.$attrs, "onPreview");
       emit && emit(file);
     },
   },

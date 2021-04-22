@@ -23,6 +23,7 @@
 <script>
 import formMixin from "../utils/formMixin";
 import optionsMinxin from "../utils/optionsMinxin";
+import { getProp } from "../utils/utils";
 
 export default {
   name: "agel-select",
@@ -49,11 +50,10 @@ export default {
       return this.loading ? this.loadingText : this.$attrs.placeholder;
     },
     valueKey() {
-      return this.$attrs.valueKey || this.$attrs["value-key"];
+      return getProp(this.$attrs, "valueKey");
     },
     popperClass() {
-      let className =
-        this.$attrs.popperClass || this.$attrs["popper-class"] || "";
+      let className = getProp(this.$attrs, "popperClass") || "";
       return `agel-select-popper ${className}`;
     },
     isGroup() {
