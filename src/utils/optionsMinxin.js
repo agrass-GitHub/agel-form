@@ -1,4 +1,3 @@
-
 export default {
   props: {
     options: [Array, Function, Promise],

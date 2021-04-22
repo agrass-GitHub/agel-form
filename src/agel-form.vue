@@ -87,10 +87,11 @@ export default {
     },
     "value.data": {
       immediate: true,
-      handler: "initData",
+      handler: "initFields",
     },
   },
   methods: {
+    // 注入全局配置，和扩展属性
     injectConfig() {
       let config = this.$agelFormConfig || {};
       let extendApi = Object.assign(agFormProps.call(this), config.form || {});
@@ -106,10 +107,12 @@ export default {
         }
       });
     },
+    // 同步配置到 value
     asyncConfig() {
       this.extend(this.value, this.attach);
     },
-    initData() {
+    // 初始化表单字段
+    initFields() {
       for (const prop in this.items) {
         let item = this.items[prop];
         let name = item.component;
@@ -151,6 +154,7 @@ export default {
         this.$set(this.value.data, prop, value);
       }
     },
+    // 组装 agelItems 对象
     getAgItems() {
       let agItems = {};
       let agComponentKeys = Object.keys(components);
@@ -225,6 +229,7 @@ export default {
       });
       return agItems;
     },
+    // 根据容器宽度响应式变化
     resize() {
       let width = this.$refs.form.$el.clientWidth;
       if (!this.value.responsive || width == 0) return;
@@ -233,6 +238,7 @@ export default {
       this.$set(this.value, "span", span);
       this.$set(this.value, "labelPosition", labelPosition);
     },
+    // 响应式规则
     responsiveMethod(w) {
       if (w <= 400) return [24, "top"];
       if (w > 400 && w <= 600) return [24, "right"];
@@ -241,6 +247,7 @@ export default {
       if (w > 1200 && w <= 1600) return [6, "right"];
       if (w >= 1600) return [4, "right"];
     },
+    // 循环 items
     eachItems(fn) {
       let items = this.value.items;
       if (items.constructor == Array) {
@@ -250,6 +257,7 @@ export default {
         for (const prop in items) fn(items[prop], prop);
       }
     },
+    // 继承属性
     extend(obj, target, cover = true) {
       for (const key in target) {
         if ((obj.hasOwnProperty(key) && !cover) || target[key] == undefined)
@@ -257,6 +265,7 @@ export default {
         this.$set(obj, key, target[key]);
       }
     },
+    // 更新某一个 item 属性
     updateItem(prop, attrs) {
       let item = this.getItem(prop);
       for (const key in attrs) {

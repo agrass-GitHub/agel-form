@@ -1,5 +1,3 @@
-
-
 // 支持 el-form 的参数 
 export const formPropKeys = [
   "rules",
