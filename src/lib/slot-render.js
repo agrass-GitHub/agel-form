@@ -9,7 +9,6 @@ export default {
   render(h, context) {
     let render = context.props.render;
     let scope = context.props.scope;
-    if (Array.isArray(render)) console.log(render)
     if (typeof render == "function") return render(h, scope);
     if (typeof render == "string" || typeof render == "number") return h('span', null, render)
     // 判断是 vnode
