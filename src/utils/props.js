@@ -77,6 +77,8 @@ export const agItemProps = function () {
     component: "el-input",
     // Boolean/Functiion 是否渲染
     display: true,
+    // Boolean/Functiion 是否禁用
+    disabled: false,
     // Boolean 是否忽略，若为 ture 则不会关联表单
     ignore: false,
     // Boolean 是否为自定义组件

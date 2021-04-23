@@ -9,9 +9,11 @@ sidebar: auto
 - `新增` el-select el-checkbox el-radio 支持字符串数组，异步函数，Promise 配置 options
 - `新增` 根据表单字段初始化 form.data，关联响应式
 - `新增` form.responsive  form.responsiveMethod 根据父容器宽度自动响应式
-- `新增` item.display 属性支持函数配置，实现动态显示隐藏
+- `新增` item.display  属性支持函数配置，可关联字段
+- `新增` item.disabled 属性支持函数配置，可关联字段
 - `调整` 移除 item.show 属性
 - `优化` 全局配置支持对象，函数形式写法
+- `优化` 使用文档重构
 
 ## v.0.1.2
 - `修复` el-select 在开启 filter 且有分组的情况下，过滤报错的问题

@@ -181,19 +181,21 @@ export default {
           getIncludeAttrs(colPorpKeys, this.value),
           getIncludeAttrs(colPorpKeys, item)
         );
-        let formItem = Object.assign(
-          // getIncludeAttrs(itemPropKyes, this.value),
-          getIncludeAttrs(itemPropKyes, item)
-        );
+        let formItem = getIncludeAttrs(itemPropKyes, item);
         let component = getExcludeAttrs(
           [].concat(colPorpKeys, itemPropKyes, agItemPropKyes),
           item
         );
+        // 是否忽略
         if (!agItem.ignore) formItem.prop = prop;
         // 设置 slotLabel
         if (typeof formItem.label !== "string") {
           agItem.slotLabel = formItem.label;
           formItem.label = "";
+        }
+        // 是否禁用
+        if (typeof agItem.disabled == "function") {
+          component.disabled = item.disabled(this.value.data);
         }
         // 自动添加 required rules
         if (formItem.required && formItem.rules == undefined) {
@@ -233,18 +235,21 @@ export default {
       let width = this.$refs.form.$el.clientWidth;
       if (!this.value.responsive || width == 0) return;
       let method = this.value.responsiveMethod || this.responsiveMethod;
-      let [span, labelPosition] = method(width);
-      this.$set(this.value, "span", span);
-      this.$set(this.value, "labelPosition", labelPosition);
+      let keys = ["labelPosition", "labelWidth", "gutter"];
+      let layoutPropKeys = keys.concat(colPorpKeys);
+      let layoutProps = method(width);
+      this.extend(this.value, getIncludeAttrs(layoutPropKeys, layoutProps));
     },
     // 响应式规则
     responsiveMethod(w) {
-      if (w <= 400) return [24, "top"];
-      if (w > 400 && w <= 600) return [24, "right"];
-      if (w > 400 && w <= 900) return [12, "right"];
-      if (w > 900 && w <= 1200) return [8, "right"];
-      if (w > 1200 && w <= 1600) return [6, "right"];
-      if (w >= 1600) return [4, "right"];
+      let arr = [];
+      if (w <= 400) arr = [24, "top"];
+      if (w > 400 && w <= 600) arr = [24, "right"];
+      if (w > 400 && w <= 900) arr = [12, "right"];
+      if (w > 900 && w <= 1200) arr = [8, "right"];
+      if (w > 1200 && w <= 1600) arr = [6, "right"];
+      if (w >= 1600) arr = [4, "right"];
+      return { span: arr[0], labelPosition: arr[1] };
     },
     // 循环 items
     eachItems(fn) {
