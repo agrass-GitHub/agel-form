@@ -1,7 +1,15 @@
-import agelForm from './agel-form.vue';
+import agelForm from "./agel-form.vue";
+import agelRadio from "./lib/agel-radio.vue";
+import agelCheckbox from "./lib/agel-checkbox.vue";
+import agelSelect from "./lib/agel-select.vue";
+import agelUpload from "./lib/agel-upload.vue";
+import agelTreeSelect from "./lib/agel-tree-select.vue";
 
-if (typeof window !== 'undefined' && window.Vue) {
-  agelForm.install(window.Vue);
+export default agelForm;;
+export {
+  agelRadio,
+  agelCheckbox,
+  agelSelect,
+  agelUpload,
+  agelTreeSelect,
 }
-
-export default agelForm;

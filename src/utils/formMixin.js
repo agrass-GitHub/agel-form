@@ -22,5 +22,8 @@ export default {
     input(v) {
       this.$emit("input", v);
     },
-  }
+  },
+  install(vue) {
+    vue.component(this.name, this);
+  },
 };

@@ -182,8 +182,7 @@ export default {
           getIncludeAttrs(colPorpKeys, item)
         );
         let formItem = Object.assign(
-          // 考虑是否在 this.value 上取消支持所有 itemPropKyes ["label-width", "required"]
-          getIncludeAttrs(itemPropKyes, this.value),
+          // getIncludeAttrs(itemPropKyes, this.value),
           getIncludeAttrs(itemPropKyes, item)
         );
         let component = getExcludeAttrs(

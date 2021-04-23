@@ -5,27 +5,32 @@ sidebar: auto
 
 # agel-form | 使 element-ui form 组件更简单
 
-## 特性
+## 介绍
 
-该组件的思想就是以一个 form 对象来做所有的操作，纯数据配置也有高度的灵活性。 
+[agel-form](https://github.com/agrass-GitHub/agel-form) 是基于 [element-ui form](https://element.eleme.cn/#/zh-CN/component/form) 的二次封装，极简的思想，完全的数据驱动，拥有绝对的灵活性，可以帮助你更快速的开发！up! up! up!
 
-- 简洁，无其他第三方依赖
-- 支持 element-ui 所有表单组件 Attributes 配置
-- 支持 element-ui 所有表单组件 Events 事件
-- 支持 element-ui 所有表单组件 Slots 插槽
-- 支持 element-ui Row Col 组件属性，以此实现响应式布局
-- 方便的全局配置，应用到每一个表单
-- 可灵活搭配第三方组件或者自定义组件使用
-- 自动设置 placeholder 属性，自动设置必填 rules 属性
+该组件的思想就是以一个 form 对象来做所有的操作，它做了如下事情：
 
-[自定义组件教程](/custom-component.md)
+- 支持 element-ui 所有表单组件 attributes 配置
+- 支持 element-ui 所有表单组件 events 事件
+- 支持 element-ui 所有表单组件 slots 插槽
+- 支持 element-ui Row Col 组件属性
+- 智能回填 form.data，placeholder，rules
+- 自定义组件 / 搭配第三方组件
+- 全局配置
+- 联动显示隐藏
+- 响应式布局
 
 
-## 安装使用
+## 快速开始
 
-安装： `cnpm install agel-form --save` 
+### 安装
 
-若是完整引入 `Element`，可直接导入组件进行开发使用。
+`cnpm install agel-form --save` 
+
+### 引用
+
+若是完整引入 `Element-UI`，可直接导入组件进行开发使用。
 
 ```js
 import Vue from 'vue';
@@ -39,7 +44,7 @@ Vue.use(ElementUI);
 Vue.use(agelForm,formConfig);
 ```
 
-若是按需引入 `Element`，至少需要全局引入 `Form, FormItem, Row, Col, Input` 五个组件，其他表单组件则按需引入。
+若是按需引入 `Element-UI`，至少需要全局引入 `Form, FormItem, Row, Col, Input` 五个表单组件 `agelForm` 才可正常使用。
 
 ```js
 import Vue from 'vue';
@@ -56,50 +61,69 @@ Vue.use(Input);
 Vue.use(agelForm,formConfig);
 ```
 
-也可以在项目中单独引用 `agel-form` 中的二次封装单组件,进行使用
+也支持在项目中单独引入 `agelForm` 中的二次封装单组件进行开发使用。
 
 ```js
-import agelRadioGroup from "agel-form/src/lib/agel-radio-group.vue";
-import agelCheckboxGroup from "agel-form/src/lib/agel-checkbox-group.vue";
-import agelSelect from "agel-form/src/lib/agel-select.vue";
-import agelUpload from "agel-form/src/lib/agel-upload.vue";
-import agelTreeSelect from "agel-form/src/lib/agel-tree-select.vue";
+import { agelRadio, agelCheckbox, agelSelect, agelUpload, agelTreeSelect } from "agel-form";
+
+Vue.use(agelRadio);
+Vue.use(agelCheckbox);
+Vue.use(agelSelect);
+Vue.use(agelUpload);
+Vue.use(agelTreeSelect);
 ```
 
-## 典型表单 
+### 全局配置
 
-默认 component 属性是 `el-input` ,会根据组件类型自动生成 `placeholder`, 设置 `required:true` 会自动生成必填 rules。
+支持所有属性，配置将被继承到每个表单上。
 
-<ClientOnly><basics-form/></ClientOnly>
+也可单独为某个表单子组件设置全局配置，表单子组件支持函数写法，更加灵活。
 
-::: details 点击查看代码
-<<< @/docs/.vuepress/components/basics-form.vue
-:::
-
-## 布局表单
-
-`Form` 可以设置 `el-row` `el-col` 的所有属性，进行灵活布局，也可设置用 `xs、sm、md、lg、xl`实现响应式布局，作为 `Form` 直接子元素会继承该值; 若 `Form-Item` 单独设置布局属性的优先级更高。
-
-<ClientOnly><layout-form/></ClientOnly>
-
-::: details 点击查看代码
-<<< @/docs/.vuepress/components/layout-form.vue
-::: 
+<<< @/docs/.vuepress/components/agel-form-config.js
 
 
-## 行内表单 
+## 创建一个表单
 
-设置`inline:true`为行内表单模式，`el-row`,`el-col` 的布局属性将会失效，一般用于列表的搜索查询。
+## 表单布局
 
-设置`ignore:true`，则表明该组件是一个纯展示组件，prop 值则不会注入到 form.data。
+<!-- 简单的介绍一下 `form` 数据配置支持哪些属性：
 
-设置`on`，支持该组件的所有 events 事件。
+- `form` 支持配置 [el-form](https://element.eleme.cn/#/zh-CN/component/form#form-attributes)，[el-row](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes)，[el-col](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)，[el-form-item](https://element.eleme.cn/#/zh-CN/component/form#form-item-attributes) 组件的的所有属性
+- `item` 支持配置 [el-col](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)，[el-form-item](https://element.eleme.cn/#/zh-CN/component/form#form-item-attributes) 组件的的所有属性，优先级大于 `form`，以及 `component` 组件的动态参数
+
+```json
+{
+  data: {},
+  items: {
+    password: {
+      component:"el-input",
+      label: "密码",
+      span: 10,
+      showPassword:true,
+    },
+  },
+}
+``` -->
+
+一个表单支持三种布局模式，行内表单，栅格表单，响应式表单，例子如下。
+
+### 行内表单 
+
+这是一个最简单的例子，设置`inline:true` 开启行内表单模式。
 
 <ClientOnly><inline-form/></ClientOnly>
 
-::: details 点击查看代码
 <<< @/docs/.vuepress/components/inline-form.vue
-:::
+
+
+### 栅格表单
+
+表单通过 [layout](https://element.eleme.cn/#/zh-CN/component/layout#layout-bu-ju) 的组件属性来实现栅格布局，`form` 支持 [el-row](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes)，[el-col](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)组件的的所有属性，`item` 支持 [el-col](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes) 组件的所有属性，通过 `labelWidth`，`labelPosition` 来调整 `label` 的宽度与对齐方式， 另外就是 `item` 配置的优先级会大于 `form` 。
+
+ 
+<ClientOnly><layout-form/></ClientOnly>
+
+<<< @/docs/.vuepress/components/layout-form.vue
 
 ## slot slots 插槽自定义
 
@@ -127,15 +151,7 @@ import agelTreeSelect from "agel-form/src/lib/agel-tree-select.vue";
 <<< @/docs/.vuepress/components/attach-form.vue
 :::
 
-## config 全局配置的使用
 
-:::tip
-支持所有属性，以下配置将被继承到每个表单上，也可单独为某个表单子组件设置全局配置
-:::
-
-为 component 单组件设置全局配置，必须是一个函数，可以很方便的为每一个 `el-date-pciker` 设置好日期格式化，也可以配置好公用的 `el-upload` 组件，至于其它的需求就发挥你的大脑去灵活配置了。
-
-<<< @/docs/.vuepress/components/agel-form-config.js
 
 ## component 单组件
 

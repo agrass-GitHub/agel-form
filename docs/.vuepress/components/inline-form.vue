@@ -10,15 +10,22 @@ export default {
         inline: true,
         data: {},
         items: {
-          name: { label: "活动名称", style: "width:120px" },
-          www: { label: "活动网站" },
-          button: {
+          user: {
+            // component 该属性不填写将默认为 el-input
+            label: "审批人",
+            style: "width:120px",
+          },
+          region: {
+            component: "el-select",
+            label: "活动区域",
+            options: ["区域一", "区域二"],
+          },
+          search: {
             component: "el-button",
             type: "primary",
             icon: "el-icon-search",
-            // 表明该组件是一个纯展示组件，prop 值则不会注入到 form.data
-            ignore: true,
-            slots: "查询",
+            ignore: true, // 表明该组件是一个纯展示组件，属性则不会与表单关联
+            slots: "查询", // 按钮插槽
             on: {
               click: () => {
                 this.$message.info("查询");
