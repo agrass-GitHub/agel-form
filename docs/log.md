@@ -12,6 +12,8 @@ sidebar: auto
 - `新增` item.display  属性支持函数配置，可关联字段
 - `新增` item.disabled 属性支持函数配置，可关联字段
 - `调整` 移除 item.show 属性
+- `调整` slot render 函数移除 h（$createElement） 参数
+- `新增` 单组件支持在项目中单独引入使用
 - `优化` 全局配置支持对象，函数形式写法
 - `优化` 使用文档重构
 

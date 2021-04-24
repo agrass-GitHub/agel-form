@@ -127,6 +127,9 @@ export default {
       }, 0);
     },
   },
+  install(vue) {
+    vue.component(this.name, this);
+  },
 };
 </script>
  

@@ -151,7 +151,7 @@ Vue.use(agelTreeSelect);
 - 当 `slots` 插槽只存在 `default` 的情况下，可直接简写省略对象写法。
 :::
 
-插槽支持 `Funciton`，`VNode`，`String`，`Array[VNode]` 多种写法，其中 `slot` 属性设置为 `true` 可额外支持 `template` 写法，使用方法如下。
+插槽支持 `Funciton`，`VNode`，`String`，`Array[VNode]` 等多种写法，其中 `slot` 属性设置为 `true` 可额外支持 `template` 写法，使用方法如下。
 
 更多基础知识 [请参考渲染函数 & JSX](https://cn.vuejs.org/v2/guide/render-function.html)
 
@@ -212,6 +212,7 @@ Vue.use(agelTreeSelect);
 
 #### Form Methods
 
+ 方法会注入到 form 对象，建议直接通过 `form.方法名称()` 来调用。
 
 | 属性          | 参数           |  说明                                   | 
 | -----------   | ------------  |  ------------------------------------  | 
@@ -247,8 +248,6 @@ Vue.use(agelTreeSelect);
 | span        | Number          | -           | 继承自 el-col  |
 
 
-
-
 ## component 单组件
 
 下面的组件，是经过二次封装的基础组件，使用方式会稍微有些不同。
@@ -259,7 +258,9 @@ Vue.use(agelTreeSelect);
 
 ### select 选择器
 
-开启 `filter` 可实现更好看关键字过滤，作用同 `filterable` 一致
+`options` 属性支持多种数据类型，`Array[string]`，`Array[Object]`，`Promise`，`Function`，若是 `Function` 类型，可以通过 `getRef` 获取组件实例调用 `getOptions` 进行主动刷新。
+
+`filter` 属性可以开启关键字过滤，和 `filterable` 功能类似。
 
 <ClientOnly><select-form/></ClientOnly>
 
@@ -267,15 +268,47 @@ Vue.use(agelTreeSelect);
 <<< @/docs/.vuepress/components/select-form.vue
 :::
 
+#### Select Attributes
+
+| 属性        | 类型         | 默认值  | 说明                                 | 
+| ----------- | ------------  | ------ | ------------------------------------ | 
+| ......      | ......        | .........   |  Element-ui [Select Attributes](https://element.eleme.cn/#/zh-CN/component/select#select-attributes)      | 
+| filter      | Boolean       | false       | 是否开启过滤查询                | 
+| options     | Array/Function/Promise    |  -     | option 配置项         | 
+| props       | Object        |  {label,value}     | label,value 别名          |
+| slots       | Object        | -  | 自定义插槽    | 
+
+#### Select method
+
+| 属性          | 参数           |  说明                                   | 
+| -----------   | ------------  |  ------------------------------------  | 
+| focus         | -             |  聚焦                        |
+| blur          | -             |  失焦            | 
+| getOptions    | -             |  options 为 Function 时可调用           |
+
+
 ### checkbox radio 选择框
 
-开启 `button` 可实现按钮样式风格
+`optiopns` `props` 属性和 `getOptions` 方法都同 `select` 组件一致。
 
-<ClientOnly><checkboxgroup-radiogroup-form/></ClientOnly>
+`border` 属性实现边框样式风格，`button` 属性可实现按钮样式风格。
+
+<ClientOnly><checkbox-radio-form/></ClientOnly>
 
 ::: details 点击查看代码
-<<< @/docs/.vuepress/components/checkboxgroup-radiogroup-form.vue
+<<< @/docs/.vuepress/components/checkbox-radio-form.vue
 :::
+
+#### Radio Checkbox Attributes
+
+| 属性        | 类型         | 默认值  | 说明                                 | 
+| ----------- | ------------  | ------ | ------------------------------------ | 
+| ......      | ......        | .........   |  Element-ui [Radio Attributes](https://element.eleme.cn/#/zh-CN/component/radio#radio-attributes)      | 
+| ......      | ......        | .........   |  Element-ui [Checkbox Attributes](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-attributes)      | 
+| options     | Array/Function/Promise    |  -     | option 配置项         | 
+| props       | Object        |  {label,value}     | label,value 别名          |
+| button      | Boolean       |  -          | 是否开启 button 样式         |
+| slots       | Object        | -  | 自定义插槽    |  
 
 ### upload 上传
 
@@ -300,10 +333,5 @@ Vue.use(agelTreeSelect);
 - 可通过 `getRef` 方法获取 `tree` 组件实例，也可获取其他 `component` 组件实例
 - 可通过 `getItem` 方法获取 itme 对象，在 `items` 是数组配置的情况下比较有用
 
-<ClientOnly><tree-form/></ClientOnly>
-
-::: details 点击查看代码
-<<< @/docs/.vuepress/components/tree-form.vue
-::: 
 
 以上所有例子都有源码 [链接](https://github.com/agrass-GitHub/agel-form/tree/master/docs/.vuepress/components)

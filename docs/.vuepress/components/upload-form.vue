@@ -70,6 +70,7 @@ export default {
             listType: "picture-card",
             limit: 1,
             limitHide: true, // 超出允许上传个数，隐藏上传按钮
+            tip: "最大只能上传一个，超出自动隐藏上传按钮",
           },
           files3: {
             label: "picture 样式",

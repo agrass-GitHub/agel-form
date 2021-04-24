@@ -23,14 +23,18 @@ export default {
       if (Array.isArray(options)) {
         this.optionsData = this.getOptionsData(options);
       } else if (typeof options == "function") {
-        this.optionsLoading = true;
-        this.optionsData = this.getOptionsData(await options());
-        this.optionsLoading = false;
+        this.setAsynctOptionsData(options())
       } else if (options instanceof Promise) {
-        this.optionsLoading = true;
-        this.optionsData = this.getOptionsData(await options);
-        this.optionsLoading = false;
+        this.setAsynctOptionsData(options)
       }
+    },
+    async setAsynctOptionsData(promiseObj) {
+      let value = this.value;
+      this.input("");
+      this.optionsLoading = true;
+      this.optionsData = this.getOptionsData(await promiseObj);
+      this.input(value);
+      this.optionsLoading = false;
     },
     getOptionsData(options) {
       let props = this.props;

@@ -1,20 +1,22 @@
 <template>
   <div class="demo">
+    <agel-checkbox v-model="value">测试</agel-checkbox>
     <agel-checkbox v-model="value" :options="options">
       <template v-slot="{option,index}">
         <el-tag>{{index}}：{{option.label}}</el-tag>
       </template>
     </agel-checkbox>
+    <agel-radio v-model="radio" :options="options"></agel-radio>
   </div>
 </template>
  
 <script>
-import agelCheckbox from "../../../src/lib/agel-checkbox.vue";
 export default {
-  components: { agelCheckbox },
   data() {
     return {
       value: true,
+      checkbox: [],
+      radio: "",
       options: ["男", "女"],
     };
   },

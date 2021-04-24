@@ -27,7 +27,7 @@ export default {
           title1: divider("label slot 使用演示，自定义Form Item Label的插槽"),
           label: {
             labelWidth: "100px",
-            label: (h) => {
+            label: () => {
               return h("el-button", {}, "自定义label");
             },
           },
@@ -38,7 +38,7 @@ export default {
           },
           render: {
             label: "插槽2",
-            slot: (h) => {
+            slot: () => {
               return h("el-tag", {}, "这是一段 render 函数类型自定义插槽");
             },
           },

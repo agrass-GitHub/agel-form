@@ -21,7 +21,7 @@
     </el-button>
     <!-- 自定义 slot -->
     <template v-if="slotsIf.slots">
-      <slot-render v-for="(render,slot) in slots" :key="slot" :slot="slot" :render="render"></slot-render>
+      <slot-render v-for="(render,slot) in scopedSlots" :key="slot" :slot="slot" :render="render"></slot-render>
     </template>
   </el-upload>
 </template>
@@ -29,6 +29,7 @@
 <script>
 import formMixin from "../utils/formMixin";
 import { getProp } from "../utils/utils";
+import { isEmpty } from "element-ui/src/utils/util";
 
 export default {
   name: "agel-upload",
@@ -53,8 +54,8 @@ export default {
   },
   computed: {
     slotsIf() {
-      let slots = Object.keys(this.slots).length != 0;
-      let drag = this.$attrs.drag;
+      let slots = isEmpty(this.scopedSlots);
+      let drag = this.$attrs.drag !== undefined;
       let pictureCard = getProp(this.$attrs, "listType") == "picture-card";
       let customUpload = getProp(this.$attrs, "autoUpload");
       return {
@@ -179,6 +180,9 @@ export default {
       emit && emit(file);
     },
   },
+  install(vue) {
+    vue.component(this.name, this);
+  },
 };
 </script>
 
@@ -211,7 +215,11 @@ export default {
 }
 
 .agel-upload .el-icon-close-tip {
-  display: none !important;
+  display: none;
+}
+
+.agel-upload .el-upload-list--picture-card .el-upload-list__item {
+  transition: inherit;
 }
 
 .agel-upload-preview-msgbox {

@@ -16,12 +16,15 @@
 </template>
 
 <script>
+import { isVNode } from "element-ui/src/utils/vdom";
 import {
   addResizeListener,
   removeResizeListener,
 } from "element-ui/src/utils/resize-event";
-import { isVNode } from "element-ui/src/utils/vdom";
 
+import agelFormItem from "./agel-form-item";
+import components from "./lib/index";
+import { getIncludeAttrs, getExcludeAttrs } from "./utils/utils";
 import {
   agFormProps,
   agItemProps,
@@ -31,9 +34,6 @@ import {
   colPorpKeys,
   agItemPropKyes,
 } from "./utils/props";
-import { getIncludeAttrs, getExcludeAttrs } from "./utils/utils";
-import agelFormItem from "./agel-form-item";
-import components from "./lib/index";
 
 export default {
   name: "agel-form",
@@ -193,10 +193,6 @@ export default {
           agItem.slotLabel = formItem.label;
           formItem.label = "";
         }
-        // 是否禁用
-        if (typeof agItem.disabled == "function") {
-          component.disabled = item.disabled(this.value.data);
-        }
         // 自动添加 required rules
         if (formItem.required && formItem.rules == undefined) {
           formItem.required = undefined;
@@ -205,6 +201,11 @@ export default {
             message: formItem.label + "必填",
             trigger: "blur",
           };
+        }
+        // 是否禁用
+        component.disabled = item.disabled;
+        if (typeof agItem.disabled == "function") {
+          component.disabled = item.disabled(this.value.data);
         }
         // 自动设置 placeholder 属性
         if (component.placeholder == undefined) {

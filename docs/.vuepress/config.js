@@ -5,19 +5,36 @@ module.exports = {
   base: '/agel-form/',
   themeConfig: {
     updatePopup: true,
+    displayAllHeaders: true,
     nav: [
       { text: '首页', link: '/' },
-      // { text: '教程', link: '/example' },
-      {
-        text: '教程',
-        items: [
-          { text: '使用教程', link: '/example' },
-          { text: '自定义组件', link: '/custom-component' }
-        ]
-      },
-      { text: 'API', link: '/api' },
+      { text: '教程', link: '/example/' },
       { text: '更新日志', link: '/log' },
       { text: 'Github', link: 'https://github.com/agrass-GitHub/agel-form' }
+    ],
+    sidebar: [
+      {
+        title: '基础',
+        collapsable: false,
+        sidebarDepth: 1,
+        children: [
+          '/example/',
+          '/example/quick-start',
+          '/example/agel-form',
+        ]
+      },
+      {
+        title: '单组件',
+        collapsable: false,
+        sidebarDepth: 0,
+        children: [
+          '/component/',
+          '/component/agel-select',
+          '/component/agel-checkbox-radio',
+          '/component/agel-upload',
+          '/component/agel-tree-select',
+        ]
+      },
     ],
   },
 };
