@@ -5,7 +5,7 @@
       <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini"></el-input>
     </div>
     <el-option value="tree-option-value">
-      <el-tree ref="ref" class="tree-option" :show-checkbox="multiple" :highlight-current="!multiple" :node-key="nodeKey"
+      <el-tree ref="ref" class="tree-option" :data="data" :show-checkbox="multiple" :highlight-current="!multiple" :node-key="nodeKey"
         :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs" v-on='on' @current-change="handleCurrentChange"
         @check-change="handleCheckChange">
       </el-tree>
@@ -15,6 +15,7 @@
  
 <script>
 import formMixin from "../utils/formMixin";
+import { getProp } from "../utils/utils";
 
 export default {
   name: "agel-tree-select",
@@ -22,6 +23,7 @@ export default {
   inheritAttrs: false,
   props: {
     value: [String, Number, Array],
+    data: [Array, Function, Promise],
     placeholder: String,
     disabled: Boolean,
     clearable: Boolean,
@@ -44,7 +46,7 @@ export default {
       return props.label || "label";
     },
     nodeKey() {
-      return this.$attrs.nodeKey || this.labelKey;
+      return getProp(this.$attrs, "nodeKey") || this.labelKey;
     },
     treePopperClass() {
       return `agel-tree-select-popper ${this.popperClass || ""}`;
@@ -63,9 +65,9 @@ export default {
   },
   methods: {
     selectedTree() {
-      let data = this.$attrs.data;
+      let data = this.data;
       let value = this.value;
-      if (value === undefined || value == "") return;
+      if (value === undefined || value == "" || value == null) return;
       if (data && data.length > 0) {
         if (this.multiple) {
           this.$refs.ref.setCheckedKeys(value);
