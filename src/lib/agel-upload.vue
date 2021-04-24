@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     slotsIf() {
-      let slots = isEmpty(this.scopedSlots);
+      let slots = !isEmpty(this.scopedSlots);
       let drag = this.$attrs.drag !== undefined;
       let pictureCard = getProp(this.$attrs, "listType") == "picture-card";
       let customUpload = getProp(this.$attrs, "autoUpload");

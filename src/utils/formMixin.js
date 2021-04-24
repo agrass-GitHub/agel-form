@@ -1,4 +1,5 @@
 import slotRender from "../lib/slot-render.js";
+import { isEmpty } from "element-ui/src/utils/util";
 
 export default {
   components: {
@@ -19,7 +20,7 @@ export default {
   },
   computed: {
     scopedSlots() {
-      return this.slots || this.$scopedSlots
+      return !isEmpty(this.slots) ? this.slots : this.$scopedSlots
     }
   },
   methods: {

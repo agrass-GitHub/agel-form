@@ -1,21 +1,15 @@
 <template>
   <div class="demo">
-    <agel-checkbox v-model="value" :options="options">
-      <template v-slot="{option,index}">
-        <el-tag>{{index}}：{{option.label}}</el-tag>
-      </template>
-    </agel-checkbox>
+    <agel-upload v-model="value" :action="action" :limitSize="1" drag></agel-upload>
   </div>
 </template>
  
 <script>
-import agelCheckbox from "../../../src/lib/agel-checkbox.vue";
 export default {
-  components: { agelCheckbox },
   data() {
     return {
-      value: true,
-      options: ["男", "女"],
+      value: [],
+      action: "/xxx/upload",
     };
   },
 };
