@@ -1,13 +1,13 @@
 <template>
   <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs.form" v-on="attrs.on||{}">
     <template v-if="value.inline">
-      <agel-form-item v-for="(item, prop) in items" :item="item" :data="value.data" :prop="prop" :ref="prop" :key="prop" @update-item="updateItem">
+      <agel-form-item v-for="(item, prop) in items" :item="item" :data="value.data" :prop="prop" :ref="prop" :key="prop">
         <slot :name="prop"></slot>
       </agel-form-item>
     </template>
     <el-row v-else v-bind="attrs.row">
       <el-col v-for="(item, prop) in items" v-bind="item._col" :key="prop">
-        <agel-form-item :item="item" :data="value.data" :prop="prop" :ref="prop" @update-item="updateItem">
+        <agel-form-item :item="item" :data="value.data" :prop="prop" :ref="prop">
           <slot :name="prop"></slot>
         </agel-form-item>
       </el-col>
@@ -38,6 +38,7 @@ import {
 export default {
   name: "agel-form",
   inheritAttrs: false,
+  // components: components,
   components: {
     agelFormItem,
   },
@@ -267,17 +268,6 @@ export default {
         if ((obj.hasOwnProperty(key) && !cover) || target[key] == undefined)
           continue;
         this.$set(obj, key, target[key]);
-      }
-    },
-    // 更新某一个 item 属性
-    updateItem(prop, attrs) {
-      let item = this.getItem(prop);
-      for (const key in attrs) {
-        if (item.hasOwnProperty(key)) {
-          item[key] = attrs[key];
-        } else {
-          this.$set(item, key, attrs[key]);
-        }
       }
     },
     // 暴露出去的功能函数

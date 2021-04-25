@@ -1,5 +1,13 @@
 <template>
-  <agel-form class="demo" v-model="form"></agel-form>
+  <div class="demo">
+    <agel-form class="demo" v-model="form"></agel-form>
+    <agel-map-input>
+      <el-tag>wwwwwwwwwww</el-tag>
+      <template v-slot:name="props">
+        <span>11{{props.user}}</span>
+      </template>
+    </agel-map-input>
+  </div>
 </template>
  
 <script>
@@ -11,27 +19,14 @@ export default {
         data: {},
         items: {
           slotStyle: {
-            label: "插槽 样式",
+            label: "",
             component: "agel-map-input",
-            slots: "查询", // 按钮插槽
-            // slots: {
-            //   default: () => {
-            //     return <el-tag>wwwwwwwwwww</el-tag>;
-            //   },
-            //   name: (props) => {
-            //     return <span>{props.user}</span>;
-            //   },
-            // },
-          },
-          search: {
-            component: "el-button",
-            type: "primary",
-            icon: "el-icon-search",
-            ignore: true, // 表明该组件是一个纯展示组件，属性则不会与表单关联
-            slots: "查询", // 按钮插槽
-            on: {
-              click: () => {
-                this.$message.info("查询");
+            slots: {
+              default: () => {
+                return <el-tag>wwwwwwwwwww</el-tag>;
+              },
+              name: (props) => {
+                return <span>11{props.user}</span>;
               },
             },
           },
