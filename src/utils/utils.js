@@ -1,17 +1,22 @@
+import { isVNode } from "element-ui/src/utils/vdom";
+
 // 驼峰转短横线 
-export const kebabcase = (v) => v.replace(/([A-Z])/g, "-$1").toLowerCase();
+export function kebabcase(v) {
+  return v.replace(/([A-Z])/g, "-$1").toLowerCase()
+};
 
 // 短横线转驼峰 
-export const humpcase = (v) => v.replace(/-(\w)/g, (a, b) => b.toUpperCase());
-
-// 获取 prop 值 支持两种写法
-export function getProp(obj, key) {
-  let kebabKey = kebabcase(key);
-  if (obj[kebabKey]) return obj[kebabKey];
-  let humpkey = humpcase(key);
-  if (obj[humpkey]) return obj[humpkey];
+export function humpcase(v) {
+  return v.replace(/-(\w)/g, (a, b) => b.toUpperCase())
 }
 
+// 获取 prop 值 ，以支持短横线，驼峰，两种写法
+export function getProp(obj, key) {
+  let key1 = kebabcase(key);
+  if (obj.hasOwnProperty(key1)) return obj[key1] == undefined ? true : obj[key1]
+  let key2 = humpcase(key);
+  if (obj.hasOwnProperty(key2)) return obj[key2] == undefined ? true : obj[key2]
+}
 
 // 数组是否存在 key
 export function includesKey(keys, key) {

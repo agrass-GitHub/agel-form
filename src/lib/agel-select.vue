@@ -1,40 +1,63 @@
 <template>
-  <el-select class="agel-select" ref="ref" v-bind="$attrs" :value="value" :popperClass="popperClass" :loading="loading" :placeholder="placeholder"
-    v-on='on' @input="input">
-    <slot-render v-for="(render,slot) in scopedSlots" :key="slot" :slot="slot" :render="render"></slot-render>
-    <div class="filter-item" v-if="!scopedSlots.default&&filter">
-      <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini" clearable></el-input>
-    </div>
-    <el-option class="empty-option" v-if="!scopedSlots.default&&filter && filterOptions.length==0" label="无匹配数据" value="无匹配数据" disabled> </el-option>
-    <template v-if="!scopedSlots.default&&isGroup">
-      <el-option-group v-for="group in filterOptions" :key="group.label" :label="group.label">
-        <el-option v-for="(option) of group.options || [] " v-bind='option' :key="option.label" :label="option.label"
-          :value="valueKey?option:option.value">
-        </el-option>
-      </el-option-group>
+  <el-select class="agel-select" ref="ref" v-bind="$attrs" v-on="$listeners" :value="isLoading?undefined:value" :loading="isLoading"
+    :placeholder="isLoading?loadingText:placeholder" :loading-text="loadingText" :popperClass="popperClass">
+    <template v-slot:prefix>
+      <slot name="prefix"></slot>
     </template>
-    <template v-if="!scopedSlots.default&&!isGroup">
-      <el-option v-for="(option) of filterOptions" v-bind='option' :key="option.label" :label="option.label" :value="valueKey?option:option.value">
+    <template v-slot:empty>
+      <slot name="empty"></slot>
+    </template>
+    <template v-slot:default v-if="$slots.defaul">
+      <slot name="default"></slot>
+    </template>
+    <template v-else>
+      <div class="filter-item" v-if="filter">
+        <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini" clearable></el-input>
+      </div>
+      <el-option class="empty-option" v-if="filter && filterOptions.length==0" :label="filterEmptyText" :value="filterEmptyText" disabled>
       </el-option>
+      <template v-if="isGroup">
+        <el-option-group v-for="group in filterOptions" :key="group.label" :label="group.label">
+          <el-option v-for="(option,index) of group.options || [] " v-bind='option' :key="option.label" :label="option.label"
+            :value="valueKey?option:option.value">
+            <slot name="option" :option="option" :index="index" :group="group"></slot>
+          </el-option>
+        </el-option-group>
+      </template>
+      <template v-else>
+        <el-option v-for="(option,index) of filterOptions" v-bind='option' :key="option.label" :label="option.label"
+          :value="valueKey?option:option.value">
+          <slot name="option" :option="option" :index="index"></slot>
+        </el-option>
+      </template>
     </template>
   </el-select>
 </template>
 
 <script>
-import formMixin from "../utils/formMixin";
 import optionsMinxin from "../utils/optionsMinxin";
 import { getProp } from "../utils/utils";
 
 export default {
   name: "agel-select",
-  mixins: [formMixin, optionsMinxin],
+  mixins: [optionsMinxin],
   inheritAttrs: false,
   props: {
-    value: [String, Number],
+    value: [String, Number, Array],
     filter: Boolean,
+    loading: Boolean,
+    placeholder: String,
     loadingText: {
       type: String,
       default: "加载中...",
+    },
+    noDataText: {
+      type: String,
+      default: "无数据",
+    },
+    noMatchText: {
+      type: String,
+      default: "无匹配数据",
     },
   },
   data() {
@@ -43,11 +66,8 @@ export default {
     };
   },
   computed: {
-    loading() {
-      return this.$attrs.loading || this.optionsLoading;
-    },
-    placeholder() {
-      return this.loading ? this.loadingText : this.$attrs.placeholder;
+    isLoading() {
+      return this.loading || this.optionsLoading;
     },
     valueKey() {
       return getProp(this.$attrs, "valueKey");
@@ -64,6 +84,13 @@ export default {
     filterOptions() {
       let jsonArr = JSON.parse(JSON.stringify(this.optionsData));
       return this.handleFilterNode(jsonArr);
+    },
+    filterEmptyText() {
+      if (this.optionsData.length == 0) {
+        return this.noDataText;
+      } else if (this.filterOptions.length == 0) {
+        return this.noMatchText;
+      }
     },
   },
   methods: {

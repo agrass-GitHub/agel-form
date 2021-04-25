@@ -1,39 +1,40 @@
 <template>
-  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" v-bind="$attrs" :file-list="value||[]"
-    :before-upload="handleBeforeUpload" :on-success="handleSuccess" :on-remove="handleRemove" :on-exceed="handleExceed" :on-preview="handlePreview"
-    :on-error="handleError" v-on="on">
-    <div v-if="tip" slot="tip" class="el-upload__tip">{{ tip }}</div>
-    <!-- 按钮样式 -->
-    <el-button v-if="!slotsIf.slots&&!slotsIf.drag&&!slotsIf.pictureCard" slot="trigger" size="small" type="primary">点击上传
-    </el-button>
-    <!-- 拖拽样式 -->
-    <template v-if="!slotsIf.slots&&slotsIf.drag">
-      <i class="el-icon-upload"></i>
-      <div class="el-upload__text">
-        将文件拖到此处，或
-        <em>点击上传</em>
-      </div>
+  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" :file-list="value||[]" :before-upload="handleBeforeUpload"
+    :on-success="handleSuccess" :on-remove="handleRemove" :on-exceed="handleExceed" :on-preview="handlePreview" :on-error="handleError"
+    v-bind="$attrs" v-on="$listeners">
+    <template v-slot:trigger>
+      <slot name="trigger">
+        <el-button v-if="type.customUpload" size="small" type="primary">选取文件</el-button>
+      </slot>
     </template>
-    <!-- picture-card 样式 -->
-    <i v-if="!slotsIf.slots&&slotsIf.pictureCard" class="el-icon-plus"></i>
-    <!-- 主动上传样式样式 -->
-    <el-button v-if="!slotsIf.slots&&slotsIf.customUpload" style="margin-left: 10px;" size="small" type="success" @click="handleUpload">上传到服务器
-    </el-button>
-    <!-- 自定义 slot -->
-    <template v-if="slotsIf.slots">
-      <slot-render v-for="(render,slot) in scopedSlots" :key="slot" :slot="slot" :render="render"></slot-render>
+    <template v-slot:default>
+      <slot name="default">
+        <template v-if="type.drag">
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">
+            将文件拖到此处，或
+            <em>点击上传</em>
+          </div>
+        </template>
+        <i v-else-if="type.pictureCard" class="el-icon-plus"></i>
+        <el-button v-else-if="type.customUpload" style="margin-left: 10px;" size="small" type="success" @click="handleUpload">上传到服务器
+        </el-button>
+        <el-button v-else size="small" type="primary">点击上传</el-button>
+      </slot>
+    </template>
+    <template v-slot:tip>
+      <slot name="tip">
+        <div v-if="tip" class="el-upload__tip">{{ tip }}</div>
+      </slot>
     </template>
   </el-upload>
 </template>
 
 <script>
-import formMixin from "../utils/formMixin";
 import { getProp } from "../utils/utils";
-import { isEmpty } from "element-ui/src/utils/util";
 
 export default {
   name: "agel-upload",
-  mixins: [formMixin],
   inheritAttrs: false,
   props: {
     value: {
@@ -53,13 +54,11 @@ export default {
     tip: String,
   },
   computed: {
-    slotsIf() {
-      let slots = !isEmpty(this.scopedSlots);
-      let drag = this.$attrs.drag !== undefined;
+    type() {
+      let drag = getProp(this.$attrs, "drag");
       let pictureCard = getProp(this.$attrs, "listType") == "picture-card";
-      let customUpload = getProp(this.$attrs, "autoUpload");
+      let customUpload = getProp(this.$attrs, "autoUpload") == false;
       return {
-        slots,
         drag,
         pictureCard,
         customUpload,
@@ -70,7 +69,7 @@ export default {
     },
   },
   created() {
-    if (this.value == undefined) this.input([]);
+    if (this.value == undefined) this.$emit("input", []);
   },
   methods: {
     onMessage(type, message) {

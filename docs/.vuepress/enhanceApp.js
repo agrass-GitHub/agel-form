@@ -5,6 +5,39 @@ import Element from "element-ui/lib/index";
 import agelForm from "../../src/index"
 import { agelRadio, agelCheckbox, agelSelect, agelUpload, agelTreeSelect } from "../../src/index";
 
+const mockData = {
+  random() {
+    return "随机数" + Math.ceil(Math.random() * 10) + '' + Math.ceil(Math.random() * 10)
+  },
+  "/api/getRandomData": function () {
+    return [this.random(), this.random(), this.random()];
+  },
+  "/api/getRandomTreeData": function () {
+    return [
+      {
+        label: this.random(),
+        value: "1",
+        children: [
+          {
+            label: this.random(),
+            value: "1-1",
+            children: [
+              {
+                label: this.random(),
+                value: "1-1-1",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        label: this.random(),
+        value: "2",
+      },
+    ]
+  }
+}
+
 export default ({ Vue }) => {
   Vue.use(Element, { size: 'mini' });
   Vue.use(agelForm, {
@@ -27,13 +60,14 @@ export default ({ Vue }) => {
   Vue.use(agelUpload);
   Vue.use(agelTreeSelect);
 
+
   //模拟一个 http 请求
   Vue.prototype.$http = {
-    get() {
+    get(url) {
       return new Promise((resolve) => {
         setTimeout(() => {
-          resolve([Math.random(), Math.random(), Math.random()]);
-        }, 1000);
+          resolve(mockData[url]());
+        }, 1500);
       });
     },
   }

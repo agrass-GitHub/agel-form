@@ -1,19 +1,23 @@
 <template>
   <i v-if="optionsLoading" class="agel-options-loading el-icon-loading"></i>
-  <el-radio-group v-else ref="ref" class="agel-radio-group" :value="value" v-bind="$attrs" v-on='on' @input="input">
-    <component :is="radioComponent" v-for="option of optionsData" v-bind="option" :key="option.value" :label="option.value">
-      <slot-render v-for="(render,slot) in scopedSlots" :key="slot" :slot="slot" :render="render" :scopeProps="option"></slot-render>
+  <component v-else-if="optionsData.length==0" class="agel-radio" ref="ref" :is="is" :value="value" v-bind="$attrs" v-on="$listeners">
+    <template v-slot:default>
+      <slot name="default" />
+    </template>
+  </component>
+  <el-radio-group v-else ref="ref" class="agel-radio-group" :value="value" v-bind="$attrs" v-on="$listeners">
+    <component :is="is" v-for="(option,index) of optionsData" v-bind="option" :key="option.value" :label="option.value">
+      <slot name="option" :option="option" :index="index"></slot>
     </component>
   </el-radio-group>
 </template>
 
 <script>
-import formMixin from "../utils/formMixin";
 import optionsMinxin from "../utils/optionsMinxin";
 
 export default {
   name: "agel-radio",
-  mixins: [formMixin, optionsMinxin],
+  mixins: [optionsMinxin],
   inheritAttrs: false,
   props: {
     value: [String, Number, Boolean],
@@ -23,7 +27,7 @@ export default {
     },
   },
   computed: {
-    radioComponent() {
+    is() {
       return this.button ? "el-radio-button" : "el-radio";
     },
   },

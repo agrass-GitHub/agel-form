@@ -20,34 +20,29 @@ export default {
   methods: {
     async getOptions() {
       let options = this.options || [];
+      this.optionsData = [];
       if (Array.isArray(options)) {
         this.optionsData = this.getOptionsData(options);
       } else if (typeof options == "function") {
-        this.setAsynctOptionsData(options())
+        this.optionsLoading = true;
+        this.optionsData = this.getOptionsData(await options());
+        this.optionsLoading = false;
       } else if (options instanceof Promise) {
-        this.setAsynctOptionsData(options)
+        this.optionsLoading = true;
+        this.optionsData = this.getOptionsData(await options);
+        this.optionsLoading = false;
       }
-    },
-    async setAsynctOptionsData(promiseObj) {
-      let value = this.value;
-      this.input("");
-      this.optionsLoading = true;
-      this.optionsData = this.getOptionsData(await promiseObj);
-      this.input(value);
-      this.optionsLoading = false;
     },
     getOptionsData(options) {
       let props = this.props;
-      return options.map((opt) => {
-        let type = typeof opt;
+      return options.map((item) => {
+        let type = typeof item;
         if (type == "string" || type == "number") {
-          return { label: opt, value: opt };
+          return { label: item, value: item };
         } else if (type == "object") {
-          return this.getOptionByProps ? this.getOptionByProps(opt) : {
-            ...opt,
-            label: opt[props.label],
-            value: opt[props.value],
-          }
+          return this.getOptionByProps ?
+            this.getOptionByProps(item) :
+            Object.assign({ label: item[props.label], value: item[props.value], item })
         }
       });
     }

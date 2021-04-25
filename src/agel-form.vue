@@ -169,7 +169,6 @@ export default {
         Object.assign(agItem, getIncludeAttrs(agItemPropKyes, item));
         // 是否为二次封装组件
         if (agComponentKeys.includes("ag" + name)) {
-          agItem.custom = true;
           agItem.component = "ag" + name;
         }
         // 包裹默认 slots

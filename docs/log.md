@@ -4,22 +4,23 @@ sidebar: auto
 ---
 
 ## v.0.1.3
-- `新增` el-checkbox-group el-checkbox 统一合并为 el-checkbox
-- `调整` el-radio-group 更改名称为 el-radio
-- `新增` el-select el-checkbox el-radio 支持字符串数组，异步函数，Promise 配置 options
+- `调整` 移除 item.show 属性
+- `调整` slot render 函数不再传递 h（$createElement） 参数
+- `调整` agel-radio-group 更改名称为 agel-radio，合并了 el-radio-group el-radio  两个组件功能
+- `调整` agel-checkbox-group 更改名称为 agel-checkbox，合并了 el-checkbox-group el-checkbox  两个组件功能
+- `新增` el-select  el-checkbox el-radio 组件的 options 属性支持字符串数组，异步函数，Promise
+- `新增` el-tree-select 新增 options 属性，支持字符串数组，异步函数，Promise，兼容 data 属性
 - `新增` 根据表单字段初始化 form.data，关联响应式
 - `新增` form.responsive  form.responsiveMethod 根据父容器宽度自动响应式
-- `新增` item.display  属性支持函数配置，可关联字段
-- `新增` item.disabled 属性支持函数配置，可关联字段
-- `调整` 移除 item.show 属性
-- `调整` slot render 函数移除 h（$createElement） 参数
+- `新增` item.display  属性支持函数配置，实现表单联动
+- `新增` item.disabled 属性支持函数配置，实现表单联动
 - `新增` 单组件支持在项目中单独引入使用
 - `优化` 全局配置支持对象，函数形式写法
 - `优化` 使用文档重构
 
 ## v.0.1.2
-- `修复` el-select 在开启 filter 且有分组的情况下，过滤报错的问题
-- `修复` agel-tree-select，value change 的时候没有自动回填
+- `bug` el-select 在开启 filter 且有分组的情况下，过滤报错的问题
+- `bug` agel-tree-select，value change 的时候没有自动回填
 - `新增` el-upload 添加 limitHide 属性，超出限制隐藏上传按钮
 - `新增` el-upload 添加 preview 属性可设置为函数
 - `新增` 方便自定义组件，新增 item.custom 属性
@@ -27,7 +28,7 @@ sidebar: auto
 - `调整` input-tree 更改名称为 tree-select
 
 ## v.0.1.1
-- `修复` el-upload 在外网预览 doc 文件失败，由 xdocin 转为 微软 officeapps 服务提供在线预览
+- `bug` el-upload 在外网预览 doc 文件失败，由 xdocin 转为 微软 officeapps 服务提供在线预览
 
 ## v.0.1.0
 - `新增` items 支持数组配置，添加 getItem 内置方法

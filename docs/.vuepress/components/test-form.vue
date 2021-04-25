@@ -1,37 +1,42 @@
 <template>
-  <div class="demo">
-    <span>组件：</span>
-    <agel-tree-select v-model="value" node-key="value" :data="data" filter></agel-tree-select>
-  </div>
+  <agel-form class="demo" v-model="form"></agel-form>
 </template>
  
 <script>
 export default {
   data() {
     return {
-      value: "1",
-      data: [
-        {
-          label: "一级 1",
-          value: "1",
-          children: [
-            {
-              label: "二级 1-1",
-              value: "1-1",
-              children: [
-                {
-                  label: "三级 1-1-1",
-                  value: "1-1-1",
-                },
-              ],
+      form: {
+        inline: true,
+        data: {},
+        items: {
+          slotStyle: {
+            label: "插槽 样式",
+            component: "agel-map-input",
+            slots: "查询", // 按钮插槽
+            // slots: {
+            //   default: () => {
+            //     return <el-tag>wwwwwwwwwww</el-tag>;
+            //   },
+            //   name: (props) => {
+            //     return <span>{props.user}</span>;
+            //   },
+            // },
+          },
+          search: {
+            component: "el-button",
+            type: "primary",
+            icon: "el-icon-search",
+            ignore: true, // 表明该组件是一个纯展示组件，属性则不会与表单关联
+            slots: "查询", // 按钮插槽
+            on: {
+              click: () => {
+                this.$message.info("查询");
+              },
             },
-          ],
+          },
         },
-        {
-          label: "二级 ",
-          value: "2",
-        },
-      ],
+      },
     };
   },
 };

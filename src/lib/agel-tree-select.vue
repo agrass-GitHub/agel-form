@@ -1,38 +1,45 @@
 <template>
-  <el-select class="agel-tree-select" :popper-class="treePopperClass" ref="select" :value="text" :multiple="multiple" :placeholder="placeholder"
-    :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" v-on='on' @click.native="initScroll" @clear="handleClear">
+  <el-select class="agel-tree-select" :popper-class="treePopperClass" ref="select" :value="isLoading?undefined:text" :multiple="multiple"
+    :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" v-on="$listeners" @click.native="initScroll" :loading="isLoading"
+    :placeholder="isLoading?loadingText:placeholder" :loading-text="loadingText" @clear="handleClear">
     <div class="filter-item" v-if="filter">
       <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini"></el-input>
     </div>
     <el-option value="tree-option-value">
-      <el-tree ref="ref" class="tree-option" :data="data" :show-checkbox="multiple" :highlight-current="!multiple" :node-key="nodeKey"
-        :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs" v-on='on' @current-change="handleCurrentChange"
-        @check-change="handleCheckChange">
+      <el-tree ref="ref" class="tree-option" :data="treeData" :props="props" :show-checkbox="multiple" :highlight-current="!multiple"
+        :node-key="nodeKey" :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs" v-on="$listeners"
+        @current-change="handleCurrentChange" @check-change="handleCheckChange">
       </el-tree>
     </el-option>
   </el-select>
 </template>
  
 <script>
-import formMixin from "../utils/formMixin";
+import optionsMinxin from "../utils/optionsMinxin";
 import { getProp } from "../utils/utils";
+import { isEmpty } from "element-ui/src/utils/util";
 
 export default {
   name: "agel-tree-select",
-  mixins: [formMixin],
+  mixins: [optionsMinxin],
   inheritAttrs: false,
   props: {
     value: [String, Number, Array],
-    data: [Array, Function, Promise],
-    placeholder: String,
+    props: Object, // 覆盖 optionsMinxin 的默认 props
+    loading: Boolean,
     disabled: Boolean,
     clearable: Boolean,
     multiple: Boolean,
     collapseTags: Boolean,
+    placeholder: String,
     filter: Boolean,
     popperClass: String,
     leafOnly: Boolean,
     includeHalfChecked: Boolean,
+    loadingText: {
+      type: String,
+      default: "加载中...",
+    },
   },
   data() {
     return {
@@ -41,12 +48,20 @@ export default {
     };
   },
   computed: {
+    isLoading() {
+      return this.loading || this.optionsLoading;
+    },
     labelKey() {
-      let props = this.$attrs.props || {};
+      let props = this.props || {};
       return props.label || "label";
     },
     nodeKey() {
-      return getProp(this.$attrs, "nodeKey") || this.labelKey;
+      return getProp(this.$attrs, "lazy")
+        ? this.labelKey
+        : getProp(this.$attrs, "nodeKey") || this.labelKey;
+    },
+    treeData() {
+      return !isEmpty(this.optionsData) ? this.optionsData : this.$attrs.data;
     },
     treePopperClass() {
       return `agel-tree-select-popper ${this.popperClass || ""}`;
@@ -56,6 +71,9 @@ export default {
     value() {
       this.selectedTree();
     },
+    treeData() {
+      this.$nextTick(this.selectedTree);
+    },
     filterText(val) {
       this.$refs.ref.filter(val);
     },
@@ -64,20 +82,26 @@ export default {
     this.selectedTree();
   },
   methods: {
+    // 根据 value 回填 text
     selectedTree() {
-      let data = this.data;
+      let data = this.treeData;
       let value = this.value;
-      if (value === undefined || value == "" || value == null) return;
-      if (data && data.length > 0) {
+      if (isEmpty(value)) return;
+      if (getProp(this.$attrs, "lazy")) {
+        this.text = value;
+      } else if (data && data.length > 0) {
         if (this.multiple) {
           this.$refs.ref.setCheckedKeys(value);
+          const list = this.$refs.ref.getCheckedNodes(
+            this.leafOnly,
+            this.includeHalfChecked
+          );
+          this.text = list.map((v) => v[this.labelKey]);
         } else {
           this.$refs.ref.setCurrentKey(value);
           let node = this.$refs.ref.getCurrentNode();
           this.text = node ? node[this.labelKey] : value;
         }
-      } else if (this.$attrs.lazy) {
-        this.text = value;
       }
     },
     handleCurrentChange(data, node) {
@@ -94,8 +118,8 @@ export default {
         this.leafOnly,
         this.includeHalfChecked
       );
-      const value = list.map((v) => v[this.nodeKey]);
       this.text = list.map((v) => v[this.labelKey]);
+      const value = list.map((v) => v[this.nodeKey]);
       this.$emit("input", value);
       if (this.on.checkChange) {
         this.on.checkChange(data, checked, indeterminate);
@@ -104,8 +128,9 @@ export default {
     handleFilterNode(filterText, data) {
       let value = filterText.trim();
       if (value === "") return true;
-      if (this.$attrs.filterNode) {
-        return this.$attrs.filterNode(value, data);
+      let filterNodeMethod = getProp(this.$attrs, "filterNode");
+      if (filterNodeMethod) {
+        return filterNodeMethod(value, data);
       } else {
         return String(data[this.labelKey]).indexOf(value) !== -1;
       }
@@ -115,6 +140,9 @@ export default {
       this.$emit("input", this.multiple ? [] : "");
       this.$refs.ref.setCurrentKey(null);
       this.$refs.ref.setCheckedKeys([]);
+    },
+    getOptionsData(options) {
+      return options;
     },
     initScroll() {
       setTimeout(() => {

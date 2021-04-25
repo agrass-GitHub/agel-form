@@ -44,6 +44,7 @@
 
 | 属性          |   说明                                   | 
 | -----------    |   ------------------------------------  | 
-| default        |  Option 组件列表           |
+| default        |  默认插槽           |
 | prefix         |  Select 组件头部内容                        |
 | empty          |  无选项时的列表                        | 
+| option         |  每一个选择项插槽，参数 {option,index,group} |

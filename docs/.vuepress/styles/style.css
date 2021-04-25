@@ -6,3 +6,8 @@
   margin:20px 0px;
 }
 
+
+.border{
+  border: 1px dotted #409eff;
+  padding: 10px;
+}

@@ -1,22 +1,23 @@
 <template>
   <i v-if="optionsLoading" class="agel-options-loading el-icon-loading"></i>
-  <el-checkbox class="agel-checkbox" v-else-if="optionsData.length==0" :value="value" ref="ref" v-bind="$attrs" v-on='on' @input="input">
-    <slot-render v-for="(render,slot) in scopedSlots" :key="slot" :slot="slot" :render="render"></slot-render>
-  </el-checkbox>
-  <el-checkbox-group v-else ref="ref" class="agel-checkbox-group" :value="value" v-bind="$attrs" v-on='on' @input="input">
-    <component :is="checkboxComponent" v-for="(option,index) of optionsData" v-bind="option" :key="option.value" :label="option.value">
-      <slot-render v-for="(render,slot) in scopedSlots" :key="slot" :slot="slot" :render="render" :scopeProps="{option,index}"></slot-render>
+  <component v-else-if="optionsData.length==0" class="agel-checkbox" :is="is" :value="value" ref="ref" v-bind="$attrs" v-on="$listeners">
+    <template v-slot:default>
+      <slot name="default" />
+    </template>
+  </component>
+  <el-checkbox-group v-else ref="ref" class="agel-checkbox-group" :value="value" v-bind="$attrs" v-on="$listeners">
+    <component :is="is" v-for="(option,index) of optionsData" v-bind="option" :key="option.value" :label="option.value">
+      <slot name="option" :option="option" :index="index"></slot>
     </component>
   </el-checkbox-group>
 </template>
 
 <script>
-import formMixin from "../utils/formMixin";
 import optionsMinxin from "../utils/optionsMinxin";
 
 export default {
   name: "agel-checkbox",
-  mixins: [formMixin, optionsMinxin],
+  mixins: [optionsMinxin],
   props: {
     value: [Boolean, Array],
     button: {
@@ -25,12 +26,9 @@ export default {
     },
   },
   computed: {
-    checkboxComponent() {
+    is() {
       return this.button ? "el-checkbox-button" : "el-checkbox";
     },
-  },
-  mounted() {
-    console.log(this.$scopedSlots);
   },
   install(vue) {
     vue.component(this.name, this);
