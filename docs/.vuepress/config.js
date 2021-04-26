@@ -31,8 +31,8 @@ module.exports = {
           '/component/',
           '/component/agel-select',
           '/component/agel-checkbox-radio',
-          '/component/agel-upload',
           '/component/agel-tree-select',
+          '/component/agel-upload',
         ]
       },
     ],

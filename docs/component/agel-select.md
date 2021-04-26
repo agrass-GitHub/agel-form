@@ -26,21 +26,13 @@
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......        | .........   |  Element-ui [Select Attributes](https://element.eleme.cn/#/zh-CN/component/select#select-attributes)      | 
+| ......      | ......        | .........   | 支持所有 [el-select 属性](https://element.eleme.cn/#/zh-CN/component/select#select-attributes)      | 
 | filter      | Boolean       | false       | 是否开启过滤查询                | 
 | options     | Array/Function/Promise    |  -     | option 配置项         | 
-| props       | Object        |  {label,value}     | label,value 别名          |
-| slots       | Object        | -                   | 自定义插槽    | 
+| props       | Object        |  {label,value}     | 数据配置选项          |
+| slots       | Object        | -                  | 自定义插槽    | 
 
-## Select method
-
-| 属性          | 参数           |  说明                                   | 
-| -----------   | ------------  |  ------------------------------------  | 
-| focus         | -             |  聚焦                        |
-| blur          | -             |  失焦            | 
-| getOptions    | -             |  options 为 Function 时可调用           |
-
-## Select slots
+## Select Slots
 
 | 属性          |   说明                                   | 
 | -----------    |   ------------------------------------  | 
@@ -48,3 +40,17 @@
 | prefix         |  Select 组件头部内容                        |
 | empty          |  无选项时的列表                        | 
 | option         |  每一个选择项插槽，参数 {option,index,group} |
+
+## Select Methods
+
+| 属性          | 参数           |  说明                                   | 
+| -----------   | ------------  |  ------------------------------------  | 
+| focus         | -             |  聚焦                        |
+| blur          | -             |  失焦            | 
+| getOptions    | -             |  刷新数据， options 为 Function 时可调用           |
+
+## Select Events
+
+| 属性          | 参数           |  说明                                   | 
+| -----------   | ------------  |  ------------------------------------  | 
+| ......        | ......        | 支持所有 [el-select 事件](https://element.eleme.cn/#/zh-CN/component/select#tree-events)      | 

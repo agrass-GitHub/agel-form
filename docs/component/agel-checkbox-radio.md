@@ -1,4 +1,4 @@
-# checkbox radio 选择框
+# Checkbox Radio 选择框
 
 `agel-checkbox` 组件是基于 `el-checkbox` `el-checkbox-group` 组件的二次封装组件。
 
@@ -28,16 +28,23 @@
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......        | .........   |  Element-ui [Radio Attributes](https://element.eleme.cn/#/zh-CN/component/radio#radio-attributes)      | 
-| ......      | ......        | .........   |  Element-ui [Checkbox Attributes](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-attributes)      | 
+| ......      | ......        | .........   | 支持所有 [el-radio 属性](https://element.eleme.cn/#/zh-CN/component/radio#radio-attributes)      | 
+| ......      | ......        | .........   | 支持所有 [el-checkbox 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-attributes)      | 
 | options     | Array/Function/Promise    |  -     | option 配置项         | 
-| props       | Object        |  {label,value}     | label,value 别名          |
-| button      | Boolean       |  -          | 是否开启 button 样式         |
-| slots       | Object        | -  | 自定义插槽    |  
+| props       | Object        |  {label,value}     | 数据配置选项          |
+| button      | Boolean       |  -                 | 是否开启 button 样式         |
+| slots       | Object        | -                  | 自定义插槽    |  
 
-## Radio Checkbox slots
+## Radio Checkbox Slots
 
 | 属性          |   说明                                   | 
 | -----------    |   ------------------------------------  | 
 | default        |   选择框默认插槽          |
 | option         |   每一个选择项插槽，参数 {option,index}          |
+
+## Radio Checkbox事件
+
+| 属性          | 参数           |  说明                                   | 
+| -----------   | ------------  |  ------------------------------------  | 
+| ......        | ......        | 支持所有 [el-radio Events](https://element.eleme.cn/#/zh-CN/component/radio#radio-events)      | 
+| ......        | ......        | 支持所有 [el-checkbox Events](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-events)      | 

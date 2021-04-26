@@ -1,11 +1,11 @@
 <template>
   <el-select class="agel-tree-select" :popper-class="treePopperClass" ref="select" :value="isLoading?undefined:text" :multiple="multiple"
-    :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" v-on="$listeners" @click.native="initScroll" :loading="isLoading"
-    :placeholder="isLoading?loadingText:placeholder" :loading-text="loadingText" @clear="handleClear">
+    :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" :loading="isLoading" :placeholder="isLoading?loadingText:placeholder"
+    :loading-text="loadingText" v-on="$listeners" @click.native="initScroll" @clear="handleClear">
     <div class="filter-item" v-if="filter">
       <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini"></el-input>
     </div>
-    <el-option value="tree-option-value">
+    <el-option value="" disabled>
       <el-tree ref="ref" class="tree-option" :data="treeData" :props="props" :show-checkbox="multiple" :highlight-current="!multiple"
         :node-key="nodeKey" :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs" v-on="$listeners"
         @current-change="handleCurrentChange" @check-change="handleCheckChange">
@@ -25,17 +25,17 @@ export default {
   inheritAttrs: false,
   props: {
     value: [String, Number, Array],
-    props: Object, // 覆盖 optionsMinxin 的默认 props
-    loading: Boolean,
-    disabled: Boolean,
-    clearable: Boolean,
-    multiple: Boolean,
-    collapseTags: Boolean,
-    placeholder: String,
     filter: Boolean,
-    popperClass: String,
     leafOnly: Boolean,
     includeHalfChecked: Boolean,
+    props: Object, // 覆盖 optionsMinxin 的默认 props
+    multiple: Boolean,
+    placeholder: String,
+    disabled: Boolean,
+    loading: Boolean,
+    clearable: Boolean,
+    collapseTags: Boolean,
+    popperClass: String,
     loadingText: {
       type: String,
       default: "加载中...",
@@ -48,6 +48,9 @@ export default {
     };
   },
   computed: {
+    isLazy() {
+      return this.$attrs.lazy == true || this.$attrs.lazy == "";
+    },
     isLoading() {
       return this.loading || this.optionsLoading;
     },
@@ -56,7 +59,7 @@ export default {
       return props.label || "label";
     },
     nodeKey() {
-      return getProp(this.$attrs, "lazy")
+      return this.isLazy
         ? this.labelKey
         : getProp(this.$attrs, "nodeKey") || this.labelKey;
     },
@@ -87,43 +90,29 @@ export default {
       let data = this.treeData;
       let value = this.value;
       if (isEmpty(value)) return;
-      if (getProp(this.$attrs, "lazy")) {
-        this.text = value;
-      } else if (data && data.length > 0) {
+      if (data && data.length > 0) {
         if (this.multiple) {
           this.$refs.ref.setCheckedKeys(value);
-          const list = this.$refs.ref.getCheckedNodes(
-            this.leafOnly,
-            this.includeHalfChecked
-          );
-          this.text = list.map((v) => v[this.labelKey]);
+          this.text = this.getValueNode().map((v) => v[this.labelKey]);
         } else {
           this.$refs.ref.setCurrentKey(value);
-          let node = this.$refs.ref.getCurrentNode();
-          this.text = node ? node[this.labelKey] : value;
+          this.text = this.getValueNode()[this.labelKey];
         }
+      } else if (this.isLazy) {
+        this.text = value;
       }
     },
     handleCurrentChange(data, node) {
       if (node.disabled || this.multiple) return;
-      this.text = data[this.labelKey];
-      this.$emit("input", data[this.nodeKey]);
-      this.$refs.select.blur();
-      if (this.on.currentChange) {
-        this.on.currentChange(data, node);
-      }
+      this.text = this.getValueNode()[this.labelKey];
+      this.input(data[this.nodeKey]);
+      this.blur();
     },
-    handleCheckChange(data, checked, indeterminate) {
-      const list = this.$refs.ref.getCheckedNodes(
-        this.leafOnly,
-        this.includeHalfChecked
-      );
+    handleCheckChange() {
+      const list = this.getValueNode();
       this.text = list.map((v) => v[this.labelKey]);
       const value = list.map((v) => v[this.nodeKey]);
-      this.$emit("input", value);
-      if (this.on.checkChange) {
-        this.on.checkChange(data, checked, indeterminate);
-      }
+      this.input(value);
     },
     handleFilterNode(filterText, data) {
       let value = filterText.trim();
@@ -137,24 +126,44 @@ export default {
     },
     handleClear() {
       this.text = "";
-      this.$emit("input", this.multiple ? [] : "");
+      this.input(this.multiple ? [] : "");
       this.$refs.ref.setCurrentKey(null);
       this.$refs.ref.setCheckedKeys([]);
     },
-    getOptionsData(options) {
-      return options;
+    focus() {
+      this.$refs.select.focus();
+    },
+    blur() {
+      this.$refs.select.blur();
+    },
+    input(v) {
+      this.$emit("input", v);
+      this.$emit("change", v); // 需手动触发 change 事件
+    },
+    getValueNode() {
+      if (this.multiple) {
+        return this.$refs.ref.getCheckedNodes(
+          this.leafOnly,
+          this.includeHalfChecked
+        );
+      } else {
+        return this.$refs.ref.getCurrentNode();
+      }
     },
     initScroll() {
       setTimeout(() => {
         this.$nextTick(() => {
-          let scrollBar = document.querySelectorAll(
-            ".el-scrollbar .el-select-dropdown__wrap"
-          );
-          scrollBar.forEach((ele) => {
-            ele.scrollTop = 0;
-          });
+          document
+            .querySelectorAll(
+              ".agel-tree-select-popper .el-scrollbar .el-select-dropdown__wrap"
+            )
+            .forEach((el) => (el.scrollTop = 0));
         });
       }, 0);
+    },
+    // 覆盖 options mixin 默认函数
+    getOptionsData(options) {
+      return options;
     },
   },
   install(vue) {

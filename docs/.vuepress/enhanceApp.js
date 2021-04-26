@@ -10,7 +10,7 @@ const mockData = {
     return "随机数" + Math.ceil(Math.random() * 10) + '' + Math.ceil(Math.random() * 10)
   },
   "/api/getRandomData": function () {
-    return [this.random(), this.random(), this.random()];
+    return [{ label: this.random(), value: '1' }, { label: this.random(), value: '2' }, { label: this.random(), value: '3' }];
   },
   "/api/getRandomTreeData": function () {
     return [

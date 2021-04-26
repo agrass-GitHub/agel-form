@@ -1,6 +1,7 @@
 <template>
   <div class="demo">
     <agel-form v-model="form"> </agel-form>
+    <el-button type="primary" @click="getOptions">刷新 options</el-button>
     <el-button type="primary" @click="getRef">获取组件实例（查看控制台）</el-button>
     <el-button type="primary" @click="getItem">获取组件Item（查看控制台）</el-button>
   </div>
@@ -56,9 +57,8 @@ export default {
   data() {
     return {
       form: {
-        "label-position": "right",
-        "label-width": "80px",
-        span: 18,
+        labelWidth: "100px",
+        span: 12,
         data: {
           tree1: "2",
           tree2: ["1-1-1", "2-1-1"],
@@ -69,7 +69,12 @@ export default {
             label: "普通树形",
             component: "el-tree-select",
             nodeKey: "value",
-            data: treeData,
+            options: treeData,
+            on: {
+              change: (v) => {
+                console.log(v);
+              },
+            },
           },
           {
             prop: "tree2",
@@ -77,9 +82,8 @@ export default {
             component: "el-tree-select",
             nodeKey: "value",
             multiple: true,
-            leafOnly: true,
-            multipleLimit: 2,
-            data: treeData,
+            leafOnly: true, // 只包含叶子节点
+            options: treeData,
           },
           {
             prop: "tree3",
@@ -87,7 +91,7 @@ export default {
             component: "el-tree-select",
             nodeKey: "value",
             filter: true,
-            data: treeData,
+            options: treeData,
           },
           {
             prop: "tree4",
@@ -119,15 +123,50 @@ export default {
               }, 500);
             },
           },
+          {
+            prop: "tree5",
+            label: "异步树形",
+            component: "el-tree-select",
+            nodeKey: "value",
+            options: async () => {
+              let data = await this.$http.get("/api/getRandomTreeData");
+              return data;
+            },
+          },
+          {
+            prop: "tree6",
+            label: "自定义树形",
+            component: "el-tree-select",
+            nodeKey: "value",
+            options: this.$http.get("/api/getRandomTreeData"),
+            renderContent: (h, { node, data, store }) => {
+              return (
+                <span class="custom-tree-node">
+                  <i
+                    class="el-icon-eleme"
+                    style="color:#409EFF;margin-right:5px"
+                  ></i>
+                  <span>{node.label}</span>
+                </span>
+              );
+            },
+          },
         ],
       },
     };
   },
   methods: {
+    getOptions() {
+      this.form.getRef("tree5").getOptions();
+    },
     getRef() {
-      console.log(this.form.getRef("tree1"));
+      let tree = this.form.getRef("tree1");
+      console.log(" ------ agel-tree-select 实例------ ", tree);
+      console.log(" ------ el-tree 实例------", tree.$refs.ref);
+      console.log(" ------ el-select 实例------", tree.$refs.select);
     },
     getItem() {
+      console.log("items 可以是数组配置，getItem 快速获取对应对象进行修改");
       console.log(this.form.getItem("tree1"));
     },
   },

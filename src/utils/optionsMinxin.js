@@ -24,9 +24,15 @@ export default {
       if (Array.isArray(options)) {
         this.optionsData = this.getOptionsData(options);
       } else if (typeof options == "function") {
+        let value = this.value;
+        this.$emit('input', Array.isArray(this.value) ? [] : "")
         this.optionsLoading = true;
         this.optionsData = this.getOptionsData(await options());
         this.optionsLoading = false;
+        // 清空 value，拿到数据重新赋值，刷新组件的选中状态
+        this.$nextTick(() => {
+          this.$emit('input', value)
+        })
       } else if (options instanceof Promise) {
         this.optionsLoading = true;
         this.optionsData = this.getOptionsData(await options);

@@ -49,6 +49,7 @@ export default {
           checkbox: {
             label: "随机数",
             component: "el-checkbox",
+            max: 2,
             options: async () => {
               let data = await this.$http.get("/api/getRandomData");
               return data;

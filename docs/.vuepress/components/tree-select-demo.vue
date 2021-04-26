@@ -1,7 +1,7 @@
 <template>
   <div class="demo">
     <span>组件：</span>
-    <agel-tree-select v-model="value" node-key="value" :data="data" filter></agel-tree-select>
+    <agel-tree-select v-model="value" node-key="value" :options="data" filter></agel-tree-select>
   </div>
 </template>
  

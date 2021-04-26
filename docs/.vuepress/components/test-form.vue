@@ -1,12 +1,8 @@
 <template>
   <div class="demo">
-    <agel-form class="demo" v-model="form"></agel-form>
-    <agel-map-input>
-      <el-tag>wwwwwwwwwww</el-tag>
-      <template v-slot:name="props">
-        <span>11{{props.user}}</span>
-      </template>
-    </agel-map-input>
+    <span>组件：</span>
+    <agel-tree-select v-model="value" node-key="value" :options="data" clearable @clear="changex" @change="changex">
+    </agel-tree-select>
   </div>
 </template>
  
@@ -14,25 +10,39 @@
 export default {
   data() {
     return {
-      form: {
-        inline: true,
-        data: {},
-        items: {
-          slotStyle: {
-            label: "",
-            component: "agel-map-input",
-            slots: {
-              default: () => {
-                return <el-tag>wwwwwwwwwww</el-tag>;
-              },
-              name: (props) => {
-                return <span>11{props.user}</span>;
-              },
+      value1: "",
+      value: [],
+      data: [
+        {
+          label: "一级 1",
+          value: "1",
+          children: [
+            {
+              label: "二级 1-1",
+              value: "1-1",
+              children: [
+                {
+                  label: "三级 1-1-1",
+                  value: "1-1-1",
+                },
+              ],
             },
-          },
+          ],
         },
-      },
+        {
+          label: "二级 ",
+          value: "2",
+        },
+      ],
     };
+  },
+  methods: {
+    changex(v) {
+      console.log(v);
+    },
+    handleCurrentChange(a, b, c) {
+      console.log(a, b, c);
+    },
   },
 };
 </script>

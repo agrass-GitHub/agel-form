@@ -13,9 +13,9 @@ export function humpcase(v) {
 // 获取 prop 值 ，以支持短横线，驼峰，两种写法
 export function getProp(obj, key) {
   let key1 = kebabcase(key);
-  if (obj.hasOwnProperty(key1)) return obj[key1] == undefined ? true : obj[key1]
+  if (obj.hasOwnProperty(key1)) return obj[key1]
   let key2 = humpcase(key);
-  if (obj.hasOwnProperty(key2)) return obj[key2] == undefined ? true : obj[key2]
+  if (obj.hasOwnProperty(key2)) return obj[key2];
 }
 
 // 数组是否存在 key

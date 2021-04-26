@@ -7,29 +7,28 @@
     <template v-slot:empty>
       <slot name="empty"></slot>
     </template>
-    <template v-slot:default v-if="$slots.defaul">
-      <slot name="default"></slot>
-    </template>
-    <template v-else>
-      <div class="filter-item" v-if="filter">
-        <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini" clearable></el-input>
-      </div>
-      <el-option class="empty-option" v-if="filter && filterOptions.length==0" :label="filterEmptyText" :value="filterEmptyText" disabled>
-      </el-option>
-      <template v-if="isGroup">
-        <el-option-group v-for="group in filterOptions" :key="group.label" :label="group.label">
-          <el-option v-for="(option,index) of group.options || [] " v-bind='option' :key="option.label" :label="option.label"
-            :value="valueKey?option:option.value">
-            <slot name="option" :option="option" :index="index" :group="group"></slot>
-          </el-option>
-        </el-option-group>
-      </template>
-      <template v-else>
-        <el-option v-for="(option,index) of filterOptions" v-bind='option' :key="option.label" :label="option.label"
-          :value="valueKey?option:option.value">
-          <slot name="option" :option="option" :index="index"></slot>
+    <template v-slot:default>
+      <slot name="default">
+        <div class="filter-item" v-if="filter">
+          <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini" clearable></el-input>
+        </div>
+        <el-option class="empty-option" v-if="filter && filterOptions.length==0" :label="filterEmptyText" :value="filterEmptyText" disabled>
         </el-option>
-      </template>
+        <template v-if="isGroup">
+          <el-option-group v-for="group in filterOptions" :key="group.label" :label="group.label">
+            <el-option v-for="(option,index) of group.options || [] " v-bind='option' :key="option.label" :label="option.label"
+              :value="valueKey?option:option.value">
+              <slot name="option" :option="option" :index="index" :group="group"></slot>
+            </el-option>
+          </el-option-group>
+        </template>
+        <template v-else>
+          <el-option v-for="(option,index) of filterOptions" v-bind='option' :key="option.label" :label="option.label"
+            :value="valueKey?option:option.value">
+            <slot name="option" :option="option" :index="index"></slot>
+          </el-option>
+        </template>
+      </slot>
     </template>
   </el-select>
 </template>
@@ -40,6 +39,7 @@ import { getProp } from "../utils/utils";
 
 export default {
   name: "agel-select",
+  inheritAttrs: false,
   mixins: [optionsMinxin],
   inheritAttrs: false,
   props: {

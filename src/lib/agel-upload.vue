@@ -4,20 +4,20 @@
     v-bind="$attrs" v-on="$listeners">
     <template v-slot:trigger>
       <slot name="trigger">
-        <el-button v-if="type.customUpload" size="small" type="primary">选取文件</el-button>
+        <el-button v-if="$attrs.autoUpload==false" size="small" type="primary">选取文件</el-button>
       </slot>
     </template>
     <template v-slot:default>
       <slot name="default">
-        <template v-if="type.drag">
+        <template v-if="$attrs.drag==''||$attrs.drag==true">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
             将文件拖到此处，或
             <em>点击上传</em>
           </div>
         </template>
-        <i v-else-if="type.pictureCard" class="el-icon-plus"></i>
-        <el-button v-else-if="type.customUpload" style="margin-left: 10px;" size="small" type="success" @click="handleUpload">上传到服务器
+        <i v-else-if="$attrs.listType=='picture-card'" class="el-icon-plus"></i>
+        <el-button v-else-if="$attrs.autoUpload==false" style="margin-left: 10px;" size="small" type="success" @click="handleUpload">上传到服务器
         </el-button>
         <el-button v-else size="small" type="primary">点击上传</el-button>
       </slot>
@@ -54,16 +54,6 @@ export default {
     tip: String,
   },
   computed: {
-    type() {
-      let drag = getProp(this.$attrs, "drag");
-      let pictureCard = getProp(this.$attrs, "listType") == "picture-card";
-      let customUpload = getProp(this.$attrs, "autoUpload") == false;
-      return {
-        drag,
-        pictureCard,
-        customUpload,
-      };
-    },
     isLimitHideTrigger() {
       return (this.limitHide && this.value.length >= this.$attrs.limit) || 0;
     },
