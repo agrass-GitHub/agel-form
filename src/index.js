@@ -4,7 +4,7 @@ import agelCheckbox from "./lib/agel-checkbox.vue";
 import agelSelect from "./lib/agel-select.vue";
 import agelUpload from "./lib/agel-upload.vue";
 import agelTreeSelect from "./lib/agel-tree-select.vue";
-import agelMapInput from "./lib/agel-map-input.vue";
+// import agelMapInput from "./lib/agel-map-input.vue";
 
 export default agelForm;;
 export {
@@ -13,5 +13,5 @@ export {
   agelSelect,
   agelUpload,
   agelTreeSelect,
-  agelMapInput,
+  // agelMapInput,
 }

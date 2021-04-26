@@ -24,7 +24,6 @@ export default {
   name: "agel-radio",
   inheritAttrs: false,
   mixins: [optionsMinxin],
-  inheritAttrs: false,
   props: {
     value: [String, Number, Boolean],
     button: {

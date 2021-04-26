@@ -1,4 +1,4 @@
-# upload 上传
+# Upload 上传
 
 `agel-upload` 组件是基于 `el-upload` 组件的二次封装组件。
 
@@ -16,7 +16,7 @@
 
 `limitHide` 属性会在超出文件限制后隐藏上传按钮，通常使用在类型为 `picture-card` 的上传组件中。
 
-`agel-upload` 唯一不同的是，在 `onSuccess` 钩子函数中需返回一个包含 name，url 的特定对象，如： `{name:"xx.jpg",url:'http://xxx.jpg}`，这样才能在能保证在上传成功后正确回填到表单。
+与 `el-upload` 唯一不同的是，在 `onSuccess` 钩子函数中需返回一个包含 name，url 的特定对象，如： `{name:"xx.jpg",url:'http://xxx.jpg}`，这样才能在能保证在上传成功后正确回填到表单。
 
 
 <ClientOnly><upload-form/></ClientOnly>
@@ -38,7 +38,7 @@
  
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......          | .........   | Element-ui [Upload Attributes](https://element.eleme.cn/#/zh-CN/component/upload#upload-attributes)      | 
+| ......      | ......          | .........   | 支持所有 [el-upload 属性](https://element.eleme.cn/#/zh-CN/component/upload#upload-attributes)      | 
 | drag        | Boolean         | false       | 是否开启拖拽                | 
 | tip         | String          | -           | 提示语                      | 
 | limitSize   | Number          | -           | 文件大小限制,单位kb                     | 
@@ -60,7 +60,8 @@
 
 | 属性          | 参数           |  说明                                   | 
 | -----------   | ------------  |  ------------------------------------  | 
-
+| submit        | -             |  手动上传文件列表                       |
+| abort         | -             |  取消上传请求                       |
 
 ## Upload Events
 

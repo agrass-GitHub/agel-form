@@ -3,13 +3,14 @@ title: 更新日志
 sidebar: auto
 ---
 
-## v.0.1.3
+## v.0.2.0
+- `调整` 移除 item.custom 属性，自定义组件更加方便纯粹
 - `调整` 移除 item.show 属性
 - `调整` slot render 函数不再传递 h（$createElement） 参数
 - `调整` agel-radio-group 更改名称为 agel-radio，合并了 el-radio-group el-radio  两个组件功能
 - `调整` agel-checkbox-group 更改名称为 agel-checkbox，合并了 el-checkbox-group el-checkbox  两个组件功能
 - `新增` el-select  el-checkbox el-radio 组件的 options 属性支持字符串数组，异步函数，Promise
-- `新增` el-tree-select 新增 options 属性，支持字符串数组，异步函数，Promise，兼容 data 属性
+- `新增` el-tree-select 新增 options 属性，支持异步函数，Promise，兼容 data 属性
 - `新增` 根据表单字段初始化 form.data，关联响应式
 - `新增` form.responsive  form.responsiveMethod 根据父容器宽度自动响应式
 - `新增` item.display  属性支持函数配置，实现表单联动

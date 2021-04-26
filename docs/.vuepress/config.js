@@ -14,7 +14,7 @@ module.exports = {
     ],
     sidebar: [
       {
-        title: '基础',
+        title: '表单组件',
         collapsable: false,
         sidebarDepth: 1,
         children: [
@@ -33,6 +33,14 @@ module.exports = {
           '/component/agel-checkbox-radio',
           '/component/agel-tree-select',
           '/component/agel-upload',
+        ]
+      },
+      {
+        title: '自定义组件',
+        collapsable: false,
+        sidebarDepth: 0,
+        children: [
+          '/custom',
         ]
       },
     ],

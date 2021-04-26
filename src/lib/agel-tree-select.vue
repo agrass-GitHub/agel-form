@@ -21,8 +21,8 @@ import { isEmpty } from "element-ui/src/utils/util";
 
 export default {
   name: "agel-tree-select",
-  mixins: [optionsMinxin],
   inheritAttrs: false,
+  mixins: [optionsMinxin],
   props: {
     value: [String, Number, Array],
     filter: Boolean,

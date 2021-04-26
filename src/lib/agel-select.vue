@@ -41,7 +41,6 @@ export default {
   name: "agel-select",
   inheritAttrs: false,
   mixins: [optionsMinxin],
-  inheritAttrs: false,
   props: {
     value: [String, Number, Array],
     filter: Boolean,

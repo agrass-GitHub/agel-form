@@ -14,27 +14,37 @@ export default {
   data() {
     return {
       form: {
-        data: {
-          user: "agel-form",
-        },
+        span: 16,
+        data: { address: "https://github.com/agrass-GitHub/agel-form" },
         items: [
           {
             prop: "user",
+            label: "项目名称",
             required: true,
-            label: "名称",
           },
           {
             prop: "address",
-            label: "地址",
-            rules: {
-              required: true,
-              min: 3,
-              max: 5,
-              message: "长度在 3 到 5 个字符",
-              trigger: "blur",
+            label: "项目地址",
+          },
+          {
+            prop: "evaluate",
+            label: "评价",
+            component: "el-radio",
+            options: ["很棒", "一般", "糟糕"],
+            on: {
+              change: (v) => {
+                this.$message.info("给个好评吧");
+              },
             },
           },
         ],
+        on: {
+          validate: (v) => {
+            setTimeout(() => {
+              this.$notify.error("验证失败字段：" + v);
+            }, 500);
+          },
+        },
       },
     };
   },
@@ -42,8 +52,8 @@ export default {
     submit() {
       // 与 eleForm validate 有点不同，第一个参数为成功回调，第二个参数为失败回调
       this.form.validate(
-        () => this.$message.success("提交成功"),
-        () => this.$message.error("验证失败")
+        () => this.$notify.success("提交成功"),
+        () => this.$notify.error("验证失败")
       );
     },
     rest() {

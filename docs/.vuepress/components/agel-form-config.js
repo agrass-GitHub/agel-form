@@ -10,7 +10,7 @@ const formConfig = {
   "el-upload": function (prop, item, form) {
     return {
       action: "/api/xxx/upload",
-      headers: { token: "xxxx" },
+      data: { token: "xxxx", id: prop, },
       onSuccess: (res) => res.data
     }
   },

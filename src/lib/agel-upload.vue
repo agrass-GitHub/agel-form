@@ -17,7 +17,7 @@
           </div>
         </template>
         <i v-else-if="$attrs.listType=='picture-card'" class="el-icon-plus"></i>
-        <el-button v-else-if="$attrs.autoUpload==false" style="margin-left: 10px;" size="small" type="success" @click="handleUpload">上传到服务器
+        <el-button v-else-if="$attrs.autoUpload==false" style="margin-left: 10px;" size="small" type="success" @click="submit">上传到服务器
         </el-button>
         <el-button v-else size="small" type="primary">点击上传</el-button>
       </slot>
@@ -81,9 +81,6 @@ export default {
       let emit = getProp(this.$attrs, "beforeUploa");
       if (emit) return emit(file);
       return true;
-    },
-    handleUpload() {
-      this.$refs.ref.submit();
     },
     handleRemove(file, list) {
       this.$emit("input", list);
@@ -167,6 +164,12 @@ export default {
       }
       let emit = getProp(this.$attrs, "onPreview");
       emit && emit(file);
+    },
+    submit() {
+      this.$refs.ref.submit();
+    },
+    abort(file) {
+      this.$refs.ref.clearFiles(file);
     },
   },
   install(vue) {

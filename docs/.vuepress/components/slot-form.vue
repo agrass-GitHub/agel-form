@@ -24,14 +24,14 @@ export default {
         span: 15,
         data: {},
         items: {
-          title1: divider("label slot 使用演示，自定义Form Item Label的插槽"),
+          title1: divider("label 属性使用演示，自定义 Form Item Label 的插槽"),
           label: {
             labelWidth: "100px",
             label: () => {
               return h("el-button", {}, "自定义label");
             },
           },
-          title2: divider("slot 使用演示，自定义Form Item的插槽"),
+          title2: divider("slot 属性使用演示，自定义 Form Ite m的插槽"),
           template: {
             label: "插槽1",
             slot: true,
@@ -50,7 +50,7 @@ export default {
             label: "插槽3",
             slot: "这是一段 string 类型自定义插槽",
           },
-          title3: divider("slots 使用演示 ，自定义组件 Component 的插槽"),
+          title3: divider("slots 属性使用演示 ，自定义组件 Component 的插槽"),
           slots: {
             component: "el-input",
             label: "网站",

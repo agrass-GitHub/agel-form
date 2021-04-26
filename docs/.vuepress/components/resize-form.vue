@@ -1,6 +1,9 @@
 <template>
   <div class="demo">
-    <el-slider v-model="width" :step="100" show-stops :min="300" :max="1600"></el-slider>
+    <div>
+      <span>拖拽宽度进度条查看响应式效果：</span>
+      <el-slider v-model="width" :step="100" show-stops :min="300" :max="1600"></el-slider>
+    </div>
     <p><code>容器宽度：{{width}}px</code> <code>span：{{form.span}}</code> <code>labelPosition：{{form.labelPosition}}</code></p>
     <div style="overflow:auto;">
       <agel-form :style="{width:width+'px',border:'1px dotted #3eaf7c',padding:'10px'} " v-model="form"> </agel-form>
@@ -21,7 +24,7 @@ export default {
         responsive: true,
         // 也可以通过配置 `responsiveMethod` 属性来自定义响应式规则
         // responsiveMethod: (width) => {
-        //   return width < 500 ? {span:12} : {span:24}
+        //   return width < 500 ? {span:12,labelPosition, labelWidth, gutter} : {....}
         // },
         data: {},
         items: [

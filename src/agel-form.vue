@@ -1,5 +1,5 @@
 <template>
-  <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs.form" v-on="attrs.on||{}">
+  <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs.form" v-on="value.on||{}">
     <template v-if="value.inline">
       <agel-form-item v-for="(item, prop) in items" :item="item" :data="value.data" :prop="prop" :ref="prop" :key="prop">
         <slot :name="prop"></slot>
@@ -52,10 +52,6 @@ export default {
       type: Object,
       default: () => new Object(),
     },
-  },
-  install(vue, opts = {}) {
-    vue.prototype.$agelFormConfig = opts;
-    vue.component(opts.name || this.name, this);
   },
   created() {
     this.injectConfig();
@@ -246,7 +242,7 @@ export default {
       let arr = [];
       if (w <= 400) arr = [24, "top"];
       if (w > 400 && w <= 600) arr = [24, "right"];
-      if (w > 400 && w <= 900) arr = [12, "right"];
+      if (w > 600 && w <= 900) arr = [12, "right"];
       if (w > 900 && w <= 1200) arr = [8, "right"];
       if (w > 1200 && w <= 1600) arr = [6, "right"];
       if (w >= 1600) arr = [4, "right"];
@@ -303,6 +299,10 @@ export default {
       this.$refs.form.clearValidate(props);
     },
   },
+  install(vue, opts = {}) {
+    vue.prototype.$agelFormConfig = opts;
+    vue.component(opts.name || this.name, this);
+  },
 };
 </script>
 
@@ -333,5 +333,9 @@ export default {
 
 .agel-form .agel-checkbox-group {
   display: inline-block;
+}
+
+.agel-form .el-slider__runway {
+  margin: 12px 0px;
 }
 </style>

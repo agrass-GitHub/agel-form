@@ -1,8 +1,6 @@
 <template>
-  <div class="demo">
+  <div class="demo border">
     <agel-form v-model="form"> </agel-form>
-    <el-button type="primary" @click="submit">立即创建</el-button>
-    <el-button type="primary" @click="rest">初始化表单</el-button>
   </div>
 </template>
  
@@ -12,16 +10,20 @@ export default {
     return {
       form: {
         labelWidth: "80px",
-        span: 18,
+        span: 15,
         data: {
-          name: "agel-form",
+          name: "使用 agel-form",
           delivery: true,
-          file: [{ name: "活动清单.xlsx", url: "xxx.jpg" }],
+          slider: 20,
         },
         items: {
           name: {
             label: "活动名称",
-            required: true, // 设置 required 会自动生成必填 rules
+            required: true,
+          },
+          number: {
+            component: "el-input-number",
+            label: "活动人数",
           },
           region: {
             label: "活动区域",
@@ -39,6 +41,10 @@ export default {
           delivery: {
             component: "el-switch",
             label: "即时配送",
+          },
+          slider: {
+            component: "el-slider",
+            label: "活动进度",
           },
           type: {
             component: "el-checkbox",
@@ -69,24 +75,37 @@ export default {
               { required: true, message: "请选择活动资源", trigger: "change" },
             ],
           },
+          rate: {
+            component: "el-rate",
+            label: "活动评分",
+          },
           desc: {
             label: "活动形式",
             type: "textarea",
             required: true,
           },
+
+          upload: {
+            component: "el-upload",
+            label: "活动照片",
+            listType: "picture-card",
+          },
+          button: {
+            component: "el-button",
+            type: "primary",
+            slots: "验证",
+            on: {
+              click: () => {
+                this.form.validate(
+                  () => this.$message.success("提交成功"),
+                  () => this.$message.error("验证失败")
+                );
+              },
+            },
+          },
         },
       },
     };
-  },
-  methods: {
-    submit() {
-      this.form.validate(() => {
-        this.$message.success("成功");
-      });
-    },
-    rest() {
-      this.form.resetFields();
-    },
   },
 };
 </script>
