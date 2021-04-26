@@ -1,4 +1,4 @@
-# select 选择器
+# Select 选择器
 
 `agel-select` 组件是基于 `el-select` 组件的二次封装组件。
 
