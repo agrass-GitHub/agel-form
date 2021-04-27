@@ -7,7 +7,7 @@ import { agelRadio, agelCheckbox, agelSelect, agelUpload, agelTreeSelect } from 
 
 const mockData = {
   random() {
-    return "随机数" + Math.ceil(Math.random() * 10) + '' + Math.ceil(Math.random() * 10)
+    return "随机数" + Math.ceil(Math.random() * 100) + '' + Math.ceil(Math.random() * 100)
   },
   "/api/getRandomData": function () {
     return [{ label: this.random(), value: '1' }, { label: this.random(), value: '2' }, { label: this.random(), value: '3' }];

@@ -25,5 +25,5 @@
 <ClientOnly><basics-form/></ClientOnly>
 
 ::: details 点击查看代码
-<<< @/docs/.vuepress/components/custom-select-form.vue
+<<< @/docs/.vuepress/components/basics-form.vue
 :::

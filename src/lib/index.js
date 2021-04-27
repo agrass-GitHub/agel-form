@@ -6,5 +6,4 @@ export default {
   "agel-upload": () => import('./agel-upload'),
   "agel-tree-select": () => import('./agel-tree-select'),
   "slot-render": () => import('./slot-render'),
-  // "agel-map-input": () => import('./agel-map-input'),
 };

@@ -1,7 +1,7 @@
 <template>
   <div class="demo">
     <agel-form v-model="form"> </agel-form>
-    <el-button type="primary" @click="getOptions">刷新 options</el-button>
+    <el-button type="primary" style="margin-left:100px" @click="getOptions">刷新 options</el-button>
     <el-button type="primary" @click="getRef">获取组件实例（查看控制台）</el-button>
     <el-button type="primary" @click="getItem">获取组件Item（查看控制台）</el-button>
   </div>

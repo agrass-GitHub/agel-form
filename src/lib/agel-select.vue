@@ -16,14 +16,14 @@
         </el-option>
         <template v-if="isGroup">
           <el-option-group v-for="group in filterOptions" :key="group.label" :label="group.label">
-            <el-option v-for="(option,index) of group.options || [] " v-bind='option' :key="option.label" :label="option.label"
+            <el-option v-for="(option,index) of group.options || [] " :key="index+option.label" :disabled="option.disabled" :label="option.label"
               :value="valueKey?option:option.value">
               <slot name="option" :option="option" :index="index" :group="group"></slot>
             </el-option>
           </el-option-group>
         </template>
         <template v-else>
-          <el-option v-for="(option,index) of filterOptions" v-bind='option' :key="option.label" :label="option.label"
+          <el-option v-for="(option,index) of filterOptions" :key="index+option.label" :disabled="option.disabled" :label="option.label"
             :value="valueKey?option:option.value">
             <slot name="option" :option="option" :index="index"></slot>
           </el-option>

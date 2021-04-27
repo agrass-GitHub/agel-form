@@ -33,12 +33,12 @@ import {
   rowPropsKeys,
   colPorpKeys,
   agItemPropKyes,
+  defaultComponent,
 } from "./utils/props";
 
 export default {
   name: "agel-form",
   inheritAttrs: false,
-  // components: components,
   components: {
     agelFormItem,
   },
@@ -94,7 +94,7 @@ export default {
       let extendApi = Object.assign(agFormProps.call(this), config.form || {});
       this.extend(this.value, extendApi, false);
       this.eachItems((item, prop) => {
-        let name = item.component || agItemProps().component;
+        let name = item.component || defaultComponent;
         let itemConfig = config[name] || {};
         if (itemConfig && itemConfig.constructor == Function) {
           itemConfig = itemConfig(prop, item, this.value);
@@ -113,119 +113,41 @@ export default {
       for (const prop in this.items) {
         let item = this.items[prop];
         let name = item.component;
-        let component = item._component;
+        let attrs = item._component;
         let value = undefined;
         if (item.ignore || this.value.data.hasOwnProperty(prop)) continue;
-        let types = [
+        const types = [
           {
-            types: [name == "el-switch", name == "agel-checkbox"],
+            arr: [name == "el-switch", name == "agel-checkbox"],
             value: false,
           },
           {
-            types: [name == "el-date-picker", name == "el-time-select"],
+            arr: [name == "el-date-picker", name == "el-time-select"],
             value: null,
           },
           {
-            types: [name == "el-input", "agel-select", "agel-tree-select"],
+            arr: [name == "el-input", "agel-select", "agel-tree-select"],
             value: "",
           },
           {
-            types: [name == "el-slider", name == "el-rate"],
+            arr: [name == "el-slider", name == "el-rate"],
             value: 0,
           },
           {
-            types: [
+            arr: [
               name == "el-cascader",
               name == "el-transfer",
               name == "agel-upload",
-              name == "agel-checkbox" && component.options != undefined,
-              name == "agel-select" && component.multiple,
-              name == "agel-tree-select" && component.multiple,
+              name == "agel-checkbox" && attrs.options != undefined,
+              name == "agel-select" && attrs.multiple,
+              name == "agel-tree-select" && attrs.multiple,
             ],
             value: [],
           },
         ];
-        types.forEach((v) => {
-          v.types.includes(true) && (value = v.value);
-        });
+        types.forEach((v) => v.arr.includes(true) && (value = v.value));
         this.$set(this.value.data, prop, value);
       }
-    },
-    // 组装 agelItems 对象
-    getAgItems() {
-      let agItems = {};
-      let agComponentKeys = Object.keys(components);
-      this.eachItems((item, prop) => {
-        let agItem = agItemProps();
-        let name = item.component || agItem.component;
-        // 是否渲染
-        let display = item.display;
-        if (typeof display == "function") display = display(this.value.data);
-        if (display === false) return;
-        // 合并 agItem 属性
-        Object.assign(agItem, getIncludeAttrs(agItemPropKyes, item));
-        // 是否为二次封装组件
-        if (agComponentKeys.includes("ag" + name)) {
-          agItem.component = "ag" + name;
-        }
-        // 包裹默认 slots
-        if (agItem.slots.constructor !== Object || isVNode(agItem.slots)) {
-          agItem.slots = { default: agItem.slots };
-        }
-        // 获取 col，formitem，component组件对应的属性
-        let col = Object.assign(
-          getIncludeAttrs(colPorpKeys, this.value),
-          getIncludeAttrs(colPorpKeys, item)
-        );
-        let formItem = getIncludeAttrs(itemPropKyes, item);
-        let component = getExcludeAttrs(
-          [].concat(colPorpKeys, itemPropKyes, agItemPropKyes),
-          item
-        );
-        // 是否忽略
-        if (!agItem.ignore) formItem.prop = prop;
-        // 设置 slotLabel
-        if (typeof formItem.label !== "string") {
-          agItem.slotLabel = formItem.label;
-          formItem.label = "";
-        }
-        // 自动添加 required rules
-        if (formItem.required && formItem.rules == undefined) {
-          formItem.required = undefined;
-          formItem.rules = {
-            required: true,
-            message: formItem.label + "必填",
-            trigger: "blur",
-          };
-        }
-        // 是否禁用
-        component.disabled = item.disabled;
-        if (typeof agItem.disabled == "function") {
-          component.disabled = item.disabled(this.value.data);
-        }
-        // 自动设置 placeholder 属性
-        if (component.placeholder == undefined) {
-          let inputArr = ["el-input", "el-input-number"];
-          let selectArr = [
-            "agel-select",
-            "agel-tree-select",
-            "el-cascader",
-            "el-time-select",
-            "el-date-picker",
-          ];
-          if (inputArr.includes(agItem.component)) {
-            component.placeholder = "请输入" + formItem.label;
-          }
-          if (selectArr.includes(agItem.component)) {
-            component.placeholder = "请选择" + formItem.label;
-          }
-        }
-        agItem._col = col;
-        agItem._formItem = formItem;
-        agItem._component = component;
-        agItems[prop] = agItem;
-      });
-      return agItems;
     },
     // 根据容器宽度响应式变化
     resize() {
@@ -261,10 +183,107 @@ export default {
     // 继承属性
     extend(obj, target, cover = true) {
       for (const key in target) {
-        if ((obj.hasOwnProperty(key) && !cover) || target[key] == undefined)
+        if ((obj.hasOwnProperty(key) && !cover) || target[key] == undefined) {
           continue;
+        }
         this.$set(obj, key, target[key]);
       }
+    },
+    // 组装 agelItems 对象
+    getAgItems() {
+      let agItems = {};
+      this.eachItems((item, prop) => {
+        const display =
+          typeof display === "function"
+            ? item.display(this.value.data)
+            : item.display;
+        if (display === false) return;
+        const agItem = this.getAgFormItemAttrs(item);
+        agItem._col = this.getColAttrs(item);
+        agItem._formItem = this.getFormItemAttrs(item, agItem, prop);
+        agItem._component = this.getComponentAttrs(item, agItem);
+        agItems[prop] = agItem;
+      });
+      return agItems;
+    },
+    getAgFormItemAttrs(item) {
+      const agKeys = Object.keys(components);
+      const name = item.component || defaultComponent;
+      const agItem = Object.assign(
+        agItemProps(),
+        getIncludeAttrs(agItemPropKyes, item)
+      );
+      agItem.component = agKeys.includes("ag" + name) ? "ag" + name : name;
+      agItem.slots = this.getSlots(agItem.slots);
+      agItem.slotLabel =
+        typeof item.label == "function" || isVNode(item.label)
+          ? item.label
+          : "";
+      return agItem;
+    },
+    getFormItemAttrs(item, agItem, prop) {
+      const formItem = getIncludeAttrs(itemPropKyes, item);
+      formItem.prop = agItem.ignore ? "" : prop;
+      formItem.label = agItem.slotLabel ? "" : formItem.label;
+      if (formItem.required && formItem.rules == undefined) {
+        formItem.required = undefined;
+        formItem.rules = {
+          required: true,
+          message: formItem.label + "必填",
+          trigger: "blur",
+        };
+      }
+      return formItem;
+    },
+    getColAttrs(item) {
+      return Object.assign(
+        getIncludeAttrs(colPorpKeys, this.value),
+        getIncludeAttrs(colPorpKeys, item)
+      );
+    },
+    getComponentAttrs(item, agItem) {
+      const ignoreKeys = [].concat(colPorpKeys, itemPropKyes, agItemPropKyes);
+      const component = getExcludeAttrs(ignoreKeys, item);
+      component.placeholder = this.getPlaceholder(component, agItem.label);
+      component.disabled =
+        typeof agItem.disabled == "function"
+          ? item.disabled(this.value.data)
+          : component.disabled;
+      return component;
+    },
+    getPlaceholder(component, label) {
+      if (component.placeholder) return component.placeholder;
+      let inputArr = ["el-input", "el-input-number"];
+      let selectArr = [
+        "agel-select",
+        "agel-tree-select",
+        "el-cascader",
+        "el-time-select",
+        "el-date-picker",
+      ];
+      let text = typeof label == "string" ? label : "";
+      if (inputArr.includes(component.is)) {
+        return "请输入" + text;
+      }
+      if (selectArr.includes(component.is)) {
+        return "请选择" + text;
+      }
+    },
+    getSlots(slots) {
+      let noPorpsSlots = {};
+      let hasPorpsSlots = {};
+      if (slots.constructor !== Object || isVNode(slots)) {
+        slots = { default: slots };
+      }
+      for (const name in slots) {
+        let slot = slots[name];
+        if (slot.constructor == Function && slot.length != 0) {
+          hasPorpsSlots[name] = slot;
+        } else {
+          noPorpsSlots[name] = slot;
+        }
+      }
+      return { hasPorpsSlots, noPorpsSlots };
     },
     // 暴露出去的功能函数
     getRef(prop) {

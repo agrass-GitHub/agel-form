@@ -1,7 +1,7 @@
 # 如何二次封装组件
 
 :::tip
- `agel-form` 组件可以灵活搭配第三方或者自定义的组件进行使用，非常棒的是它并没有给你自定义组件带来任何额外的负担和规则，下面是一个自定义二次封装组件的简单教程。
+ `agel-form` 组件可以灵活搭配第三方或者自定义的组件进行使用，唯一需要注意的是避免组件的动态属性和现有的 [Item](/example/agel-form.html#form-item-attributes) 属性产生命名冲突，除此之外没有其他额外的规则，下面是一个自定义二次封装组件的简单教程。
 :::
 
 例子以简单二次封装 `el-select` 组件为例子：
@@ -30,7 +30,7 @@ export default {
 
 2. 第二步：绑定 `value`，挂载动态属性 [$attrs](https://cn.vuejs.org/v2/api/#vm-attrs), 绑定动态事件 [$listeners](https://cn.vuejs.org/v2/api/#vm-listeners)，写自定义模板逻辑。
 
-```html
+```html{2-5}
 <template>
   <el-select :value="value" v-bind="$attrs" v-on="$listeners">
     <el-option v-for="option of options" v-bind='option' :key="option.label" :label="option.label" :value="option.value">
@@ -55,7 +55,7 @@ export default {
 
 3. 第三步：根据需要，添加插槽，一个简单的二次封装组件就大功告成了！
 
-<<< @/docs/.vuepress/components/custom-select.vue
+<<< @/docs/.vuepress/components/custom-select.vue{5-7}
 
 4. 第四步：注册到全局，配合 `agel-form` 使用。
 
@@ -64,8 +64,7 @@ export default {
 import Vue from 'vue';
 import customSelect from "@/components/customSelect"
 
-Vue.component(customSelect.name,customSelect);
-
+Vue.use(customSelect);
 ```
 
 <<< @/docs/.vuepress/components/custom-select-form.vue
@@ -73,3 +72,6 @@ Vue.component(customSelect.name,customSelect);
 
 <ClientOnly><custom-select-form/></ClientOnly>
 
+
+
+感谢看到这里，这里有所有演示用的[源码](https://github.com/agrass-GitHub/agel-form/tree/master/docs/.vuepress/components)。

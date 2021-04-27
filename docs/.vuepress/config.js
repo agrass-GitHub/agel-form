@@ -8,7 +8,7 @@ module.exports = {
     displayAllHeaders: true,
     nav: [
       { text: '首页', link: '/' },
-      { text: '教程', link: '/example/' },
+      { text: '文档', link: '/example/' },
       { text: '更新日志', link: '/log' },
       { text: 'Github', link: 'https://github.com/agrass-GitHub/agel-form' }
     ],

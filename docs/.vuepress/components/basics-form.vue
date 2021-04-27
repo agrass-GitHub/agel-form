@@ -17,21 +17,15 @@ export default {
           slider: 20,
         },
         items: {
-          name: {
-            label: "活动名称",
-            required: true,
-          },
+          name: { label: "活动名称" },
           number: {
             component: "el-input-number",
             label: "活动人数",
           },
           region: {
-            label: "活动区域",
             component: "el-select",
-            options: [
-              { label: "区域1", value: "区域1" },
-              { label: "区域2", value: "区域2" },
-            ],
+            label: "活动区域",
+            options: ["区域1", "区域2"],
           },
           date: {
             component: "el-date-picker",
@@ -50,30 +44,16 @@ export default {
             component: "el-checkbox",
             label: "活动性质",
             options: [
-              { label: "美食/餐厅线上活动", value: "1" },
-              { label: "地推活动", value: "2" },
-              { label: "线下主题活动", value: "3" },
-              { label: "单纯品牌曝光", value: "4" },
-            ],
-            rules: [
-              {
-                type: "array",
-                required: true,
-                message: "请至少选择一个活动性质",
-                trigger: "change",
-              },
+              "美食/餐厅线上活动",
+              "地推活动",
+              "线下主题活动",
+              "单纯品牌曝光",
             ],
           },
           resource: {
             component: "el-radio",
             label: "特殊资源",
-            options: [
-              { label: "线上品牌商赞助", value: "1" },
-              { label: "线下场地免费", value: "2" },
-            ],
-            rules: [
-              { required: true, message: "请选择活动资源", trigger: "change" },
-            ],
+            options: ["线上品牌商赞助", "线下场地免费"],
           },
           rate: {
             component: "el-rate",
@@ -82,26 +62,17 @@ export default {
           desc: {
             label: "活动形式",
             type: "textarea",
-            required: true,
           },
-
           upload: {
             component: "el-upload",
             label: "活动照片",
             listType: "picture-card",
+            action: "xx/xx/",
           },
           button: {
             component: "el-button",
             type: "primary",
-            slots: "验证",
-            on: {
-              click: () => {
-                this.form.validate(
-                  () => this.$message.success("提交成功"),
-                  () => this.$message.error("验证失败")
-                );
-              },
-            },
+            slots: "提交",
           },
         },
       },

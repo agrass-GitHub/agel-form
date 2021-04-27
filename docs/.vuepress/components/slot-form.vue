@@ -12,8 +12,8 @@ export default {
     const h = this.$createElement;
     const divider = (title) => {
       return {
-        labelWidth: "0px",
         component: "el-divider",
+        labelWidth: "0px",
         contentPosition: "left",
         slots: title,
       };
@@ -38,7 +38,8 @@ export default {
           },
           render: {
             label: "插槽2",
-            slot: () => {
+            slot: (scopeProps) => {
+              // 若改插槽有参数，可通过 scopeProps 获取
               return h("el-tag", {}, "这是一段 render 函数类型自定义插槽");
             },
           },

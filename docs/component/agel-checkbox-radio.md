@@ -26,14 +26,25 @@
 
 ## Radio Checkbox Attributes
 
+拿 `agel-radio ` 组件举例来说，若是配置了 `options` 属性，则默认绑定的 `el-radio-group` 的组件属性，反之则绑定 `el-radio` 组件属性。
+
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
+| ......      | ......        | .........   | 支持所有 [el-radio-group 属性](https://element.eleme.cn/#/zh-CN/component/radio#radio-group-attributes)      | 
+| ......      | ......        | .........   | 支持所有 [el-checkbox-group 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-group-attributes)      | 
 | ......      | ......        | .........   | 支持所有 [el-radio 属性](https://element.eleme.cn/#/zh-CN/component/radio#radio-attributes)      | 
 | ......      | ......        | .........   | 支持所有 [el-checkbox 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-attributes)      | 
 | options     | Array/Function/Promise    |  -     | option 配置项         | 
 | props       | Object        |  {label,value}     | 数据配置选项          |
 | button      | Boolean       |  -                 | 是否开启 button 样式         |
 | slots       | Object        | -                  | 自定义插槽    |  
+
+## Radio Checkbox Option
+
+| 属性        | 类型         | 默认值  | 说明                                 | 
+| ----------- | ------------  | ------ | ------------------------------------ | 
+| ......      | ......        | .........   | 支持所有 [el-radio 属性](https://element.eleme.cn/#/zh-CN/component/radio#radio-attributes)      | 
+| ......      | ......        | .........   | 支持所有 [el-checkbox 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-attributes)      | 
 
 ## Radio Checkbox Slots
 

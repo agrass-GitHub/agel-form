@@ -5,9 +5,6 @@
     <template v-slot:prefix>
       <slot name="prefix"></slot>
     </template>
-    <template v-slot:empty>
-      <slot name="empty"></slot>
-    </template>
   </el-select>
 </template>
 

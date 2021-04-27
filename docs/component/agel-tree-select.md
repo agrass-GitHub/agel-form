@@ -48,7 +48,7 @@
 | focus         | -             |  聚焦                        |
 | blur          | -             |  失焦            | 
 | getOptions    | -             |  刷新数据， options 为 Function 时可调用           |
-| getValueNode  | -             |  返回 value 所对应的节点对象，开启多选返回数组          |
+| getValueNode  | -             |  返回 value 所对应的节点对象，开启多选则返回数组          |
 
 ## TreeSelect Events
 

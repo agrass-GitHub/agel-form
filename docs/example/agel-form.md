@@ -79,7 +79,7 @@ String：
 当 `slots` 插槽只存在 `default` 的情况下，可直接简写省略对象写法, 当插槽为 `String` 类型时，会被转换成 `VNode` 对象, 整个转换过程如下：
 
 ```js
-slots:"查询"  ==>  slots:{default："查询"}  ==>  slots:{default:h("span", null, "查询")}
+slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{},"查询") }
 ```
 
 <ClientOnly><slot-form/></ClientOnly>
@@ -208,17 +208,17 @@ export default {
     return {
       from: {
         data:{},
-        // ag-el-form 的属性
+        // agel-form 的属性
         // el-form 的属性
         // el-row  的属性
         // el-col  的属性
         items:[
          {
            component:"el-input",
-          // component 组件的动态属性
           // agel-form-item 的属性
           // el-form-item 的属性
           // el-col 的属性
+          // component 组件的动态属性
           }
         ]
       },

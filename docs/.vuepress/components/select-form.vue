@@ -76,10 +76,23 @@ export default {
             ],
           },
           demo6: {
-            label: "插槽展示",
+            label: "插槽样式",
             component: "el-select",
-            options: [],
+            options: [
+              { value: "Shanghai", label: "上海" },
+              { value: "Beijing", label: "北京" },
+            ],
             slots: {
+              option: ({ option, index }) => {
+                return (
+                  <div>
+                    <span style="float: left">{option.label}</span>
+                    <span style="float: right; color: #8492a6; font-size: 13px">
+                      {option.value}
+                    </span>
+                  </div>
+                );
+              },
               prefix: () => {
                 let style = "color:#409EFF;line-height:28px;font-size:20px";
                 return <i class="el-icon-platform-eleme" style={style} />;

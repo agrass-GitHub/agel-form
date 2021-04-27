@@ -6,7 +6,7 @@ const formConfig = {
     labelWidth: "100px",
     span: 8,
   },
-  // 设置所有上传组件的公用参数
+  // 设置所有上传组件的公用参数 ----- 可以通过函数 return 一个配置对象
   "el-upload": function (prop, item, form) {
     return {
       action: "/api/xxx/upload",
@@ -14,7 +14,7 @@ const formConfig = {
       onSuccess: (res) => res.data
     }
   },
-  // 设置日期组件的格式化 
+  // 设置日期组件的格式化 ----- 也可以直接修改 item 对象
   "el-date-picker": function (prop, item, form) {
     if (item.valueFormat == undefined) {
       if (item.type == undefined || item.type == "daterange") item.valueFormat = "yyyy-MM-dd";

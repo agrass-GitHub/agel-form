@@ -1,48 +1,41 @@
 <template>
-  <div class="demo">
-    <span>组件：</span>
-    <agel-tree-select v-model="value" node-key="value" :options="data" clearable @clear="changex" @change="changex">
-    </agel-tree-select>
-  </div>
+  <agel-form class="demo border" v-model="form"></agel-form>
 </template>
  
 <script>
 export default {
   data() {
     return {
-      value1: "",
-      value: [],
-      data: [
-        {
-          label: "一级 1",
-          value: "1",
-          children: [
-            {
-              label: "二级 1-1",
-              value: "1-1",
-              children: [
-                {
-                  label: "三级 1-1-1",
-                  value: "1-1-1",
-                },
-              ],
+      form: {
+        span: 24,
+        data: {},
+        items: {
+          name: {
+            label: "xx",
+          },
+          slotStyle: {
+            label: "插槽 样式",
+            component: "el-checkbox",
+            options: ["感觉", "非常", "灵活"],
+            slots: {
+              option: ({ option, index }) => {
+                return (
+                  <el-tag>
+                    {index}：{option.label}
+                  </el-tag>
+                );
+              },
             },
-          ],
+          },
+          button: {
+            component: "el-button",
+            type: "primary",
+            slots: "刷新 options",
+            span: 24,
+          },
         },
-        {
-          label: "二级 ",
-          value: "2",
-        },
-      ],
+      },
     };
-  },
-  methods: {
-    changex(v) {
-      console.log(v);
-    },
-    handleCurrentChange(a, b, c) {
-      console.log(a, b, c);
-    },
   },
 };
 </script>

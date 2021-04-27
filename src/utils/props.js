@@ -34,6 +34,9 @@ export const colPorpKeys = [
   "tag",
 ];
 
+// 默认组件名称
+export const defaultComponent = "el-input";
+
 // agelForm 组件的扩展参数，以及内置的功能函数
 export const agFormProps = function () {
 
@@ -74,15 +77,13 @@ export const agFormProps = function () {
 export const agItemProps = function () {
   return {
     // String 组件名称
-    component: "el-input",
+    component: defaultComponent,
     // Boolean/Functiion 是否渲染
     display: true,
     // Boolean/Functiion 是否禁用
     disabled: false,
     // Boolean 是否忽略，若为 ture 则不会关联表单
     ignore: false,
-    // Boolean 是否为自定义组件
-    custom: false,
     // Funciton/Vnode/String 是否自定义 FormItemLabel slot
     label: "",
     // Boolean/Funciton/Vnode/String/Array[Vnode] 是否自定义 FormItem slot
