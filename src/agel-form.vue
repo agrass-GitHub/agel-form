@@ -193,11 +193,12 @@ export default {
     getAgItems() {
       let agItems = {};
       this.eachItems((item, prop) => {
-        const display =
-          typeof display === "function"
-            ? item.display(this.value.data)
-            : item.display;
+        let display = item.display;
+        if (typeof display == "function") {
+          display = item.display(this.value.data);
+        }
         if (display === false) return;
+
         const agItem = this.getAgFormItemAttrs(item);
         agItem._col = this.getColAttrs(item);
         agItem._formItem = this.getFormItemAttrs(item, agItem, prop);

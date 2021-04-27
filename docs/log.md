@@ -3,6 +3,9 @@ title: 更新日志
 sidebar: auto
 ---
 
+## v.0.2.1
+- `bug` display 属性导致显示错误的问题
+
 ## v.0.2.0
 - `调整` 移除 item.custom 属性，重构自定义组件逻辑，更加方便纯粹
 - `调整` 移除 item.show 属性
