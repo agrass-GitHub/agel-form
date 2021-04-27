@@ -15,11 +15,11 @@
   "scripts": {
     "lint": "vue-cli-service lint",
     "build": "vue-cli-service build --target lib --name agelForm --dest dist ./src/index.js",
-    "publish": "npm publish",
     "serve": "vuepress dev docs",
     "builddocs": "vuepress build docs",
     "publishdocs": "gh-pages -d distdocs",
     "setnpm": "npm config set registry https://registry.npmjs.org/",
+    "publish": "npm publish",
     "setnpmtb": "npm config set registry http://registry.npm.taobao.org/"
   },
   "dependencies": {},
