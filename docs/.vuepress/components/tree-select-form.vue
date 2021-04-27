@@ -1,5 +1,5 @@
 <template>
-  <div class="demo">
+  <div class="demo border">
     <agel-form v-model="form"> </agel-form>
     <el-button type="primary" style="margin-left:100px" @click="getOptions">刷新 options</el-button>
     <el-button type="primary" @click="getRef">获取组件实例（查看控制台）</el-button>

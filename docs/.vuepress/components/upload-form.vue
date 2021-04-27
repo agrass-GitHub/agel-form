@@ -1,5 +1,5 @@
 <template>
-  <agel-form v-model="form" class="demo"></agel-form>
+  <agel-form v-model="form" class="demo border"></agel-form>
 </template>
  
 <script>
