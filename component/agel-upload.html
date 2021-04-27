@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Upload 上传 | agel-form | 使用文档</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="基于 element-ui form 的二次封装加强组件">
+    
+    <link rel="preload" href="/agel-form/assets/css/0.styles.a2eb731d.css" as="style"><link rel="preload" href="/agel-form/assets/js/app.00592054.js" as="script"><link rel="preload" href="/agel-form/assets/js/2.5350e1e5.js" as="script"><link rel="preload" href="/agel-form/assets/js/32.4011c050.js" as="script"><link rel="prefetch" href="/agel-form/assets/js/10.1a225df0.js"><link rel="prefetch" href="/agel-form/assets/js/11.b6ed2d54.js"><link rel="prefetch" href="/agel-form/assets/js/12.8f13851e.js"><link rel="prefetch" href="/agel-form/assets/js/13.3a61a895.js"><link rel="prefetch" href="/agel-form/assets/js/14.a56b0ee9.js"><link rel="prefetch" href="/agel-form/assets/js/15.dff6c72f.js"><link rel="prefetch" href="/agel-form/assets/js/16.41581bde.js"><link rel="prefetch" href="/agel-form/assets/js/17.f4096c4f.js"><link rel="prefetch" href="/agel-form/assets/js/18.168eae6f.js"><link rel="prefetch" href="/agel-form/assets/js/19.0dd2ac55.js"><link rel="prefetch" href="/agel-form/assets/js/20.93e5eb6f.js"><link rel="prefetch" href="/agel-form/assets/js/21.fdf469a3.js"><link rel="prefetch" href="/agel-form/assets/js/22.6ab7e101.js"><link rel="prefetch" href="/agel-form/assets/js/23.613b8f17.js"><link rel="prefetch" href="/agel-form/assets/js/24.9ec6febf.js"><link rel="prefetch" href="/agel-form/assets/js/25.1be77c22.js"><link rel="prefetch" href="/agel-form/assets/js/26.ccd4671d.js"><link rel="prefetch" href="/agel-form/assets/js/27.864baa0d.js"><link rel="prefetch" href="/agel-form/assets/js/28.32c4102d.js"><link rel="prefetch" href="/agel-form/assets/js/29.7f40ab61.js"><link rel="prefetch" href="/agel-form/assets/js/3.3a530148.js"><link rel="prefetch" href="/agel-form/assets/js/30.de822a7c.js"><link rel="prefetch" href="/agel-form/assets/js/31.f94f3fea.js"><link rel="prefetch" href="/agel-form/assets/js/33.298fd0f1.js"><link rel="prefetch" href="/agel-form/assets/js/34.052b1853.js"><link rel="prefetch" href="/agel-form/assets/js/35.1dd6c454.js"><link rel="prefetch" href="/agel-form/assets/js/36.72e44165.js"><link rel="prefetch" href="/agel-form/assets/js/37.37dfe15c.js"><link rel="prefetch" href="/agel-form/assets/js/38.83c2fa61.js"><link rel="prefetch" href="/agel-form/assets/js/39.606179e9.js"><link rel="prefetch" href="/agel-form/assets/js/4.fa98cef7.js"><link rel="prefetch" href="/agel-form/assets/js/5.03449173.js"><link rel="prefetch" href="/agel-form/assets/js/6.8dd6ee90.js"><link rel="prefetch" href="/agel-form/assets/js/7.bed9972f.js"><link rel="prefetch" href="/agel-form/assets/js/8.b6c74007.js"><link rel="prefetch" href="/agel-form/assets/js/9.d78ff1a2.js">
+    <link rel="stylesheet" href="/agel-form/assets/css/0.styles.a2eb731d.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/agel-form/" class="home-link router-link-active"><!----> <span class="site-name">agel-form | 使用文档</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/agel-form/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/agel-form/example/" class="nav-link">
+  文档
+</a></div><div class="nav-item"><a href="/agel-form/log.html" class="nav-link">
+  更新日志
+</a></div><div class="nav-item"><a href="https://github.com/agrass-GitHub/agel-form" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/agel-form/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/agel-form/example/" class="nav-link">
+  文档
+</a></div><div class="nav-item"><a href="/agel-form/log.html" class="nav-link">
+  更新日志
+</a></div><div class="nav-item"><a href="https://github.com/agrass-GitHub/agel-form" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>表单组件</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/agel-form/example/" class="sidebar-link">序言</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/agel-form/example/#介绍" class="sidebar-link">介绍</a></li><li class="sidebar-sub-header"><a href="/agel-form/example/#特性" class="sidebar-link">特性</a></li><li class="sidebar-sub-header"><a href="/agel-form/example/#例子" class="sidebar-link">例子</a></li></ul></li><li><a href="/agel-form/example/quick-start.html" class="sidebar-link">快速开始</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/agel-form/example/quick-start.html#安装" class="sidebar-link">安装</a></li><li class="sidebar-sub-header"><a href="/agel-form/example/quick-start.html#引用" class="sidebar-link">引用</a></li><li class="sidebar-sub-header"><a href="/agel-form/example/quick-start.html#全局配置" class="sidebar-link">全局配置</a></li></ul></li><li><a href="/agel-form/example/agel-form.html" class="sidebar-link">创建表单</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/agel-form/example/agel-form.html#行内表单" class="sidebar-link">行内表单</a></li><li class="sidebar-sub-header"><a href="/agel-form/example/agel-form.html#栅格表单" class="sidebar-link">栅格表单</a></li><li class="sidebar-sub-header"><a href="/agel-form/example/agel-form.html#响应式表单" class="sidebar-link">响应式表单</a></li><li class="sidebar-sub-header"><a href="/agel-form/example/agel-form.html#联动表单" class="sidebar-link">联动表单</a></li><li class="sidebar-sub-header"><a href="/agel-form/example/agel-form.html#表单插槽" class="sidebar-link">表单插槽</a></li><li class="sidebar-sub-header"><a href="/agel-form/example/agel-form.html#表单验证" class="sidebar-link">表单验证</a></li><li class="sidebar-sub-header"><a href="/agel-form/example/agel-form.html#表单方法" class="sidebar-link">表单方法</a></li><li class="sidebar-sub-header"><a href="/agel-form/example/agel-form.html#表单配置" class="sidebar-link">表单配置</a></li></ul></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>单组件</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/agel-form/component/" aria-current="page" class="sidebar-link">使用方法</a></li><li><a href="/agel-form/component/agel-select.html" class="sidebar-link">Select 选择器</a></li><li><a href="/agel-form/component/agel-checkbox-radio.html" class="sidebar-link">Checkbox Radio 选择框</a></li><li><a href="/agel-form/component/agel-tree-select.html" class="sidebar-link">TreeSelect 树形选择器</a></li><li><a href="/agel-form/component/agel-upload.html" aria-current="page" class="active sidebar-link">Upload 上传</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>自定义组件</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/agel-form/custom.html" class="sidebar-link">如何二次封装组件</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="upload-上传"><a href="#upload-上传" class="header-anchor">#</a> Upload 上传</h1> <p><code>agel-upload</code> 组件是基于 <code>el-upload</code> 组件的二次封装组件。</p> <h2 id="搭配表单使用"><a href="#搭配表单使用" class="header-anchor">#</a> 搭配表单使用</h2> <p><code>preview</code> 属性提供了基础的文件预览功能（图片，音频，视频，office文件），正确使用的前提是 <code>this.$msgbox</code> 挂载了 <code>el-messagebox</code> 实例。</p> <p><code>message</code> 属性在上传错误，文件大小，文件个数超出限制时，会触发默认提示语，正确使用的前提是<code>this.$message</code> 挂载了 <code>el-message</code> 实例。</p> <p><code>limitHide</code> 属性会在超出文件限制后隐藏上传按钮，通常使用在类型为 <code>picture-card</code> 的上传组件中。</p> <p>与 <code>el-upload</code> 唯一不同的是，在 <code>onSuccess</code> 钩子函数中需返回一个包含 name，url 的特定对象，如： <code>{name:&quot;xx.jpg&quot;,url:'http://xxx.jpg}</code>，这样才能在能保证在上传成功后正确回填到表单。</p> <!----> <details class="custom-block details"><summary>点击查看代码</summary> <div class="language-vue extra-class"><pre class="language-vue"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>agel-form</span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>form<span class="token punctuation">&quot;</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>demo<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>agel-form</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+ 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">&quot;upload-form&quot;</span><span class="token punctuation">,</span>
+  <span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      form<span class="token operator">:</span> <span class="token punctuation">{</span>
+        labelWidth<span class="token operator">:</span> <span class="token string">&quot;100px&quot;</span><span class="token punctuation">,</span>
+        span<span class="token operator">:</span> <span class="token number">18</span><span class="token punctuation">,</span>
+        data<span class="token operator">:</span> <span class="token punctuation">{</span>
+          files1<span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span>
+              name<span class="token operator">:</span> <span class="token string">&quot;这是一个图片文件.png&quot;</span><span class="token punctuation">,</span>
+              url<span class="token operator">:</span> <span class="token string">&quot;https://cn.vuejs.org/images/components.png&quot;</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+              name<span class="token operator">:</span> <span class="token string">&quot;这是一个视频文件.mp4&quot;</span><span class="token punctuation">,</span>
+              url<span class="token operator">:</span> <span class="token string">&quot;https://www.runoob.com/try/demo_source/movie.mp4&quot;</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+              name<span class="token operator">:</span> <span class="token string">&quot;这是一个音频文件.mp3&quot;</span><span class="token punctuation">,</span>
+              url<span class="token operator">:</span> <span class="token string">&quot;https://www.runoob.com/try/demo_source/horse.mp3&quot;</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+              name<span class="token operator">:</span> <span class="token string">&quot;这是一个docx文件.docx&quot;</span><span class="token punctuation">,</span>
+              url<span class="token operator">:</span> <span class="token string">&quot;https://view.xdocin.com/doc/preview.docx&quot;</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+              name<span class="token operator">:</span> <span class="token string">&quot;这是一个不可预览文件.zip&quot;</span><span class="token punctuation">,</span>
+              url<span class="token operator">:</span> <span class="token string">&quot;/xxx.zip&quot;</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+              name<span class="token operator">:</span> <span class="token string">&quot;这是一个没有预览弹窗文件.png&quot;</span><span class="token punctuation">,</span>
+              url<span class="token operator">:</span> <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">]</span><span class="token punctuation">,</span>
+          files2<span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span>
+              name<span class="token operator">:</span> <span class="token string">&quot;这是一个图片文件.png&quot;</span><span class="token punctuation">,</span>
+              url<span class="token operator">:</span> <span class="token string">&quot;https://cn.vuejs.org/images/components.png&quot;</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">]</span><span class="token punctuation">,</span>
+          files3<span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span>
+              name<span class="token operator">:</span> <span class="token string">&quot;这是一个图片文件.png&quot;</span><span class="token punctuation">,</span>
+              url<span class="token operator">:</span> <span class="token string">&quot;https://cn.vuejs.org/images/components.png&quot;</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        items<span class="token operator">:</span> <span class="token punctuation">{</span>
+          files1<span class="token operator">:</span> <span class="token punctuation">{</span>
+            label<span class="token operator">:</span> <span class="token string">&quot;默认样式&quot;</span><span class="token punctuation">,</span>
+            component<span class="token operator">:</span> <span class="token string">&quot;el-upload&quot;</span><span class="token punctuation">,</span>
+            action<span class="token operator">:</span> <span class="token string">&quot;/xxx/upload&quot;</span><span class="token punctuation">,</span>
+            tip<span class="token operator">:</span> <span class="token string">&quot;点击 file list 查看预览样式,且最大只能上传 10kb 大小&quot;</span><span class="token punctuation">,</span>
+            limitSize<span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span>
+            <span class="token function-variable function">preview</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">file</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">(</span>file<span class="token punctuation">.</span>url <span class="token operator">?</span> <span class="token boolean">true</span> <span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token function-variable function">onSuccess</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+              <span class="token comment">// 需要 return 一个包含 name，url 的对象 {name:&quot;xx.jpg&quot;,url:'http://xxx.jpg}</span>
+              <span class="token keyword">return</span> <span class="token punctuation">{</span> name<span class="token operator">:</span> res<span class="token punctuation">.</span>fileName<span class="token punctuation">,</span> url<span class="token operator">:</span> res<span class="token punctuation">.</span>fileUrl <span class="token punctuation">}</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          files2<span class="token operator">:</span> <span class="token punctuation">{</span>
+            label<span class="token operator">:</span> <span class="token string">&quot;picture-card 样式&quot;</span><span class="token punctuation">,</span>
+            component<span class="token operator">:</span> <span class="token string">&quot;el-upload&quot;</span><span class="token punctuation">,</span>
+            action<span class="token operator">:</span> <span class="token string">&quot;/xxx/upload&quot;</span><span class="token punctuation">,</span>
+            listType<span class="token operator">:</span> <span class="token string">&quot;picture-card&quot;</span><span class="token punctuation">,</span>
+            limit<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            limitHide<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// 超出允许上传个数，隐藏上传按钮</span>
+            tip<span class="token operator">:</span> <span class="token string">&quot;最大只能上传一个，超出自动隐藏上传按钮&quot;</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          files3<span class="token operator">:</span> <span class="token punctuation">{</span>
+            label<span class="token operator">:</span> <span class="token string">&quot;picture 样式&quot;</span><span class="token punctuation">,</span>
+            component<span class="token operator">:</span> <span class="token string">&quot;el-upload&quot;</span><span class="token punctuation">,</span>
+            action<span class="token operator">:</span> <span class="token string">&quot;/xxx/upload&quot;</span><span class="token punctuation">,</span>
+            listType<span class="token operator">:</span> <span class="token string">&quot;picture&quot;</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          files4<span class="token operator">:</span> <span class="token punctuation">{</span>
+            label<span class="token operator">:</span> <span class="token string">&quot;拖拽样式&quot;</span><span class="token punctuation">,</span>
+            component<span class="token operator">:</span> <span class="token string">&quot;el-upload&quot;</span><span class="token punctuation">,</span>
+            action<span class="token operator">:</span> <span class="token string">&quot;/xxx/upload&quot;</span><span class="token punctuation">,</span>
+            drag<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          files5<span class="token operator">:</span> <span class="token punctuation">{</span>
+            label<span class="token operator">:</span> <span class="token string">&quot;主动上传&quot;</span><span class="token punctuation">,</span>
+            component<span class="token operator">:</span> <span class="token string">&quot;el-upload&quot;</span><span class="token punctuation">,</span>
+            action<span class="token operator">:</span> <span class="token string">&quot;/xxx/upload&quot;</span><span class="token punctuation">,</span>
+            autoUpload<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          files6<span class="token operator">:</span> <span class="token punctuation">{</span>
+            label<span class="token operator">:</span> <span class="token string">&quot;插槽样式&quot;</span><span class="token punctuation">,</span>
+            component<span class="token operator">:</span> <span class="token string">&quot;el-upload&quot;</span><span class="token punctuation">,</span>
+            action<span class="token operator">:</span> <span class="token string">&quot;/xxx/upload&quot;</span><span class="token punctuation">,</span>
+            slots<span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token function-variable function">trigger</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token operator">&lt;</span>el<span class="token operator">-</span>button<span class="token operator">&gt;</span>自定义选取文件<span class="token operator">&lt;</span><span class="token operator">/</span>el<span class="token operator">-</span>button<span class="token operator">&gt;</span><span class="token punctuation">;</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token function-variable function">default</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token punctuation">(</span>
+                  <span class="token operator">&lt;</span>el<span class="token operator">-</span>button style<span class="token operator">=</span><span class="token string">&quot;margin-left:10px&quot;</span><span class="token operator">&gt;</span>
+                    自定义上传到服务器<span class="token punctuation">{</span><span class="token string">&quot; &quot;</span><span class="token punctuation">}</span>
+                  <span class="token operator">&lt;</span><span class="token operator">/</span>el<span class="token operator">-</span>button<span class="token operator">&gt;</span>
+                <span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+
+</code></pre></div></details> <h2 id="单独引入使用"><a href="#单独引入使用" class="header-anchor">#</a> 单独引入使用</h2> <!----> <details class="custom-block details"><summary>点击查看代码</summary> <div class="language-vue extra-class"><pre class="language-vue"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>demo<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>agel-upload</span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>value<span class="token punctuation">&quot;</span></span> <span class="token attr-name">:action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>action<span class="token punctuation">&quot;</span></span> <span class="token attr-name">:limitSize</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>1<span class="token punctuation">&quot;</span></span> <span class="token attr-name">drag</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>agel-upload</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+ 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  <span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      value<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      action<span class="token operator">:</span> <span class="token string">&quot;/xxx/upload&quot;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span></code></pre></div></details> <h2 id="upload-attributes"><a href="#upload-attributes" class="header-anchor">#</a> Upload Attributes</h2> <table><thead><tr><th>属性</th> <th>类型</th> <th>默认值</th> <th>说明</th></tr></thead> <tbody><tr><td>......</td> <td>......</td> <td>.........</td> <td>支持所有 <a href="https://element.eleme.cn/#/zh-CN/component/upload#upload-attributes" target="_blank" rel="noopener noreferrer">el-upload 属性<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></td></tr> <tr><td>drag</td> <td>Boolean</td> <td>false</td> <td>是否开启拖拽</td></tr> <tr><td>tip</td> <td>String</td> <td>-</td> <td>提示语</td></tr> <tr><td>limitSize</td> <td>Number</td> <td>-</td> <td>文件大小限制,单位kb</td></tr> <tr><td>limitHide</td> <td>Boolean</td> <td>false</td> <td>超出允许上传个数隐藏上传按钮</td></tr> <tr><td>preview</td> <td>Boolean/Funciton</td> <td>true</td> <td>是否开启文件预览</td></tr> <tr><td>message</td> <td>Boolean</td> <td>true</td> <td>是否开启钩子函数的默认提示</td></tr> <tr><td>onSuccess</td> <td>Funciton</td> <td>-</td> <td>需返回一个包含 {name,url} 的对象</td></tr> <tr><td>slots</td> <td>Object</td> <td>-</td> <td>自定义 slots</td></tr></tbody></table> <h2 id="upload-slots"><a href="#upload-slots" class="header-anchor">#</a> Upload slots</h2> <table><thead><tr><th>属性</th> <th>说明</th></tr></thead> <tbody><tr><td>default</td> <td>默认插槽</td></tr> <tr><td>trigger</td> <td>触发文件选择框的内容</td></tr> <tr><td>tip</td> <td>提示说明文字</td></tr></tbody></table> <h2 id="upload-methods"><a href="#upload-methods" class="header-anchor">#</a> Upload Methods</h2> <table><thead><tr><th>属性</th> <th>参数</th> <th>说明</th></tr></thead> <tbody><tr><td>submit</td> <td>-</td> <td>手动上传文件列表</td></tr> <tr><td>abort</td> <td>-</td> <td>取消上传请求</td></tr></tbody></table> <h2 id="upload-events"><a href="#upload-events" class="header-anchor">#</a> Upload Events</h2> <table><thead><tr><th>属性</th> <th>参数</th> <th>说明</th></tr></thead> <tbody><tr><td>......</td> <td>......</td> <td>支持所有 <a href="https://element.eleme.cn/#/zh-CN/component/upload#upload-events" target="_blank" rel="noopener noreferrer">el-upload 事件<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></td></tr></tbody></table></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/agel-form/component/agel-tree-select.html" class="prev">
+        TreeSelect 树形选择器
+      </a></span> <span class="next"><a href="/agel-form/custom.html">
+        如何二次封装组件
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/agel-form/assets/js/app.00592054.js" defer></script><script src="/agel-form/assets/js/2.5350e1e5.js" defer></script><script src="/agel-form/assets/js/32.4011c050.js" defer></script>
+  </body>
+</html>
