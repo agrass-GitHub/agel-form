@@ -24,10 +24,10 @@ export default {
   },
   computed: {
     items() {
-      return {
-        name: { label: "活动名称" },
-        region: { label: "活动区域" },
-        button: {
+      return [
+        { label: "活动名称" },
+        { label: "活动区域" },
+        {
           label: "按钮",
           component: "el-button",
           type: "primary",
@@ -35,7 +35,7 @@ export default {
           slots: "查询",
           display: this.inline,
         },
-      };
+      ];
     },
   },
 };

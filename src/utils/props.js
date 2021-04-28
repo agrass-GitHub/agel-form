@@ -37,15 +37,6 @@ export const colPorpKeys = [
 // 默认组件名称
 export const defaultComponent = "el-input";
 
-// 栅格布局的默认属性
-export const layoutPorps = function () {
-  return {
-    labelWidth: "auto",
-    type: "flex",
-    gutter: 15,
-  }
-}
-
 // agelForm 组件的扩展参数，以及内置的功能函数
 export const agFormProps = function () {
   return {
@@ -56,7 +47,7 @@ export const agFormProps = function () {
     // Object 表单事件
     on: undefined,
     // Boolean 是否开启响应式
-    responsive: undefined,
+    responsive: false,
     // Funciton 自定义响应式规则
     responsiveMethod: undefined,
     // 暴露出去的方法

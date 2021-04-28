@@ -3,7 +3,7 @@
 :::tip 预先了解
 - 表单创建时会根据组件类型自动回填 `form.data`，关联响应式，不必手动 set 
 - 表单创建时会根据组件类型自动回填 `placeholder`
-- `form.items` 支持数组配置
+- `form.items` 支持数组/对象配置
 - `item.component` 为空是默认为 `el-input`
 :::
 
@@ -147,7 +147,7 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 | ......      | ......       | ...... | 支持所有 [el-row 属性](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes)      | 
 | ......      | ......       | ...... | 支持所有 [el-col 属性](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)      |  
 | data        | Object       | { }    | 数据                                  | 
-| items       | Object/Array | { }    | 表单子组件配置                         | 
+| items       | Array/Object | { }    | 表单子组件配置                         | 
 | on          | Object       | { }    | Form 组件的 Event 事件                | 
 | responsive  | Boolean      | false  | 是否开启响应式      | 
 | responsiveMethod | Funciton| -      | 自定义响应式规则      | 
