@@ -1,4 +1,3 @@
-import { isVNode } from "element-ui/src/utils/vdom";
 
 // 驼峰转短横线 
 export function kebabcase(v) {
@@ -41,3 +40,12 @@ export function getExcludeAttrs(keys, target) {
   }
   return obj;
 }
+
+// 生成一个 id 
+export function guid() {
+  return "xxxxxxxx".replace(/[x]/g, (c) => {
+    let r = (Math.random() * 16) | 0;
+    let v = c == "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};

@@ -37,45 +37,41 @@ export const colPorpKeys = [
 // 默认组件名称
 export const defaultComponent = "el-input";
 
+// 栅格布局的默认属性
+export const layoutPorps = function () {
+  return {
+    labelWidth: "auto",
+    type: "flex",
+    gutter: 15,
+  }
+}
+
 // agelForm 组件的扩展参数，以及内置的功能函数
 export const agFormProps = function () {
-
-  // 扩展参数
-  const attrs = {
+  return {
     // Object 表单数据
     data: {},
     // Object/Array 表单配置项
-    items: {},
+    items: [],
     // Object 表单事件
     on: undefined,
     // Boolean 是否开启响应式
     responsive: undefined,
     // Funciton 自定义响应式规则
     responsiveMethod: undefined,
-  }
-
-  // 默认布局属性 继承自 FormItem，Row 属性
-  const layout = {
-    labelWidth: "auto",
-    type: "flex",
-    gutter: 15,
-  }
-
-  // 暴露出去的方法
-  const methods = {
+    // 暴露出去的方法
     getRef: this.getRef,
     getItem: this.getItem,
     validate: this.validate,
     resetFields: this.resetFields,
     clearValidate: this.clearValidate,
   }
-
-  return Object.assign(attrs, layout, methods)
 };
 
 // agelFormItem 组件的扩展参数
 export const agItemProps = function () {
   return {
+    prop: "",
     // String 组件名称
     component: defaultComponent,
     // Boolean/Functiion 是否渲染

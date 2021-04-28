@@ -1,14 +1,14 @@
 <template>
   <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs.form" v-on="value.on||{}">
     <template v-if="value.inline">
-      <agel-form-item v-for="(item, prop) in items" :item="item" :data="value.data" :prop="prop" :ref="prop" :key="prop">
-        <slot :name="prop"></slot>
+      <agel-form-item v-for="item in items" :item="item" :data="value.data" :prop="item.prop" :ref="item.prop" :key="item.prop">
+        <slot :name="item.prop"></slot>
       </agel-form-item>
     </template>
     <el-row v-else v-bind="attrs.row">
-      <el-col v-for="(item, prop) in items" v-bind="item._col" :key="prop">
-        <agel-form-item :item="item" :data="value.data" :prop="prop" :ref="prop">
-          <slot :name="prop"></slot>
+      <el-col v-for="item in items" v-bind="item._col" :key="item.prop">
+        <agel-form-item :item="item" :data="value.data" :prop="item.prop" :ref="item.prop">
+          <slot :name="item.prop"></slot>
         </agel-form-item>
       </el-col>
     </el-row>
@@ -24,10 +24,11 @@ import {
 
 import agelFormItem from "./agel-form-item";
 import components from "./lib/index";
-import { getIncludeAttrs, getExcludeAttrs } from "./utils/utils";
+import { getIncludeAttrs, getExcludeAttrs, guid } from "./utils/utils";
 import {
   agFormProps,
   agItemProps,
+  layoutPorps,
   formPropKeys,
   itemPropKyes,
   rowPropsKeys,
@@ -53,8 +54,16 @@ export default {
       default: () => new Object(),
     },
   },
+  data() {
+    return {
+      load: false,
+    };
+  },
   created() {
     this.injectConfig();
+    this.asyncConfig();
+    this.initFields();
+    this.$nextTick(() => (this.load = true));
   },
   mounted() {
     if (this.value.responsive) {
@@ -67,37 +76,53 @@ export default {
   },
   computed: {
     attrs() {
-      return {
-        form: getIncludeAttrs(formPropKeys, this.value),
-        row: getIncludeAttrs(rowPropsKeys, this.value),
-      };
+      let attrs = { form: {}, row: {} };
+      if (!this.load) return attrs;
+      attrs.form = getIncludeAttrs(formPropKeys, this.value);
+      attrs.row = getIncludeAttrs(rowPropsKeys, this.value);
+      return attrs;
     },
     items() {
-      return this.getAgItems();
+      let agItems = {};
+      if (!this.load) return agItems;
+      this.eachItems((item) => {
+        let display = item.display;
+        if (typeof display == "function") {
+          display = item.display(this.value.data);
+        }
+        if (display === false) return;
+        const agItem = this.getAgFormItemAttrs(item);
+        agItem._col = this.getColAttrs(item);
+        agItem._formItem = this.getFormItemAttrs(item, agItem);
+        agItem._component = this.getComponentAttrs(item, agItem);
+        // agItems.push(agItem);
+        agItems[item.prop] = agItem;
+      });
+      return agItems;
     },
   },
   watch: {
     attach: {
       deep: true,
-      immediate: true,
       handler: "asyncConfig",
     },
-    "value.data": {
-      immediate: true,
-      handler: "initFields",
-    },
+    "value.data": "initFields",
   },
   methods: {
     // 注入全局配置，和扩展属性
     injectConfig() {
+      let form = this.value;
       let config = this.$agelFormConfig || {};
-      let extendApi = Object.assign(agFormProps.call(this), config.form || {});
-      this.extend(this.value, extendApi, false);
+      this.extend(form, config.form || {}, false);
+      this.extend(form, agFormProps.call(this), false);
+      !form.inline && this.extend(form, layoutPorps(), false);
+
       this.eachItems((item, prop) => {
+        item.prop = prop || "_aguid_" + guid();
         let name = item.component || defaultComponent;
         let itemConfig = config[name] || {};
         if (itemConfig && itemConfig.constructor == Function) {
-          itemConfig = itemConfig(prop, item, this.value);
+          itemConfig = itemConfig(item.prop, item, form);
         }
         if (itemConfig && itemConfig.constructor == Object) {
           this.extend(item, itemConfig, false);
@@ -172,7 +197,7 @@ export default {
     },
     // 循环 items
     eachItems(fn) {
-      let items = this.value.items;
+      let items = this.value.items || [];
       if (items.constructor == Array) {
         return items.forEach((item) => fn(item, item.prop));
       }
@@ -189,24 +214,6 @@ export default {
         this.$set(obj, key, target[key]);
       }
     },
-    // 组装 agelItems 对象
-    getAgItems() {
-      let agItems = {};
-      this.eachItems((item, prop) => {
-        let display = item.display;
-        if (typeof display == "function") {
-          display = item.display(this.value.data);
-        }
-        if (display === false) return;
-
-        const agItem = this.getAgFormItemAttrs(item);
-        agItem._col = this.getColAttrs(item);
-        agItem._formItem = this.getFormItemAttrs(item, agItem, prop);
-        agItem._component = this.getComponentAttrs(item, agItem);
-        agItems[prop] = agItem;
-      });
-      return agItems;
-    },
     getAgFormItemAttrs(item) {
       const agKeys = Object.keys(components);
       const name = item.component || defaultComponent;
@@ -222,9 +229,9 @@ export default {
           : "";
       return agItem;
     },
-    getFormItemAttrs(item, agItem, prop) {
+    getFormItemAttrs(item, agItem) {
       const formItem = getIncludeAttrs(itemPropKyes, item);
-      formItem.prop = agItem.ignore ? "" : prop;
+      formItem.prop = agItem.ignore ? "" : item.prop;
       formItem.label = agItem.slotLabel ? "" : formItem.label;
       if (formItem.required && formItem.rules == undefined) {
         formItem.required = undefined;
@@ -245,14 +252,14 @@ export default {
     getComponentAttrs(item, agItem) {
       const ignoreKeys = [].concat(colPorpKeys, itemPropKyes, agItemPropKyes);
       const component = getExcludeAttrs(ignoreKeys, item);
-      component.placeholder = this.getPlaceholder(component, agItem.label);
+      component.placeholder = this.getPlaceholder(component, agItem);
       component.disabled =
         typeof agItem.disabled == "function"
           ? item.disabled(this.value.data)
           : component.disabled;
       return component;
     },
-    getPlaceholder(component, label) {
+    getPlaceholder(component, agItem) {
       if (component.placeholder) return component.placeholder;
       let inputArr = ["el-input", "el-input-number"];
       let selectArr = [
@@ -262,11 +269,11 @@ export default {
         "el-time-select",
         "el-date-picker",
       ];
-      let text = typeof label == "string" ? label : "";
-      if (inputArr.includes(component.is)) {
+      let text = typeof agItem.label == "string" ? agItem.label : "";
+      if (inputArr.includes(agItem.component)) {
         return "请输入" + text;
       }
-      if (selectArr.includes(component.is)) {
+      if (selectArr.includes(agItem.component)) {
         return "请选择" + text;
       }
     },
