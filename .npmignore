@@ -5,6 +5,9 @@ docs/
 public/
 
 # local env files
+vue.config
+babel.config
+.eslintrc
 .env.local
 .env.*.local
 

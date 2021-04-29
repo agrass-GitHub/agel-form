@@ -97,9 +97,9 @@ export default {
         .map((v) => {
           const item = this.injectConfig(v);
           const agItem = this.getAgFormItemAttrs(item);
-          agItem._col = this.getColAttrs(item);
           agItem._formItem = this.getFormItemAttrs(item, agItem);
-          agItem._component = this.getComponentAttrs(item, agItem);
+          agItem._col = this.getColAttrs(item);
+          agItem._component = this.getComponentAttrs(item);
           return agItem;
         })
         .filter((v) => v.display !== false);
@@ -243,14 +243,14 @@ export default {
         getIncludeAttrs(colPorpKeys, item)
       );
     },
-    getComponentAttrs(item, agItem) {
+    getComponentAttrs(item) {
       const ignoreKeys = [].concat(colPorpKeys, itemPropKyes, agItemPropKyes);
       const component = getExcludeAttrs(ignoreKeys, item);
       component.placeholder = this.getPlaceholder(item);
       component.disabled =
-        typeof agItem.disabled == "function"
+        typeof item.disabled == "function"
           ? item.disabled(this.value.data)
-          : component.disabled;
+          : item.disabled;
       return component;
     },
     getPlaceholder(item) {
@@ -290,9 +290,9 @@ export default {
       return this.$refs[prop] ? this.$refs[prop][0].getRef() : null;
     },
     getItem(prop, deep) {
-      if (deep) return this.items.find((v) => (v.prop = prop));
+      if (deep) return this.items.find((v) => v.prop == prop);
       if (Array.isArray(this.value.items)) {
-        return this.value.items.find((v) => (v.prop = prop));
+        return this.value.items.find((v) => v.prop == prop);
       } else {
         return this.value.items[prop];
       }
