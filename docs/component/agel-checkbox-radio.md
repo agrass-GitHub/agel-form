@@ -8,6 +8,8 @@
 
 `options` 属性支持多种数据类型，`Array[string]`，`Array[Object]`，`Promise`，`Function`，若是 `Function` 类型，可以通过 `getRef` 获取组件实例调用 `getOptions` 进行主动刷新。
 
+`agel-checkbox` 多选时 `value` 属性可以设置为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔。
+
 `border` 属性实现边框样式风格，`button` 属性可实现按钮样式风格。
 
 <ClientOnly><checkbox-radio-form/></ClientOnly>

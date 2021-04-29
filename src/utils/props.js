@@ -47,7 +47,7 @@ export const agFormProps = function () {
     // Object 表单事件
     on: undefined,
     // Boolean 是否开启响应式
-    responsive: false,
+    responsive: undefined,
     // Funciton 自定义响应式规则
     responsiveMethod: undefined,
     // 暴露出去的方法

@@ -1,5 +1,5 @@
 <template>
-  <el-select class="agel-tree-select" :popper-class="treePopperClass" ref="select" :value="isLoading?undefined:text" :multiple="multiple"
+  <el-select class="agel-tree-select" :popper-class="treePopperClass" ref="select" :value="isLoading?undefined:selectValue" :multiple="multiple"
     :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" :loading="isLoading" :placeholder="isLoading?loadingText:placeholder"
     :loading-text="loadingText" v-on="$listeners" @click.native="initScroll" @clear="handleClear">
     <div class="filter-item" v-if="filter">
@@ -8,7 +8,7 @@
     <el-option value="" disabled>
       <el-tree ref="ref" class="tree-option" :data="treeData" :props="props" :show-checkbox="multiple" :highlight-current="!multiple"
         :node-key="nodeKey" :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs" v-on="$listeners"
-        @current-change="handleCurrentChange" @check-change="handleCheckChange">
+        @current-change="handleCurrentChange" @check="handleCheck">
       </el-tree>
     </el-option>
   </el-select>
@@ -45,6 +45,7 @@ export default {
     return {
       text: "",
       filterText: "",
+      selectValue: this.multiple ? [] : "",
     };
   },
   computed: {
@@ -63,56 +64,39 @@ export default {
         ? this.labelKey
         : getProp(this.$attrs, "nodeKey") || this.labelKey;
     },
-    treeData() {
-      return !isEmpty(this.optionsData) ? this.optionsData : this.$attrs.data;
-    },
     treePopperClass() {
       return `agel-tree-select-popper ${this.popperClass || ""}`;
     },
+    treeData() {
+      return !isEmpty(this.optionsData) ? this.optionsData : this.$attrs.data;
+    },
   },
   watch: {
-    value() {
-      this.selectedTree();
-    },
+    // 因为 leafOnly includeHalfChecked ,会动态变化去勾选下级 ，不能监听 value 属性变化
+    // value(){},
     treeData() {
-      this.$nextTick(this.selectedTree);
+      setTimeout(this.selected, 0);
     },
     filterText(val) {
       this.$refs.ref.filter(val);
     },
   },
-  mounted() {
-    this.selectedTree();
-  },
   methods: {
-    // 根据 value 回填 text
-    selectedTree() {
-      let data = this.treeData;
-      let value = this.value;
-      if (isEmpty(value)) return;
-      if (data && data.length > 0) {
-        if (this.multiple) {
-          this.$refs.ref.setCheckedKeys(value);
-          this.text = this.getValueNode().map((v) => v[this.labelKey]);
-        } else {
-          this.$refs.ref.setCurrentKey(value);
-          this.text = this.getValueNode()[this.labelKey];
-        }
-      } else if (this.isLazy) {
-        this.text = value;
-      }
-    },
-    handleCurrentChange(data, node) {
-      if (node.disabled || this.multiple) return;
-      this.text = this.getValueNode()[this.labelKey];
-      this.input(data[this.nodeKey]);
+    handleCurrentChange(nodeData, treeNode = {}) {
+      if (treeNode.disabled || this.multiple) return;
+      let node = this.getValueNode();
+      const treeValue = node[this.nodeKey];
+      const selectValue = node[this.labelKey];
+      this.selectValue = selectValue;
+      this.input(treeValue);
       this.blur();
     },
-    handleCheckChange() {
-      const list = this.getValueNode();
-      this.text = list.map((v) => v[this.labelKey]);
-      const value = list.map((v) => v[this.nodeKey]);
-      this.input(value);
+    handleCheck() {
+      let nodes = this.getValueNode();
+      const treeValue = nodes.map((v) => v[this.nodeKey]);
+      const selectValue = nodes.map((v) => v[this.labelKey]);
+      this.selectValue = selectValue;
+      this.input(treeValue);
     },
     handleFilterNode(filterText, data) {
       let value = filterText.trim();
@@ -124,31 +108,15 @@ export default {
         return String(data[this.labelKey]).indexOf(value) !== -1;
       }
     },
+    // 只有单选才会有清空按钮
     handleClear() {
-      this.text = "";
-      this.input(this.multiple ? [] : "");
       this.$refs.ref.setCurrentKey(null);
-      this.$refs.ref.setCheckedKeys([]);
-    },
-    focus() {
-      this.$refs.select.focus();
-    },
-    blur() {
-      this.$refs.select.blur();
+      this.selectValue = "";
+      this.input("");
     },
     input(v) {
-      this.$emit("input", v);
+      this.optionsInput(v);
       this.$emit("change", v); // 需手动触发 change 事件
-    },
-    getValueNode() {
-      if (this.multiple) {
-        return this.$refs.ref.getCheckedNodes(
-          this.leafOnly,
-          this.includeHalfChecked
-        );
-      } else {
-        return this.$refs.ref.getCurrentNode();
-      }
     },
     initScroll() {
       setTimeout(() => {
@@ -164,6 +132,33 @@ export default {
     // 覆盖 options mixin 默认函数
     getOptionsData(options) {
       return options;
+    },
+    // 暴露出去的功能函数
+    // 根据 value 选中 高亮 树节点
+    selected() {
+      let tree = this.$refs.ref;
+      if (!tree) return;
+      if (isEmpty(this.optionsValue)) return;
+      if (this.multiple) {
+        tree.setCheckedKeys(this.optionsValue);
+        this.handleCheck();
+      } else {
+        tree.setCurrentKey(this.optionsValue);
+        this.handleCurrentChange();
+      }
+    },
+    getValueNode() {
+      let tree = this.$refs.ref;
+      if (!tree) return null;
+      return this.multiple
+        ? tree.getCheckedNodes(this.leafOnly, this.includeHalfChecked)
+        : tree.getCurrentNode();
+    },
+    focus() {
+      this.$refs.select.focus();
+    },
+    blur() {
+      this.$refs.select.blur();
     },
   },
   install(vue) {

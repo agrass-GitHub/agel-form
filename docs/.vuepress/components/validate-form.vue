@@ -14,7 +14,6 @@ export default {
         rules: {
           type: [
             {
-              type: "array",
               required: true,
               message: "请至少选择一个活动性质",
               trigger: "change",

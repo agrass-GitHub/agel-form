@@ -61,7 +61,7 @@ export default {
         span: 12,
         data: {
           tree1: "2",
-          tree2: ["1-1-1", "2-1-1"],
+          tree2: "1-1-1,2-1-1",
         },
         items: [
           {
@@ -70,11 +70,6 @@ export default {
             component: "el-tree-select",
             nodeKey: "value",
             options: treeData,
-            on: {
-              change: (v) => {
-                console.log(v);
-              },
-            },
           },
           {
             prop: "tree2",

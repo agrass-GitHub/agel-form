@@ -1,15 +1,16 @@
 <template>
   <i v-if="optionsLoading" class="agel-options-loading el-icon-loading"></i>
-  <component v-else-if="optionsData.length==0" class="agel-radio" ref="ref" :is="is" :value="value" v-bind="getProps($attrs)" v-on="$listeners">
-    <template v-slot:default>
-      <slot name="default" />
-    </template>
-  </component>
-  <el-radio-group v-else ref="ref" class="agel-radio-group" :value="value" v-bind="getGroupPorps($attrs)" v-on="$listeners">
+  <el-radio-group v-else-if="optionsData.length>0" ref="ref" class="agel-radio-group" :value="value" v-bind="getGroupPorps($attrs)" v-on="$listeners">
     <component :is="is" v-for="(option,index) of optionsData" v-bind="getProps(option)" :key="option.value" :label="option.value">
       <slot name="option" :option="option" :index="index">{{option.label}}</slot>
     </component>
   </el-radio-group>
+  <component v-else class="agel-radio" ref="ref" :is="is" :value="value" v-bind="getProps($attrs)" v-on="$listeners">
+    <template v-slot:default>
+      <slot name="default" />
+    </template>
+  </component>
+
 </template>
 
 <script>
@@ -35,6 +36,9 @@ export default {
     is() {
       return this.button ? "el-radio-button" : "el-radio";
     },
+  },
+  created() {
+    if (this.value === undefined) this.optionsInput("");
   },
   methods: {
     getProps(traget) {

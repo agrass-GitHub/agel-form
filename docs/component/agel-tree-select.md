@@ -6,6 +6,8 @@
 
 `options` 属性支持多种数据类型，`Array[Object]`，`Promise`，`Function`，若是 `Function` 类型，可以通过 `getRef` 获取组件实例调用 `getOptions` 进行主动刷新。
 
+多选时 `value` 属性可以设置为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔。
+
 <ClientOnly><tree-select-form/></ClientOnly>
 
 ::: details 点击查看代码
@@ -49,6 +51,8 @@
 | blur          | -             |  失焦            | 
 | getOptions    | -             |  刷新数据， options 为 Function 时可调用           |
 | getValueNode  | -             |  返回 value 所对应的节点对象，开启多选则返回数组          |
+| selected      | -             |  根据 value 高亮或者选中树节点          |
+
 
 ## TreeSelect Events
 

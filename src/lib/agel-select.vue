@@ -1,6 +1,6 @@
 <template>
-  <el-select class="agel-select" ref="ref" v-bind="$attrs" v-on="$listeners" :value="isLoading?undefined:value" :loading="isLoading"
-    :placeholder="isLoading?loadingText:placeholder" :loading-text="loadingText" :popperClass="popperClass">
+  <el-select class="agel-select" ref="ref" v-bind="$attrs" v-on="$listeners" :value="isLoading?undefined:optionsValue" :multiple="multiple"
+    :loading="isLoading" :placeholder="isLoading?loadingText:placeholder" :loading-text="loadingText" :popperClass="popperClass">
     <template v-slot:prefix>
       <slot name="prefix"></slot>
     </template>
@@ -45,6 +45,7 @@ export default {
     value: [String, Number, Array],
     filter: Boolean,
     loading: Boolean,
+    multiple: Boolean,
     placeholder: String,
     loadingText: {
       type: String,

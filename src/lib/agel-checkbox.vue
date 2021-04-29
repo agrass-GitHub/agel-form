@@ -1,15 +1,16 @@
 <template>
   <i v-if="optionsLoading" class="agel-options-loading el-icon-loading"></i>
-  <component v-else-if="optionsData.length==0" class="agel-checkbox" :is="is" :value="value" ref="ref" v-bind="getProps($attrs)" v-on="$listeners">
-    <template v-slot:default>
-      <slot name="default" />
-    </template>
-  </component>
-  <el-checkbox-group v-else ref="ref" class="agel-checkbox-group" :value="value" v-bind="getGroupPorps($attrs)" v-on="$listeners">
+  <el-checkbox-group v-else-if="multiple" ref="ref" class="agel-checkbox-group" :value="optionsValue" v-bind="getGroupPorps($attrs)"
+    v-on="$listeners">
     <component :is="is" v-for="(option,index) of optionsData" v-bind="getProps(option)" :key="option.value" :label="option.value">
       <slot name="option" :option="option" :index="index">{{option.label}}</slot>
     </component>
   </el-checkbox-group>
+  <component v-else class="agel-checkbox" :is="is" :value="value" ref="ref" v-bind="getProps($attrs)" v-on="$listeners">
+    <template v-slot:default>
+      <slot name="default" />
+    </template>
+  </component>
 </template>
 
 <script>
@@ -35,7 +36,7 @@ export default {
   inheritAttrs: false,
   mixins: [optionsMinxin],
   props: {
-    value: [Boolean, Array],
+    value: [String, Boolean, Array],
     button: {
       type: Boolean,
       default: false,
@@ -45,6 +46,12 @@ export default {
     is() {
       return this.button ? "el-checkbox-button" : "el-checkbox";
     },
+    multiple() {
+      return this.optionsData.length > 0;
+    },
+  },
+  created() {
+    if (this.value === undefined) this.optionsInput(this.multiple ? [] : false);
   },
   methods: {
     getProps(traget) {

@@ -8,7 +8,9 @@ export default {
     return {
       form: {
         span: 24,
-        data: {},
+        data: {
+          slotStyle: "感觉,非常,灵活",
+        },
         items: {
           borderStyle: {
             label: "border 样式",

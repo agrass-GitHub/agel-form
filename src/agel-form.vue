@@ -146,7 +146,12 @@ export default {
           value: null,
         },
         {
-          arr: [name == "el-input", "el-select", "el-tree-select"],
+          arr: [
+            name == "el-input",
+            name == "el-checkbox" && item.options != undefined,
+            "el-select",
+            "el-tree-select",
+          ],
           value: "",
         },
         {
@@ -158,9 +163,9 @@ export default {
             name == "el-cascader",
             name == "el-transfer",
             name == "el-upload",
-            name == "el-checkbox" && item.options != undefined,
-            name == "el-select" && item.multiple,
-            name == "el-tree-select" && item.multiple,
+            // name == "el-checkbox" && item.options != undefined,
+            // name == "el-select" && item.multiple,
+            // name == "el-tree-select" && item.multiple,
           ],
           value: [],
         },
@@ -284,7 +289,8 @@ export default {
       if (prop == undefined) return this.$refs.form;
       return this.$refs[prop] ? this.$refs[prop][0].getRef() : null;
     },
-    getItem(prop) {
+    getItem(prop, deep) {
+      if (deep) return this.items.find((v) => (v.prop = prop));
       if (Array.isArray(this.value.items)) {
         return this.value.items.find((v) => (v.prop = prop));
       } else {

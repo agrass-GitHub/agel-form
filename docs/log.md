@@ -6,9 +6,14 @@ sidebar: auto
 ## v.0.2.2
 
 - `优化` 只有在栅格布局情况下，才会注入默认的栅格布局属性
-- `bug` placeholder 智能回填失败的问题
-- `优化` prop 属性取消必填，将默认生成 guid, 该字段将默认忽略取消表单关联
+- `优化` prop 属性取消必填，将默认生成 guid, 若未填写该字段将不与表单关联
 - `优化` 动态增加表单项也能智能回填字段默认值
+- `新增` agel-tree-select 新增 selected 方法
+- `新增` agel-select，agel-tree-select，agel-checkbox，agel-radio options 属性支持字符串配置
+- `新增` agel-select，agel-tree-select，agel-checkbox，多选时 value 可设置为字符串，逗号间隔
+- `bug` placeholder 智能回填失败的问题
+- `bug`  修复一些不稳定因素
+
 
 ## v.0.2.1
 - `bug` display 属性导致显示错误的问题
@@ -20,7 +25,7 @@ sidebar: auto
 - `调整` agel-radio-group 更改名称为 agel-radio，对 radio 和 radio-group 进行了合并
 - `调整` agel-checkbox-group 更改名称为 agel-checkbox，对 checkbox 和 checkbox-group 进行了合并
 - `新增` agel-select agel-checkbox agel-radio 组件的 options 属性支持字符串数组，异步函数，Promise
-- `新增` el-tree-select 新增 options 属性，支持异步函数，Promise，兼容 data 属性
+- `新增` agel-tree-select 新增 options 属性，支持异步函数，Promise，兼容 data 属性
 - `新增` 根据表单字段初始化 form.data，关联响应式
 - `新增` form.responsive  form.responsiveMethod 根据父容器宽度自动响应式
 - `新增` item.display  属性支持函数配置，实现表单联动

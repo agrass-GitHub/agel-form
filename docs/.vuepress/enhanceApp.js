@@ -42,15 +42,15 @@ export default ({ Vue }) => {
   Vue.use(Element, { size: 'mini' });
   Vue.use(agelForm, {
     "el-date-picker": function (prop, item, form) {
-      if ((item.type == "daterange" || item.type == "datetimerange") && item.proprange) {
-        let [startTimeProp, endTimeProp] = item.proprange;
-        form.data[startTimeProp] = "";
-        form.data[endTimeProp] = "";
-        item.on = item.on || {}
-        item.on.change = (value) => {
-          form.data[startTimeProp] = value ? value[0] : "";
-          form.data[endTimeProp] = value ? value[1] : "";
-        }
+      if (item.valueFormat == undefined) {
+        if (item.type == undefined || item.type == "daterange") item.valueFormat = "yyyy-MM-dd";
+        if (item.type == "datetime" || item.type == "datetimerange") item.valueFormat = "yyyy-MM-dd HH:mm:ss";
+        if (item.type == "month") item.valueFormat = "yyyy-MM";
+        if (item.type == "year") item.valueFormat = "yyyy";
+      }
+
+      if (item.type == "daterange" || item.type == "datetimerange") {
+        item.unlinkPanels = true;
       }
     }
   });
@@ -65,7 +65,9 @@ export default ({ Vue }) => {
     get(url) {
       return new Promise((resolve) => {
         setTimeout(() => {
-          resolve(mockData[url]());
+          let data = mockData[url]();
+          console.log('模拟请求数据', data);
+          resolve(data);
         }, 1500);
       });
     },

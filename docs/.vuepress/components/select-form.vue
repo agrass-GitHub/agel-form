@@ -8,12 +8,21 @@ export default {
     return {
       form: {
         span: 12,
-        data: {},
+        data: {
+          demo0: "北京,重庆",
+        },
         items: {
+          demo0: {
+            label: "字符串",
+            component: "el-select",
+            options: "北京,上海,重庆",
+            multiple: true,
+          },
           demo1: {
             label: "字符串数组",
             component: "el-select",
             options: ["北京", "上海"],
+            multiple: true,
           },
           demo2: {
             label: "对象数组",
@@ -24,6 +33,11 @@ export default {
             ],
           },
           demo3: {
+            label: "Promise对象",
+            component: "el-select",
+            options: this.$http.get("/api/getRandomData"),
+          },
+          demo4: {
             label: "Function函数",
             component: "el-select",
             clearable: true,
@@ -32,11 +46,6 @@ export default {
               return data;
             },
           },
-          demo4: {
-            label: "Promise对象",
-            component: "el-select",
-            options: this.$http.get("/api/getRandomData"),
-          },
           button: {
             component: "el-button",
             type: "primary",
@@ -44,7 +53,7 @@ export default {
             span: 24,
             on: {
               click: () => {
-                const vm = this.form.getRef("demo3");
+                const vm = this.form.getRef("demo4");
                 vm.getOptions();
                 vm.focus();
               },
