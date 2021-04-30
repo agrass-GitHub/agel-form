@@ -70,82 +70,96 @@ export default {
             component: "el-tree-select",
             nodeKey: "value",
             options: treeData,
-          },
-          {
-            prop: "tree2",
-            label: "多选树形",
-            component: "el-tree-select",
-            nodeKey: "value",
-            multiple: true,
-            leafOnly: true, // 只包含叶子节点
-            options: treeData,
-          },
-          {
-            prop: "tree3",
-            label: "过滤树形",
-            component: "el-tree-select",
-            nodeKey: "value",
-            filter: true,
-            options: treeData,
-          },
-          {
-            prop: "tree4",
-            label: "懒加载树",
-            component: "el-tree-select",
-            nodeKey: "name",
-            lazy: true,
-            props: {
-              label: "name",
-              children: "zones",
-              isLeaf: "leaf",
-            },
-            load: (node, resolve) => {
-              if (node.level === 0) {
-                return resolve([{ name: "region" }]);
-              }
-              if (node.level > 1) return resolve([]);
-              setTimeout(() => {
-                const data = [
-                  {
-                    name: "leaf",
-                    leaf: true,
-                  },
-                  {
-                    name: "zone",
-                  },
-                ];
-                resolve(data);
-              }, 500);
+            on: {
+              change: (v) => {
+                console.log("change", v);
+              },
+              input: (v) => {
+                console.log("input", v);
+              },
+              "visible-change"() {
+                console.log("visibleChange");
+              },
+              "node-click"() {
+                console.log("nodeClick");
+              },
             },
           },
-          {
-            prop: "tree5",
-            label: "异步树形",
-            component: "el-tree-select",
-            nodeKey: "value",
-            options: async () => {
-              let data = await this.$http.get("/api/getRandomTreeData");
-              return data;
-            },
-          },
-          {
-            prop: "tree6",
-            label: "自定义树形",
-            component: "el-tree-select",
-            nodeKey: "value",
-            options: this.$http.get("/api/getRandomTreeData"),
-            renderContent: (h, { node, data, store }) => {
-              return (
-                <span class="custom-tree-node">
-                  <i
-                    class="el-icon-eleme"
-                    style="color:#409EFF;margin-right:5px"
-                  ></i>
-                  <span>{node.label}</span>
-                </span>
-              );
-            },
-          },
+          // {
+          //   prop: "tree2",
+          //   label: "多选树形",
+          //   component: "el-tree-select",
+          //   nodeKey: "value",
+          //   multiple: true,
+          //   leafOnly: true, // 只包含叶子节点
+          //   options: treeData,
+          // },
+          // {
+          //   prop: "tree3",
+          //   label: "过滤树形",
+          //   component: "el-tree-select",
+          //   nodeKey: "value",
+          //   filter: true,
+          //   options: treeData,
+          // },
+          // {
+          //   prop: "tree4",
+          //   label: "懒加载树",
+          //   component: "el-tree-select",
+          //   nodeKey: "name",
+          //   lazy: true,
+          //   props: {
+          //     label: "name",
+          //     children: "zones",
+          //     isLeaf: "leaf",
+          //   },
+          //   load: (node, resolve) => {
+          //     if (node.level === 0) {
+          //       return resolve([{ name: "region" }]);
+          //     }
+          //     if (node.level > 1) return resolve([]);
+          //     setTimeout(() => {
+          //       const data = [
+          //         {
+          //           name: "leaf",
+          //           leaf: true,
+          //         },
+          //         {
+          //           name: "zone",
+          //         },
+          //       ];
+          //       resolve(data);
+          //     }, 500);
+          //   },
+          // },
+          // {
+          //   prop: "tree5",
+          //   label: "异步树形",
+          //   component: "el-tree-select",
+          //   nodeKey: "value",
+          //   options: async () => {
+          //     let data = await this.$http.get("/api/getRandomTreeData");
+          //     return data;
+          //   },
+          // },
+          // {
+          //   prop: "tree6",
+          //   label: "自定义树形",
+          //   component: "el-tree-select",
+          //   nodeKey: "value",
+          //   options: this.$http.get("/api/getRandomTreeData"),
+          //   renderContent: (h, { node, data, store }) => {
+          //     return (
+          //       <span class="custom-tree-node">
+          //         <i
+          //           class="el-icon-eleme"
+          //           style="color:#409EFF;margin-right:5px"
+          //         ></i>
+          //         <span>{node.label}</span>
+          //       </span>
+          //     );
+          //   },
+          // },
         ],
       },
     };

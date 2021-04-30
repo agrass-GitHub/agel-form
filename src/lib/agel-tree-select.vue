@@ -114,9 +114,12 @@ export default {
       this.selectValue = "";
       this.input("");
     },
+    // 接管 el-select 的 input 事件
     input(v) {
-      this.optionsInput(v);
-      this.$emit("change", v); // 需手动触发 change 事件
+      if (v !== this.value) {
+        this.optionsInput(v);
+        this.$emit("change", v); // 需手动触发 change 事件
+      }
     },
     initScroll() {
       setTimeout(() => {

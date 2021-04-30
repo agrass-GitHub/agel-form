@@ -3,6 +3,11 @@ title: 更新日志
 sidebar: auto
 ---
 
+
+## v.0.2.3
+
+- `bug` agel-tree-select input change 事件触发多次的问题
+
 ## v.0.2.2
 
 - `优化` 只有在栅格布局情况下，才会注入默认的栅格布局属性
