@@ -40,7 +40,7 @@ export default {
           {
             label: "插槽2",
             slot: (scopeProps) => {
-              // 若改插槽有参数，可通过 scopeProps 获取
+              // 若该插槽有参数，可通过 scopeProps 获取
               return h("el-tag", {}, "这是一段 render 函数类型自定义插槽");
             },
           },
