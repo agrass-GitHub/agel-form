@@ -13,6 +13,8 @@
 
 这是一个最简单的例子，设置`inline:true` 开启行内表单模式。
 
+`ignore` 属性表明该组件是一个纯展示组件，开启不会与表单关联, 不设置 `prop` 属性将默认为 `true`。
+
 <ClientOnly><inline-form/></ClientOnly>
 
 ::: details 点击查看代码
@@ -178,6 +180,7 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 | ......      | ......          | ...... |  支持所有 [el-form-item 属性](https://element.eleme.cn/#/zh-CN/component/form#form-item-attributes)      |   
 | ......      | ......          | .........   | 组件的动态参数      |
 | component   | String          | -    | 组件名称                |
+| prop        | String          | -           | 字段名    | 
 | label       | String/String/Funciton/Vnode          | -          | Form Item Label 插槽  |  
 | slot        | Boolean/String/Funciton/Vnode  | false       | Form Item 插槽  | 
 | slots       | Object/String/Funciton/Vnode   | { }         | Component 组件的插槽 | 
@@ -186,7 +189,6 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 | ignore      | Boolean         | false       | 与表单数据取消关联  |  
 | on          | Object          | { }         | 子组件 evenet 事件  |
 | style       | String          | -           | style 样式         |
-| prop        | String          | -           | 字段名，数组配置时该字段必填    | 
 | labelWidth  | String          | -           | 继承自 el-form-item  | 
 | required    | Boolean         | -           | 继承自 el-form-item  |
 | rules       | Array/Object    | -           | 继承自 el-form-item  |
