@@ -33,6 +33,13 @@
 - 联动显示隐藏
 - 响应式布局
 
+内置单组件，是基于 [element-ui](https://element.eleme.cn/#/zh-CN) 的基础组件经过二次封装的单组件，在使用方式上同原组件保持一致，没有任何的破坏性，并且额外添加了扩展功能，完完全全可以代替原组件进行开发使用。
+
+- [agel-select](https://agrass.gitee.io/agel-form/component/agel-select.html) 
+- [agel-checkbox](https://agrass.gitee.io/agel-form/component/agel-checkbox-radio.html) 
+- [agel-radio](https://agrass.gitee.io/agel-form/component/agel-checkbox-radio.html) 
+- [agel-upload](https://agrass.gitee.io/agel-form/component/agel-upload.html) 
+- [agel-tree-select](https://agrass.gitee.io/agel-form/component/agel-tree-select.html) 
 
 ## 如此简单
 
