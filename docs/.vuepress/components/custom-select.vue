@@ -1,6 +1,6 @@
 <template>
   <el-select :value="value" v-bind="$attrs" v-on="$listeners">
-    <el-option v-for="option of options" v-bind='option' :key="option.label" :label="option.label" :value="option.value">
+    <el-option v-for="option of options" :key="option.label" :label="option.label" :value="option.value">
     </el-option>
     <template v-slot:prefix>
       <slot name="prefix"></slot>

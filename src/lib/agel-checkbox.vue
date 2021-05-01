@@ -36,7 +36,7 @@ export default {
   inheritAttrs: false,
   mixins: [optionsMinxin],
   props: {
-    value: [String, Boolean, Array],
+    value: [String, Number, Boolean, Array],
     button: {
       type: Boolean,
       default: false,
@@ -47,11 +47,11 @@ export default {
       return this.button ? "el-checkbox-button" : "el-checkbox";
     },
     multiple() {
-      return this.optionsData.length > 0;
+      return this.options !== undefined;
     },
   },
   created() {
-    if (this.value === undefined) this.optionsInput(this.multiple ? [] : false);
+    if (this.value === undefined) this.optionsInput(this.multiple ? "" : false);
   },
   methods: {
     getProps(traget) {

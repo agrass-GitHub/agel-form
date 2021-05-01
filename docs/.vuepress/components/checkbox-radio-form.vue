@@ -14,9 +14,12 @@ export default {
         items: {
           borderStyle: {
             label: "border 样式",
-            component: "el-checkbox",
+            component: "el-radio",
             border: true,
             slots: "边框",
+            $component: {
+              label: "radio组件的label属性",
+            },
           },
           buttonStyle: {
             label: "button 样式",

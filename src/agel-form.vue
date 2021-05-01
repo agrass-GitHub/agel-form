@@ -6,7 +6,7 @@
       </agel-form-item>
     </template>
     <el-row v-else v-bind="attrs.row">
-      <el-col v-for="item in items" v-bind="item._col" :key="item.prop">
+      <el-col v-for="item in items" v-bind="item.$col" :key="item.prop">
         <agel-form-item :item="item" :data="value.data" :prop="item.prop" :ref="item.prop">
           <slot :name="item.prop"></slot>
         </agel-form-item>
@@ -97,9 +97,9 @@ export default {
         .map((v) => {
           const item = this.injectConfig(v);
           const agItem = this.getAgFormItemAttrs(item);
-          agItem._formItem = this.getFormItemAttrs(item, agItem);
-          agItem._col = this.getColAttrs(item);
-          agItem._component = this.getComponentAttrs(item);
+          agItem.$formItem = this.getFormItemAttrs(item, agItem);
+          agItem.$col = this.getColAttrs(item);
+          agItem.$component = this.getComponentAttrs(item);
           return agItem;
         })
         .filter((v) => v.display !== false);
@@ -245,7 +245,10 @@ export default {
     },
     getComponentAttrs(item) {
       const ignoreKeys = [].concat(colPorpKeys, itemPropKyes, agItemPropKyes);
-      const component = getExcludeAttrs(ignoreKeys, item);
+      const component = Object.assign(
+        getExcludeAttrs(ignoreKeys, item),
+        item.$component || {}
+      );
       component.placeholder = this.getPlaceholder(item);
       component.disabled =
         typeof item.disabled == "function"

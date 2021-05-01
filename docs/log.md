@@ -3,6 +3,12 @@ title: 更新日志
 sidebar: auto
 ---
 
+## v.0.2.4
+
+- `新增` agel-select 添加 setSelected 方法， agel-tree-select 的 selected 方法名更改为 setSelected
+- `新增` agel-select，agel-tree-select，agel-checkbox，agel-radio option 添加 getValueOption 方法
+- `新增` item.$component 属性，解决组件动态属性与现有属性产生冲突的问题
+- `优化` 异步加载 options 刷新组件选中状态，不再每次刷新触发 input 事件
 
 ## v.0.2.3
 

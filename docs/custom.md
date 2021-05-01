@@ -1,7 +1,7 @@
 # 如何二次封装组件
 
 :::tip
- `agel-form` 组件可以灵活搭配第三方或者自定义的组件进行使用，唯一需要注意的是避免组件的动态属性和现有的 [Item](/example/agel-form.html#form-item-attributes) 属性产生命名冲突，除此之外没有其他额外的规则，下面是一个自定义二次封装组件的简单教程。
+ `agel-form` 组件可以灵活搭配第三方或者自定义的组件进行使用，很棒的一点是它不会对你自定义组件产生额外的负担和规则，下面是一个自定义二次封装组件的简单教程。
 :::
 
 例子以简单二次封装 `el-select` 组件为例子：
@@ -33,7 +33,7 @@ export default {
 ```html{2-5}
 <template>
   <el-select :value="value" v-bind="$attrs" v-on="$listeners">
-    <el-option v-for="option of options" v-bind='option' :key="option.label" :label="option.label" :value="option.value">
+    <el-option v-for="option of options" :key="option.label" :label="option.label" :value="option.value">
     </el-option>
   </el-select>
 </template>

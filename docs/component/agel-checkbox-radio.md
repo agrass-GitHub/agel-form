@@ -55,6 +55,12 @@
 | default        |   选择框默认插槽          |
 | option         |   每一个选择项插槽，参数 {option,index}          |
 
+## Radio Checkbox Methods
+
+| 属性          | 参数           |  说明                                   | 
+| -----------   | ------------  |  ------------------------------------  | 
+| getValueOption  | -           |  返回 value 所对应的 option 对象，多选时为数组 |
+
 ## Radio Checkbox事件
 
 | 属性          | 参数           |  说明                                   | 

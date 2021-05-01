@@ -207,7 +207,7 @@ export default {
 }
 
 .agel-upload .el-icon-close-tip {
-  display: none;
+  display: none !important;
 }
 
 .agel-upload .el-upload-list--picture-card .el-upload-list__item {

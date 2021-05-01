@@ -10,8 +10,9 @@ export default {
     return {
       form: {
         data: {},
-        items: {
-          region: {
+        items: [
+          {
+            prop: "region",
             component: "custom-select",
             label: "活动区域",
             options: [
@@ -20,7 +21,7 @@ export default {
               { label: "区域3", value: "区域3" },
             ],
           },
-        },
+        ],
       },
     };
   },

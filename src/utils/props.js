@@ -79,6 +79,8 @@ export const agItemProps = function () {
     slots: {},
     // Object 组件 event 事件
     on: {},
+    // 组件动态参数，当参数名与现有 item 属性产生冲突时，可写在此处
+    $component: {},
   };
 };
 

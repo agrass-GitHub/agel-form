@@ -116,6 +116,9 @@ export default {
         }
       });
     },
+    setSelected() {
+      this.$refs.ref.setSelected();
+    },
     focus() {
       this.$refs.ref.focus();
     },

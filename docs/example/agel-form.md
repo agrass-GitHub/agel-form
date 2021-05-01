@@ -178,7 +178,7 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 | ----------- | ------------  | ------ | ------------------------------------ |
 | ......      | ......          | ...... |  支持所有 [el-col 属性](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)      | 
 | ......      | ......          | ...... |  支持所有 [el-form-item 属性](https://element.eleme.cn/#/zh-CN/component/form#form-item-attributes)      |   
-| ......      | ......          | .........   | 组件的动态参数      |
+| ......      | ......          | .........   | 组件的动态属性      |
 | component   | String          | -    | 组件名称                |
 | prop        | String          | -           | 字段名    | 
 | label       | String/String/Funciton/Vnode          | -          | Form Item Label 插槽  |  
@@ -193,6 +193,7 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 | required    | Boolean         | -           | 继承自 el-form-item  |
 | rules       | Array/Object    | -           | 继承自 el-form-item  |
 | span        | Number          | -           | 继承自 el-col  |
+| $component  | Object          | -           | 组件的动态属性，当动态属性与现有属性冲突时使用  |
 
 
 ### 配置结构

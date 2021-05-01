@@ -11,20 +11,23 @@ export default {
         data: {
           demo0: "北京,重庆",
         },
-        items: {
-          demo0: {
+        items: [
+          {
+            prop: "demo0",
             label: "字符串",
             component: "el-select",
             options: "北京,上海,重庆",
             multiple: true,
           },
-          demo1: {
+          {
+            prop: "demo1",
             label: "字符串数组",
             component: "el-select",
             options: ["北京", "上海"],
             multiple: true,
           },
-          demo2: {
+          {
+            prop: "demo2",
             label: "对象数组",
             component: "el-select",
             options: [
@@ -32,12 +35,14 @@ export default {
               { label: "上海", value: "Shanghai" },
             ],
           },
-          demo3: {
+          {
+            prop: "demo3",
             label: "Promise对象",
             component: "el-select",
             options: this.$http.get("/api/getRandomData"),
           },
-          demo4: {
+          {
+            prop: "demo4",
             label: "Function函数",
             component: "el-select",
             clearable: true,
@@ -46,7 +51,8 @@ export default {
               return data;
             },
           },
-          button: {
+          {
+            prop: "button",
             component: "el-button",
             type: "primary",
             slots: "刷新 options",
@@ -59,7 +65,8 @@ export default {
               },
             },
           },
-          demo5: {
+          {
+            prop: "demo5",
             label: "分组过滤",
             component: "el-select",
             filter: true,
@@ -84,7 +91,8 @@ export default {
               },
             ],
           },
-          demo6: {
+          {
+            prop: "demo6",
             label: "插槽样式",
             component: "el-select",
             options: [
@@ -108,7 +116,7 @@ export default {
               },
             },
           },
-        },
+        ],
       },
     };
   },

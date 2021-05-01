@@ -72,19 +72,17 @@ export default {
     },
   },
   watch: {
-    // 因为 leafOnly includeHalfChecked ,会动态变化去勾选下级 ，不能监听 value 属性变化
-    // value(){},
-    treeData() {
-      setTimeout(this.selected, 0);
-    },
     filterText(val) {
       this.$refs.ref.filter(val);
     },
   },
+  mounted() {
+    this.setSelected();
+  },
   methods: {
     handleCurrentChange(nodeData, treeNode = {}) {
       if (treeNode.disabled || this.multiple) return;
-      let node = this.getValueNode();
+      let node = this.getValueOption();
       const treeValue = node[this.nodeKey];
       const selectValue = node[this.labelKey];
       this.selectValue = selectValue;
@@ -92,7 +90,7 @@ export default {
       this.blur();
     },
     handleCheck() {
-      let nodes = this.getValueNode();
+      let nodes = this.getValueOption();
       const treeValue = nodes.map((v) => v[this.nodeKey]);
       const selectValue = nodes.map((v) => v[this.labelKey]);
       this.selectValue = selectValue;
@@ -138,7 +136,7 @@ export default {
     },
     // 暴露出去的功能函数
     // 根据 value 选中 高亮 树节点
-    selected() {
+    setSelected() {
       let tree = this.$refs.ref;
       if (!tree) return;
       if (isEmpty(this.optionsValue)) return;
@@ -150,7 +148,7 @@ export default {
         this.handleCurrentChange();
       }
     },
-    getValueNode() {
+    getValueOption() {
       let tree = this.$refs.ref;
       if (!tree) return null;
       return this.multiple

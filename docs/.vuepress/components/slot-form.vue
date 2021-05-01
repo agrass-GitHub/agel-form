@@ -23,36 +23,37 @@ export default {
         labelWidth: "50px",
         span: 15,
         data: {},
-        items: {
-          title1: divider("label 属性使用演示，自定义 Form Item Label 的插槽"),
-          label: {
-            labelWidth: "100px",
+        items: [
+          divider("label 属性使用演示，自定义 Form Item Label 的插槽"),
+          {
             label: () => {
               return h("el-button", {}, "自定义label");
             },
+            labelWidth: "100px",
           },
-          title2: divider("slot 属性使用演示，自定义 Form Ite m的插槽"),
-          template: {
+          divider("slot 属性使用演示，自定义 Form Ite m的插槽"),
+          {
+            prop: "template",
             label: "插槽1",
             slot: true,
           },
-          render: {
+          {
             label: "插槽2",
             slot: (scopeProps) => {
               // 若改插槽有参数，可通过 scopeProps 获取
               return h("el-tag", {}, "这是一段 render 函数类型自定义插槽");
             },
           },
-          vnode: {
-            label: "插槽4",
-            slot: h("el-tag", {}, "这是一段 vnode 对象类型自定义插槽"),
-          },
-          string: {
+          {
             label: "插槽3",
             slot: "这是一段 string 类型自定义插槽",
           },
-          title3: divider("slots 属性使用演示 ，自定义组件 Component 的插槽"),
-          slots: {
+          {
+            label: "插槽4",
+            slot: h("el-tag", {}, "这是一段 vnode 对象类型自定义插槽"),
+          },
+          divider("slots 属性使用演示 ，自定义组件 Component 的插槽"),
+          {
             component: "el-input",
             label: "网站",
             slots: {
@@ -61,9 +62,9 @@ export default {
               append: h("el-tag", {}, ".com"),
             },
           },
-          button: {
-            label: "按钮",
+          {
             component: "el-button",
+            label: "按钮",
             type: "primary",
             icon: "el-icon-search",
             slots: "查询",
@@ -72,7 +73,7 @@ export default {
             //   default: "查询",
             // },
           },
-        },
+        ],
       },
     };
   },

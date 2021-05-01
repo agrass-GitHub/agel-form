@@ -1,183 +1,78 @@
 <template>
   <div class="demo border">
-    <agel-form v-model="form"> </agel-form>
-    <el-button type="primary" style="margin-left:100px" @click="getOptions">刷新 options</el-button>
-    <el-button type="primary" @click="getRef">获取组件实例（查看控制台）</el-button>
-    <el-button type="primary" @click="getItem">获取组件Item（查看控制台）</el-button>
+    <agel-form v-model="form"></agel-form>
   </div>
 
 </template>
  
 <script>
-const treeData = [
-  {
-    label: "一级 1",
-    value: "1",
-    children: [
-      {
-        label: "二级 1-1",
-        value: "1-1",
-        children: [
-          {
-            label: "三级 1-1-1",
-            value: "1-1-1",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: "一级 2",
-    value: "2",
-    children: [
-      {
-        label: "二级 2-1",
-        value: "2-1",
-        children: [
-          {
-            label: "三级 2-1-1",
-            value: "2-1-1",
-          },
-        ],
-      },
-      {
-        label: "二级 2-2",
-        value: "2-2",
-        children: [
-          {
-            label: "三级 2-2-1",
-            value: "2-2-1",
-          },
-        ],
-      },
-    ],
-  },
-];
 export default {
   data() {
     return {
+      checkedCities: [],
+      cities: ["上海", "北京", "广州", "深圳"],
+      value: "",
       form: {
-        labelWidth: "100px",
-        span: 12,
+        span: 24,
         data: {
-          tree1: "2",
-          tree2: ["1-1-1", "2-1-1"],
+          slotStyle: "感觉,非常,灵活",
         },
-        items: [
-          {
-            prop: "tree1",
-            label: "普通树形",
+        items: {
+          // checkbox2: {
+          //   label: "随机数",
+          //   component: "el-checkbox",
+          //   max: 2,
+          //   options: "感觉,非常,灵活",
+          // },
+          demo4: {
+            label: "Function函数",
             component: "el-tree-select",
-            nodeKey: "value",
-            options: treeData,
+            clearable: true,
+            multiple: true,
+            options: async () => {
+              let data = await this.$http.get("/api/getRandomData");
+              return data;
+            },
+          },
+          button: {
+            component: "el-button",
+            type: "primary",
+            slots: "getValueOption",
+            span: 24,
             on: {
-              change: (v) => {
-                console.log("change", v);
-              },
-              input: (v) => {
-                console.log("input", v);
-              },
-              "visible-change"() {
-                console.log("visibleChange");
-              },
-              "node-click"() {
-                console.log("nodeClick");
+              click: () => {
+                console.log(this.form.getRef("demo4").getValueOption());
               },
             },
           },
-          // {
-          //   prop: "tree2",
-          //   label: "多选树形",
-          //   component: "el-tree-select",
-          //   nodeKey: "value",
-          //   multiple: true,
-          //   leafOnly: true, // 只包含叶子节点
-          //   options: treeData,
-          // },
-          // {
-          //   prop: "tree3",
-          //   label: "过滤树形",
-          //   component: "el-tree-select",
-          //   nodeKey: "value",
-          //   filter: true,
-          //   options: treeData,
-          // },
-          // {
-          //   prop: "tree4",
-          //   label: "懒加载树",
-          //   component: "el-tree-select",
-          //   nodeKey: "name",
-          //   lazy: true,
-          //   props: {
-          //     label: "name",
-          //     children: "zones",
-          //     isLeaf: "leaf",
-          //   },
-          //   load: (node, resolve) => {
-          //     if (node.level === 0) {
-          //       return resolve([{ name: "region" }]);
-          //     }
-          //     if (node.level > 1) return resolve([]);
-          //     setTimeout(() => {
-          //       const data = [
-          //         {
-          //           name: "leaf",
-          //           leaf: true,
-          //         },
-          //         {
-          //           name: "zone",
-          //         },
-          //       ];
-          //       resolve(data);
-          //     }, 500);
-          //   },
-          // },
-          // {
-          //   prop: "tree5",
-          //   label: "异步树形",
-          //   component: "el-tree-select",
-          //   nodeKey: "value",
+          // checkbox: {
+          //   label: "随机数",
+          //   component: "el-checkbox",
+          //   max: 2,
           //   options: async () => {
-          //     let data = await this.$http.get("/api/getRandomTreeData");
+          //     let data = await this.$http.get("/api/getRandomData");
           //     return data;
           //   },
-          // },
-          // {
-          //   prop: "tree6",
-          //   label: "自定义树形",
-          //   component: "el-tree-select",
-          //   nodeKey: "value",
-          //   options: this.$http.get("/api/getRandomTreeData"),
-          //   renderContent: (h, { node, data, store }) => {
-          //     return (
-          //       <span class="custom-tree-node">
-          //         <i
-          //           class="el-icon-eleme"
-          //           style="color:#409EFF;margin-right:5px"
-          //         ></i>
-          //         <span>{node.label}</span>
-          //       </span>
-          //     );
+          //   on: {
+          //     input(v) {
+          //       console.log("input", v);
+          //     },
           //   },
           // },
-        ],
+          button2: {
+            component: "el-button",
+            type: "primary",
+            slots: "刷新 options",
+            span: 24,
+            on: {
+              click: () => {
+                this.form.getRef("checkbox").getOptions();
+              },
+            },
+          },
+        },
       },
     };
-  },
-  methods: {
-    getOptions() {
-      this.form.getRef("tree5").getOptions();
-    },
-    getRef() {
-      let tree = this.form.getRef("tree1");
-      console.log(" ------ agel-tree-select 实例------ ", tree);
-      console.log(" ------ el-tree 实例------", tree.$refs.ref);
-      console.log(" ------ el-select 实例------", tree.$refs.select);
-    },
-    getItem() {
-      console.log("items 可以是数组配置，getItem 快速获取对应对象进行修改");
-      console.log(this.form.getItem("tree1"));
-    },
   },
 };
 </script>

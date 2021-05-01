@@ -30,8 +30,8 @@ module.exports = {
         children: [
           '/component/',
           '/component/agel-select',
-          '/component/agel-checkbox-radio',
           '/component/agel-tree-select',
+          '/component/agel-checkbox-radio',
           '/component/agel-upload',
         ]
       },

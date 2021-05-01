@@ -10,27 +10,30 @@ export default {
         data: {
           grade: "很棒",
         },
-        items: {
-          grade: {
+        items: [
+          {
+            prop: "grade",
             component: "el-radio",
             label: "打分",
             options: ["很棒", "很糟糕"],
           },
-          good: {
+          {
+            prop: "good",
             label: "好评",
             display: (data) => data.grade == "很棒",
           },
-          bad: {
+          {
+            prop: "bad",
             label: "差评",
             display: (data) => data.grade == "很糟糕",
           },
-          button: {
+          {
             component: "el-button",
             type: "primary",
             slots: "发表评价",
             disabled: (data) => data.grade == "很糟糕",
           },
-        },
+        ],
       },
     };
   },

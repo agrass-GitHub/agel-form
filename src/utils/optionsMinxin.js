@@ -29,8 +29,9 @@ export default {
   },
   methods: {
     optionsInput(value) {
+      if (value == this.value) return;
       if (typeof this.value == "string" && this.multiple) {
-        this.$emit("input", value.filter(v => v).join(','))
+        this.$emit("input", Array.isArray(value) ? value.filter(v => v).join(',') : "")
       } else {
         this.$emit("input", value)
       }
@@ -43,20 +44,23 @@ export default {
       } else if (typeof options == "string") {
         this.optionsData = this.getOptionsData(options.split(',').filter(v => v));
       } else if (typeof options == "function") {
-        let value = this.value;
-        this.$emit('input', Array.isArray(this.value) ? [] : "")
         this.optionsLoading = true;
         this.optionsData = this.getOptionsData(await options());
-        // 清空 value，拿到数据重新赋值，刷新组件的选中状态
+        this.optionsLoading = false;
+        // 刷新组件选中状态
         this.$nextTick(() => {
-          this.optionsLoading = false;
-          this.optionsInput(value);
+          this.setSelected && this.setSelected();
         })
       } else if (options instanceof Promise) {
         this.optionsLoading = true;
         this.optionsData = this.getOptionsData(await options);
         this.optionsLoading = false;
       }
+    },
+    getValueOption() {
+      return this.multiple
+        ? this.optionsData.filter((v) => this.value.includes(v.value))
+        : this.optionsData.find((v) => this.value == v.value) || this.value;
     },
     getOptionsData(options) {
       let props = this.props;
