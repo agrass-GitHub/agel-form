@@ -149,8 +149,8 @@ export default {
           arr: [
             name == "el-input",
             name == "el-checkbox" && item.options != undefined,
-            "el-select",
-            "el-tree-select",
+            name == "el-select",
+            name == "el-tree-select",
           ],
           value: "",
         },
