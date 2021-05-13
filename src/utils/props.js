@@ -1,3 +1,5 @@
+import agComponents from "../lib/index"
+
 // 支持 el-form 的参数 
 export const formPropKeys = [
   "rules",
@@ -37,7 +39,6 @@ export const colPorpKeys = [
 // 默认组件名称
 export const defaultComponent = "el-input";
 
-// agelForm 组件的扩展参数，以及内置的功能函数
 export const agFormProps = function () {
   return {
     // Object 表单数据
@@ -85,3 +86,5 @@ export const agItemProps = function () {
 };
 
 export const agItemPropKyes = Object.keys(agItemProps());
+
+export const agComponentsKeys = Object.keys(agComponents);

@@ -12,7 +12,7 @@ export default {
         items: [
           {
             // component 该属性不填写将默认为 el-input
-            porp: "user",
+            prop: "user",
             label: "审批人",
             style: "width:120px",
           },

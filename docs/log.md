@@ -3,6 +3,13 @@ title: 更新日志
 sidebar: auto
 ---
 
+
+## v.0.2.5
+
+- `新增` agel-form 添加 prepend append 插槽，方便自定义标题按钮等
+- `优化` agel-select，agel-tree-select 表单默认回填为 "" 空字符串 
+- `优化` item.component 包含 agel-xxx 的情况下，智能回填失效的问题
+
 ## v.0.2.4
 
 - `新增` agel-select 添加 setSelected 方法， agel-tree-select 的 selected 方法名更改为 setSelected

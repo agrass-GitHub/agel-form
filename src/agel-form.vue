@@ -1,16 +1,20 @@
 <template>
   <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs.form" v-on="value.on||{}">
     <template v-if="value.inline">
+      <slot name="prepend"></slot>
       <agel-form-item v-for="item in items" :item="item" :data="value.data" :prop="item.prop" :ref="item.prop" :key="item.prop">
         <slot :name="item.prop"></slot>
       </agel-form-item>
+      <slot name="append"></slot>
     </template>
     <el-row v-else v-bind="attrs.row">
+      <slot name="prepend"></slot>
       <el-col v-for="item in items" v-bind="item.$col" :key="item.prop">
         <agel-form-item :item="item" :data="value.data" :prop="item.prop" :ref="item.prop">
           <slot :name="item.prop"></slot>
         </agel-form-item>
       </el-col>
+      <slot name="append"></slot>
     </el-row>
   </el-form>
 </template>
@@ -22,9 +26,14 @@ import {
   removeResizeListener,
 } from "element-ui/src/utils/resize-event";
 
-import agelFormItem from "./agel-form-item";
-import components from "./lib/index";
-import { getIncludeAttrs, getExcludeAttrs, getProp, guid } from "./utils/utils";
+import {
+  getIncludeAttrs,
+  getExcludeAttrs,
+  guid,
+  extend,
+  equalAgName,
+} from "./utils/utils";
+
 import {
   agFormProps,
   agItemProps,
@@ -34,13 +43,14 @@ import {
   colPorpKeys,
   agItemPropKyes,
   defaultComponent,
+  agComponentsKeys,
 } from "./utils/props";
 
 export default {
   name: "agel-form",
   inheritAttrs: false,
   components: {
-    agelFormItem,
+    agelFormItem: () => import("./agel-form-item"),
   },
   props: {
     value: {
@@ -62,7 +72,7 @@ export default {
       deep: true,
       immediate: true,
       handler: function () {
-        this.extend(this.value, this.attach, true);
+        extend(this.value, this.attach, true);
       },
     },
   },
@@ -80,8 +90,8 @@ export default {
       let form = getIncludeAttrs(formPropKeys, this.value);
       let row = getIncludeAttrs(rowPropsKeys, this.value);
       if (!form.inline) {
-        this.extend(form, { labelWidth: "auto" });
-        this.extend(row, { type: "flex", gutter: 15 });
+        extend(form, { labelWidth: "auto" });
+        extend(row, { type: "flex", gutter: 15 });
       }
       return { form, row };
     },
@@ -107,71 +117,31 @@ export default {
   },
   methods: {
     // 注入全局配置，和扩展属性
-    injectConfig(trget) {
+    injectConfig(target) {
       let form = this.value;
       let agelFormConfig = this.$agelFormConfig || {};
-      if (trget == this.value || trget == undefined) {
+      if (target == this.value || target == undefined) {
         let config = agelFormConfig.form || {};
-        this.extend(trget, config);
-        this.extend(trget, agFormProps.call(this));
+        extend(target, config);
+        extend(target, agFormProps.call(this));
       } else {
-        let name = trget.component || defaultComponent;
+        let name = target.component || defaultComponent;
         let config = agelFormConfig[name];
-        if (trget.prop === undefined) {
-          trget.prop = "_aguid_" + guid();
-          trget.ignore = true;
+        if (target.prop === undefined) {
+          target.prop = "_aguid_" + guid();
+          target.ignore = true;
         }
         if (config && config.constructor == Function) {
-          config = config(trget.prop, trget, form);
+          config = config(target.prop, target, form);
         }
         if (config && config.constructor == Object) {
-          this.extend(trget, config);
+          extend(target, config);
         }
-        this.initField(trget);
+        if (!target.ignore && !this.value.data.hasOwnProperty(target.prop)) {
+          this.$set(this.value.data, target.prop, this.getFieldValue(target));
+        }
       }
-      return trget;
-    },
-    // 初始化表单字段
-    initField(item) {
-      let name = item.component || defaultComponent;
-      let value = undefined;
-      if (item.ignore || this.value.data.hasOwnProperty(item.prop)) return;
-      const types = [
-        {
-          arr: [name == "el-switch", name == "el-checkbox"],
-          value: false,
-        },
-        {
-          arr: [name == "el-date-picker", name == "el-time-select"],
-          value: null,
-        },
-        {
-          arr: [
-            name == "el-input",
-            name == "el-checkbox" && item.options != undefined,
-            name == "el-select",
-            name == "el-tree-select",
-          ],
-          value: "",
-        },
-        {
-          arr: [name == "el-slider", name == "el-rate"],
-          value: 0,
-        },
-        {
-          arr: [
-            name == "el-cascader",
-            name == "el-transfer",
-            name == "el-upload",
-            // name == "el-checkbox" && item.options != undefined,
-            // name == "el-select" && item.multiple,
-            // name == "el-tree-select" && item.multiple,
-          ],
-          value: [],
-        },
-      ];
-      types.forEach((v) => v.arr.includes(true) && (value = v.value));
-      this.$set(this.value.data, item.prop, value);
+      return target;
     },
     // 根据容器宽度响应式变化
     resize() {
@@ -181,7 +151,7 @@ export default {
       let keys = ["labelPosition", "labelWidth", "gutter"];
       let layoutPropKeys = keys.concat(colPorpKeys);
       let layoutProps = getIncludeAttrs(layoutPropKeys, method(width));
-      this.extend(this.value, layoutProps, true);
+      extend(this.value, layoutProps, true);
     },
     // 响应式规则
     responsiveMethod(w) {
@@ -194,25 +164,43 @@ export default {
       if (w >= 1600) arr = [4, "right"];
       return { span: arr[0], labelPosition: arr[1] };
     },
-    // 继承属性
-    extend(obj, target, cover = false) {
-      for (const key in target) {
-        let a = getProp(obj, key) !== undefined && !cover;
-        let b = getProp(target, key) === undefined;
-        if (a || b) continue;
-        this.$set(obj, key, target[key]);
+    getFieldValue(item) {
+      let v = item.component || defaultComponent;
+      if (
+        v == "el-input" ||
+        equalAgName(v, "agel-select") ||
+        equalAgName(v, "agel-tree-select") ||
+        (equalAgName(v, "el-checkbox") && item.options != undefined)
+      ) {
+        return "";
+      }
+      if (v == "el-date-picker" || v == "el-time-select") {
+        return null;
+      }
+      if (v == "el-switch" || v == "el-checkbox") {
+        return false;
+      }
+      if (v == "el-slider" || v == "el-rate") {
+        return 0;
+      }
+      if (
+        v == "el-cascader" ||
+        v == "el-transfer" ||
+        equalAgName(v, "agel-upload")
+      ) {
+        return [];
       }
     },
     // 获取 agItem 属性相关函数
     getAgFormItemAttrs(item) {
-      const agKeys = Object.keys(components);
       const name = item.component || defaultComponent;
       const agItem = Object.assign(
         agItemProps(),
         getIncludeAttrs(agItemPropKyes, item)
       );
-      agItem.component = agKeys.includes("ag" + name) ? "ag" + name : name;
-      agItem.slots = this.getSlots(agItem.slots);
+      agItem.component = agComponentsKeys.includes("ag" + name)
+        ? "ag" + name
+        : name;
       agItem.slotLabel =
         typeof item.label == "function" || isVNode(item.label)
           ? item.label
@@ -221,6 +209,7 @@ export default {
         typeof item.display == "function"
           ? item.display(this.value.data)
           : item.display;
+      agItem.slots = this.getSlots(agItem.slots);
       return agItem;
     },
     getFormItemAttrs(item, agItem) {
@@ -259,7 +248,6 @@ export default {
     getPlaceholder(item) {
       if (item.placeholder) return item.placeholder;
       let name = item.component || defaultComponent;
-      let inputArr = ["el-input", "el-input-number"];
       let selectArr = [
         "el-select",
         "el-tree-select",
@@ -268,7 +256,18 @@ export default {
         "el-date-picker",
       ];
       let text = typeof item.label == "string" ? item.label : "";
-      if (inputArr.includes(name)) return "请输入" + text;
+      if (name == "el-input" || name == "el-input-number") {
+        return "请输入" + text;
+      }
+      if (
+        name == "el-cascader" ||
+        name == "el-time-select" ||
+        name == "el-date-picker" ||
+        equalAgName(name, "agel-select") ||
+        equalAgName(name, "agel-tree-select")
+      ) {
+        return "请输入" + text;
+      }
       if (selectArr.includes(name)) return "请选择" + text;
     },
     getSlots(slots) {

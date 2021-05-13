@@ -171,6 +171,15 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 | getRef        | prop:string     |  获取指定组件的 vue 实例  |
 
 
+### Form Slots
+
+| 属性          |   说明                                   | 
+| -----------    |   ------------------------------------  | 
+| prepend        |  表单头部追加内容           |
+| append         |  表单尾部追加内容                        |
+
+
+
 ### Form Item Attributes
 
 
@@ -194,6 +203,8 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 | rules       | Array/Object    | -           | 继承自 el-form-item  |
 | span        | Number          | -           | 继承自 el-col  |
 | $component  | Object          | -           | 组件的动态属性，当动态属性与现有属性冲突时使用  |
+
+
 
 
 ### 配置结构

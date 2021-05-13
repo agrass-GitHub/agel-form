@@ -1,4 +1,7 @@
 
+import Vue from 'vue';
+import { agComponentsKeys } from "./props";
+
 // 驼峰转短横线 
 export function kebabcase(v) {
   return v.replace(/([A-Z])/g, "-$1").toLowerCase()
@@ -49,3 +52,18 @@ export function guid() {
     return v.toString(16);
   });
 };
+
+// 继承属性 关联响应式
+export const extend = function (obj, target, cover = false) {
+  for (const key in target) {
+    let a = getProp(obj, key) !== undefined && !cover;
+    let b = getProp(target, key) === undefined;
+    if (a || b) continue;
+    Vue.set(obj, key, target[key]);
+  }
+}
+
+// 是否是包装组件
+export const equalAgName = function (name1, name2) {
+  return name1 === name2 || (agComponentsKeys.find(v => v == name1) == 'ag' + name2) || (agComponentsKeys.find(v => v == name2) == 'ag' + name1)
+}
