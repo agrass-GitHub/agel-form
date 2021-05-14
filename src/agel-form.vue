@@ -2,14 +2,15 @@
   <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs.form" v-on="value.on||{}">
     <template v-if="value.inline">
       <slot name="prepend"></slot>
-      <agel-form-item v-for="item in items" :item="item" :data="value.data" :prop="item.prop" :ref="item.prop" :key="item.prop">
+      <agel-form-item v-for="item in items" :item="item" :data="value.data" :prop="item.prop" :ref="item.prop" :key="item.prop"
+        v-show="item.show!==false">
         <slot :name="item.prop"></slot>
       </agel-form-item>
       <slot name="append"></slot>
     </template>
     <el-row v-else v-bind="attrs.row">
       <slot name="prepend"></slot>
-      <el-col v-for="item in items" v-bind="item.$col" :key="item.prop">
+      <el-col v-for="item in items" v-bind="item.$col" :key="item.prop" v-show="item.show!==false">
         <agel-form-item :item="item" :data="value.data" :prop="item.prop" :ref="item.prop">
           <slot :name="item.prop"></slot>
         </agel-form-item>
