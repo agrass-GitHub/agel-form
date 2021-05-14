@@ -209,6 +209,8 @@ export default {
         typeof item.display == "function"
           ? item.display(this.value.data)
           : item.display;
+      agItem.show =
+        typeof item.show == "function" ? item.show(this.value.data) : item.show;
       agItem.slots = this.getSlots(agItem.slots);
       return agItem;
     },

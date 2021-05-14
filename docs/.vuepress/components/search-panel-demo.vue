@@ -1,9 +1,15 @@
 <template>
   <div class="demo">
     <agel-search-panel :form="form" @search="getList">
+      <template v-slot:address>
+        <el-input v-model="form.data.address" style="width:100px"></el-input>
+      </template>
+      <template v-slot:button>
+        <el-button>新增</el-button>
+      </template>
     </agel-search-panel>
     <!-- 列表 -->
-    <el-table v-loading="loading" :data="tableData" style="width: 100%" height="300px" border>
+    <el-table v-loading="loading" :data="tableData" style="width: 100%" height="200px" border>
       <el-table-column prop="date" label="日期" width="180">
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="180">
@@ -19,18 +25,13 @@ export default {
   data() {
     return {
       form: {
-        panelLimit: 3,
+        panelPosition: "right",
         data: {
           address: "agel-form",
         },
         items: [
-          { label: "姓名", style: "width:100px" },
-          { label: "姓名", style: "width:100px" },
-          { label: "姓名", style: "width:100px" },
-          { label: "姓名", style: "width:100px" },
-          { label: "姓名", style: "width:100px" },
-          { label: "姓名", style: "width:100px" },
-          { label: "姓名", style: "width:100px" },
+          { prop: "name", label: "姓名", style: "width:100px" },
+          { prop: "address", label: "地址", slot: true },
         ],
       },
       tableData: [],

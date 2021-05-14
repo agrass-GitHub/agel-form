@@ -33,6 +33,7 @@ module.exports = {
           '/component/agel-tree-select',
           '/component/agel-checkbox-radio',
           '/component/agel-upload',
+          '/component/agel-search-panel',
         ]
       },
       {

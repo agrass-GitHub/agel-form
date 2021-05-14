@@ -11,3 +11,20 @@
   border: 1px dotted #409eff;
   padding: 10px;
 }
+
+/*
+  覆盖 vuepress 默认样式给 el-table 的副作用
+*/
+
+.el-table table {
+  margin: 0px;
+}
+
+.el-table td, .el-table th {
+  border: 0px;
+}
+
+.el-table tr:nth-child(2n){
+  background: transparent;
+}
+

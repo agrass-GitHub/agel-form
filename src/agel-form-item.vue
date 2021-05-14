@@ -1,7 +1,7 @@
 <template>
-  <el-form-item v-bind="item.$formItem">
+  <el-form-item v-show="item.show!==false" v-bind="item.$formItem">
     <slot-render v-if="item.slotLabel" :render="item.slotLabel" slot="label"></slot-render>
-    <slot-render v-if="item.slot" :render="$slots.default||item.slot"></slot-render>
+    <slot-render v-if="item.slot" :render="item.slot!==true?item.slot:$slots.default"></slot-render>
     <component v-else :is="item.component" :ref="prop" v-model="data[prop]" v-bind="item.$component" v-on="item.on">
       <template v-for="(slot,noPorpsName) in item.slots.noPorpsSlots" v-slot:[noPorpsName]>
         <slot-render :key="noPorpsName" :render="slot"></slot-render>

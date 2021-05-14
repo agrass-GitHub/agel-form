@@ -70,6 +70,8 @@ export const agItemProps = function () {
     display: true,
     // Boolean/Functiion 是否禁用
     disabled: false,
+    // Boolean/Functiion 是否显示隐藏
+    show: true,
     // Boolean 是否忽略，若为 ture 则不会关联表单
     ignore: false,
     // Funciton/Vnode/String 是否自定义 FormItemLabel slot

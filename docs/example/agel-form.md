@@ -56,7 +56,7 @@
 
 ## 联动表单
 
-设置 `display`，`disabled` 为函数来控制表单显示隐藏，是否禁用。
+设置 `display`，`show`，`disabled` 为函数来控制表单是否渲染，是否显示隐藏，是否禁用。
 
 <ClientOnly><display-form/></ClientOnly>
 
@@ -187,6 +187,7 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 
 | 属性          |   说明                                   | 
 | -----------    |   ------------------------------------  | 
+| ...            |  表单项的 prop 具名插槽           |
 | prepend        |  表单头部追加内容           |
 | append         |  表单尾部追加内容                        |
 
@@ -206,6 +207,7 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 | slot        | Boolean/String/Funciton/Vnode  | false       | Form Item 插槽  | 
 | slots       | Object/String/Funciton/Vnode   | { }         | Component 组件的插槽 | 
 | display     | Boolean/Funciton| true        | 是否渲染                 | 
+| show        | Boolean/Funciton| true        | 是否显示                 | 
 | disabled    | Boolean/Funciton| false        | 是否禁用              |
 | ignore      | Boolean         | false       | 与表单数据取消关联，prop 为则为true  |  
 | on          | Object          | { }         | 子组件 evenet 事件  |

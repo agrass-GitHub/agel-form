@@ -3,6 +3,9 @@ title: 更新日志
 sidebar: auto
 ---
 
+## v.0.2.6
+- `新增` 添加搜索面板组件 agel-search-panel 
+- `新增` 添加 item.show 属性, 支持函数配置
 
 ## v.0.2.5
 

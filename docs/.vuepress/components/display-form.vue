@@ -20,7 +20,7 @@ export default {
           {
             prop: "good",
             label: "好评",
-            display: (data) => data.grade == "很棒",
+            show: (data) => data.grade == "很棒",
           },
           {
             prop: "bad",
