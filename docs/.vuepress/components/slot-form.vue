@@ -11,10 +11,8 @@
         <el-button type="primary">初始化</el-button>
       </el-form-item>
       <!-- 
-        // 栅格布局的情况下可用 e-col 包裹
-        <el-col :span="8">
-          <el-button type="primary">查询</el-button>
-        </el-col>
+        // 栅格布局的情况下可用 eL-col 包裹
+        <el-col :span="8"> </el-col>
        -->
     </template>
   </agel-form>
