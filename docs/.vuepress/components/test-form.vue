@@ -1,10 +1,21 @@
 <template>
   <agel-form class="demo" v-model="form">
+    <template v-slot:prepend>
+      <el-form-item>
+        <span>查询条件：</span>
+      </el-form-item>
+    </template>
     <template v-slot:append>
       <el-form-item>
-        <el-button>查询</el-button>
-        <el-button>查询</el-button>
+        <el-button type="primary">查询</el-button>
+        <el-button type="primary">初始化</el-button>
       </el-form-item>
+      <!-- 
+        // 栅格布局的情况下可用 e-col 包裹
+        <el-col :span="8">
+          <el-button type="primary">查询</el-button>
+        </el-col>
+       -->
     </template>
   </agel-form>
 </template>
@@ -17,30 +28,8 @@ export default {
         inline: true,
         data: {},
         items: [
-          {
-            // component 该属性不填写将默认为 el-input
-            prop: "user",
-            label: "审批人",
-            style: "width:120px",
-          },
-          {
-            prop: "region",
-            component: "el-select",
-            label: "活动区域",
-            options: ["区域一", "区域二"],
-          },
-          {
-            component: "el-button",
-            type: "primary",
-            icon: "el-icon-search",
-            ignore: true, // 表明该组件是一个纯展示组件，属性则不会与表单关联, 不设置 prop 属性将默认为 true,
-            slots: "查询", // 按钮插槽
-            on: {
-              click: () => {
-                this.$message.info("查询");
-              },
-            },
-          },
+          { prop: "user", label: "审批人" },
+          { prop: "region", label: "活动区域" },
         ],
       },
     };

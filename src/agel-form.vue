@@ -170,7 +170,7 @@ export default {
         v == "el-input" ||
         equalAgName(v, "agel-select") ||
         equalAgName(v, "agel-tree-select") ||
-        (equalAgName(v, "el-checkbox") && item.options != undefined)
+        (equalAgName(v, "agel-checkbox") && item.options != undefined)
       ) {
         return "";
       }

@@ -66,8 +66,20 @@
 
 ## 表单插槽
 
+### 表单插槽 prepend append 
 
-插槽支持 `Funciton`，`VNode`，`String` 等多种写法，其中 `slot` 属性设置为 `true` 可额外支持 `template` 写法。
+表单支持在前后追加插槽内容，以支持标题，按钮等。
+
+<ClientOnly><slot-form/></ClientOnly>
+
+::: details 点击查看代码
+<<< @/docs/.vuepress/components/slot-form.vue
+:::
+
+
+### 表单项插槽 label slot slots 
+
+表单项插槽支持 `Funciton`，`VNode`，`String`，`模板` 多种写法，其中 `slot` 属性设置为 `true` 可额外支持 `template` 写法。
 
 ```js
 Funciton：
@@ -84,10 +96,10 @@ String：
 slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{},"查询") }
 ```
 
-<ClientOnly><slot-form/></ClientOnly>
+<ClientOnly><slot-item-form/></ClientOnly>
 
 ::: details 点击查看代码
-<<< @/docs/.vuepress/components/slot-form.vue
+<<< @/docs/.vuepress/components/slot-item-form.vue
 ::: 
 
 更多基础知识请参考 [渲染函数 & JSX](https://cn.vuejs.org/v2/guide/render-function.html)
@@ -195,14 +207,14 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 | slots       | Object/String/Funciton/Vnode   | { }         | Component 组件的插槽 | 
 | display     | Boolean/Funciton| true        | 是否渲染                 | 
 | disabled    | Boolean/Funciton| false        | 是否禁用              |
-| ignore      | Boolean         | false       | 与表单数据取消关联  |  
+| ignore      | Boolean         | false       | 与表单数据取消关联，prop 为则为true  |  
 | on          | Object          | { }         | 子组件 evenet 事件  |
 | style       | String          | -           | style 样式         |
 | labelWidth  | String          | -           | 继承自 el-form-item  | 
 | required    | Boolean         | -           | 继承自 el-form-item  |
 | rules       | Array/Object    | -           | 继承自 el-form-item  |
 | span        | Number          | -           | 继承自 el-col  |
-| $component  | Object          | -           | 组件的动态属性，当动态属性与现有属性冲突时使用  |
+| $component  | Object          | -           | 组件的动态属性，建议当动态属性与现有属性冲突时使用  |
 
 
 
