@@ -29,6 +29,7 @@
 - [agel-radio](https://agrass.gitee.io/agel-form/component/agel-checkbox-radio.html) 
 - [agel-upload](https://agrass.gitee.io/agel-form/component/agel-upload.html) 
 - [agel-tree-select](https://agrass.gitee.io/agel-form/component/agel-tree-select.html) 
+- [agel-search-panel](https://agrass.gitee.io/agel-form/component/agel-search-panel.html) 
 
 
 ## 例子

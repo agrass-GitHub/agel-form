@@ -138,19 +138,27 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 | -----------     | ------ | ---- | --------------------------------  | 
 | v-model / value | Object | 是   | form 参数配置，建议使用 v-model    | 
 | attach          | Object | 否   | form 参数配置，会同步到 v-modele    | 
+| item-extend-keys| Array  | 否   | 对 item 项添加扩展属性    | 
+
+#### v-model/value 属性
+
+正常情况下,我们只需要配置一个基础的 `form` 对象即可, 所有的属性都是可选的, 组件会在创建时候自动注入默认属性和方法到该对象。
 
 #### attach 属性
 
-在设计上，主张的是聚拢所有的参数为一个 form 对象，通过 `v-model` 传递， 在组件初始化完成后会为 form 参数添加额外的内置属性和方法，因此该属性不可设为计算属性。
+在设计上，主张的是聚拢所有的参数为一个 form 对象，有一个弊端是 `v-model/value` 不可设为计算属性, 会导致没法注入默认属性和方法。
 
-为了保持其灵活性，添加了 `attach` 参数，配置项与 form 一致，唯一不同就是可以设置为计算属性，当其发生变化时候，会同步合并到 form 对象中，如下例子：
-
+为了保持其灵活性，添加了 `attach` 参数，配置项与 form 一致，该属性可以设置为计算属性，当其发生变化时候，会同步合并到 `form` 对象中，如下例子：
 
 <ClientOnly><attach-form/></ClientOnly>
 
 ::: details 点击查看代码
 <<< @/docs/.vuepress/components/attach-form.vue
 ::: 
+
+#### item-extend-keys 属性
+
+该属性一般用于基于 `agel-form` 封装高阶组件使用, 目的是对 `form.item` 添加扩展属性, 包含在内的属性名不会注入到组件的动态属性(可参考 [agel-search-panel](/component/agel-search-panel.html#折叠) 组件的 item.collapseAlive 属性), 没有这个需求可以无视该属性。
 
 ### Form Attributes
 

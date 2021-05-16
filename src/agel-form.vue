@@ -1,5 +1,5 @@
 <template>
-  <el-form class="agel-form" ref="form" :model="value.data" v-bind="attrs.form" v-on="value.on||{}">
+  <el-form :class="['agel-form',{'agel-form-grid':!value.inline}]" ref="form" :model="value.data" v-bind="attrs.form" v-on="value.on||{}">
     <template v-if="value.inline">
       <slot name="prepend"></slot>
       <agel-form-item v-for="item in items" :item="item" :data="value.data" :prop="item.prop" :ref="item.prop" :key="item.prop"
@@ -62,6 +62,10 @@ export default {
     attach: {
       type: Object,
       default: () => new Object(),
+    },
+    "item-extend-keys": {
+      type: Array,
+      default: () => new Array(),
     },
   },
   watch: {
@@ -236,7 +240,12 @@ export default {
       );
     },
     getComponentAttrs(item) {
-      const ignoreKeys = [].concat(colPorpKeys, itemPropKyes, agItemPropKyes);
+      const ignoreKeys = [].concat(
+        colPorpKeys,
+        itemPropKyes,
+        agItemPropKyes,
+        this.itemExtendKeys
+      );
       const component = Object.assign(
         getExcludeAttrs(ignoreKeys, item),
         item.$component || {}
@@ -337,27 +346,35 @@ export default {
   flex-wrap: wrap;
 }
 
-.agel-form .el-form--label-top .el-form-item__label {
-  padding: 0px;
-}
-
 .agel-form .el-form-item {
   margin-bottom: 15px;
 }
 
-.agel-form .el-date-editor.el-input,
-.agel-form .el-date-editor.el-input__inner,
-.agel-form .el-select,
-.agel-form .el-cascader,
-.agel-form .el-input-number {
-  width: 100%;
-}
-
-.agel-form .agel-checkbox-group {
-  display: inline-block;
+.agel-form.el-form--label-top .el-form-item__label {
+  padding: 0px;
 }
 
 .agel-form .el-slider__runway {
   margin: 12px 0px;
+}
+
+/* 对 checkbox radio 在 label-top 情况下的展示优化*/
+.agel-form.el-form--label-top .form-item-agel-checkbox .el-form-item__content,
+.agel-form.el-form--label-top .form-item-agel-radio .el-form-item__content {
+  display: inline-block;
+}
+.agel-form.el-form--label-top .form-item-agel-checkbox .el-form-item__label,
+.agel-form.el-form--label-top .form-item-agel-radio .el-form-item__label {
+  display: inline-block;
+  padding: 0px 12px 0px 0px;
+}
+
+/* 在栅格布局情况下组件宽度撑满  考虑是否单独添加属性*/
+.agel-form-grid .el-date-editor.el-input,
+.agel-form-grid .el-date-editor.el-input__inner,
+.agel-form-grid .el-select,
+.agel-form-grid .el-cascader,
+.agel-form-grid .el-input-number {
+  width: 100%;
 }
 </style>

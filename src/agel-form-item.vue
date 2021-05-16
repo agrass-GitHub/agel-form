@@ -1,5 +1,5 @@
 <template>
-  <el-form-item v-bind="item.$formItem">
+  <el-form-item :class="'form-item-'+item.component" v-bind="item.$formItem">
     <slot-render v-if="item.slotLabel" :render="item.slotLabel" slot="label"></slot-render>
     <slot-render v-if="item.slot" :render="item.slot!==true?item.slot:$slots.default"></slot-render>
     <component v-else :is="item.component" :ref="prop" v-model="data[prop]" v-bind="item.$component" v-on="item.on">

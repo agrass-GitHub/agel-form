@@ -26,6 +26,9 @@ export default {
     return {
       form: {
         panelPosition: "right",
+        searchButton: {
+          text: "搜索",
+        },
         data: {
           address: "agel-form",
         },

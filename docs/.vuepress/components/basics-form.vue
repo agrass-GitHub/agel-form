@@ -13,11 +13,14 @@ export default {
         span: 15,
         data: {
           name: "使用 agel-form",
+          desc:
+            "素人开发,若你决定尝试,有什么问题可以联系本人微信:agrass-weixin",
           delivery: true,
           slider: 20,
         },
         items: [
           { label: "活动名称", prop: "name" },
+          { label: "建议反馈", prop: "desc", type: "textarea" },
           {
             component: "el-input-number",
             label: "活动人数",
@@ -66,11 +69,6 @@ export default {
             component: "el-rate",
             label: "活动评分",
             prop: "rate",
-          },
-          {
-            label: "活动形式",
-            prop: "desc",
-            type: "textarea",
           },
           {
             component: "el-upload",

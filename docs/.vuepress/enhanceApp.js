@@ -2,8 +2,7 @@
 import "./styles/style.css";
 import "element-ui/lib/theme-chalk/index.css";
 import Element from "element-ui/lib/index";
-import agelForm from "../../src/index"
-import { agelSearchPanel, agelRadio, agelCheckbox, agelSelect, agelUpload, agelTreeSelect } from "../../src/index";
+import { agelForm, agelSearchPanel, agelFormDrawer, agelRadio, agelCheckbox, agelSelect, agelUpload, agelTreeSelect } from "../../src/index";
 
 const mockData = {
   random() {
@@ -60,6 +59,7 @@ export default ({ Vue }) => {
   Vue.use(agelUpload);
   Vue.use(agelTreeSelect);
   Vue.use(agelSearchPanel);
+  Vue.use(agelFormDrawer);
 
   //模拟一个 http 请求
   Vue.prototype.$http = {

@@ -6,7 +6,10 @@ sidebar: auto
 ## v.0.2.6
 - `新增` 添加搜索面板组件 agel-search-panel 
 - `新增` 添加 item.show 属性, 支持函数配置
-
+- `优化` 表单项在内联布局和栅格布局情况采用不同的排版优化
+- `优化` 在 labelPosition 为 top 的情况下,对 radio checkbox 组件的布局排版优化
+- `新增` 添加 form.itemExtendKeys 属性, 便于二次封装
+ 
 ## v.0.2.5
 
 - `新增` agel-form 添加 prepend append 插槽，方便自定义标题按钮等

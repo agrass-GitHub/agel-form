@@ -1,16 +1,8 @@
 <template>
   <div class="demo">
-    <agel-search-panel :form="form" @search="getList">
-    </agel-search-panel>
-    <!-- 列表 -->
-    <el-table v-loading="loading" :data="tableData" style="width: 100%" height="300px" border>
-      <el-table-column prop="date" label="日期" width="180">
-      </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180">
-      </el-table-column>
-      <el-table-column prop="address" label="地址">
-      </el-table-column>
-    </el-table>
+    <el-button @click="search.show=true">打开抽屉弹窗</el-button>
+    <agel-form-drawer :search="search"> </agel-form-drawer>
+
   </div>
 </template>
  
@@ -18,54 +10,87 @@
 export default {
   data() {
     return {
-      form: {
-        panelLimit: 3,
+      search: {
+        show: false,
         data: {
-          address: "agel-form",
+          date: [],
+          chaosubi: [0, 150],
+          shifouchuli: "未处理",
+          shifoushenshu: "未申诉",
+          isAccessArea: "全部",
+          shenshuhuifu: "全部",
+          status: "全部",
         },
-        items: [
-          { label: "姓名", style: "width:100px" },
-          { label: "姓名", style: "width:100px" },
-          { label: "姓名", style: "width:100px" },
-          { label: "姓名", style: "width:100px" },
-          { label: "姓名", style: "width:100px" },
-          { label: "姓名", style: "width:100px" },
-          { label: "姓名", style: "width:100px" },
-        ],
+        items: {
+          date: {
+            component: "el-date-picker",
+            label: "推送时间",
+            type: "daterange",
+            placeholder: "请选择推送时间",
+            clearable: false,
+            "unlink-panels": true,
+            "picker-options": {
+              disabledDate: (date) => date.valueOf() > Date.now(),
+            },
+          },
+          cheliangpaizhao: {
+            label: "车牌号码",
+            placeholder: "请输入车牌号码",
+          },
+          roadName: {
+            label: "道路名称",
+            placeholder: "请输入道路名称",
+          },
+          shifouchuli: {
+            component: "el-select",
+            label: "是否处理",
+            options: [
+              { label: "全部", value: "全部" },
+              { label: "已处理", value: "已处理" },
+              { label: "未处理", value: "未处理" },
+            ],
+          },
+          shifoushenshu: {
+            component: "el-select",
+            label: "是否申诉",
+            options: [
+              { label: "全部", value: "全部" },
+              { label: "已申诉", value: "已申诉" },
+              { label: "未申诉", value: "未申诉" },
+            ],
+          },
+          shenshuhuifu: {
+            component: "el-select",
+            label: "是否申诉回复",
+            span: 24,
+            options: [
+              { label: "全部", value: "全部" },
+              { label: "已回复", value: "已回复" },
+              { label: "未回复", value: "未回复" },
+            ],
+          },
+          isAccessArea: {
+            component: "el-select",
+            label: "报警类型",
+            options: [],
+          },
+          status: {
+            component: "el-select",
+            label: "报警等级",
+            options: [],
+          },
+          chaosubi: {
+            component: "el-slider",
+            label: "超速比范围",
+            min: 0,
+            max: 200,
+            range: true,
+            display: false,
+          },
+        },
       },
-      tableData: [],
-      loading: false,
     };
   },
-  methods: {
-    getList() {
-      this.loading = true;
-      setTimeout(() => {
-        this.tableData = [
-          {
-            date: "2016-05-02",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1518 弄",
-          },
-          {
-            date: "2016-05-04",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1517 弄",
-          },
-          {
-            date: "2016-05-01",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1519 弄",
-          },
-          {
-            date: "2016-05-03",
-            name: "王小虎",
-            address: "上海市普陀区金沙江路 1516 弄",
-          },
-        ];
-        this.loading = false;
-      }, 1000);
-    },
-  },
+  methods: {},
 };
 </script>
