@@ -1,89 +1,34 @@
 <template>
-  <div class="demo">
-  </div>
+  <agel-search-panel class="demo border" :form="form">
+    <el-button>测试</el-button>
+    <el-button>测试2</el-button>
+  </agel-search-panel>
 </template>
  
 <script>
 export default {
   data() {
     return {
-      search: {
-        show: false,
-        data: {
-          date: [],
-          chaosubi: [0, 150],
-          shifouchuli: "未处理",
-          shifoushenshu: "未申诉",
-          isAccessArea: "全部",
-          shenshuhuifu: "全部",
-          status: "全部",
-        },
+      form: {
+        collapse: true,
+        collapseAlive: ["name1"],
+        collapseButton: true,
+        searchButton: { text: "搜索" },
+        resetButton: { text: "初始化" },
+        data: {},
         items: {
-          date: {
-            component: "el-date-picker",
-            label: "推送时间",
-            type: "daterange",
-            placeholder: "请选择推送时间",
-            clearable: false,
-            "unlink-panels": true,
-            "picker-options": {
-              disabledDate: (date) => date.valueOf() > Date.now(),
-            },
-          },
-          cheliangpaizhao: {
-            label: "车牌号码",
-            placeholder: "请输入车牌号码",
-          },
-          roadName: {
-            label: "道路名称",
-            placeholder: "请输入道路名称",
-          },
-          shifouchuli: {
-            component: "el-select",
-            label: "是否处理",
-            options: [
-              { label: "全部", value: "全部" },
-              { label: "已处理", value: "已处理" },
-              { label: "未处理", value: "未处理" },
-            ],
-          },
-          shifoushenshu: {
-            component: "el-select",
-            label: "是否申诉",
-            options: [
-              { label: "全部", value: "全部" },
-              { label: "已申诉", value: "已申诉" },
-              { label: "未申诉", value: "未申诉" },
-            ],
-          },
-          shenshuhuifu: {
-            component: "el-select",
-            label: "是否申诉回复",
-            span: 24,
-            options: [
-              { label: "全部", value: "全部" },
-              { label: "已回复", value: "已回复" },
-              { label: "未回复", value: "未回复" },
-            ],
-          },
-          isAccessArea: {
-            component: "el-select",
-            label: "报警类型",
-            options: [],
-          },
-          status: {
-            component: "el-select",
-            label: "报警等级",
-            options: [],
-          },
-          chaosubi: {
-            component: "el-slider",
-            label: "超速比范围",
-            min: 0,
-            max: 200,
-            range: true,
-            display: false,
-          },
+          // name1: { prop: "name1", label: "test1" },
+          // name2: { prop: "name2", label: "test2", collapseAlive: true },
+          // name3: { prop: "name3", label: "test3" },
+          // name4: { prop: "name4", label: "test4" },
+          // name5: { prop: "name5", label: "test5" },
+          // name6: { prop: "name6", label: "test6" },
+          name1: { label: "test1" },
+          name2: { label: "test2", collapseAlive: true },
+          name3: { label: "test3" },
+          name4: { label: "test4" },
+          name5: { label: "test5" },
+          name6: { label: "test6" },
         },
       },
     };

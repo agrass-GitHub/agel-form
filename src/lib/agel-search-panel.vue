@@ -2,7 +2,7 @@
   <div :class="['agel-search-panel',{'position-right':attrs.panelPosition=='right' }]">
     <agel-form v-model="form" :item-ignore-keys="['collapseAlive']">
       <template v-for="(slot,name) in $slots" v-slot:[name]>
-        <slot-render v-if="name!=='button'" :render="slot" :key="name"></slot-render>
+        <slot-render v-if="name!=='button'" :render="slot" :key="name" />
       </template>
       <template v-slot:prepend>
         <slot name="prepend"></slot>
@@ -20,9 +20,12 @@
         <el-form-item v-if="attrs.resetButton!==false">
           <el-button class="agel-reset-button" v-bind="attrs.resetButton" @click="emitReset">{{attrs.resetButton.text}}</el-button>
         </el-form-item>
-        <el-form-item v-for="(vnode,i) in $slots.button" :key="i">
-          <slot-render :render="vnode"></slot-render>
-        </el-form-item>
+        <template v-for="(vnode,i) in $slots.button||$slots.default">
+          <el-form-item :key="i" v-if="vnode.tag">
+            <slot-render :render="vnode" />
+          </el-form-item>
+        </template>
+
       </template>
     </agel-form>
   </div>
@@ -91,23 +94,38 @@ export default {
       let resetButton = this.getButton("resetButton", a, b, c);
       return Object.assign(a, b, c, { searchButton, resetButton });
     },
+    items() {
+      return Array.isArray(this.form.items)
+        ? this.form.items
+        : Object.keys(this.form.items).map((k) => {
+            this.form.items[k].prop = k;
+            return this.form.items[k];
+          });
+    },
+    collapseAliveKeys() {
+      if (this.attrs.collapseButton === false) return [];
+      let keys = (this.form.collapseAlive || []).concat(
+        this.items.filter((v) => v.collapseAlive).map((v) => v.prop)
+      );
+      if (keys.length == 0) {
+        keys = this.items.filter((v, i) => i < 3).map((v) => v.prop);
+      }
+      return keys;
+    },
   },
   methods: {
     open() {
       this.injectProp("collapse");
       this.form.collapse = !this.form.collapse;
-      this.$emit("collapse", this.form.collapse);
+      this.$nextTick(() => {
+        this.$emit("collapse", this.form.collapse);
+      });
     },
     collapseItems() {
       if (this.form.collapse === undefined) return;
-      let keys = (this.form.collapseAlive || []).concat(
-        this.form.items.filter((v) => v.collapseAlive).map((v) => v.prop)
-      );
-      if (keys.length == 0) {
-        keys = this.form.items.filter((v, i) => i < 3).map((v) => v.prop);
-      }
-      this.form.items.forEach((v) => {
-        if (!keys.includes(v.prop)) {
+      if (this.attrs.collapseButton === false) return;
+      this.items.forEach((v) => {
+        if (!this.collapseAliveKeys.includes(v.prop)) {
           v.hasOwnProperty("show")
             ? (v.show = !this.form.collapse)
             : this.$set(v, "show", !this.form.collapse);
@@ -144,6 +162,7 @@ export default {
 .agel-search-panel {
   display: flex;
   align-items: flex-start;
+  padding-left: 10px;
 }
 
 .agel-search-panel .agel-form {

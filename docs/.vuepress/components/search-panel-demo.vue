@@ -4,9 +4,7 @@
       <template v-slot:address>
         <el-input v-model="form.data.address" style="width:100px"></el-input>
       </template>
-      <template v-slot:button>
-        <el-button>新增</el-button>
-      </template>
+      <el-button>新增</el-button>
     </agel-search-panel>
     <!-- 列表 -->
     <el-table v-loading="loading" :data="tableData" style="width: 100%" height="200px" border>

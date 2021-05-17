@@ -260,13 +260,6 @@ export default {
     getPlaceholder(item) {
       if (item.placeholder) return item.placeholder;
       let name = item.component || defaultComponent;
-      let selectArr = [
-        "el-select",
-        "el-tree-select",
-        "el-cascader",
-        "el-time-select",
-        "el-date-picker",
-      ];
       let text = typeof item.label == "string" ? item.label : "";
       if (name == "el-input" || name == "el-input-number") {
         return "请输入" + text;
@@ -278,9 +271,8 @@ export default {
         equalAgName(name, "agel-select") ||
         equalAgName(name, "agel-tree-select")
       ) {
-        return "请输入" + text;
+        return "请选择" + text;
       }
-      if (selectArr.includes(name)) return "请选择" + text;
     },
     getSlots(slots) {
       let noPorpsSlots = {};
