@@ -1,8 +1,5 @@
 <template>
   <div class="demo">
-    <el-button @click="search.show=true">打开抽屉弹窗</el-button>
-    <agel-form-drawer :search="search"> </agel-form-drawer>
-
   </div>
 </template>
  

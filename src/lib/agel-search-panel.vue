@@ -4,6 +4,9 @@
       <template v-for="(slot,name) in $slots" v-slot:[name]>
         <slot-render v-if="name!=='button'" :render="slot" :key="name"></slot-render>
       </template>
+      <template v-slot:prepend>
+        <slot name="prepend"></slot>
+      </template>
       <template v-slot:append>
         <slot name="append"></slot>
         <el-form-item v-if="attrs.collapseButton">
@@ -84,16 +87,8 @@ export default {
       let a = panelProps();
       let b = this.$agelFormConfig["agel-search-panel"] || {};
       let c = getIncludeAttrs(panelPropKeys, this.form);
-      let searchButton = Object.assign(
-        a.searchButton,
-        b.searchButton || {},
-        c.searchButton || {}
-      );
-      let resetButton = Object.assign(
-        a.resetButton,
-        b.resetButton || {},
-        c.resetButton || {}
-      );
+      let searchButton = this.getButton("searchButton", a, b, c);
+      let resetButton = this.getButton("resetButton", a, b, c);
       return Object.assign(a, b, c, { searchButton, resetButton });
     },
   },
@@ -118,6 +113,12 @@ export default {
             : this.$set(v, "show", !this.form.collapse);
         }
       });
+    },
+    getButton(name, ...arr) {
+      let buttons = arr.map((v) => v[name]);
+      let buttonAttr = Object.assign(...buttons);
+      let vif = buttons.reverse().every((v) => v !== false);
+      return vif ? buttonAttr : false;
     },
     emitSearch() {
       this.$emit("search");
