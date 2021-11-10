@@ -2,8 +2,7 @@
   <el-form :class="['agel-form',{'agel-form-grid':!value.inline}]" ref="form" :model="value.data" v-bind="attrs.form" v-on="value.on||{}">
     <template v-if="value.inline">
       <slot name="prepend"></slot>
-      <agel-form-item v-for="item in items" :item="item" :data="value.data" :prop="item.prop" :ref="item.prop" :key="item.prop"
-        v-show="item.show!==false">
+      <agel-form-item v-for="item in items" :item="item" :data="value.data" :prop="item.prop" :ref="item.prop" :key="item.prop" v-show="item.show!==false">
         <slot :name="item.prop"></slot>
       </agel-form-item>
       <slot name="append"></slot>
@@ -91,15 +90,6 @@ export default {
     removeResizeListener(this.$refs.form.$el, this.resize);
   },
   computed: {
-    attrs() {
-      let form = getIncludeAttrs(formPropKeys, this.value);
-      let row = getIncludeAttrs(rowPropsKeys, this.value);
-      if (!form.inline) {
-        extend(form, { labelWidth: "auto" });
-        extend(row, { type: "flex", gutter: 15 });
-      }
-      return { form, row };
-    },
     items() {
       let items = this.value.items || [];
       if (!Array.isArray(items)) {
@@ -108,7 +98,7 @@ export default {
           return items[key];
         });
       }
-      return items
+      let arr = items
         .map((v) => {
           const item = this.injectConfig(v);
           const agItem = this.getAgFormItemAttrs(item);
@@ -118,6 +108,16 @@ export default {
           return agItem;
         })
         .filter((v) => v.display !== false);
+      return arr;
+    },
+    attrs() {
+      let form = getIncludeAttrs(formPropKeys, this.value);
+      let row = getIncludeAttrs(rowPropsKeys, this.value);
+      if (!form.inline) {
+        extend(form, { labelWidth: "auto" });
+        extend(row, { type: "flex", gutter: 15 });
+      }
+      return { form, row };
     },
   },
   methods: {
@@ -339,7 +339,7 @@ export default {
 }
 
 .agel-form .el-form-item {
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 }
 
 .agel-form.el-form--label-top .el-form-item__label {

@@ -1,6 +1,6 @@
 {
   "name": "agel-form",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "main": "src/index.js",
   "description": "a easy form of element-ui form",
   "homepage": "https://github.com/agrass-GitHub/agel-form",
@@ -14,8 +14,8 @@
   ],
   "scripts": {
     "lint": "vue-cli-service lint",
-    "build": "vue-cli-service build --target lib --name agelForm --dest dist ./src/index.js",
     "serve": "vuepress dev docs",
+    "build": "vue-cli-service build --target lib --name agelForm --dest dist ./src/index.js",
     "builddocs": "vuepress build docs",
     "publishdocs": "gh-pages -d distdocs",
     "setnpm": "npm config set registry https://registry.npmjs.org/",
@@ -47,5 +47,8 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "__npminstall_done": true,
+  "_from": "agel-form@0.2.9",
+  "_resolved": "https://registry.nlark.com/agel-form/download/agel-form-0.2.9.tgz"
 }

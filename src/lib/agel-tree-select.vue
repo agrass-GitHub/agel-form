@@ -43,7 +43,7 @@ export default {
   },
   data() {
     return {
-      text: "",
+      inputting: false,
       filterText: "",
       selectValue: this.multiple ? [] : "",
     };
@@ -74,6 +74,10 @@ export default {
   watch: {
     filterText(val) {
       this.$refs.ref.filter(val);
+    },
+    optionsValue() {
+      if (this.inputting) return;
+      this.setSelected();
     },
   },
   mounted() {
@@ -106,18 +110,28 @@ export default {
         return String(data[this.labelKey]).indexOf(value) !== -1;
       }
     },
-    // 只有单选才会有清空按钮
     handleClear() {
-      this.$refs.ref.setCurrentKey(null);
-      this.selectValue = "";
-      this.input("");
+      let tree = this.$refs.ref;
+      if (this.multiple) {
+        let nodes = this.getValueOption();
+        nodes.forEach((node) => tree.setChecked(node, false));
+        this.selectValue = "";
+        this.input([]);
+      } else {
+        tree.setCurrentKey(null);
+        this.selectValue = "";
+        this.input("");
+      }
     },
     // 接管 el-select 的 input 事件
     input(v) {
-      if (v !== this.value) {
-        this.optionsInput(v);
-        this.$emit("change", v); // 需手动触发 change 事件
-      }
+      if (v == this.value) return;
+      this.optionsInput(v);
+      this.$emit("change", v); // 需手动触发 change 事件
+      this.inputting = true;
+      this.$nextTick(() => {
+        this.inputting = false;
+      });
     },
     initScroll() {
       setTimeout(() => {
@@ -139,8 +153,9 @@ export default {
     setSelected() {
       let tree = this.$refs.ref;
       if (!tree) return;
-      if (isEmpty(this.optionsValue)) return;
-      if (this.multiple) {
+      if (isEmpty(this.optionsValue)) {
+        this.handleClear();
+      } else if (this.multiple) {
         tree.setCheckedKeys(this.optionsValue);
         this.handleCheck();
       } else {

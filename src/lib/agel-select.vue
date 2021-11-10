@@ -1,8 +1,8 @@
 <template>
-  <el-select class="agel-select" ref="ref" v-bind="$attrs" v-on="$listeners" :value="isLoading?undefined:optionsValue" :multiple="multiple"
-    :loading="isLoading" :placeholder="isLoading?loadingText:placeholder" :loading-text="loadingText" :popperClass="popperClass">
+  <el-select class="agel-select" ref="ref" v-bind="$attrs" v-on="$listeners" :value="optionsValue" :multiple="multiple" :loading="isLoading" :placeholder="isLoading?loadingText:placeholder" :loading-text="loadingText" :popperClass="popperClass">
     <template v-slot:prefix>
-      <slot name="prefix"></slot>
+      <i v-if="isLoading" class="el-icon-loading"></i>
+      <slot v-else name="prefix"></slot>
     </template>
     <template v-slot:empty>
       <slot name="empty"></slot>
@@ -16,15 +16,13 @@
         </el-option>
         <template v-if="isGroup">
           <el-option-group v-for="group in filterOptions" :key="group.label" :label="group.label">
-            <el-option v-for="(option,index) of group.options || [] " :key="index+option.label" :disabled="option.disabled" :label="option.label"
-              :value="valueKey?option:option.value">
+            <el-option v-for="(option,index) of group.options || [] " :key="index+option.label" :disabled="option.disabled" :label="option.label" :value="valueKey?option:option.value">
               <slot name="option" :option="option" :index="index" :group="group"></slot>
             </el-option>
           </el-option-group>
         </template>
         <template v-else>
-          <el-option v-for="(option,index) of filterOptions" :key="index+option.label" :disabled="option.disabled" :label="option.label"
-            :value="valueKey?option:option.value">
+          <el-option v-for="(option,index) of filterOptions" :key="index+option.label" :disabled="option.disabled" :label="option.label" :value="valueKey?option:option.value">
             <slot name="option" :option="option" :index="index"></slot>
           </el-option>
         </template>
@@ -82,8 +80,13 @@ export default {
       });
     },
     filterOptions() {
-      let jsonArr = JSON.parse(JSON.stringify(this.optionsData));
-      return this.handleFilterNode(jsonArr);
+      let value = this.filterText.trim();
+      return value == ""
+        ? this.optionsData
+        : this.handleFilterNode(
+            JSON.parse(JSON.stringify(this.optionsData)),
+            value
+          );
     },
     filterEmptyText() {
       if (this.optionsData.length == 0) {
@@ -103,17 +106,15 @@ export default {
         options: this.getOptionsData(optione.options || []),
       };
     },
-    handleFilterNode(options = []) {
-      let value = this.filterText.trim();
+    handleFilterNode(options = [], value) {
       return options.filter((data) => {
         if (value === "") return true;
-        let options = data.options;
-        if (this.isGroup && options) {
-          data.options = this.handleFilterNode(options);
+        let isMatching = String(data.label).indexOf(value) !== -1;
+        if (!isMatching && this.isGroup && data.options.length > 0) {
+          data.options = this.handleFilterNode(data.options, value);
           return data.options.length > 0;
-        } else {
-          return String(data.label).indexOf(value) !== -1;
         }
+        return isMatching;
       });
     },
     setSelected() {

@@ -15,6 +15,7 @@
  
 <script>
 import components from "./lib/index";
+
 export default {
   name: "agel-form-item",
   components,

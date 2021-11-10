@@ -71,7 +71,7 @@ export default {
         } else if (type == "object") {
           return this.getOptionByProps ?
             this.getOptionByProps(item) :
-            Object.assign({ label: item[props.label], value: item[props.value], item })
+            Object.assign({ ...item, label: item[props.label], value: item[props.value], })
         }
       });
     }

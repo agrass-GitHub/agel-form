@@ -158,7 +158,10 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 
 #### item-extend-keys 属性
 
-该属性一般用于基于 `agel-form` 封装高阶组件使用, 目的是对 `form.item` 添加扩展属性, 包含在内的属性名不会注入到组件的动态属性(可参考 [agel-search-panel](/component/agel-search-panel.html#折叠) 组件的 item.collapseAlive 属性), 没有这个需求可以无视该属性。
+包含在内的属性名不会注入到组件的动态属性。
+
+当你想添加自定义的属性，又不想注入`component`组件中使用。该属性一般用于基于 `agel-form` 封装高阶组件使用, 目的是对 `form.item` 添加扩展属性。(参考 [agel-search-panel](/component/agel-search-panel.html#折叠) 组件的 item.collapseAlive )。
+
 
 ### Form Attributes
 
