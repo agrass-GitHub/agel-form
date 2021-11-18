@@ -1,14 +1,17 @@
 <template>
-  <el-select class="agel-tree-select" :popper-class="treePopperClass" ref="select" :value="isLoading?undefined:selectValue" :multiple="multiple"
-    :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" :loading="isLoading" :placeholder="isLoading?loadingText:placeholder"
-    :loading-text="loadingText" v-on="$listeners" @click.native="initScroll" @clear="handleClear">
+  <el-select class="agel-tree-select" :popper-class="treePopperClass" ref="select" :value="selectValue" :multiple="multiple" :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" :loading="isLoading" :placeholder="isLoading?loadingText:placeholder" :loading-text="loadingText" v-on="$listeners" @click.native="initScroll" @clear="handleClear">
+    <template v-slot:prefix>
+      <i v-if="isLoading" class="el-icon-loading"></i>
+      <slot v-else name="prefix"></slot>
+    </template>
     <div class="filter-item" v-if="filter">
       <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini"></el-input>
     </div>
     <el-option value="" disabled>
-      <el-tree ref="ref" class="tree-option" :data="treeData" :props="props" :show-checkbox="multiple" :highlight-current="!multiple"
-        :node-key="nodeKey" :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs" v-on="$listeners"
-        @current-change="handleCurrentChange" @check="handleCheck">
+      <el-tree ref="ref" class="tree-option" :data="treeData" :props="props" :show-checkbox="multiple" :highlight-current="!multiple" :node-key="nodeKey" :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs" v-on="$listeners" @current-change="handleCurrentChange" @check="handleCheck">
+        <slot name="option" slot-scope="scope" v-bind="scope">
+          <span class="el-tree-node__label">{{scope.node.label}}</span>
+        </slot>
       </el-tree>
     </el-option>
   </el-select>
@@ -28,7 +31,7 @@ export default {
     filter: Boolean,
     leafOnly: Boolean,
     includeHalfChecked: Boolean,
-    props: Object, // 覆盖 optionsMinxin 的默认 props
+    props: Object, // 使用 el-tree 的 props 解析， 覆盖 optionsMinxin 默认函数
     multiple: Boolean,
     placeholder: String,
     disabled: Boolean,
@@ -68,14 +71,16 @@ export default {
       return `agel-tree-select-popper ${this.popperClass || ""}`;
     },
     treeData() {
-      return !isEmpty(this.optionsData) ? this.optionsData : this.$attrs.data;
+      return !isEmpty(this.proxyOptions)
+        ? this.proxyOptions
+        : this.$attrs.data || [];
     },
   },
   watch: {
     filterText(val) {
       this.$refs.ref.filter(val);
     },
-    optionsValue() {
+    proxyValue() {
       if (this.inputting) return;
       this.setSelected();
     },
@@ -87,14 +92,16 @@ export default {
     handleCurrentChange(nodeData, treeNode = {}) {
       if (treeNode.disabled || this.multiple) return;
       let node = this.getValueOption();
-      const treeValue = node[this.nodeKey];
-      const selectValue = node[this.labelKey];
+      let is = isEmpty(node);
+      const treeValue = is ? this.value : node[this.nodeKey];
+      const selectValue = is ? this.value : node[this.labelKey];
       this.selectValue = selectValue;
       this.input(treeValue);
       this.blur();
     },
     handleCheck() {
       let nodes = this.getValueOption();
+      // if (isEmpty(nodes)) return;
       const treeValue = nodes.map((v) => v[this.nodeKey]);
       const selectValue = nodes.map((v) => v[this.labelKey]);
       this.selectValue = selectValue;
@@ -123,10 +130,10 @@ export default {
         this.input("");
       }
     },
-    // 接管 el-select 的 input 事件
+    // 代理掉 el-select 的 input 事件
     input(v) {
       if (v == this.value) return;
-      this.optionsInput(v);
+      this.proxyInput(v);
       this.$emit("change", v); // 需手动触发 change 事件
       this.inputting = true;
       this.$nextTick(() => {
@@ -134,32 +141,32 @@ export default {
       });
     },
     initScroll() {
+      let classname =
+        ".agel-tree-select-popper .el-scrollbar .el-select-dropdown__wrap";
       setTimeout(() => {
         this.$nextTick(() => {
           document
-            .querySelectorAll(
-              ".agel-tree-select-popper .el-scrollbar .el-select-dropdown__wrap"
-            )
+            .querySelectorAll(classname)
             .forEach((el) => (el.scrollTop = 0));
         });
       }, 0);
     },
-    // 覆盖 options mixin 默认函数
-    getOptionsData(options) {
+    // 使用 el-tree 的 props 解析， 覆盖 optionsMinxin 默认函数
+    transformOptions(options) {
       return options;
     },
     // 暴露出去的功能函数
     // 根据 value 选中 高亮 树节点
     setSelected() {
       let tree = this.$refs.ref;
-      if (!tree) return;
-      if (isEmpty(this.optionsValue)) {
+      if (!tree || this.treeData.length == 0) return;
+      if (isEmpty(this.proxyValue)) {
         this.handleClear();
       } else if (this.multiple) {
-        tree.setCheckedKeys(this.optionsValue);
+        tree.setCheckedKeys(this.proxyValue);
         this.handleCheck();
       } else {
-        tree.setCurrentKey(this.optionsValue);
+        tree.setCurrentKey(this.proxyValue);
         this.handleCurrentChange();
       }
     },

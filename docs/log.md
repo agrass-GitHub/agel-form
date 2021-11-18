@@ -3,6 +3,21 @@ title: 更新日志
 sidebar: auto
 ---
 
+
+## v.0.3.1
+
+#### agel-select，agel-tree-select，agel-checkbox，agel-radio
+- `bug` 修复 options 变化未触发响应式更新
+
+#### agel-select
+- `bug` 修复 value 为字符串类型时开启 multiple 属性，下拉选择框显示异常
+
+#### agel-tree-select
+- `bug` 修复 value 存在 options 为空时 setSelected 报错
+- `bug` 修复 value 未找到对应树节点时 setSelected 报错
+- `新增` 添加 prefix 插槽
+- `新增` 添加 option 插槽，以支持模板写法
+
 ## v.0.3.0
 
 #### agel-select

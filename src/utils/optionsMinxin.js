@@ -10,42 +10,45 @@ export default {
   },
   data() {
     return {
-      optionsData: [],
+      proxyOptions: [],
       optionsLoading: false,
     }
   },
   created() {
-    this.$listeners.input = this.optionsInput;
-    this.getOptions();
+    this.$listeners.input = this.proxyInput;
+  },
+  watch: {
+    "options": {
+      immediate: true,
+      handler: "getOptions"
+    }
   },
   computed: {
-    optionsValue() {
-      if (typeof this.value == "string" && this.multiple) {
-        return this.value.split(',').filter(v => v)
-      } else {
-        return this.value
-      }
+    isMultipleStrValue() {
+      return this.multiple && typeof this.value === "string";
+    },
+    proxyValue() {
+      return this.isMultipleStrValue ? this.value.split(',').filter(v => v) : this.value;
     },
   },
   methods: {
-    optionsInput(value) {
-      if (value == this.value) return;
-      if (typeof this.value == "string" && this.multiple) {
-        this.$emit("input", Array.isArray(value) ? value.filter(v => v).join(',') : "")
-      } else {
-        this.$emit("input", value)
-      }
+    proxyInput(value) {
+      if (value === this.value) return;
+      this.$emit("input", this.isMultipleStrValue ?
+        (Array.isArray(value) ? value.filter(v => v).join(',') : "")
+        : value
+      )
     },
     async getOptions() {
       let options = this.options || [];
-      this.optionsData = [];
+      this.proxyOptions = [];
       if (Array.isArray(options)) {
-        this.optionsData = this.getOptionsData(options);
+        this.proxyOptions = this.transformOptions(options);
       } else if (typeof options == "string") {
-        this.optionsData = this.getOptionsData(options.split(',').filter(v => v));
+        this.proxyOptions = this.transformOptions(options.split(',').filter(v => v));
       } else if (typeof options == "function") {
         this.optionsLoading = true;
-        this.optionsData = this.getOptionsData(await options());
+        this.proxyOptions = this.transformOptions(await options());
         this.optionsLoading = false;
         // 刷新组件选中状态
         this.$nextTick(() => {
@@ -53,27 +56,36 @@ export default {
         })
       } else if (options instanceof Promise) {
         this.optionsLoading = true;
-        this.optionsData = this.getOptionsData(await options);
+        this.proxyOptions = this.transformOptions(await options);
         this.optionsLoading = false;
       }
     },
+    // 转化成标准的 [{label,value}] 结构
+    transformOptions(options) {
+      return options.map((option) => {
+        if (option.constructor == Object) {
+          const props = this.props;
+          const value = String(option[props.value]);
+          return {
+            ...option,
+            label: String(option[props.label]),
+            value: this.isMultipleStrValue && typeof value === 'number' ? String(value) : value,
+            options: this.transformOptions(option.options || [])
+          };
+        } else if (option.constructor == String || option.constructor == Number) {
+          return {
+            label: String(option),
+            value: this.isMultipleStrValue && typeof option === 'number' ? String(option) : option
+          };
+        }
+        return false;
+      }).filter(v => v !== false);
+    },
+    // 根据 value 获取对应的 option 数据
     getValueOption() {
       return this.multiple
-        ? this.optionsData.filter((v) => this.value.includes(v.value))
-        : this.optionsData.find((v) => this.value == v.value) || this.value;
+        ? this.proxyOptions.filter((v) => this.value.includes(v.value))
+        : this.proxyOptions.find((v) => this.value == v.value) || this.value;
     },
-    getOptionsData(options) {
-      let props = this.props;
-      return options.map((item) => {
-        let type = typeof item;
-        if (type == "string" || type == "number") {
-          return { label: item, value: item };
-        } else if (type == "object") {
-          return this.getOptionByProps ?
-            this.getOptionByProps(item) :
-            Object.assign({ ...item, label: item[props.label], value: item[props.value], })
-        }
-      });
-    }
   }
 };

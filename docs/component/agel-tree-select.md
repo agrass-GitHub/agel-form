@@ -30,7 +30,7 @@
 | options     | Array/Function/Promise        | -    |  treeData 数据         | 
 | data        | Array           | -           | 继承自 el-tree，建议使用 options         | 
 | nodeKey     | Boolean         | label       | 继承自 el-tree，绑定表单的字段名          | 
-| props     | Boolean           | label       | 继承自 el-tree，数据配置选项          | 
+| props       | Boolean         | label       | 继承自 el-tree，数据配置选项          | 
 | filter      | Boolean         | false       | 是否开启过滤查询                | 
 | leafOnly    | Boolean         | false       | 是否只是叶子节点，多选生效    | 
 | includeHalfChecked  | Boolean | true        | 是否包含半选节点，多选生效    | 
@@ -42,6 +42,13 @@
 | collapseTags | Boolean        | -           | 继承自 el-select  | 
 | popperClass  | String         | -           | 继承自 el-select  | 
 | loadingText  | String         | -           | 继承自 el-select  | 
+
+## Select Slots
+
+| 属性          |   说明                                   | 
+| -----------    |   ------------------------------------  | 
+| prefix         |  Select 组件头部内容                        |
+| option         |  每一个选择项插槽，参数 {node,data} |
 
 ## TreeSelect Methods
 

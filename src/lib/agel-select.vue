@@ -1,5 +1,5 @@
 <template>
-  <el-select class="agel-select" ref="ref" v-bind="$attrs" v-on="$listeners" :value="optionsValue" :multiple="multiple" :loading="isLoading" :placeholder="isLoading?loadingText:placeholder" :loading-text="loadingText" :popperClass="popperClass">
+  <el-select class="agel-select" ref="ref" v-bind="$attrs" v-on="$listeners" :value="proxyValue" :multiple="multiple" :loading="isLoading" :placeholder="isLoading?loadingText:placeholder" :loading-text="loadingText" :popperClass="popperClass">
     <template v-slot:prefix>
       <i v-if="isLoading" class="el-icon-loading"></i>
       <slot v-else name="prefix"></slot>
@@ -75,21 +75,21 @@ export default {
       return `agel-select-popper ${className}`;
     },
     isGroup() {
-      return this.optionsData.some((v) => {
+      return this.proxyOptions.some((v) => {
         return Array.isArray(v.options) && v.options.length > 0;
       });
     },
     filterOptions() {
       let value = this.filterText.trim();
       return value == ""
-        ? this.optionsData
+        ? this.proxyOptions
         : this.handleFilterNode(
-            JSON.parse(JSON.stringify(this.optionsData)),
+            JSON.parse(JSON.stringify(this.proxyOptions)),
             value
           );
     },
     filterEmptyText() {
-      if (this.optionsData.length == 0) {
+      if (this.proxyOptions.length == 0) {
         return this.noDataText;
       } else if (this.filterOptions.length == 0) {
         return this.noMatchText;
@@ -97,15 +97,6 @@ export default {
     },
   },
   methods: {
-    getOptionByProps(optione) {
-      let props = this.props;
-      return {
-        ...optione,
-        label: optione[props.label],
-        value: optione[props.value],
-        options: this.getOptionsData(optione.options || []),
-      };
-    },
     handleFilterNode(options = [], value) {
       return options.filter((data) => {
         if (value === "") return true;

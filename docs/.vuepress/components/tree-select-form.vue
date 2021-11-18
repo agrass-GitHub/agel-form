@@ -17,12 +17,7 @@ const treeData = [
       {
         label: "二级 1-1",
         value: "1-1",
-        children: [
-          {
-            label: "三级 1-1-1",
-            value: "1-1-1",
-          },
-        ],
+        children: [{ label: "三级 1-1-1", value: "1-1-1" }],
       },
     ],
   },
@@ -33,22 +28,12 @@ const treeData = [
       {
         label: "二级 2-1",
         value: "2-1",
-        children: [
-          {
-            label: "三级 2-1-1",
-            value: "2-1-1",
-          },
-        ],
+        children: [{ label: "三级 2-1-1", value: "2-1-1" }],
       },
       {
         label: "二级 2-2",
         value: "2-2",
-        children: [
-          {
-            label: "三级 2-2-1",
-            value: "2-2-1",
-          },
-        ],
+        children: [{ label: "三级 2-2-1", value: "2-2-1" }],
       },
     ],
   },
@@ -105,15 +90,7 @@ export default {
               }
               if (node.level > 1) return resolve([]);
               setTimeout(() => {
-                const data = [
-                  {
-                    name: "leaf",
-                    leaf: true,
-                  },
-                  {
-                    name: "zone",
-                  },
-                ];
+                const data = [{ name: "leaf", leaf: true }, { name: "zone" }];
                 resolve(data);
               }, 500);
             },
@@ -134,17 +111,20 @@ export default {
             component: "el-tree-select",
             nodeKey: "value",
             options: this.$http.get("/api/getRandomTreeData"),
-            renderContent: (h, { node, data, store }) => {
-              return (
-                <span class="custom-tree-node">
-                  <i
-                    class="el-icon-eleme"
-                    style="color:#409EFF;margin-right:5px"
-                  ></i>
-                  <span>{node.label}</span>
-                </span>
-              );
+            slots: {
+              option: ({ node, data }) => {
+                return (
+                  <span class="custom-tree-node">
+                    <i
+                      class="el-icon-eleme"
+                      style="color:#409EFF;margin-right:5px"
+                    ></i>
+                    <span>{node.label}</span>
+                  </span>
+                );
+              },
             },
+            //renderContent: (h, { node, data, store }) => {}  使用 el-tree 该属性同样可实现
           },
         ],
       },
