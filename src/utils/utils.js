@@ -64,6 +64,9 @@ export const extend = function (obj, target, cover = false) {
 }
 
 // 是否是包装组件
-export const equalAgName = function (name1, name2) {
-  return name1 === name2 || (agComponentsKeys.find(v => v == name1) == 'ag' + name2) || (agComponentsKeys.find(v => v == name2) == 'ag' + name1)
+export const equalAgName = function (name, agName) {
+  if (agComponentsKeys.includes(agName)) {
+    return name === agName || 'ag' + name === agName
+  }
+  return false;
 }

@@ -70,7 +70,11 @@ export default {
   watch: {
     value: {
       immediate: true,
-      handler: "injectConfig",
+      handler: function (newv, oldv) {
+        if (newv === oldv) return;
+        this.injectConfig(this.value);
+        this.setDefaultFormData();
+      },
     },
     attach: {
       deep: true,
@@ -142,9 +146,6 @@ export default {
         if (config && config.constructor == Object) {
           extend(target, config);
         }
-        if (!target.ignore && !this.value.data.hasOwnProperty(target.prop)) {
-          this.$set(this.value.data, target.prop, this.getFieldValue(target));
-        }
       }
       return target;
     },
@@ -169,32 +170,37 @@ export default {
       if (w >= 1600) arr = [4, "right"];
       return { span: arr[0], labelPosition: arr[1] };
     },
-    getFieldValue(item) {
-      let v = item.component || defaultComponent;
-      if (
-        v == "el-input" ||
-        equalAgName(v, "agel-select") ||
-        equalAgName(v, "agel-tree-select") ||
-        (equalAgName(v, "agel-checkbox") && item.options != undefined)
-      ) {
-        return "";
-      }
-      if (v == "el-date-picker" || v == "el-time-select") {
-        return null;
-      }
-      if (v == "el-switch" || v == "el-checkbox") {
-        return false;
-      }
-      if (v == "el-slider" || v == "el-rate") {
-        return 0;
-      }
-      if (
-        v == "el-cascader" ||
-        v == "el-transfer" ||
-        equalAgName(v, "agel-upload")
-      ) {
-        return [];
-      }
+    setDefaultFormData() {
+      this.items.forEach((v) => {
+        if (v.prop && !v.ignore && !this.value.data.hasOwnProperty(v.prop)) {
+          let name = v.component || defaultComponent;
+          let value = "";
+          if (name == "el-date-picker" || name == "el-time-select") {
+            value = null;
+          }
+          if (
+            name == "el-switch" ||
+            (equalAgName(name, "agel-checkbox") && v.options == undefined)
+          ) {
+            value = false;
+          }
+          if (
+            name == "el-slider" ||
+            name == "el-rate" ||
+            name == "el-input-number"
+          ) {
+            value = 0;
+          }
+          if (
+            name == "el-cascader" ||
+            name == "el-transfer" ||
+            equalAgName(name, "agel-upload")
+          ) {
+            value = [];
+          }
+          this.$set(this.value.data, v.prop, value);
+        }
+      });
     },
     // 获取 agItem 属性相关函数
     getAgFormItemAttrs(item) {
@@ -368,5 +374,24 @@ export default {
 .agel-form-grid .el-cascader,
 .agel-form-grid .el-input-number {
   width: 100%;
+}
+
+/* 调整 v-loading 在 form-item 中的表现 */
+.agel-item-loading .el-loading-mask {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.agel-item-loading .el-loading-mask .el-loading-spinner {
+  top: 0px;
+  margin-top: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.agel-item-loading .el-loading-spinner .circular {
+  width: 20px;
+  height: 20px;
 }
 </style>

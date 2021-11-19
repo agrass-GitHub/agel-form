@@ -1,5 +1,7 @@
 <template>
-  <i v-if="optionsLoading" class="agel-options-loading el-icon-loading"></i>
+  <span v-if="optionsLoading">
+    <i class="agel-options-loading el-icon-loading"></i>
+  </span>
   <el-radio-group v-else-if="proxyOptions.length>0" ref="ref" class="agel-radio-group" :value="value" v-bind="getGroupPorps($attrs)" v-on="$listeners">
     <component :is="is" v-for="(option,index) of proxyOptions" v-bind="getProps(option)" :key="option.value" :label="option.value">
       <slot name="option" :option="option" :index="index">{{option.label}}</slot>
@@ -10,7 +12,6 @@
       <slot name="default" />
     </template>
   </component>
-
 </template>
 
 <script>

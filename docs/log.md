@@ -6,17 +6,29 @@ sidebar: auto
 
 ## v.0.3.1
 
+#### agel-form
+
+- `优化` 根据表单组件类型智能回填 form.data 逻辑，默认 value 由 undefined 调整为 ""
+
 #### agel-select，agel-tree-select，agel-checkbox，agel-radio
 - `bug` 修复 options 变化未触发响应式更新
+- `优化` change 事件与 input 事件回调参数保持一致，避免一个是数组类型一个是字符串类型
+
+#### agel-select，agel-tree-select
+- `bug` 开启 multiple 多选，loading 图标被 tags 遮挡，改用 v-loading 实现加载效果；刷新异步 options，loading-placeholder 异常显示被 tasg 遮挡，故取消 loading-placeholder 展示
+
+### agel-checkbox，agel-radio
+- `bug` 修复内联表单下设置 style 固定宽度，loading 图标旋转展示异常的问题
 
 #### agel-select
-- `bug` 修复 value 为字符串类型时开启 multiple 属性，下拉选择框显示异常
+- `bug` 开启 multiple 多选，select value 为 字符串类型('1,2,3')，option value 为 number(1) 类型时，select 组件匹配失败的问题
 
 #### agel-tree-select
 - `bug` 修复 value 存在 options 为空时 setSelected 报错
 - `bug` 修复 value 未找到对应树节点时 setSelected 报错
 - `新增` 添加 prefix 插槽
 - `新增` 添加 option 插槽，以支持模板写法
+- `优化` 选中树节点，勾选树节点相关逻辑，value，代理value，展示value 相关逻辑
 
 ## v.0.3.0
 

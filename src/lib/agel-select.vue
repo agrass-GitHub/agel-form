@@ -1,8 +1,7 @@
 <template>
-  <el-select class="agel-select" ref="ref" v-bind="$attrs" v-on="$listeners" :value="proxyValue" :multiple="multiple" :loading="isLoading" :placeholder="isLoading?loadingText:placeholder" :loading-text="loadingText" :popperClass="popperClass">
+  <el-select class="agel-select agel-item-loading" v-loading="optionsLoading" ref="ref" v-bind="$attrs" v-on="$listeners" :value="proxyValue" :multiple="multiple" :loading="isLoading" :placeholder="placeholder" :loading-text="loadingText" :popperClass="popperClass">
     <template v-slot:prefix>
-      <i v-if="isLoading" class="el-icon-loading"></i>
-      <slot v-else name="prefix"></slot>
+      <slot name="prefix"></slot>
     </template>
     <template v-slot:empty>
       <slot name="empty"></slot>
@@ -109,7 +108,7 @@ export default {
       });
     },
     setSelected() {
-      this.$refs.ref.setSelected();
+      this.$refs.ref.setSelected && this.$refs.ref.setSelected();
     },
     focus() {
       this.$refs.ref.focus();
@@ -131,5 +130,9 @@ export default {
 }
 .agel-select-popper .empty-option {
   text-align: center;
+}
+
+.agel-select-loading .el-select__tags .el-tag:first-child {
+  margin-left: 30px;
 }
 </style>

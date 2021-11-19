@@ -12,15 +12,24 @@ export default {
     return {
       proxyOptions: [],
       optionsLoading: false,
+      proxyInputing: false,
     }
   },
   created() {
     this.$listeners.input = this.proxyInput;
+    this.$listeners.change = this.proxyChange;
   },
   watch: {
-    "options": {
+    options: {
       immediate: true,
       handler: "getOptions"
+    },
+    proxyValue() {
+      if (this.proxyInputing) return;
+      this.setSelected && this.setSelected();  // 由组件外部修改 value 时触发
+    },
+    proxyOptions() {
+      setTimeout(() => this.setSelected && this.setSelected(), 10)
     }
   },
   computed: {
@@ -34,10 +43,15 @@ export default {
   methods: {
     proxyInput(value) {
       if (value === this.value) return;
+      this.proxyInputing = true;
       this.$emit("input", this.isMultipleStrValue ?
         (Array.isArray(value) ? value.filter(v => v).join(',') : "")
         : value
       )
+      setTimeout(() => this.proxyInputing = false)
+    },
+    proxyChange() {
+      this.$nextTick(() => this.$emit("change", this.value))
     },
     async getOptions() {
       let options = this.options || [];
@@ -50,10 +64,6 @@ export default {
         this.optionsLoading = true;
         this.proxyOptions = this.transformOptions(await options());
         this.optionsLoading = false;
-        // 刷新组件选中状态
-        this.$nextTick(() => {
-          this.setSelected && this.setSelected();
-        })
       } else if (options instanceof Promise) {
         this.optionsLoading = true;
         this.proxyOptions = this.transformOptions(await options);

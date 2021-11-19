@@ -1,8 +1,7 @@
 <template>
-  <el-select class="agel-tree-select" :popper-class="treePopperClass" ref="select" :value="selectValue" :multiple="multiple" :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" :loading="isLoading" :placeholder="isLoading?loadingText:placeholder" :loading-text="loadingText" v-on="$listeners" @click.native="initScroll" @clear="handleClear">
+  <el-select class="agel-tree-select agel-item-loading" v-loading="optionsLoading" :popper-class="treePopperClass" ref="select" :value="selectValue" :multiple="multiple" :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" :loading="isLoading" :placeholder="placeholder" :loading-text="loadingText" v-on="$listeners" @click.native="initScroll" @clear="handleClear">
     <template v-slot:prefix>
-      <i v-if="isLoading" class="el-icon-loading"></i>
-      <slot v-else name="prefix"></slot>
+      <slot name="prefix"></slot>
     </template>
     <div class="filter-item" v-if="filter">
       <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini"></el-input>
@@ -46,9 +45,9 @@ export default {
   },
   data() {
     return {
-      inputting: false,
       filterText: "",
-      selectValue: this.multiple ? [] : "",
+      checkedNodes: [],
+      currentNode: null,
     };
   },
   computed: {
@@ -75,37 +74,32 @@ export default {
         ? this.proxyOptions
         : this.$attrs.data || [];
     },
+    selectValue() {
+      return this.multiple
+        ? this.checkedNodes.map((node) => node[this.labelKey])
+        : this.currentNode
+        ? this.currentNode[this.labelKey]
+        : "";
+    },
   },
   watch: {
     filterText(val) {
       this.$refs.ref.filter(val);
-    },
-    proxyValue() {
-      if (this.inputting) return;
-      this.setSelected();
     },
   },
   mounted() {
     this.setSelected();
   },
   methods: {
-    handleCurrentChange(nodeData, treeNode = {}) {
-      if (treeNode.disabled || this.multiple) return;
-      let node = this.getValueOption();
-      let is = isEmpty(node);
-      const treeValue = is ? this.value : node[this.nodeKey];
-      const selectValue = is ? this.value : node[this.labelKey];
-      this.selectValue = selectValue;
-      this.input(treeValue);
+    handleCurrentChange(nodeData, treeNode) {
+      if (treeNode.disabled) return;
+      this.currentNode = this.getValueOption();
+      this.emitInput(this.currentNode[this.nodeKey]);
       this.blur();
     },
     handleCheck() {
-      let nodes = this.getValueOption();
-      // if (isEmpty(nodes)) return;
-      const treeValue = nodes.map((v) => v[this.nodeKey]);
-      const selectValue = nodes.map((v) => v[this.labelKey]);
-      this.selectValue = selectValue;
-      this.input(treeValue);
+      this.checkedNodes = this.getValueOption();
+      this.emitInput(this.checkedNodes.map((v) => v[this.nodeKey]));
     },
     handleFilterNode(filterText, data) {
       let value = filterText.trim();
@@ -122,23 +116,18 @@ export default {
       if (this.multiple) {
         let nodes = this.getValueOption();
         nodes.forEach((node) => tree.setChecked(node, false));
-        this.selectValue = "";
-        this.input([]);
+        this.checkedNodes = [];
+        this.emitInput([]);
       } else {
         tree.setCurrentKey(null);
-        this.selectValue = "";
-        this.input("");
+        this.currentNode = null;
+        this.emitInput("");
       }
     },
     // 代理掉 el-select 的 input 事件
-    input(v) {
-      if (v == this.value) return;
+    emitInput(v) {
       this.proxyInput(v);
-      this.$emit("change", v); // 需手动触发 change 事件
-      this.inputting = true;
-      this.$nextTick(() => {
-        this.inputting = false;
-      });
+      this.proxyChange();
     },
     initScroll() {
       let classname =
@@ -164,10 +153,10 @@ export default {
         this.handleClear();
       } else if (this.multiple) {
         tree.setCheckedKeys(this.proxyValue);
-        this.handleCheck();
+        this.checkedNodes = this.getValueOption();
       } else {
         tree.setCurrentKey(this.proxyValue);
-        this.handleCurrentChange();
+        this.currentNode = this.getValueOption();
       }
     },
     getValueOption() {

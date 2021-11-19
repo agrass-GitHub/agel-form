@@ -28,7 +28,6 @@
 | ----------- | ------------  | ------ | ------------------------------------ | 
 | ......      | ......          | .........   | 支持所有 [el-tree 属性](https://element.eleme.cn/#/zh-CN/component/tree#tree-attributes)      | 
 | options     | Array/Function/Promise        | -    |  treeData 数据         | 
-| data        | Array           | -           | 继承自 el-tree，建议使用 options         | 
 | nodeKey     | Boolean         | label       | 继承自 el-tree，绑定表单的字段名          | 
 | props       | Boolean         | label       | 继承自 el-tree，数据配置选项          | 
 | filter      | Boolean         | false       | 是否开启过滤查询                | 
