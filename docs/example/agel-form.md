@@ -190,8 +190,8 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 | clearValidate | -             |  清空验证                        |
 | resetFields   | -             |  表单重置            | 
 | validate      | callback,errcallback        |  表单验证                    |
-| getItem       | prop:string     | 获取指定 item 对象  | 
-| getRef        | prop:string     |  获取指定组件的 vue 实例  |
+| getItem       | prop:string，deep:boolean   | 获取指定 item 对象，deep 可获取完整属性  | 
+| getRef        | prop:string   |  获取指定组件的 vue 实例  |
 
 
 ### Form Slots

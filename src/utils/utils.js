@@ -54,7 +54,7 @@ export function guid() {
 };
 
 // 继承属性 关联响应式
-export const extend = function (obj, target, cover = false) {
+export const extend = function (obj, target = {}, cover = false) {
   for (const key in target) {
     let a = getProp(obj, key) !== undefined && !cover;
     let b = getProp(target, key) === undefined;
@@ -69,4 +69,13 @@ export const equalAgName = function (name, agName) {
     return name === agName || 'ag' + name === agName
   }
   return false;
+}
+
+// 循环 arr obj
+export const each = function (obj, call, each = "forEach") {
+  if (Array.isArray(obj)) {
+    return obj[each]((item, index) => call(item, index));
+  } else {
+    return Object.keys(obj)[each]((key, index) => call(obj[key], index, key));
+  }
 }

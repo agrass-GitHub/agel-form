@@ -6,7 +6,7 @@
 
 `options` 属性支持多种数据类型，`String`，`Array[String]`，`Array[Object]`，`Promise`，`Function`，若是 `Function` 类型，可以通过 `getRef` 获取组件实例调用 `getOptions` 进行主动刷新。
 
-多选时 `value` 属性可以设置为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔。
+多选时 `value` 属性可以设置为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔，默认为字符串。
 
 `filter` 属性可以开启关键字过滤，和 `filterable` 功能类似。
 
@@ -30,7 +30,7 @@
 | ----------- | ------------  | ------ | ------------------------------------ | 
 | ......      | ......        | .........   | 支持所有 [el-select 属性](https://element.eleme.cn/#/zh-CN/component/select#select-attributes)      | 
 | filter      | Boolean       | false       | 是否开启过滤查询                | 
-| options     | Array/Function/Promise    |  -     | option 配置项         | 
+| options     | String/Array/Function/Promise    |  -     | option 配置项         | 
 | props       | Object        |  {label,value}     | 数据配置选项          |
 | slots       | Object        | -                  | 自定义插槽    | 
 

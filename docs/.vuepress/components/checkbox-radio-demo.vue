@@ -1,7 +1,7 @@
 <template>
   <div class="demo border">
     <agel-checkbox v-model="value">测试</agel-checkbox>
-    <agel-checkbox v-model="value" :options="options">
+    <agel-checkbox v-model="checkbox" :options="options">
       <template v-slot:option="{option,index}">
         <el-tag>{{index}}：{{option.label}}</el-tag>
       </template>
@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       value: true,
-      checkbox: [],
+      checkbox: "女",
       radio: "",
       options: ["男", "女"],
     };

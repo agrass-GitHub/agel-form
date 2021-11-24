@@ -29,7 +29,7 @@ export default {
       this.setSelected && this.setSelected();  // 由组件外部修改 value 时触发
     },
     proxyOptions() {
-      setTimeout(() => this.setSelected && this.setSelected(), 10)
+      this.$nextTick(() => this.setSelected && this.setSelected())
     }
   },
   computed: {
@@ -48,7 +48,7 @@ export default {
         (Array.isArray(value) ? value.filter(v => v).join(',') : "")
         : value
       )
-      setTimeout(() => this.proxyInputing = false)
+      this.$nextTick(() => this.proxyInputing = false)
     },
     proxyChange() {
       this.$nextTick(() => this.$emit("change", this.value))

@@ -3,6 +3,7 @@ node_modules/
 distdocs/
 docs/
 public/
+todo/
 
 # local env files
 vue.config

@@ -8,7 +8,7 @@
 
 `options` 属性支持多种数据类型，`Array[string]`，`Array[Object]`，`Promise`，`Function`，若是 `Function` 类型，可以通过 `getRef` 获取组件实例调用 `getOptions` 进行主动刷新。
 
-`agel-checkbox` 多选时 `value` 属性可以设置为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔。
+`agel-checkbox` 多选时 `value` 属性可以设置为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔，默认为字符串。
 
 `border` 属性实现边框样式风格，`button` 属性可实现按钮样式风格。
 
@@ -36,7 +36,7 @@
 | ......      | ......        | .........   | 支持所有 [el-checkbox-group 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-group-attributes)      | 
 | ......      | ......        | .........   | 支持所有 [el-radio 属性](https://element.eleme.cn/#/zh-CN/component/radio#radio-attributes)      | 
 | ......      | ......        | .........   | 支持所有 [el-checkbox 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-attributes)      | 
-| options     | Array/Function/Promise    |  -     | option 配置项         | 
+| options     | String/Array/Function/Promise    |  -     | option 配置项         | 
 | props       | Object        |  {label,value}     | 数据配置选项          |
 | button      | Boolean       |  -                 | 是否开启 button 样式         |
 | slots       | Object        | -                  | 自定义插槽    |  

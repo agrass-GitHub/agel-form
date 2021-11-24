@@ -40,8 +40,8 @@
 | searchButton  | Boolean/Object      | true        | 是否显示搜索按钮/按钮属性配置          |
 | resetButton   | Boolean/Object      | true        | 是否显示初始化按钮/按钮属性配置    | 
 | collapseButton| Boolean      | false       | 是否显示折叠按钮    | 
-| collapse      | Boolean      | false       | 当前是否折叠    | 
-| collapseAlive | Array      | false       | 折叠情况下保留的搜索条件 prop    | 
+| collapse      | Boolean      | false       | 当前折叠状态    | 
+| collapseAlive | Array[prop]      | false       | 折叠情况下保留的搜索条件 prop    | 
 
 ## searchButton resetButton Attributes
 
