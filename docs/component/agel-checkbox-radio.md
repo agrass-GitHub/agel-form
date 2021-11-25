@@ -46,7 +46,9 @@
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
 | ......      | ......        | .........   | 支持所有 [el-radio 属性](https://element.eleme.cn/#/zh-CN/component/radio#radio-attributes)      | 
-| ......      | ......        | .........   | 支持所有 [el-checkbox 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-attributes)      | 
+| ......      | ......        | .........   | 支持所有 [el-checkbox 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-attributes)      |
+| class       | Boolean       |  -                 | class名称    |
+| style       | Object/String        | -           | 内联样式     |   
 
 ## Radio Checkbox Slots
 

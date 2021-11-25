@@ -47,6 +47,7 @@ export default {
         data: {
           tree1: "2",
           tree2: "1-1-1,2-1-1",
+          tree4: "leaf",
         },
         items: [
           {
@@ -77,7 +78,8 @@ export default {
             prop: "tree4",
             label: "懒加载树",
             component: "el-tree-select",
-            nodeKey: "name",
+            multiple: true,
+            nodeKey: "name", // 懒加载 nodeKey 只能绑定 props.label，其他无效
             lazy: true,
             props: {
               label: "name",

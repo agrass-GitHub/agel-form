@@ -14,14 +14,14 @@
         <el-option class="empty-option" v-if="filter && filterOptions.length==0" :label="filterEmptyText" :value="filterEmptyText" disabled>
         </el-option>
         <template v-if="isGroup">
-          <el-option-group v-for="group in filterOptions" :key="group.label" :label="group.label">
-            <el-option v-for="(option,index) of group.options || [] " :key="index+option.label" :disabled="option.disabled" :label="option.label" :value="valueKey?option:option.value">
+          <el-option-group v-for="group in filterOptions" :key="group.label" v-bind="getGroupPorps(group)">
+            <el-option v-for="(option,index) of group.options || [] " :key="option.value" v-bind="getOptionProps(option)">
               <slot name="option" :option="option" :index="index" :group="group"></slot>
             </el-option>
           </el-option-group>
         </template>
         <template v-else>
-          <el-option v-for="(option,index) of filterOptions" :key="index+option.label" :disabled="option.disabled" :label="option.label" :value="valueKey?option:option.value">
+          <el-option v-for="(option,index) of filterOptions" :key="option.value" v-bind="getOptionProps(option)">
             <slot name="option" :option="option" :index="index"></slot>
           </el-option>
         </template>
@@ -32,7 +32,11 @@
 
 <script>
 import optionsMinxin from "../utils/optionsMinxin";
-import { getProp } from "../utils/utils";
+import { getProp, getIncludeAttrs } from "../utils/utils";
+
+const optionPropsKeys = ["value", "label", "disabled", "style", "class"];
+
+const groupPropsKyes = ["label", "disabled", "style", "class"];
 
 export default {
   name: "agel-select",
@@ -65,9 +69,6 @@ export default {
   computed: {
     isLoading() {
       return this.loading || this.optionsLoading;
-    },
-    valueKey() {
-      return getProp(this.$attrs, "valueKey");
     },
     popperClass() {
       let className = getProp(this.$attrs, "popperClass") || "";
@@ -106,6 +107,12 @@ export default {
         }
         return isMatching;
       });
+    },
+    getOptionProps(traget) {
+      return getIncludeAttrs(optionPropsKeys, traget);
+    },
+    getGroupPorps(traget) {
+      return getIncludeAttrs(groupPropsKyes, traget);
     },
     setSelected() {
       this.$refs.ref.setSelected && this.$refs.ref.setSelected();

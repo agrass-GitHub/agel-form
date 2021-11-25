@@ -10,10 +10,13 @@ sidebar: auto
 
 #### agel-form
 - `优化` item 组件为 el-button 时 ignore 默认为 true
+- `新增` el-autocomplete 组件支持 placeholder value 回填
 
 #### agel-select，agel-tree-select，agel-checkbox，agel-radio
 - `bug` 修复 options 变化未触发响应式更新
-- `优化` change 事件与 input 事件回调参数保持一致
+- `bug` 修复多选时 value[string(1,2,3)] 与 option value[number(1)] 类型不一致导致匹配异常的问题，
+- `bug` 修复 change 事件与 input 事件回调参数不一致的问题
+- `新增` option 支持 class，style 配置
 
 #### agel-select，agel-tree-select
 - `bug` 修复多选时loading 图标和 loading-placeholder 被 tags 遮挡，调整为 v-loading 实现加载效果，取消loading-placeholder 展示
@@ -21,15 +24,14 @@ sidebar: auto
 #### agel-checkbox，agel-radio
 - `bug` 修复内联表单下设置 style 固定宽度，loading 图标旋转展示异常的问题
 
-#### agel-select
-- `bug` 修复多选时 value 为 string('1,2,3')，option value 为 number(1) 类型时，select 组件匹配失败的问题
-
 #### agel-tree-select
 - `bug` 修复 value 存在 options 为空时报错
 - `bug` 修复 value 未找到对应树节点时报错
+- `bug` 修复懒加载 value 关联异常的问题
 - `新增` 添加 prefix 插槽
 - `新增` 添加 option 插槽，以支持模板写法
 - `优化` 选中树节点，勾选树节点相关逻辑，value，代理value，展示value 相关逻辑
+
 
 ## v.0.3.0
 

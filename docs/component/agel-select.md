@@ -34,6 +34,14 @@
 | props       | Object        |  {label,value}     | 数据配置选项          |
 | slots       | Object        | -                  | 自定义插槽    | 
 
+## Select Option
+
+| 属性        | 类型         | 默认值  | 说明                                 | 
+| ----------- | ------------  | ------ | ------------------------------------ | 
+| ......      | ......        | .........   | 支持所有 [el-select option group  属性](https://element.eleme.cn/#/zh-CN/component/select#option-attributes)      | 
+| class       | Boolean       |  -                 | class名称    |
+| style       | Object/String        | -           | 内联样式     |  
+
 ## Select Slots
 
 | 属性          |   说明                                   | 
@@ -58,3 +66,4 @@
 | 属性          | 参数           |  说明                                   | 
 | -----------   | ------------  |  ------------------------------------  | 
 | ......        | ......        | 支持所有 [el-select 事件](https://element.eleme.cn/#/zh-CN/component/select#tree-events)      | 
+

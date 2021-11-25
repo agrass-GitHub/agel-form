@@ -28,6 +28,8 @@ const propsKeys = [
   "name",
   "checked",
   "indeterminate",
+  "style",
+  "class",
 ];
 
 const groupPropsKyes = ["size", "disabled", "min", "max", "text-color", "fill"];

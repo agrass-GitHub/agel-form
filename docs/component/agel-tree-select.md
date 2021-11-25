@@ -8,6 +8,8 @@
 
 多选时 `value` 属性可以设置为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔，默认为字符串。
 
+开启 `lazy` 懒加载时，`nodeKey` 只能绑定 `props.label`。
+
 <ClientOnly><tree-select-form/></ClientOnly>
 
 ::: details 点击查看代码
@@ -22,27 +24,34 @@
 <<< @/docs/.vuepress/components/tree-select-demo.vue
 ::: 
 
-### TreeSelect Attributes
+## TreeSelect Attributes
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
 | ......      | ......          | .........   | 支持所有 [el-tree 属性](https://element.eleme.cn/#/zh-CN/component/tree#tree-attributes)      | 
 | options     | Array/Function/Promise        | -    |  treeData 数据         | 
-| nodeKey     | Boolean         | label       | 继承自 el-tree，绑定表单的字段名          | 
-| props       | Boolean         | label       | 继承自 el-tree，数据配置选项          | 
+| nodeKey     | Boolean         | label       | 继承自 el-tree，用做绑定表单的字段名    | 
+| props       | Boolean         | label       | 继承自 el-tree，数据配置选项    | 
 | filter      | Boolean         | false       | 是否开启过滤查询                | 
 | leafOnly    | Boolean         | false       | 是否只是叶子节点，多选生效    | 
-| includeHalfChecked  | Boolean | true        | 是否包含半选节点，多选生效    | 
+| includeHalfChecked  | Boolean | false       | 是否包含半选节点，多选生效    | 
 | multiple     | Boolean        | false       | 继承自 el-select，是否多选          | 
 | placeholder  | String         | -           | 继承自 el-select                   | 
 | disabled     | Boolean        | -           | 继承自 el-select                        |
-| loading      | Boolean        | -           | 继承自 el-select  | 
 | clearable    | Boolean        | -           | 继承自 el-select  | 
 | collapseTags | Boolean        | -           | 继承自 el-select  | 
 | popperClass  | String         | -           | 继承自 el-select  | 
 | loadingText  | String         | -           | 继承自 el-select  | 
 
-## Select Slots
+## TreeSelect Option
+
+| 属性        | 类型         | 默认值  | 说明                                 | 
+| ----------- | ------------  | ------ | ------------------------------------ | 
+| label       | String        |  -                 | 节点名称     |
+| class       | Boolean       |  -                 | class名称    |
+| style       | Object/String        | -           | 内联样式     |  
+
+## TreeSelect Slots
 
 | 属性          |   说明                                   | 
 | -----------    |   ------------------------------------  | 

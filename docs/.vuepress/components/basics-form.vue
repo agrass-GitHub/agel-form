@@ -35,7 +35,6 @@ export default {
           {
             component: "el-date-picker",
             label: "活动时间",
-            type: "date",
             prop: "date",
           },
           {

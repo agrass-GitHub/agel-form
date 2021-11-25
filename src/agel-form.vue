@@ -376,6 +376,11 @@ export default {
   width: 100%;
 }
 
+.agel-options-loading {
+  width: inherit !important;
+  height: inherit !important ;
+}
+
 /* 调整 v-loading 在 form-item 中的表现 */
 .agel-item-loading .el-loading-mask {
   background-color: rgba(255, 255, 255, 0.5);

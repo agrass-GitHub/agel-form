@@ -1,3 +1,4 @@
+
 export default {
   props: {
     options: [String, Array, Function, Promise],
@@ -12,7 +13,6 @@ export default {
     return {
       proxyOptions: [],
       optionsLoading: false,
-      proxyInputing: false,
     }
   },
   created() {
@@ -24,31 +24,25 @@ export default {
       immediate: true,
       handler: "getOptions"
     },
-    proxyValue() {
-      if (this.proxyInputing) return;
-      this.setSelected && this.setSelected();  // 由组件外部修改 value 时触发
-    },
     proxyOptions() {
       this.$nextTick(() => this.setSelected && this.setSelected())
     }
   },
   computed: {
-    isMultipleStrValue() {
-      return this.multiple && typeof this.value === "string";
+    isProxy() {
+      return this.multiple && !Array.isArray(this.value);
     },
     proxyValue() {
-      return this.isMultipleStrValue ? this.value.split(',').filter(v => v) : this.value;
+      return this.isProxy ?
+        String(this.value).split(',').filter(v => v.trim() != "") :
+        this.value;
     },
   },
   methods: {
     proxyInput(value) {
       if (value === this.value) return;
-      this.proxyInputing = true;
-      this.$emit("input", this.isMultipleStrValue ?
-        (Array.isArray(value) ? value.filter(v => v).join(',') : "")
-        : value
-      )
-      this.$nextTick(() => this.proxyInputing = false)
+      if (this.isProxy) value = Array.isArray(value) ? value.join() : "";
+      this.$emit("input", value);
     },
     proxyChange() {
       this.$nextTick(() => this.$emit("change", this.value))
@@ -75,17 +69,17 @@ export default {
       return options.map((option) => {
         if (option.constructor == Object) {
           const props = this.props;
-          const value = String(option[props.value]);
+          const value = option[props.value];
           return {
             ...option,
             label: String(option[props.label]),
-            value: this.isMultipleStrValue && typeof value === 'number' ? String(value) : value,
+            value: this.isProxy && typeof value === 'number' ? String(value) : value,
             options: this.transformOptions(option.options || [])
           };
         } else if (option.constructor == String || option.constructor == Number) {
           return {
             label: String(option),
-            value: this.isMultipleStrValue && typeof option === 'number' ? String(option) : option
+            value: this.isProxy && typeof option === 'number' ? String(option) : option
           };
         }
         return false;

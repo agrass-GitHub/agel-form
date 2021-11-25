@@ -18,7 +18,15 @@
 import optionsMinxin from "../utils/optionsMinxin";
 import { getIncludeAttrs } from "../utils/utils";
 
-const propsKeys = ["label", "disabled", "border", "size", "name"];
+const propsKeys = [
+  "label",
+  "disabled",
+  "border",
+  "size",
+  "name",
+  "style",
+  "class",
+];
 
 const groupPropsKyes = ["size", "disabled", "text-color", "fill"];
 

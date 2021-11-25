@@ -1,5 +1,5 @@
 <template>
-  <el-select class="agel-tree-select agel-item-loading" v-loading="optionsLoading" :popper-class="treePopperClass" ref="select" :value="selectValue" :multiple="multiple" :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" :loading="isLoading" :placeholder="placeholder" :loading-text="loadingText" v-on="$listeners" @click.native="initScroll" @clear="handleClear">
+  <el-select class="agel-tree-select agel-item-loading" v-loading="optionsLoading" :popper-class="treePopperClass" ref="select" :value="selectValue" :multiple="multiple" :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" :loading="optionsLoading" :placeholder="placeholder" :loading-text="loadingText" v-on="$listeners" @click.native="initScroll" @clear="handleClear">
     <template v-slot:prefix>
       <slot name="prefix"></slot>
     </template>
@@ -7,9 +7,10 @@
       <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini"></el-input>
     </div>
     <el-option value="" disabled>
-      <el-tree ref="ref" class="tree-option" :data="treeData" :props="props" :show-checkbox="multiple" :highlight-current="!multiple" :node-key="nodeKey" :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs" v-on="$listeners" @current-change="handleCurrentChange" @check="handleCheck">
+      <!-- :data="lazy?undefined:treeData" -->
+      <el-tree ref="ref" class="tree-option" :data="treeData" :lazy="lazy" :load="loadNode" :props="props" :show-checkbox="multiple" :highlight-current="!multiple" :node-key="nodeKey" :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs" v-on="$listeners" @current-change="handleCurrentChange" @check="handleCheck">
         <slot name="option" slot-scope="scope" v-bind="scope">
-          <span class="el-tree-node__label">{{scope.node.label}}</span>
+          <span class="el-tree-node__label" :style="scope.data.style" :class="scope.data.class">{{scope.node.label}}</span>
         </slot>
       </el-tree>
     </el-option>
@@ -30,11 +31,12 @@ export default {
     filter: Boolean,
     leafOnly: Boolean,
     includeHalfChecked: Boolean,
+    lazy: Boolean,
+    load: Function,
     props: Object, // 使用 el-tree 的 props 解析， 覆盖 optionsMinxin 默认函数
     multiple: Boolean,
     placeholder: String,
     disabled: Boolean,
-    loading: Boolean,
     clearable: Boolean,
     collapseTags: Boolean,
     popperClass: String,
@@ -45,46 +47,53 @@ export default {
   },
   data() {
     return {
+      proxyInputing: false,
       filterText: "",
       checkedNodes: [],
       currentNode: null,
     };
   },
   computed: {
-    isLazy() {
-      return this.$attrs.lazy == true || this.$attrs.lazy == "";
-    },
-    isLoading() {
-      return this.loading || this.optionsLoading;
-    },
     labelKey() {
       let props = this.props || {};
       return props.label || "label";
     },
     nodeKey() {
-      return this.isLazy
+      return this.lazy
         ? this.labelKey
         : getProp(this.$attrs, "nodeKey") || this.labelKey;
     },
-    treePopperClass() {
-      return `agel-tree-select-popper ${this.popperClass || ""}`;
-    },
     treeData() {
-      return !isEmpty(this.proxyOptions)
-        ? this.proxyOptions
-        : this.$attrs.data || [];
+      if (this.lazy) {
+        return undefined;
+      } else {
+        return !isEmpty(this.proxyOptions)
+          ? this.proxyOptions
+          : this.$attrs.data || [];
+      }
     },
     selectValue() {
-      return this.multiple
-        ? this.checkedNodes.map((node) => node[this.labelKey])
-        : this.currentNode
-        ? this.currentNode[this.labelKey]
-        : "";
+      if (this.lazy && this.checkedNodes.length == 0 && !this.currentNode) {
+        return this.proxyValue;
+      } else {
+        return this.multiple
+          ? this.checkedNodes.map((node) => node[this.labelKey])
+          : this.currentNode
+          ? this.currentNode[this.labelKey]
+          : "";
+      }
+    },
+    treePopperClass() {
+      return `agel-tree-select-popper ${this.popperClass || ""}`;
     },
   },
   watch: {
     filterText(val) {
       this.$refs.ref.filter(val);
+    },
+    proxyValue() {
+      if (this.proxyInputing) return;
+      this.setSelected(); // 由组件外部修改 value 时触发
     },
   },
   mounted() {
@@ -124,10 +133,26 @@ export default {
         this.emitInput("");
       }
     },
+    loadNode(node, resolve) {
+      if (!this.load) return;
+      this.load(node, (nodes) => {
+        resolve(nodes);
+        this.$nextTick(() => {
+          this.setSelected();
+          let equal = Array.isArray(this.selectValue)
+            ? this.selectValue.join() == this.proxyValue.join()
+            : this.selectValue == this.proxyValue;
+          if (!equal) this.emitInput(this.selectValue);
+        });
+      });
+    },
     // 代理掉 el-select 的 input 事件
-    emitInput(v) {
-      this.proxyInput(v);
+    emitInput(value) {
+      if (value === this.value) return;
+      this.proxyInputing = true;
+      this.proxyInput(value);
       this.proxyChange();
+      this.$nextTick(() => (this.proxyInputing = false));
     },
     initScroll() {
       let classname =
@@ -148,7 +173,7 @@ export default {
     // 根据 value 选中 高亮 树节点
     setSelected() {
       let tree = this.$refs.ref;
-      if (!tree || this.treeData.length == 0) return;
+      if (!tree) return;
       if (isEmpty(this.proxyValue)) {
         this.handleClear();
       } else if (this.multiple) {

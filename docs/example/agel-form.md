@@ -79,7 +79,7 @@
 
 ### 表单项插槽 label slot slots 
 
-表单项插槽支持 `Funciton`，`VNode`，`String`，`模板` 多种写法，其中 `slot` 属性设置为 `true` 可额外支持 `template` 写法。
+表单项插槽支持 `Funciton`，`VNode`，`String`，`template` 多种写法。
 
 ```js
 Funciton：
@@ -221,13 +221,16 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 | show        | Boolean/Funciton| true        | 是否显示                 | 
 | disabled    | Boolean/Funciton| false        | 是否禁用              |
 | ignore      | Boolean         | false       | 与表单数据取消关联，prop 为则为true  |  
+| class       | Boolean         |  -                 | class名称    |
+| style       | Object/String   | -           | 内联样式     |  
 | on          | Object          | { }         | 子组件 evenet 事件  |
-| style       | String          | -           | style 样式         |
 | labelWidth  | String          | -           | 继承自 el-form-item  | 
 | required    | Boolean         | -           | 继承自 el-form-item  |
 | rules       | Array/Object    | -           | 继承自 el-form-item  |
 | span        | Number          | -           | 继承自 el-col  |
-| $component  | Object          | -           | 组件的动态属性，建议当动态属性与现有属性冲突时使用  |
+| $component  | Object          | -           | 组件的动态属性，建议当动态属性与组件属性冲突时使用  |
+
+
 
 
 
