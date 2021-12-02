@@ -1,7 +1,7 @@
 import { isVNode } from "element-ui/src/utils/vdom";
 
 export default {
-  name: "solt-render",
+  name: "slot-render",
   functional: true,
   props: {
     render: [Function, Object, String, Number, Array],

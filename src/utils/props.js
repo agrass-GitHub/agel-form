@@ -17,7 +17,7 @@ export const formPropKeys = [
 ];
 
 // 支持 el-form-item 的参数 
-export const itemPropKyes = ["prop", "label", "label-width", "required", "rules"];
+export const formItemPropKyes = ["prop", "label", "label-width", "required", "rules"];
 
 // 支持 el-Row 的参数 
 export const rowPropsKeys = ["gutter", "type", "justify", "align", "tag"];
@@ -36,11 +36,39 @@ export const colPorpKeys = [
   "tag",
 ];
 
+// 支持 el-descriptions-item 的参数 
+export const descriptionsPropkeys = [
+  "border",
+  "column",
+  "direction",
+  "size",
+  "title",
+  "extra",
+  "colon",
+  "labelClassName",
+  "contentClassName",
+  "labelStyle",
+  "contentStyle",
+];
+
+// 支持 el-descriptions-item 的参数 
+export const descriptionsItemPropkeys = [
+  "label",
+  "span",
+  "labelClassName",
+  "contentClassName",
+  "labelStyle",
+  "contentStyle",
+];
+
+
 // 默认组件名称
 export const defaultComponent = "el-input";
 
 export const agFormProps = function () {
   return {
+    // Boolean 是否开启描述组件，若为 ture 则不会关联表单
+    descriptions: false,
     // Object 表单数据
     data: {},
     // Object/Array 表单配置项
@@ -63,27 +91,34 @@ export const agFormProps = function () {
 // agelFormItem 组件的扩展参数
 export const agItemProps = function () {
   return {
+    // Funciton/Vnode/String 是否自定义 Label slot
+    label: "",
+    // String 关联表单字段名称
     prop: "",
-    // String 组件名称
-    component: defaultComponent,
+    // Boolean 是否忽略，若为 ture 则不会关联表单 data
+    ignore: false,
+    // Boolean/Functiion 是否显示隐藏
+    show: true,
     // Boolean/Functiion 是否渲染
     display: true,
     // Boolean/Functiion 是否禁用
     disabled: false,
-    // Boolean/Functiion 是否显示隐藏
-    show: true,
-    // Boolean 是否忽略，若为 ture 则不会关联表单
-    ignore: false,
-    // Funciton/Vnode/String 是否自定义 FormItemLabel slot
-    label: "",
     // Boolean/Funciton/Vnode/String/Array[Vnode] 是否自定义 FormItem slot
     slot: false,
-    // Object/Funciton/Vnode/String 是否自定义 Component slot
+    // Boolean 是否开启双向绑定
+    vmodel: true,
+    // Boolean 是否必填 自动回填必填 rules
+    required: false,
+
+    // String 组件名称
+    component: defaultComponent,
+    // Object/Funciton/Vnode/String 是否自定义 Component slots
     slots: {},
-    // Object 组件 event 事件
+    // Object Component 组件 event 事件
     on: {},
     // 组件动态参数，当参数名与现有 item 属性产生冲突时，可写在此处
     $component: {},
+
   };
 };
 

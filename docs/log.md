@@ -6,6 +6,15 @@ sidebar: auto
 随便写写记录下
 
 
+
+## v.0.3.2
+#### agel-form
+- `新增` descriptions 属性，支持 el-descriptions 组件布局
+- `新增` item.vmodel 属性，控制是否双向绑定
+- `新增` agel-text 组件
+<!-- - `调整` 表单基础组件取消懒加载 -->
+
+
 ## v.0.3.1
 
 #### agel-form

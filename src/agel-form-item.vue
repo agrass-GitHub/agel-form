@@ -1,8 +1,8 @@
 <template>
-  <el-form-item :class="'form-item-'+item.component" v-bind="item.$formItem">
-    <slot-render v-if="item.slotLabel" :render="item.slotLabel" slot="label"></slot-render>
-    <slot-render v-if="item.slot" :render="item.slot!==true?item.slot:$slots.default"></slot-render>
-    <component v-else :is="item.component" :ref="prop" v-model="data[prop]" v-bind="item.$component" v-on="item.on">
+  <el-form-item :class="'form-item-'+item.component" v-bind="item.$formItem" :label="showLabel?item.$formItem.label:''">
+    <slot-render v-if="item.label && showLabel && item.label.constructor!==String" :render="item.label" slot="label"></slot-render>
+    <slot-render v-if="item.slot" :render="item.slot"></slot-render>
+    <component v-else :is="item.component" :ref="item.prop" :value="value" v-bind="item.$component" v-on="item.on" @input="input">
       <template v-for="(slot,noPorpsName) in item.slots.noPorpsSlots" v-slot:[noPorpsName]>
         <slot-render :key="noPorpsName" :render="slot"></slot-render>
       </template>
@@ -20,13 +20,19 @@ export default {
   name: "agel-form-item",
   components,
   props: {
-    prop: String,
-    data: Object,
+    value: {},
     item: Object,
+    showLabel: {
+      type: Boolean,
+      default: true,
+    },
   },
   methods: {
     getRef() {
-      return this.$refs[this.prop];
+      return this.$refs[this.item.prop];
+    },
+    input(vlaue) {
+      if (this.item.vmodel) this.$emit("update:value", vlaue);
     },
   },
 };

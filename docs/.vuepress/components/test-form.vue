@@ -1,110 +1,123 @@
 <template>
   <div class="demo border">
-    <agel-form v-model="form"> </agel-form>
-    <el-button type="primary" style="margin-left:100px" @click="getOptions">刷新 options</el-button>
-    <el-button type="primary" @click="getRef">获取组件实例（查看控制台）</el-button>
-    <el-button type="primary" @click="getItem">获取组件Item（查看控制台）</el-button>
-  </div>
+    <el-checkbox v-model="form.descriptions">descriptions</el-checkbox>
+    <agel-form v-model="form">
+      <template v-slot:extra>
+        <el-button type="primary" @click="()=>form.validate()">提交</el-button>
+      </template>
+      <template v-slot:name>
+        <div>1111111</div>
+      </template>
+    </agel-form>
 
+  </div>
 </template>
  
 <script>
-const treeData = [
-  {
-    label: "一级 1",
-    value: "1",
-    children: [
-      {
-        label: "二级 1-1",
-        value: "1-1",
-        children: [{ label: "三级 1-1-1", value: "1-1-1" }],
-      },
-    ],
-  },
-  {
-    label: "一级 2",
-    value: "2",
-    children: [
-      {
-        label: "二级 2-1",
-        value: "2-1",
-        children: [{ label: "三级 2-1-1", value: "2-1-1" }],
-      },
-      {
-        label: "二级 2-2",
-        value: "2-2",
-        children: [{ label: "三级 2-2-1", value: "2-2-1" }],
-      },
-    ],
-  },
-];
 export default {
   data() {
     return {
       form: {
-        labelWidth: "100px",
-        span: 12,
+        title: "agel-form",
+        descriptions: true,
+        border: true,
+        column: 2,
+        span: 13,
+        labelStyle: { "min-width": "100px" },
         data: {
-          tree1: 0,
-          tree2: "1-1-1,2-1-1",
-          tree4: ["leaf", "zone"],
+          name: "使用 agel-form",
+          desc: "素人开发,若你决定尝试,有什么问题可以联系本人微信:agrass-weixin",
+          delivery: true,
+          slider: 20,
+          region: "区域1",
+          number: 100,
         },
         items: [
           {
-            prop: "tree1",
+            label: "这是名称",
+            prop: "name",
+            required: true,
+            slot: true,
+          },
+          {
+            label: "建议反馈",
+            prop: "desc",
+            type: "textarea",
+          },
+          {
+            component: "el-text",
+            label: () => {
+              return <el-button>测试</el-button>;
+            },
+            prop: "number",
+          },
+          {
             component: "el-select",
-            multiple: true,
+            label: "活动区域",
+            options: ["区域1", "区域2"],
+            prop: "region",
+          },
+          {
+            component: "el-date-picker",
+            label: "活动时间",
+            prop: "date",
+          },
+          {
+            component: "el-switch",
+            label: "即时配送",
+            prop: "delivery",
+            vmodel: false,
+            on: {
+              input: (v) => {
+                this.form.data.delivery = v;
+              },
+            },
+          },
+          {
+            component: "el-slider",
+            label: "活动进度",
+            prop: "slider",
+          },
+          {
+            component: "el-checkbox",
+            label: "活动性质",
+            prop: "type",
             options: [
-              { label: "000000000", value: 0 },
-              { label: "111111111", value: 1 },
+              "美食/餐厅线上活动",
+              "地推活动",
+              "线下主题活动",
+              "单纯品牌曝光",
             ],
           },
           {
-            prop: "tree4",
-            label: "懒加载树",
-            component: "el-tree-select",
-            nodeKey: "name",
-            lazy: true,
-            multiple: true,
-            props: {
-              label: "name",
-              children: "zones",
-              isLeaf: "leaf",
-            },
-            load: (node, resolve) => {
-              if (node.level === 0) {
-                return resolve([{ name: "region" }]);
-              }
-              if (node.level > 1) return resolve([]);
-              setTimeout(() => {
-                const data = [{ name: "leaf", leaf: true }, { name: "zone" }];
-                resolve(data);
-              }, 500);
-            },
-            on: {
-              change(v) {
-                console.log(v);
-              },
+            component: "el-radio",
+            label: "特殊资源",
+            prop: "resource",
+            options: ["线上品牌商赞助", "线下场地免费"],
+          },
+          {
+            component: "el-rate",
+            label: "活动评分",
+            prop: "rate",
+          },
+          {
+            component: "el-upload",
+            label: "活动照片",
+            prop: "upload",
+            listType: "picture-card",
+            action: "xx/xx/",
+          },
+          {
+            component: "el-button",
+            type: "primary",
+            slots: "提交",
+            display: () => {
+              return !this.form.descriptions;
             },
           },
         ],
       },
     };
-  },
-  methods: {
-    getOptions() {
-      this.form.getItem("tree1").options = ["我","不","知"];
-    },
-    getRef() {
-      let tree = this.form.getRef("tree1");
-      console.log(" ------ agel-tree-select 实例------ ", tree);
-      console.log(" ------ el-tree 实例------", tree.$refs.ref);
-      console.log(" ------ el-select 实例------", tree.$refs.select);
-    },
-    getItem() {
-      console.log("items 可以是数组配置，getItem 快速获取对应对象进行修改");
-      console.log(this.form.getItem("tree1"));
-    },
   },
 };
 </script>
