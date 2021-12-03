@@ -46,7 +46,6 @@
 | preview     | Boolean/Funciton| true        | 是否开启文件预览                      | 
 | message     | Boolean         | true        | 是否开启钩子函数的默认提示                   |
 | onSuccess   | Funciton        | -           | 需返回一个包含 {name,url} 的对象               |
-| slots       | Object          | -           | 自定义 slots    | 
 
 ## Upload slots
 

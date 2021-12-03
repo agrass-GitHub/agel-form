@@ -23,15 +23,16 @@ export default {
         items: {
           name: {
             label: "活动名称",
-            required: true,
+            required: true, // 等于 rules:{required:true,trigger:'change',message:label+'必填'}
           },
           region: {
             label: "活动区域",
             component: "el-select",
+            clearable: true,
             options: ["区域一", "区域二"],
             rules: {
               required: true,
-              message: "请选择活动区域",
+              message: "你还没选区域呢",
               trigger: "change",
             },
           },

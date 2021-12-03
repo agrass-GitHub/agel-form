@@ -1,19 +1,18 @@
 # 创建表单
 
 :::tip 预先了解
-- 表单创建时会根据组件类型自动回填 `form.data`，关联响应式，不必手动 set 
-- 表单创建时会根据组件类型自动回填 `placeholder`
+- 表单创建时会根据组件类型智能回填 `form.data`，关联响应式不必手动 set 
+- 表单创建时会根据组件类型智能回填 `placeholder`
+- 表单组件会根据 `required` 智能回填必填验证规则
 - `form.items` 支持数组/对象配置
 - `item.component` 为空是默认为 `el-input`
 :::
 
-一个表单支持三种布局模式，行内表单，栅格表单，响应式表单，例子如下。
+`agel-form` 表单支持四种布局模式，行内表单，栅格表单，响应式表单，描述表单，例子如下。
 
 ## 行内表单 
 
 这是一个最简单的例子，设置`inline:true` 开启行内表单模式。
-
-`ignore` 属性表明该组件是一个纯展示组件，开启不会与表单关联, 不设置 `prop` 属性将默认为 `true`。
 
 <ClientOnly><inline-form/></ClientOnly>
 
@@ -23,9 +22,9 @@
 
 ## 栅格表单
 
-表单通过 [layout](https://element.eleme.cn/#/zh-CN/component/layout#layout-bu-ju) 的组件属性来实现栅格布局。
+表单通过 [Layout](https://element.eleme.cn/#/zh-CN/component/layout#layout-bu-ju) 组件来实现栅格布局。
 
-`form` 支持 [el-row](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes)，[el-col](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)组件的的所有属性。
+`form` 支持 [el-row](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes)，[el-col](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)组件的的所有属性，默认为 `flex` 模式。
 
 `item` 支持 [el-col](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes) 组件的所有属性，若未设置将会默认继承 `form` 对象上的 `el-col` 属性， `labelWidth`，`labelPosition` 可以调整 label 标签的宽度与对齐方向。
 
@@ -35,9 +34,25 @@
 <<< @/docs/.vuepress/components/layout-form.vue
 :::
 
+## 描述表单
+
+表单通过 [Descriptions](https://element.eleme.cn/#/zh-CN/component/descriptions) 组件来实现表格式布局，对 `error message` , `required *` 做了样式兼容。
+
+`form` 支持 [el-descriptions](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)组件的的所有属性，同样支持相关插槽。
+
+`item` 支持 [el-descriptions-item](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 组件的所有属性，使用 `agel-text` 组件可实现纯文字展示。
+
+<ClientOnly><descriptions-form/></ClientOnly>
+
+::: details 点击查看代码
+<<< @/docs/.vuepress/components/descriptions-form.vue
+:::
+
 ## 响应式表单
 
-设置 `responsive:true` 开启响应式，表单会根据容器的宽度自动调整 `form` 栅格大小，但 `item` 的栅格属性优先级仍然最高，响应式规则如下：
+响应式是基于栅格表单实现，设置 `responsive:true` 开启响应式。
+
+表单会根据容器宽度自动调整栅格大小，但 `item` 的栅格属性优先级最高，响应式规则如下：
 
 - 宽度 <= 400px， `span：24`，`labelPosition：top`
 - 400px > 宽度 <= 600px，`span 24`，`labelPosition：right`
@@ -54,6 +69,9 @@
 <<< @/docs/.vuepress/components/resize-form.vue
 ::: 
 
+# 表单功能
+
+
 ## 联动表单
 
 设置 `display`，`show`，`disabled` 为函数来控制表单是否渲染，是否显示隐藏，是否禁用。
@@ -64,53 +82,15 @@
 <<< @/docs/.vuepress/components/display-form.vue
 :::
 
-## 表单插槽
-
-### 表单插槽 prepend append 
-
-表单支持在前后追加插槽内容，以支持标题，按钮等。
-
-<ClientOnly><slot-form/></ClientOnly>
-
-::: details 点击查看代码
-<<< @/docs/.vuepress/components/slot-form.vue
-:::
-
-
-### 表单项插槽 label slot slots 
-
-表单项插槽支持 `Funciton`，`VNode`，`String`，`template` 多种写法。
-
-```js
-Funciton：
-    slot: () => h("el-tag", {}, "这是一段 render 函数类型自定义插槽")
-VNode：
-    slot: h("el-tag", {}, "这是一段 vnode 对象类型自定义插槽")
-String：
-    slot: "这是一段 string 类型自定义插槽"
-```
-
-当 `slots` 插槽只存在 `default` 的情况下，可直接简写省略对象写法, 当插槽为 `String` 类型时，会被转换成 `VNode` 对象, 整个转换过程如下：
-
-```js
-slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{},"查询") }
-```
-
-<ClientOnly><slot-item-form/></ClientOnly>
-
-::: details 点击查看代码
-<<< @/docs/.vuepress/components/slot-item-form.vue
-::: 
-
-更多基础知识请参考 [渲染函数 & JSX](https://cn.vuejs.org/v2/guide/render-function.html)
-
 ## 表单验证
 
 表单验证同 [el-from 表单校检](https://element.eleme.cn/#/zh-CN/component/form#biao-dan-yan-zheng)一致，都是使用的 [async-validator](https://github.com/yiminghe/async-validator)。
 
-`form.rules` 和 `item.rules` 都支持写验证规则，若验证只有必填一项的话，可以设置 `required` 属性为 true，将会自动回填一个必填 `rules`，message 信息为：`item.label` 必填。
+`form.rules` 和 `item.rules` 都支持写验证规则，`rules` 为空的情况下设置 `required:true` 将回填一个必填 `rules`，规则如下：
 
-`form.validate` 方法与 `el-form validate` 有点不同，接受两个函数回调（成功/失败）参数。
+```js
+{required:true, trigger:'change' ,message:label + '必填'}
+```
 
 <ClientOnly><validate-form/></ClientOnly>
 
@@ -120,9 +100,9 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 
 ## 表单方法
 
-跟传统的通过 `$refs.form.xxx()` 来调用组件方法有所不同，在 `agelForm` 中方法会自动注入到 `form` 对象中，建议直接通过 `form.xxx()` 来调用。
+和传统的通过 `$refs.form.xxx()` 来调用组件方法有所不同，在 `agelForm` 中方法会自动注入到 `form` 对象中，建议直接通过 `form.xxx()` 来调用。
 
-表单事件通过 `form.on` 和 `item.on` 进行定义。
+表单事件通过 `form.on` 定义，组件事件通过 `item.on` 进行定义。
 
 <ClientOnly><method-form/></ClientOnly>
 
@@ -130,143 +110,37 @@ slots:"查询"  ==>  slots:{ default:"查询" }  ==>  slots:{ default:h("span",{
 <<< @/docs/.vuepress/components/method-form.vue
 :::
 
-## 表单配置
 
-### Form Props
+## 表单插槽
 
-| 属性             | 类型   | 必填 | 说明                               |
-| -----------     | ------ | ---- | --------------------------------  | 
-| v-model / value | Object | 是   | form 参数配置，建议使用 v-model    | 
-| attach          | Object | 否   | form 参数配置，会同步到 v-modele    | 
-| item-extend-keys| Array  | 否   | 对 item 项添加扩展属性    | 
+### 表单插槽 prepend append 
 
-#### v-model/value 属性
+表单支持在前后追加插槽内容，以支持标题，按钮等，在不同的布局下需要不同的容器包裹。
 
-正常情况下,我们只需要配置一个基础的 `form` 对象即可, 所有的属性都是可选的, 组件会在创建时候自动注入默认属性和方法到该对象。
-
-#### attach 属性
-
-在设计上，主张的是聚拢所有的参数为一个 form 对象，有一个弊端是 `v-model/value` 不可设为计算属性, 会导致没法注入默认属性和方法。
-
-为了保持其灵活性，添加了 `attach` 参数，配置项与 form 一致，该属性可以设置为计算属性，当其发生变化时候，会同步合并到 `form` 对象中，如下例子：
-
-<ClientOnly><attach-form/></ClientOnly>
+<ClientOnly><slot-form/></ClientOnly>
 
 ::: details 点击查看代码
-<<< @/docs/.vuepress/components/attach-form.vue
+<<< @/docs/.vuepress/components/slot-form.vue
+:::
+
+
+### 表单项插槽 label slot slots
+
+表单项插槽支持 `Funciton`，`VNode`，`String` 写法，只有 `slot` 属性可额外持 `template` 模板写法。
+
+<ClientOnly><slot-item-form/></ClientOnly>
+
+::: details 点击查看代码
+<<< @/docs/.vuepress/components/slot-item-form.vue
 ::: 
 
-#### item-extend-keys 属性
+#### 插槽语法糖
 
-包含在内的属性名不会注入到组件的动态属性。
+- `slot` 插槽为 `String` 类型时，会被转换成 `VNode` 对象
+- `slots` 插槽只存在 `default` 的情况下，可直接简写省略对象写法
 
-当你想添加自定义的属性，又不想注入`component`组件中使用。该属性一般用于基于 `agel-form` 封装高阶组件使用, 目的是对 `form.item` 添加扩展属性。(参考 [agel-search-panel](/component/agel-search-panel.html#折叠) 组件的 item.collapseAlive )。
-
-
-### Form Attributes
-
-
-| 属性        | 类型         | 默认值  | 说明                                   | 
-| ----------- | ------------ | ------ | ------------------------------------  |
-| ......      | ......       | ...... | 支持所有 [el-form 属性](https://element.eleme.cn/#/zh-CN/component/form#form-attributes)      | 
-| ......      | ......       | ...... | 支持所有 [el-row 属性](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes)      | 
-| ......      | ......       | ...... | 支持所有 [el-col 属性](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)      |  
-| data        | Object       | { }    | 数据                                  | 
-| items       | Array/Object | { }    | 表单子组件配置                         | 
-| on          | Object       | { }    | Form 组件的 Event 事件                | 
-| responsive  | Boolean      | false  | 是否开启响应式      | 
-| responsiveMethod | Funciton| -      | 自定义响应式规则      | 
-| inline      | Boolean      | false  | 继承自 el-form 行内表单      | 
-| labelPositon| String       | right  | 继承自 el-form  |
-| labelWidth  | String       | auto   | 继承自 el-form  | 
-| type        | String       | flex   | 继承自 el-row   | 
-
-### Form Methods
-
- 方法会注入到 form 对象，建议直接通过 `form.方法名称()` 来调用。
-
-| 属性          | 参数           |  说明                                   | 
-| -----------   | ------------  |  ------------------------------------  | 
-| clearValidate | -             |  清空验证                        |
-| resetFields   | -             |  表单重置            | 
-| validate      | callback,errcallback        |  表单验证                    |
-| getItem       | prop:string，deep:boolean   | 获取指定 item 对象，deep 可获取完整属性  | 
-| getRef        | prop:string   |  获取指定组件的 vue 实例  |
-
-
-### Form Slots
-
-| 属性          |   说明                                   | 
-| -----------    |   ------------------------------------  | 
-| ...            |  表单项的 prop 具名插槽           |
-| prepend        |  表单头部追加内容           |
-| append         |  表单尾部追加内容                        |
-
-
-
-### Form Item Attributes
-
-
-| 属性        | 类型         | 默认值  | 说明                                 | 
-| ----------- | ------------  | ------ | ------------------------------------ |
-| ......      | ......          | ...... |  支持所有 [el-col 属性](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)      | 
-| ......      | ......          | ...... |  支持所有 [el-form-item 属性](https://element.eleme.cn/#/zh-CN/component/form#form-item-attributes)      |   
-| ......      | ......          | .........   | 组件的动态属性      |
-| component   | String          | -    | 组件名称                |
-| prop        | String          | -           | 字段名    | 
-| label       | String/String/Funciton/Vnode          | -          | Form Item Label 插槽  |  
-| slot        | Boolean/String/Funciton/Vnode  | false       | Form Item 插槽  | 
-| slots       | Object/String/Funciton/Vnode   | { }         | Component 组件的插槽 | 
-| display     | Boolean/Funciton| true        | 是否渲染                 | 
-| show        | Boolean/Funciton| true        | 是否显示                 | 
-| disabled    | Boolean/Funciton| false        | 是否禁用              |
-| ignore      | Boolean         | false       | 与表单数据取消关联，prop 为则为true  |  
-| class       | Boolean         |  -                 | class名称    |
-| style       | Object/String   | -           | 内联样式     |  
-| on          | Object          | { }         | 子组件 evenet 事件  |
-| labelWidth  | String          | -           | 继承自 el-form-item  | 
-| required    | Boolean         | -           | 继承自 el-form-item  |
-| rules       | Array/Object    | -           | 继承自 el-form-item  |
-| span        | Number          | -           | 继承自 el-col  |
-| $component  | Object          | -           | 组件的动态属性，建议当动态属性与组件属性冲突时使用  |
-
-
-
-
-
-
-### 配置结构
-
-为了更好的理解数据配置的结构，如例：
-
-```html
-<template>
-  <agel-from v-model="from" :attach="attach"></agel-from>
-</template>
- 
-<script>
-export default {
-  data() {
-    return {
-      from: {
-        data:{},
-        // agel-form 的属性
-        // el-form 的属性
-        // el-row  的属性
-        // el-col  的属性
-        items:[
-         {
-           component:"el-input",
-          // agel-form-item 的属性
-          // el-form-item 的属性
-          // el-col 的属性
-          // component 组件的动态属性
-          }
-        ]
-      },
-      attach:{},
-    };
-  }
-};
-</script>
+```js
+slots:"查询"  ==>  slots:h("span",{},"查询")  ==>  slots:{ default:h("span",{},"查询") }
 ```
+
+更多基础知识请参考 [渲染函数 & JSX](https://cn.vuejs.org/v2/guide/render-function.html)

@@ -14,11 +14,7 @@ export default {
         span: 20, // 全局span
         xs: { span: 24, push: 0 }, // <768px 设置为 24 span
         items: [
-          {
-            prop: "name",
-            label: "姓名",
-            span: 10,
-          },
+          { prop: "name", label: "姓名", span: 10 },
           { prop: "region", label: "地址", span: 9, push: 1 },
           { prop: "intor", label: "介绍" },
           {

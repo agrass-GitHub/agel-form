@@ -21,6 +21,7 @@ module.exports = {
           '/example/',
           '/example/quick-start',
           '/example/agel-form',
+          '/example/agel-form-config',
         ]
       },
       {

@@ -10,12 +10,8 @@ export default {
         inline: true,
         data: {},
         items: [
-          {
-            // component 该属性不填写将默认为 el-input
-            prop: "user",
-            label: "审批人",
-            style: "width:120px",
-          },
+          // component 该属性不填写将默认为 el-input
+          { prop: "user", label: "审批人", style: "width:120px" },
           {
             prop: "region",
             component: "el-select",
@@ -26,12 +22,9 @@ export default {
             component: "el-button",
             type: "primary",
             icon: "el-icon-search",
-            ignore: true, // 表明该组件是一个纯展示组件，属性则不会与表单关联, 不设置 prop 属性将默认为 true,
             slots: "查询", // 按钮插槽
             on: {
-              click: () => {
-                this.$message.info("查询");
-              },
+              click: () => this.$message.info("查询"),
             },
           },
         ],

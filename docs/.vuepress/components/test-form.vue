@@ -1,15 +1,11 @@
 <template>
   <div class="demo border">
-    <el-checkbox v-model="form.descriptions">descriptions</el-checkbox>
     <agel-form v-model="form">
       <template v-slot:extra>
-        <el-button type="primary" @click="()=>form.validate()">提交</el-button>
-      </template>
-      <template v-slot:name>
-        <div>1111111</div>
+        <el-checkbox v-model="form.border" style="margin-right:20px">border 样式</el-checkbox>
+        <el-button type="primary" @click="()=>form.validate()">提交单号</el-button>
       </template>
     </agel-form>
-
   </div>
 </template>
  
@@ -18,102 +14,46 @@ export default {
   data() {
     return {
       form: {
-        title: "agel-form",
+        title: "agel-form descriptions 描述排版",
         descriptions: true,
         border: true,
-        column: 2,
-        span: 13,
-        labelStyle: { "min-width": "100px" },
+        column: 3,
+        labelStyle: { "min-width": "70px" },
         data: {
-          name: "使用 agel-form",
-          desc: "素人开发,若你决定尝试,有什么问题可以联系本人微信:agrass-weixin",
-          delivery: true,
-          slider: 20,
-          region: "区域1",
+          name: "kooriookami",
+          phone: "18100000000",
+          addr: "苏州",
+          remark: "送货上门",
           number: 100,
+          address: "江苏省苏州市吴中区吴中大道 1188 号",
+          delivery: true,
         },
         items: [
-          {
-            label: "这是名称",
-            prop: "name",
-            required: true,
-            slot: true,
-          },
-          {
-            label: "建议反馈",
-            prop: "desc",
-            type: "textarea",
-          },
+          { component: "el-text", prop: "name", label: "用户名" },
+          { component: "el-text", label: "手机号", prop: "phone" },
+          { component: "el-text", prop: "addr", label: "居住地" },
           {
             component: "el-text",
-            label: () => {
-              return <el-button>测试</el-button>;
-            },
-            prop: "number",
+            prop: "remark",
+            label: () => <el-tag>备注</el-tag>,
+            slot: () => <el-tag>{this.form.data.remark}</el-tag>,
           },
-          {
-            component: "el-select",
-            label: "活动区域",
-            options: ["区域1", "区域2"],
-            prop: "region",
-          },
-          {
-            component: "el-date-picker",
-            label: "活动时间",
-            prop: "date",
-          },
-          {
-            component: "el-switch",
-            label: "即时配送",
-            prop: "delivery",
-            vmodel: false,
-            on: {
-              input: (v) => {
-                this.form.data.delivery = v;
-              },
-            },
-          },
-          {
-            component: "el-slider",
-            label: "活动进度",
-            prop: "slider",
-          },
+          { component: "el-text", label: "联系地址", prop: "address", span: 2 },
           {
             component: "el-checkbox",
-            label: "活动性质",
-            prop: "type",
-            options: [
-              "美食/餐厅线上活动",
-              "地推活动",
-              "线下主题活动",
-              "单纯品牌曝光",
-            ],
-          },
-          {
-            component: "el-radio",
-            label: "特殊资源",
+            label: "快递方式",
             prop: "resource",
-            options: ["线上品牌商赞助", "线下场地免费"],
+            options: ["顺丰", "圆通"],
+            required: true,
           },
-          {
-            component: "el-rate",
-            label: "活动评分",
-            prop: "rate",
-          },
+          { component: "el-switch", label: "即时配送", prop: "delivery" },
+          { component: "el-rate", label: "评分", prop: "rate" },
           {
             component: "el-upload",
-            label: "活动照片",
+            label: "照片",
             prop: "upload",
             listType: "picture-card",
             action: "xx/xx/",
-          },
-          {
-            component: "el-button",
-            type: "primary",
-            slots: "提交",
-            display: () => {
-              return !this.form.descriptions;
-            },
           },
         ],
       },

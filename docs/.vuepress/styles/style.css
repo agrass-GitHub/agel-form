@@ -28,6 +28,10 @@
   background: transparent;
 }
 
+.demo table{
+  display: table;
+}
+
 .demo tr:nth-child(2n){
   background-color: initial;
 }
