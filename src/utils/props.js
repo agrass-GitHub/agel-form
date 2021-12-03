@@ -61,14 +61,12 @@ export const descriptionsItemPropkeys = [
   "contentStyle",
 ];
 
-
 // 默认组件名称
 export const defaultComponent = "el-input";
 
+// agel-form 组件的扩展参数
 export const agFormProps = function () {
   return {
-    // Boolean 是否开启描述组件，若为 ture 则不会关联表单
-    descriptions: false,
     // Object 表单数据
     data: {},
     // Object/Array 表单配置项
@@ -79,6 +77,8 @@ export const agFormProps = function () {
     responsive: undefined,
     // Funciton 自定义响应式规则
     responsiveMethod: undefined,
+    // Boolean 是否开启描述组件
+    descriptions: undefined,
     // 暴露出去的方法
     getRef: this.getRef,
     getItem: this.getItem,
@@ -88,7 +88,7 @@ export const agFormProps = function () {
   }
 };
 
-// agelFormItem 组件的扩展参数
+// agel-form-item 组件的扩展参数
 export const agItemProps = function () {
   return {
     // Funciton/Vnode/String 是否自定义 Label slot
@@ -109,7 +109,6 @@ export const agItemProps = function () {
     vmodel: true,
     // Boolean 是否必填 自动回填必填 rules
     required: false,
-
     // String 组件名称
     component: defaultComponent,
     // Object/Funciton/Vnode/String 是否自定义 Component slots

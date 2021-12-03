@@ -26,6 +26,8 @@
 .agel-form-grid .el-row--flex {
   flex-wrap: wrap;
 }
+
+/* 对 el-descriptions 排版下样式优化 */
 .agel-form-desc .el-form-item{
   margin-bottom: 0px;
 }
@@ -33,6 +35,9 @@
   content: "*";
   color: #f56c6c;
   margin-right: 4px;
+}
+.agel-form-desc .el-form-item__error{
+  position: inherit;
 }
 
 

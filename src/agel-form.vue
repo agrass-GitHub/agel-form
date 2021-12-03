@@ -1,30 +1,34 @@
 <template>
   <el-form :class="['agel-form', 'agel-form-' + layout]" ref="form" :model="value.data" v-bind="attrs.$form" v-on="value.on||{}">
-    <slot name="prepend"></slot>
 
     <!-- 内联布局 -->
     <template v-if="layout=='inline'">
+      <slot name="prepend"></slot>
       <agel-form-item v-for="item in items" :value.sync="value.data[item.prop]" :item="item" :ref="item.prop" :key="item.prop" v-show="item.show" />
+      <slot name="append"></slot>
     </template>
 
     <!-- 栅格布局 -->
     <el-row class="agel-item-w100" v-if="layout=='grid'" v-bind="attrs.$row">
+      <slot name="prepend"></slot>
       <el-col v-for="item in items" v-bind="item.$col" :key="item.prop" v-show="item.show">
         <agel-form-item :value.sync="value.data[item.prop]" :item="item" :ref="item.prop" />
       </el-col>
+      <slot name="append"></slot>
     </el-row>
 
     <!-- descriptions 布局 -->
     <el-descriptions class="agel-item-w100" v-else-if="layout=='desc'" v-bind="attrs.$descriptions">
       <slot name="title" slot="title"></slot>
       <slot name="extra" slot="extra"></slot>
+      <slot name="append"></slot>
       <el-descriptions-item v-for="item in items" v-bind="item.$descriptionsItem" :key="item.prop">
         <slot-render v-if="item.label && item.label.constructor!==String" :render="item.label" slot="label"></slot-render>
         <agel-form-item :value.sync="value.data[item.prop]" :item="item" :ref="item.prop" :showLabel="false" v-show="item.show" />
       </el-descriptions-item>
+      <slot name="append"></slot>
     </el-descriptions>
 
-    <slot name="append"></slot>
   </el-form>
 </template>
 
@@ -204,7 +208,7 @@ export default {
       if (item.required && rules == undefined) {
         formItem.required = undefined;
         formItem.rules = [
-          { required: true, trigger: "blur", message: formItem.label + "必填" },
+          { required: true, trigger: "change", message: formItem.label + "必填" },
         ];
       }
       return formItem;
