@@ -85,23 +85,21 @@ export default {
             drag: true,
           },
           files5: {
-            label: "主动上传",
+            label: "手动上传",
             component: "el-upload",
             action: "/xxx/upload",
             autoUpload: false,
-          },
-          files6: {
-            label: "插槽样式",
-            component: "el-upload",
-            action: "/xxx/upload",
             slots: {
               trigger: () => {
                 return <el-button>自定义选取文件</el-button>;
               },
               default: () => {
                 return (
-                  <el-button style="margin-left:10px">
-                    自定义上传到服务器{" "}
+                  <el-button
+                    style="margin-left:10px"
+                    onClick={() => this.form.getRef("files5").submit()}
+                  >
+                    自定义上传到服务器
                   </el-button>
                 );
               },

@@ -6,8 +6,8 @@
       <template v-for="(slot,noPorpsName) in item.slots.noPorpsSlots" v-slot:[noPorpsName]>
         <slot-render :key="noPorpsName" :render="slot"></slot-render>
       </template>
-      <template v-for="(slot,hasPropsName) in item.slots.hasPorpsSlots" v-slot:[hasPropsName]="scopeProps">
-        <slot-render :key="hasPropsName" :render="slot" v-bind="scopeProps"></slot-render>
+      <template v-for="(slot,hasPropsName) in item.slots.hasPorpsSlots" v-slot:[hasPropsName]="slotPorps">
+        <slot-render :key="hasPropsName" :render="slot" v-bind="slotPorps"></slot-render>
       </template>
     </component>
   </el-form-item>

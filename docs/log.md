@@ -9,16 +9,22 @@ sidebar: auto
 
 ## v.0.3.2
 #### agel-form
+- `bug`  修复必填 required 在部分组件中未生效
 - `新增` descriptions 属性，支持 el-descriptions 组件布局
 - `新增` item.vmodel 属性，控制是否双向绑定
 - `新增` agel-text 组件
-<!-- - `调整` 表单基础组件取消懒加载 -->
+- `调整` 移除 `item.ignore` 属性
+ 
+#### agel-upload
+
+- `bug` beforeUpload 钩子函数未生效
+- `bug` 修复手动上传错误，样式不可调整
+- `bug` abort 方法失效
 
 
 ## v.0.3.1
 
 #### agel-form
-- `优化` item 组件为 el-button 时 ignore 默认为 true
 - `新增` el-autocomplete 组件支持 placeholder value 回填
 
 #### agel-select，agel-tree-select，agel-checkbox，agel-radio

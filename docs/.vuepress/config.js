@@ -21,7 +21,7 @@ module.exports = {
           '/example/',
           '/example/quick-start',
           '/example/agel-form',
-          '/example/agel-form-config',
+          '/example/edge-cases',
         ]
       },
       {
@@ -29,20 +29,11 @@ module.exports = {
         collapsable: false,
         sidebarDepth: 0,
         children: [
-          '/component/',
           '/component/agel-select',
           '/component/agel-tree-select',
           '/component/agel-checkbox-radio',
           '/component/agel-upload',
           '/component/agel-search-panel',
-        ]
-      },
-      {
-        title: '自定义组件',
-        collapsable: false,
-        sidebarDepth: 0,
-        children: [
-          '/custom',
         ]
       },
     ],

@@ -1,5 +1,5 @@
 <template>
-  <agel-form class="demo" v-model="form" style="padding:10px;border:1px dotted #3eaf7c;">
+  <agel-form class="demo border" v-model="form">
     <!-- slot 名称要与 item.porp 保持一致 -->
     <template slot="name">
       <el-tag>这是一段 template 类型自定义插槽</el-tag>
@@ -10,7 +10,6 @@
 <script>
 export default {
   data() {
-    const h = this.$createElement;
     const divider = (title) => {
       return {
         component: "el-divider",
@@ -27,13 +26,13 @@ export default {
         items: [
           divider("label 属性使用演示，自定义 Item Label 的插槽"),
           {
-            label: () => h("el-button", {}, "自定义label"),
+            label: () => <el-button>自定义label</el-button>,
             labelWidth: "100px",
           },
           divider("slot 属性使用演示，自定义 Form Item 的插槽"),
           {
             label: "Function 插槽",
-            slot: () => h("el-tag", {}, "这是一段 render 函数类型自定义插槽"),
+            slot: () => <el-tag>这是一段 render 函数类型自定义插槽</el-tag>,
           },
           {
             label: "String 插槽",
@@ -41,7 +40,11 @@ export default {
           },
           {
             label: "VNode 插槽",
-            slot: h("el-tag", {}, "这是一段 vnode 对象类型自定义插槽"),
+            slot: this.$createElement(
+              "el-tag",
+              {},
+              "这是一段 vnode 对象类型自定义插槽"
+            ),
           },
           {
             prop: "name",
@@ -51,17 +54,28 @@ export default {
           divider("slots 属性使用演示 ，自定义组件 Component 的插槽"),
           {
             component: "el-input",
-            label: "网站",
+            label: "子插槽",
             slots: {
               // 多个子插槽时， slot name 名称和 key 保持一致
-              // 若该插槽有参数，可通过 scopeProps 获取
               prepend: "Http://",
-              append: (scopeProps) => h("el-tag", {}, ".com"),
+              append: () => <el-tag>.com</el-tag>,
+            },
+          },
+          {
+            label: "参数子插槽",
+            component: "el-checkbox",
+            options: ["带有", "参数", "插槽"],
+            slots: {
+              option: ({ option, index }) => (
+                <el-tag>
+                  {index}：{option.label}
+                </el-tag>
+              ),
             },
           },
           {
             component: "el-button",
-            label: "按钮",
+            label: "文字插槽",
             type: "primary",
             icon: "el-icon-search",
             slots: "查询",

@@ -29,9 +29,18 @@ export default {
           delivery: true,
         },
         items: [
-          { component: "el-text", prop: "name", label: "用户名" },
+          {
+            component: "el-text",
+            prop: "name",
+            label: "用户名",
+          },
           { component: "el-text", label: "手机号", prop: "phone" },
-          { component: "el-text", prop: "addr", label: "居住地" },
+          {
+            component: "el-text",
+            prop: "addr",
+            label: "居住地",
+            valueFormat: (v) => '中国' + v,
+          },
           {
             component: "el-text",
             prop: "remark",

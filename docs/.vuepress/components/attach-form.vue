@@ -3,10 +3,10 @@
     <p>
       <span>行内表单：</span>
       <el-switch v-model="inline"></el-switch>
-      <span style="margin-left:20px" v-show="!inline">栅格span：</span>
-      <el-input-number v-show="!inline" v-model="span" :min="6" :max="24"></el-input-number>
+      <span style="margin-left:10px">form.data.name：</span>
+      <el-input v-if="form.data" v-model="form.data.name" style="width:200px"></el-input>
     </p>
-    <agel-form v-model="form" :attach="{data,items,inline,span}"> </agel-form>
+    <agel-form v-model="form" :attach="{data,items,inline}"> </agel-form>
   </div>
 </template>
  
@@ -14,27 +14,17 @@
 export default {
   data() {
     return {
-      form: {
-        labelWidth: "auto",
-      },
-      data: {},
+      form: {},
+      data: { name: "属性同步合并到 form.data" },
       inline: false,
-      span: 13,
     };
   },
   computed: {
     items() {
       return [
-        { label: "活动名称" },
-        { label: "活动区域" },
-        {
-          label: "按钮",
-          component: "el-button",
-          type: "primary",
-          icon: "el-icon-search",
-          slots: "查询",
-          display: this.inline,
-        },
+        { label: "姓名", prop: "name" },
+        { label: "手机", prop: "phone" },
+        { label: "地址", display: this.inline },
       ];
     },
   },

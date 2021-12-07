@@ -23,18 +23,24 @@ Vue.use(agelForm,formConfig);
 若是按需引入 `Element-UI`，至少需要全局引入 `Form, FormItem, Row, Col, Input` 五个表单组件 `agelForm` 才可正常使用。
 
 ```js
-import Vue from 'vue';
 import { Form, FormItem, Row, Col, Input } from 'element-ui';
 import agelForm from 'agel-form';
+```
 
-const formConfig = {};
+### 引用单组件
 
-Vue.use(Form);
-Vue.use(FormItem);
-Vue.use(Row);
-Vue.use(Col);
-Vue.use(Input);
-Vue.use(agelForm,formConfig);
+同时也支持在项目中引入单组件中进行开发使用，完整组件列表和引入方式如下：
+
+```js
+import {
+  agelForm,
+  agelSearchPanel,
+  agelRadio, 
+  agelCheckbox, 
+  agelSelect, 
+  agelUpload, 
+  agelTreeSelect,
+} from "agel-form";
 ```
 
 ## 全局配置

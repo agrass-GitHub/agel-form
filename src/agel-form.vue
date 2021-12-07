@@ -167,13 +167,13 @@ export default {
       if (config && config.constructor == Object) {
         extend(item, config);
       }
-      if (item.prop == undefined || item.component == "el-button") {
-        item.ignore = true;
-      }
       if (item.prop == undefined) {
         item.prop = "_aguid_" + guid();
       }
-      if (!item.ignore && !this.value.data.hasOwnProperty(item.prop)) {
+      if (
+        item.prop.indexOf("_aguid_") == -1 &&
+        !this.value.data.hasOwnProperty(item.prop)
+      ) {
         this.$set(this.value.data, item.prop, this.getItemValue(item));
       }
       return item;
@@ -203,12 +203,15 @@ export default {
     getFormItemAttrs(item) {
       const formItem = getIncludeAttrs(formItemPropKyes, item);
       const rules = item.rules || (this.value.rules || {})[item.prop];
-      formItem.prop = item.ignore ? "" : item.prop;
       formItem.label = typeof item.label == "string" ? item.label : "";
       if (item.required && rules == undefined) {
         formItem.required = undefined;
         formItem.rules = [
-          { required: true, trigger: "change", message: formItem.label + "必填" },
+          {
+            required: true,
+            trigger: "change",
+            message: formItem.label + "必填",
+          },
         ];
       }
       return formItem;

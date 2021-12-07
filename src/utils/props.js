@@ -95,15 +95,13 @@ export const agItemProps = function () {
     label: "",
     // String 关联表单字段名称
     prop: "",
-    // Boolean 是否忽略，若为 ture 则不会关联表单 data
-    ignore: false,
     // Boolean/Functiion 是否显示隐藏
     show: true,
     // Boolean/Functiion 是否渲染
     display: true,
     // Boolean/Functiion 是否禁用
     disabled: false,
-    // Boolean/Funciton/Vnode/String/Array[Vnode] 是否自定义 FormItem slot
+    // Boolean/Funciton/Vnode/String 是否自定义 FormItem slot
     slot: false,
     // Boolean 是否开启双向绑定
     vmodel: true,

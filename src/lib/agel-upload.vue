@@ -1,12 +1,6 @@
 <template>
-  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" :file-list="value||[]" :before-upload="handleBeforeUpload"
-    :on-success="handleSuccess" :on-remove="handleRemove" :on-exceed="handleExceed" :on-preview="handlePreview" :on-error="handleError"
-    v-bind="$attrs" v-on="$listeners">
-    <template v-slot:trigger>
-      <slot name="trigger">
-        <el-button v-if="$attrs.autoUpload==false" size="small" type="primary">选取文件</el-button>
-      </slot>
-    </template>
+  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" :autoUpload="autoUpload" :file-list="value" :before-upload="beforeUpload" :on-success="onSuccess" :on-remove="onRemove" :on-exceed="onExceed" :on-preview="onPreview" :on-error="onError" :on-change="onChange" v-bind="$attrs" v-on="$listeners">
+    <slot slot="trigger" name="trigger"> </slot>
     <template v-slot:default>
       <slot name="default">
         <template v-if="$attrs.drag==''||$attrs.drag==true">
@@ -17,16 +11,12 @@
           </div>
         </template>
         <i v-else-if="$attrs.listType=='picture-card'" class="el-icon-plus"></i>
-        <el-button v-else-if="$attrs.autoUpload==false" style="margin-left: 10px;" size="small" type="success" @click="submit">上传到服务器
-        </el-button>
-        <el-button v-else size="small" type="primary">点击上传</el-button>
+        <el-button v-else size="small" type="primary">点击{{autoUpload?'上传':'选取'}}</el-button>
       </slot>
     </template>
-    <template v-slot:tip>
-      <slot name="tip">
-        <div v-if="tip" class="el-upload__tip">{{ tip }}</div>
-      </slot>
-    </template>
+    <slot slot="tip" name="tip">
+      <div v-if="tip" class="el-upload__tip">{{ tip }}</div>
+    </slot>
   </el-upload>
 </template>
 
@@ -52,6 +42,10 @@ export default {
     limitSize: Number,
     limitHide: Boolean,
     tip: String,
+    autoUpload: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     isLimitHideTrigger() {
@@ -67,7 +61,7 @@ export default {
         this.$message[type](message);
       }
     },
-    handleBeforeUpload(file) {
+    beforeUpload(file) {
       if (this.limitSize) {
         let kb = file.size / 1024;
         if (kb > this.limitSize) {
@@ -78,41 +72,48 @@ export default {
           return false;
         }
       }
-      let emit = getProp(this.$attrs, "beforeUploa");
-      if (emit) return emit(file);
+      let beforeUpload = getProp(this.$attrs, "beforeUpload");
+      if (beforeUpload) return beforeUpload(file);
       return true;
     },
-    handleRemove(file, list) {
-      this.$emit("input", list);
-      let emit = getProp(this.$attrs, "onRemove");
-      emit && emit(file, list);
+    onRemove(file, fileList) {
+      this.$emit("input", fileList);
+      let onRemove = getProp(this.$attrs, "onRemove");
+      onRemove && onRemove(file, list);
     },
-    handleSuccess(file) {
+    onSuccess(response, file, fileList) {
       // 需经过函数返回一个 {name:"xx",url:"xxx"} 结构的对象
-      let emit = getProp(this.$attrs, "onSuccess");
-      if (emit) {
-        let item = emit(file);
-        if (item && item.url && item.name) {
-          this.value.push(item);
+      let onSuccess = getProp(this.$attrs, "onSuccess");
+      if (onSuccess) {
+        let resFile = onSuccess(response, file, fileList);
+        if (resFile && resFile.url && resFile.name) {
+          this.$emit("input", this.value.concat([resFile]));
         }
       }
     },
-    handleError(err, file, fileList) {
+    onChange(file, fileList) {
+      let onChange = getProp(this.$attrs, "onChange");
+      if (!this.autoUpload) {
+        this.$emit("input", fileList);
+      }
+      onChange && onChange(file, fileList);
+    },
+    onError(err, file, fileList) {
       this.onMessage("error", `文件上传失败`);
-      let emit = getProp(this.$attrs, "onError");
-      emit && emit(err, file, fileList);
+      let onError = getProp(this.$attrs, "onError");
+      onError && onError(err, file, fileList);
     },
-    handleExceed(files, fileList) {
+    onExceed(files, fileList) {
       this.onMessage("warning", "最大允许上传个数：" + this.$attrs.limit);
-      let emit = getProp(this.$attrs, "onExceed");
-      emit && emit(files, fileList);
+      let onExceed = getProp(this.$attrs, "onExceed");
+      onExceed && onExceed(files, fileList);
     },
-    handlePreview(file) {
+    onPreview(file) {
       let isPreview = this.preview;
       if (typeof this.preview == "function") {
         isPreview = this.preview(file);
       }
-      if (isPreview && this.$msgbox) {
+      if (file.url && isPreview && this.$msgbox) {
         const h = this.$createElement;
         let suffix = file.url.split(".").pop().toLowerCase();
         let image = ["png", "jpg", "jpeg", "bmp", "gif"];
@@ -162,14 +163,18 @@ export default {
           a = null;
         });
       }
-      let emit = getProp(this.$attrs, "onPreview");
-      emit && emit(file);
+      let onPreview = getProp(this.$attrs, "onPreview");
+      onPreview && onPreview(file);
     },
     submit() {
       this.$refs.ref.submit();
     },
     abort(file) {
+      this.$refs.ref.abort(file);
+    },
+    clearFiles() {
       this.$refs.ref.clearFiles(file);
+      this.$emit("input", []);
     },
   },
   install(vue) {
