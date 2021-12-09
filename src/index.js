@@ -1,5 +1,6 @@
 import agelForm from "./agel-form.vue";
-import agelSearchPanel from "./lib/agel-search-panel.vue";
+import agelSearchPanel from "./agel-search-panel.vue";
+import agelFormDialog from "./agel-form-dialog.vue";
 
 import agelRadio from "./lib/agel-radio.vue";
 import agelCheckbox from "./lib/agel-checkbox.vue";
@@ -16,6 +17,7 @@ export {
   // 表单组件
   agelForm,
   agelSearchPanel,
+  agelFormDialog,
   // 表单项组件
   agelRadio,
   agelCheckbox,

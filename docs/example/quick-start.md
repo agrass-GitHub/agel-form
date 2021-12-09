@@ -29,23 +29,26 @@ import agelForm from 'agel-form';
 
 ### 引用单组件
 
-同时也支持在项目中引入单组件中进行开发使用，完整组件列表和引入方式如下：
+默认只会导入 `agel-form`组件，你也可以在项目中单独引入单组件进行开发使用，完整组件列表如下：
 
 ```js
 import {
   agelForm,
-  agelSearchPanel,
+  // 内置单组件，在 agel-form 中懒加载使用
   agelRadio, 
   agelCheckbox, 
   agelSelect, 
   agelUpload, 
   agelTreeSelect,
+ // 其他组件
+  agelSearchPanel,
+  agelFormDialog,
 } from "agel-form";
 ```
 
 ## 全局配置
 
-支持所有属性，配置将被继承到每个表单上。
+支持属性，配置将被继承到每个表单上。
 
 也可单独为某个表单子组件设置全局配置，表单子组件支持函数写法，更加灵活。
 

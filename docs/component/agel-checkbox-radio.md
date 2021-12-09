@@ -32,10 +32,10 @@
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......        | .........   | 支持所有 [el-radio-group 属性](https://element.eleme.cn/#/zh-CN/component/radio#radio-group-attributes)      | 
-| ......      | ......        | .........   | 支持所有 [el-checkbox-group 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-group-attributes)      | 
-| ......      | ......        | .........   | 支持所有 [el-radio 属性](https://element.eleme.cn/#/zh-CN/component/radio#radio-attributes)      | 
-| ......      | ......        | .........   | 支持所有 [el-checkbox 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-attributes)      | 
+| ......      | ......        | .........   | 支持 [el-radio-group 属性](https://element.eleme.cn/#/zh-CN/component/radio#radio-group-attributes)      | 
+| ......      | ......        | .........   | 支持 [el-checkbox-group 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-group-attributes)      | 
+| ......      | ......        | .........   | 支持 [el-radio 属性](https://element.eleme.cn/#/zh-CN/component/radio#radio-attributes)      | 
+| ......      | ......        | .........   | 支持 [el-checkbox 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-attributes)      | 
 | options     | String/Array/Function/Promise    |  -     | option 配置项         | 
 | props       | Object        |  {label,value}     | 数据配置选项          |
 | button      | Boolean       |  -                 | 是否开启 button 样式         |
@@ -45,8 +45,8 @@
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......        | .........   | 支持所有 [el-radio 属性](https://element.eleme.cn/#/zh-CN/component/radio#radio-attributes)      | 
-| ......      | ......        | .........   | 支持所有 [el-checkbox 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-attributes)      |
+| ......      | ......        | .........   | 支持 [el-radio 属性](https://element.eleme.cn/#/zh-CN/component/radio#radio-attributes)      | 
+| ......      | ......        | .........   | 支持 [el-checkbox 属性](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-attributes)      |
 | class       | Boolean       |  -                 | class名称    |
 | style       | Object/String        | -           | 内联样式     |   
 
@@ -67,5 +67,5 @@
 
 | 属性          | 参数           |  说明                                   | 
 | -----------   | ------------  |  ------------------------------------  | 
-| ......        | ......        | 支持所有 [el-radio Events](https://element.eleme.cn/#/zh-CN/component/radio#radio-events)      | 
-| ......        | ......        | 支持所有 [el-checkbox Events](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-events)      | 
+| ......        | ......        | 支持 [el-radio Events](https://element.eleme.cn/#/zh-CN/component/radio#radio-events)      | 
+| ......        | ......        | 支持 [el-checkbox Events](https://element.eleme.cn/#/zh-CN/component/checkbox#checkbox-events)      | 

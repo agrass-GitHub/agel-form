@@ -38,7 +38,7 @@
  
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......          | .........   | 支持所有 [el-upload 属性](https://element.eleme.cn/#/zh-CN/component/upload#upload-attributes)      | 
+| ......      | ......          | .........   | 支持 [el-upload 属性](https://element.eleme.cn/#/zh-CN/component/upload#upload-attributes)      | 
 | drag        | Boolean         | false       | 是否开启拖拽                | 
 | tip         | String          | -           | 提示语                      | 
 | limitSize   | Number          | -           | 文件大小限制,单位kb                     | 
@@ -66,4 +66,4 @@
 
 | 属性          | 参数           |  说明                                   | 
 | -----------   | ------------  |  ------------------------------------  | 
-| ......        | ......        | 支持所有 [el-upload 事件](https://element.eleme.cn/#/zh-CN/component/upload#upload-events)      | 
+| ......        | ......        | 支持 [el-upload 事件](https://element.eleme.cn/#/zh-CN/component/upload#upload-events)      | 

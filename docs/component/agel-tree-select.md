@@ -28,7 +28,7 @@
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......          | .........   | 支持所有 [el-tree 属性](https://element.eleme.cn/#/zh-CN/component/tree#tree-attributes)      | 
+| ......      | ......          | .........   | 支持 [el-tree 属性](https://element.eleme.cn/#/zh-CN/component/tree#tree-attributes)      | 
 | options     | Array/Function/Promise        | -    |  treeData 数据         | 
 | nodeKey     | Boolean         | label       | 继承自 el-tree，用做绑定表单的字段名    | 
 | props       | Boolean         | label       | 继承自 el-tree，数据配置选项    | 
@@ -73,5 +73,5 @@
 
 | 属性          | 参数           |  说明                                   | 
 | -----------   | ------------  |  ------------------------------------  | 
-| ......        | ......        | 支持所有 [el-tree 事件](https://element.eleme.cn/#/zh-CN/component/tree#tree-events)      | 
-| ......        | ......        | 支持所有 [el-select 事件](https://element.eleme.cn/#/zh-CN/component/select#tree-events)      | 
+| ......        | ......        | 支持 [el-tree 事件](https://element.eleme.cn/#/zh-CN/component/tree#tree-events)      | 
+| ......        | ......        | 支持 [el-select 事件](https://element.eleme.cn/#/zh-CN/component/select#tree-events)      | 

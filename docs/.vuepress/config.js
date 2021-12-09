@@ -34,6 +34,7 @@ module.exports = {
           '/component/agel-checkbox-radio',
           '/component/agel-upload',
           '/component/agel-search-panel',
+          '/component/agel-form-dialog',
         ]
       },
     ],

@@ -141,7 +141,7 @@
 - `slots` 插槽只存在 `default` 的情况下，可直接简写省略对象写法
 
 ```js
-slots:"查询"  ==>  slots:h("span",{},"查询")  ==>  slots:{ default:h("span",{},"查询") }
+slots:"查询"  ===  slots:h("span",{},"查询")  ===  slots:{ default:h("span",{},"查询") }
 ```
 
 更多基础知识请参考 [渲染函数 & JSX](https://cn.vuejs.org/v2/guide/render-function.html)

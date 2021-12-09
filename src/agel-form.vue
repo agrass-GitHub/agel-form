@@ -66,6 +66,8 @@ import {
 import slotRender from "./lib/slot-render";
 import agelFormItem from "./agel-form-item.vue";
 
+const inputArr = ["el-input", "el-input-number", "el-autocomplete"];
+
 export default {
   name: "agel-form",
   inheritAttrs: false,
@@ -209,8 +211,10 @@ export default {
         formItem.rules = [
           {
             required: true,
-            trigger: "change",
             message: formItem.label + "必填",
+            trigger: inputArr.includes(item.component || defaultComponent)
+              ? "blur"
+              : "change",
           },
         ];
       }
@@ -296,11 +300,7 @@ export default {
       if (item.placeholder) return item.placeholder;
       let name = item.component || defaultComponent;
       let text = typeof item.label == "string" ? item.label : "";
-      if (
-        name == "el-input" ||
-        name == "el-input-number" ||
-        name == "el-autocomplete"
-      ) {
+      if (inputArr.includes(name)) {
         return "请输入" + text;
       }
       if (
@@ -374,9 +374,6 @@ export default {
     },
     resetFields() {
       this.$refs.form.resetFields();
-      this.items.forEach((v) => {
-        if (v.component == "agel-upload") this.value.data[v.prop] = [];
-      });
     },
     clearValidate(props) {
       this.$refs.form.clearValidate(props);

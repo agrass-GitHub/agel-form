@@ -25,15 +25,14 @@
             <slot-render :render="vnode" />
           </el-form-item>
         </template>
-
       </template>
     </agel-form>
   </div>
 </template>
  
 <script>
-import { getIncludeAttrs } from "../utils/utils";
-import slotRender from "./slot-render";
+import { getIncludeAttrs } from "./utils/utils";
+import slotRender from "./lib/slot-render";
 
 // 组件参数 props
 const panelProps = function () {

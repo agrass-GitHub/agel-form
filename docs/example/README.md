@@ -27,12 +27,15 @@
 
 为了更好的搭配 agel-form，将 `element-ui` 其中几个常见的组件进行了数据化，在使用方式上同原组件保持一致，没有任何的破坏性，并且额外添加了扩展功能，完全可以代替原组件进行开发使用。
 
+另外添加了一些其他单组件，你可以按需使用。
+
 - [agel-select](https://agrass.gitee.io/agel-form/component/agel-select.html) 
 - [agel-checkbox](https://agrass.gitee.io/agel-form/component/agel-checkbox-radio.html) 
 - [agel-radio](https://agrass.gitee.io/agel-form/component/agel-checkbox-radio.html) 
 - [agel-upload](https://agrass.gitee.io/agel-form/component/agel-upload.html) 
 - [agel-tree-select](https://agrass.gitee.io/agel-form/component/agel-tree-select.html) 
 - [agel-search-panel](https://agrass.gitee.io/agel-form/component/agel-search-panel.html) 
+- [agel-form-dialog](https://agrass.gitee.io/agel-form/component/agel-form-dialog.html) 
 
 ### 例子
 

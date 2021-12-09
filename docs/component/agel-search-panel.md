@@ -34,7 +34,7 @@
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......        | .........   | 支持所有 [agel-form 属性](/example/agel-form.html#form-attributes)      | 
+| ......      | ......        | .........   | 支持 [agel-form 属性](/example/agel-form.html#form-attributes)      | 
 | inline        | Boolean     | true         | 默认是内联表单，建议使用此布局方式                | 
 | panelPosition | String       | right       | 布局方式，可选 left right         | 
 | searchButton  | Boolean/Object      | true        | 是否显示搜索按钮/按钮属性配置          |
