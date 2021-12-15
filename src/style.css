@@ -39,6 +39,10 @@
 .agel-form-desc .el-form-item__error{
   position: inherit;
 }
+.agel-form-desc .el-form-item__content{
+  line-height: 1.5;
+  font-size: inherit;
+}
 
 
 /* 表单组件撑满容器宽度 */

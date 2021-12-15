@@ -72,10 +72,12 @@ export const equalAgName = function (name, agName) {
 }
 
 // 循环 arr obj
-export const each = function (obj, call, each = "forEach") {
+export const each = function (obj, each, call,) {
   if (Array.isArray(obj)) {
     return obj[each]((item, index) => call(item, index));
   } else {
-    return Object.keys(obj)[each]((key, index) => call(obj[key], index, key));
+    // return Object.keys(obj)[each]((key, index) => call(obj[key], index, key));
+    const indexKeys = Object.keys(obj);
+    return indexKeys.map(key => obj[key])[each]((item, index) => call(item, index, indexKeys[index]))
   }
 }

@@ -1,6 +1,6 @@
 <template>
-  <div class="demo">
-    <agel-upload v-model="value" :action="action" :limitSize="1" drag></agel-upload>
+  <div class="demo border">
+    <agel-upload v-model="value" :action="action" list-type="picture-card"></agel-upload>
   </div>
 </template>
  
@@ -8,7 +8,12 @@
 export default {
   data() {
     return {
-      value: [],
+      value: [
+        {
+          name: "这是一个图片文件.png",
+          url: "https://cn.vuejs.org/images/components.png",
+        },
+      ],
       action: "/xxx/upload",
     };
   },

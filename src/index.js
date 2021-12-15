@@ -8,6 +8,7 @@ import agelSelect from "./lib/agel-select.vue";
 import agelUpload from "./lib/agel-upload.vue";
 import agelTreeSelect from "./lib/agel-tree-select.vue";
 import agelText from "./lib/agel-text.js";
+import agelMapInput from "./lib/agel-map-input.vue";
 
 import slotRender from "./lib/slot-render.js";
 
@@ -24,6 +25,7 @@ export {
   agelSelect,
   agelUpload,
   agelTreeSelect,
+  agelMapInput,
   agelText,
   // 工具组件
   slotRender

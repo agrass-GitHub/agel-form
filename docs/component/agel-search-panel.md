@@ -1,11 +1,11 @@
 # SearchPanel 搜索面板
 
-`agel-search-panel` 组件是基于  `agel-form` 组件的二次封装组件
+`agel-search-panel` 组件是基于  `agel-form` 组件的二次封装组件。
 
 
 ## 使用
 
-基于 `agel-form`的基础, 为其添加了额外的属性参数和插槽，一般常用于列表搜索等。
+基于 `agel-form`的基础, 为其添加了额外的属性，一般常用于列表搜索等，默认使用内联布局，点击查询时也会对表单进行验证。
 
 <ClientOnly><search-panel-demo/></ClientOnly>
 
@@ -15,7 +15,7 @@
 
 ## 折叠
 
-若查询条件特别得多，可使用 `collapse` 属性折叠搜索条件, 设置 `form.collapseAlive` 数组指定搜索项进行保留，也可以直接设置 `item.collapseAlive` 保留，若都为空则会默认保留前三个搜索项。
+若查询条件特别得多，可开启 `collapseButton` 折叠按钮, 设置 `form.collapseAlive` 数组指定搜索项进行保留，也可以直接设置 `item.collapseAlive` 保留，若都为空则会默认保留前三个搜索项。
 
 <ClientOnly><search-panel-collapse/></ClientOnly>
 
@@ -56,8 +56,6 @@
 | -----------    |   ------------------------------------  | 
 | ...            |  表单项的 prop 具名插槽           |
 | default        |  按钮插槽           |
-| prepend        |  表单头部追加内容           |
-| append         |  表单尾部追加内容                        |
 
 
 ## SearchPanel Events
@@ -66,4 +64,4 @@
 | -----------   | ------------  |  ------------------------------------  | 
 | search        | -             |  点击查询或重置按钮触发  | 
 | reset         | -             |  点击重置按钮触发  | 
-| collapse      | (collapse)             |  点击折叠按钮触发  | 
+| collapse      | (collapse)    |  点击折叠按钮触发  | 

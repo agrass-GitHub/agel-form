@@ -87,11 +87,7 @@
 
 表单验证同 [el-from 表单校检](https://element.eleme.cn/#/zh-CN/component/form#biao-dan-yan-zheng)一致，都是使用的 [async-validator](https://github.com/yiminghe/async-validator)。
 
-`form.rules` 和 `item.rules` 都支持写验证规则，`rules` 为空的情况下设置 `required:true` 将回填一个必填 `rules`，规则如下：
-
-```js
-{required:true, trigger:'change' ,message:label + '必填'}
-```
+`form.rules` 和 `item.rules` 都支持写验证规则，`rules` 为空的情况下设置 `required:true` 将回填一个必填 `rules`。
 
 <ClientOnly><validate-form/></ClientOnly>
 
@@ -205,11 +201,12 @@ slots:"查询"  ===  slots:h("span",{},"查询")  ===  slots:{ default:h("span",
 | disabled    | Boolean/Funciton| false       | 是否禁用              |
 | required    | Boolean         | false       | 是否生成必填验证   |
 | vmodel      | Boolean         | true        | 是否开启双向绑定              |  
-| slot        | Boolean/Funciton/Vnode/String  | false       | Form Item 插槽  |
+| slot        | Boolean/Funciton/Vnode/String  | false       | Item 插槽  |
 | component   | String          | el-input    | 组件名称                |
+| defaultValue| -               | ""           | 组件默认值  |
 | slots       | Object/String/Funciton/Vnode   | { }         | 组件插槽 | 
 | on          | Object          | { }         | 组件事件  |
-| $component  | Object          | { }         | 组件动态属性  |
+| $component  | Object          | { }         | [组件动态属性](/example/edge-cases.html#%E5%8A%A8%E6%80%81%E5%B1%9E%E6%80%A7%E7%9A%84%E5%86%B2%E7%AA%81)  |
 | ......      | ......          | ......   | 组件动态属性      |
 | ......      | ......          | ...... | [el-col 属性](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)      | 
 | ......      | ......          | ...... | [el-form-item 属性](https://element.eleme.cn/#/zh-CN/component/form#form-item-attributes)      |

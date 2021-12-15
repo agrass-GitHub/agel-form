@@ -11,6 +11,8 @@
 
 为了在某些场景下保证灵活性，可以使用 `attach` 进行分散参数，配置项与 `form` 一致，当该对象属性发生变化时候，会同步属性合并到 `form` 对象中。
 
+可以多个 form 共享一个 data，可以很灵活，但性能消耗也略大于，是双刃剑。
+
 ```html
  <agel-form v-model="form" :attach="{data,items,inline}"/> 
 ```

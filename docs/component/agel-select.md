@@ -2,26 +2,27 @@
 
 `agel-select` 组件是基于 `el-select` 组件的二次封装组件。
 
-## 搭配表单使用
+## 使用
 
-`options` 属性支持多种数据类型，`String`，`Array[String]`，`Array[Object]`，`Promise`，`Function`，若是 `Function` 类型，可以通过 `getRef` 获取组件实例调用 `getOptions` 进行主动刷新。
+`options` 属性支持多种数据类型，`String`，`Array[String]`，`Array[Object]`，`Promise`，`Function`，若是 `Function` 类型，可以通过 `getOptions` 进行主动刷新。
 
-多选时 `value` 属性可以设置为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔，默认为字符串。
+`value` 属性多选时可为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔，默认为字符串。
 
 `filter` 属性可以开启关键字过滤，和 `filterable` 功能类似。
-
-<ClientOnly><select-form/></ClientOnly>
-
-::: details 点击查看代码
-<<< @/docs/.vuepress/components/select-form.vue
-:::
-
-## 单独引入使用
 
 <ClientOnly><select-demo/></ClientOnly>
 
 ::: details 点击查看代码
 <<< @/docs/.vuepress/components/select-demo.vue
+:::
+
+
+## 演示
+
+<ClientOnly><select-form/></ClientOnly>
+
+::: details 点击查看代码
+<<< @/docs/.vuepress/components/select-form.vue
 :::
 
 ## Select Attributes

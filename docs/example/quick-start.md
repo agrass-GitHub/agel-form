@@ -29,18 +29,20 @@ import agelForm from 'agel-form';
 
 ### 引用单组件
 
-默认只会导入 `agel-form`组件，你也可以在项目中单独引入单组件进行开发使用，完整组件列表如下：
+默认只会导入 `agel-form`组件，内置单组件在 `agel-form` 中以懒加载使用，不会额外增加代码体积。
+
+你也可以在项目中单独引入单组件进行开发使用，完整组件列表如下：
 
 ```js
 import {
   agelForm,
-  // 内置单组件，在 agel-form 中懒加载使用
+  // 内置单组件，在 agel-form 是以懒加载使用
   agelRadio, 
   agelCheckbox, 
   agelSelect, 
   agelUpload, 
   agelTreeSelect,
- // 其他组件
+ // 其他组件, 按需引用
   agelSearchPanel,
   agelFormDialog,
 } from "agel-form";

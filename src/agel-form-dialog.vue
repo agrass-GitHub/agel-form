@@ -43,10 +43,7 @@ export default {
     },
   },
   data() {
-    return {
-      isScroll: false,
-      formRefs: [],
-    };
+    return {};
   },
   computed: {
     customClassName() {
@@ -124,7 +121,7 @@ export default {
 
 .ag-dialog .el-dialog__header {
   border-bottom: 1px solid #ebeef5;
-  background: #409eff;
+  background: #307dff;
   padding: 10px 20px 10px;
 }
 

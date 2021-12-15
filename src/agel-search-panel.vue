@@ -1,37 +1,36 @@
 <template>
   <div :class="['agel-search-panel',{'position-right':attrs.panelPosition=='right' }]">
     <agel-form v-model="form" :item-ignore-keys="['collapseAlive']">
-      <template v-for="(slot,name) in $slots" v-slot:[name]>
-        <slot-render v-if="name!=='button'" :render="slot" :key="name" />
-      </template>
-      <template v-slot:prepend>
-        <slot name="prepend"></slot>
-      </template>
+
       <template v-slot:append>
-        <slot name="append"></slot>
-        <el-form-item v-if="attrs.collapseButton">
+        <el-form-item v-if="attrs.collapseButton" :label-width="gutterLabelWidth">
           <el-button class="agel-collapse-button" circle @click="open">
             <i class="el-icon-arrow-down" :style="`transform: rotate(${attrs.collapse?0:180}deg)`"></i>
           </el-button>
         </el-form-item>
-        <el-form-item v-if="attrs.searchButton!==false">
+        <el-form-item v-if="attrs.searchButton!==false" :label-width="attrs.collapseButton?'10px':gutterLabelWidth">
           <el-button class="agel-search-button" v-bind="attrs.searchButton" @click="emitSearch">{{attrs.searchButton.text}}</el-button>
         </el-form-item>
-        <el-form-item v-if="attrs.resetButton!==false">
+        <el-form-item v-if="attrs.resetButton!==false" :label-width="attrs.collapseButton||attrs.searchButton?'10px':gutterLabelWidth">
           <el-button class="agel-reset-button" v-bind="attrs.resetButton" @click="emitReset">{{attrs.resetButton.text}}</el-button>
         </el-form-item>
-        <template v-for="(vnode,i) in $slots.button||$slots.default">
+        <template v-for="(vnode,i) in $slots.default">
           <el-form-item :key="i" v-if="vnode.tag">
             <slot-render :render="vnode" />
           </el-form-item>
         </template>
       </template>
+
+      <template v-for="prop in slotKeys " v-slot:[prop]>
+        <slot-render :render="$scopedSlots[prop]" :key="prop" />
+      </template>
+
     </agel-form>
   </div>
 </template>
  
 <script>
-import { getIncludeAttrs } from "./utils/utils";
+import { getIncludeAttrs, each } from "./utils/utils";
 import slotRender from "./lib/slot-render";
 
 // 组件参数 props
@@ -77,12 +76,11 @@ export default {
   },
   created() {
     this.injectProp("inline");
-  },
-  watch: {
-    "form.collapse": {
-      immediate: true,
-      handler: "collapseItems",
-    },
+    if (this.form.collapseButton) {
+      each(this.form.items, "forEach", (v) => {
+        this.$set(v, "show", this.isCollapse);
+      });
+    }
   },
   computed: {
     attrs() {
@@ -93,22 +91,27 @@ export default {
       let resetButton = this.getButton("resetButton", a, b, c);
       return Object.assign(a, b, c, { searchButton, resetButton });
     },
-    items() {
-      return Array.isArray(this.form.items)
-        ? this.form.items
-        : Object.keys(this.form.items).map((k) => {
-            this.form.items[k].prop = k;
-            return this.form.items[k];
-          });
+    gutterLabelWidth() {
+      return (this.form.gutter || 15) / 2 + "px";
     },
     collapseAliveKeys() {
       if (this.attrs.collapseButton === false) return [];
-      let keys = (this.form.collapseAlive || []).concat(
-        this.items.filter((v) => v.collapseAlive).map((v) => v.prop)
-      );
+      let keys = [].concat(this.form.collapseAlive || []);
+      each(this.form.items, "forEach", (v, i, k) => {
+        v.collapseAlive && keys.push(v.prop || k);
+      });
       if (keys.length == 0) {
-        keys = this.items.filter((v, i) => i < 3).map((v) => v.prop);
+        each(this.form.items, "forEach", (v, i, k) => {
+          i < 3 && keys.push(v.prop || k);
+        });
       }
+      return keys;
+    },
+    slotKeys() {
+      let keys = [];
+      each(this.form.items, "forEach", (v, i, k) => {
+        v.slot && keys.push(v.prop || k);
+      });
       return keys;
     },
   },
@@ -120,16 +123,11 @@ export default {
         this.$emit("collapse", this.form.collapse);
       });
     },
-    collapseItems() {
-      if (this.form.collapse === undefined) return;
-      if (this.attrs.collapseButton === false) return;
-      this.items.forEach((v) => {
-        if (!this.collapseAliveKeys.includes(v.prop)) {
-          v.hasOwnProperty("show")
-            ? (v.show = !this.form.collapse)
-            : this.$set(v, "show", !this.form.collapse);
-        }
-      });
+    isCollapse(data, item) {
+      if (this.form.collapse === undefined) return true;
+      if (this.attrs.collapseButton === false) return true;
+      if (this.collapseAliveKeys.includes(item.prop)) return true;
+      return !this.form.collapse;
     },
     getButton(name, ...arr) {
       let buttons = arr.map((v) => v[name]);
@@ -138,7 +136,9 @@ export default {
       return vif ? buttonAttr : false;
     },
     emitSearch() {
-      this.$emit("search");
+      this.form.validate(() => {
+        this.$emit("search");
+      });
     },
     emitReset() {
       this.form.resetFields();

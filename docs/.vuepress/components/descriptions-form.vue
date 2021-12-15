@@ -14,6 +14,7 @@ export default {
   data() {
     return {
       form: {
+        size: "medium",
         title: "agel-form descriptions 描述排版",
         descriptions: true,
         border: true,
@@ -39,7 +40,7 @@ export default {
             component: "el-text",
             prop: "addr",
             label: "居住地",
-            valueFormat: (v) => '中国' + v,
+            valueFormat: (v) => "中国" + v,
           },
           {
             component: "el-text",

@@ -1,5 +1,5 @@
 <template>
-  <div class="demo">
+  <div class="demo border">
     <span>组件：</span>
     <agel-tree-select v-model="value" node-key="value" :options="data" filter>
       <span slot="option" class="custom-tree-node" slot-scope="{ node }">

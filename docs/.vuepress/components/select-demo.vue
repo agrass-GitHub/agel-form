@@ -1,9 +1,9 @@
 <template>
-  <div class="demo">
+  <div class="demo border">
     <span>组件：</span>
-    <agel-select v-model="value" :options="options" filter>
-      <template v-slot:prefix>
-        <i class="el-icon-platform-eleme" style="color:#409EFF;line-height:28px;font-size:20px" />
+    <agel-select v-model="value" :options="options" filter multiple>
+      <template v-slot:option="{option}">
+        <el-tag>{{option.label}}</el-tag>
       </template>
     </agel-select>
   </div>
@@ -13,8 +13,11 @@
 export default {
   data() {
     return {
-      value: "",
-      options: ["男", "女"],
+      value: "1,2",
+      options: [
+        { label: "男", value: "1" },
+        { label: "女", value: "2" },
+      ],
     };
   },
 };

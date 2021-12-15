@@ -29,10 +29,11 @@ module.exports = {
         collapsable: false,
         sidebarDepth: 0,
         children: [
+          '/component/agel-checkbox-radio',
           '/component/agel-select',
           '/component/agel-tree-select',
-          '/component/agel-checkbox-radio',
           '/component/agel-upload',
+          '/component/agel-map-input',
           '/component/agel-search-panel',
           '/component/agel-form-dialog',
         ]

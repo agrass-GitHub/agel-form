@@ -13,8 +13,7 @@ export default {
         span: 15,
         data: {
           name: "使用 agel-form",
-          desc:
-            "素人开发,若你决定尝试,有什么问题可以联系本人微信:agrass-weixin",
+          desc: "素人开发,若你决定尝试,有什么问题可以联系本人微信:agrass-weixin",
           delivery: true,
           slider: 20,
         },
@@ -68,6 +67,7 @@ export default {
             component: "el-rate",
             label: "活动评分",
             prop: "rate",
+            defaultValue: 3,
           },
           {
             component: "el-upload",

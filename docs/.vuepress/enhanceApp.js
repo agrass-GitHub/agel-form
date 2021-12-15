@@ -2,7 +2,33 @@
 import "./styles/style.css";
 import "element-ui/lib/theme-chalk/index.css";
 import Element from "element-ui/lib/index";
-import { agelForm, agelSearchPanel, agelFormDialog, agelRadio, agelCheckbox, agelSelect, agelUpload, agelTreeSelect } from "../../src/index";
+
+import AMapLoader from "@amap/amap-jsapi-loader";
+
+import {
+  agelForm,
+  agelSearchPanel,
+  agelFormDialog,
+  agelRadio,
+  agelCheckbox,
+  agelSelect,
+  agelUpload,
+  agelTreeSelect,
+  agelMapInput
+} from "../../src/index";
+
+
+window._AMapSecurityConfig = { securityJsCode: '37c6baee599002d347756e3d1277246c' }
+AMapLoader.load({
+  key: "56f6a360f541889552ce0aea6469a3e3",
+  plugins: [
+    "AMap.PlaceSearch",
+    "AMap.Autocomplete",
+    "AMap.Geocoder"
+  ],
+}).then((AMap) => {
+  window.AMap = AMap;
+});
 
 const mockData = {
   random() {
@@ -60,6 +86,9 @@ export default ({ Vue }) => {
   Vue.use(agelTreeSelect);
   Vue.use(agelSearchPanel);
   Vue.use(agelFormDialog);
+  Vue.use(agelMapInput);
+
+  Vue.prototype.$AMapKey = "56f6a360f541889552ce0aea6469a3e3";
 
   //模拟一个 http 请求
   Vue.prototype.$http = {

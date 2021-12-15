@@ -46,7 +46,6 @@ import {
   guid,
   each,
   extend,
-  equalAgName,
 } from "./utils/utils";
 
 import {
@@ -67,6 +66,13 @@ import slotRender from "./lib/slot-render";
 import agelFormItem from "./agel-form-item.vue";
 
 const inputArr = ["el-input", "el-input-number", "el-autocomplete"];
+const selectArr = [
+  "el-cascader",
+  "el-time-select",
+  "el-date-picker",
+  "agel-select",
+  "agel-tree-select",
+];
 
 export default {
   name: "agel-form",
@@ -142,19 +148,15 @@ export default {
       }
     },
     items() {
-      return each(
-        this.value.items,
-        (v, i, k) => {
-          const item = this.injectItemAttr(v, k);
-          const agItem = this.getAgFormItemAttrs(item);
-          agItem.$descriptionsItem = this.getDescriptionsItemAttrs(item);
-          agItem.$formItem = this.getFormItemAttrs(item);
-          agItem.$col = this.getColAttrs(item);
-          agItem.$component = this.getComponentAttrs(item);
-          return agItem;
-        },
-        "map"
-      ).filter((v) => v.display);
+      return each(this.value.items, "map", (v, i, k) => {
+        const item = this.injectItemAttr(v, k);
+        const agItem = this.getAgFormItemAttrs(item);
+        agItem.$descriptionsItem = this.getDescriptionsItemAttrs(item);
+        agItem.$formItem = this.getFormItemAttrs(item);
+        agItem.$col = this.getColAttrs(item);
+        agItem.$component = this.getComponentAttrs(item);
+        return agItem;
+      }).filter((v) => v.display);
     },
   },
   methods: {
@@ -181,21 +183,18 @@ export default {
       return item;
     },
     getAgFormItemAttrs(item) {
-      const name = item.component || defaultComponent;
       const agItem = Object.assign(
         agItemProps(),
         getIncludeAttrs(agItemPropKyes, item)
       );
-      agItem.component = agComponentsKeys.includes("ag" + name)
-        ? "ag" + name
-        : name;
+      agItem.component = this.getName(item);
       agItem.display =
         typeof item.display == "function"
-          ? item.display(this.value.data)
+          ? item.display(this.value.data, item)
           : agItem.display;
       agItem.show =
         typeof item.show == "function"
-          ? item.show(this.value.data)
+          ? item.show(this.value.data, item)
           : agItem.show;
       agItem.slot =
         item.slot === true ? this.$scopedSlots[item.prop] : agItem.slot;
@@ -212,9 +211,7 @@ export default {
           {
             required: true,
             message: formItem.label + "必填",
-            trigger: inputArr.includes(item.component || defaultComponent)
-              ? "blur"
-              : "change",
+            trigger: inputArr.includes(this.getName(item)) ? "blur" : "change",
           },
         ];
       }
@@ -262,55 +259,50 @@ export default {
       return component;
     },
     getItemValue(item) {
-      const name = item.component || defaultComponent;
+      const name = this.getName(item);
+      if (item.hasOwnProperty("defaultValue")) return item.defaultValue;
       if (
         name == "el-input" ||
         name == "el-autocomplete" ||
-        equalAgName(name, "agel-select") ||
-        equalAgName(name, "agel-tree-select") ||
-        (equalAgName(name, "agel-checkbox") && item.options)
+        name == "agel-select" ||
+        name == "agel-tree-select" ||
+        name == "agel-radio" ||
+        (name == "agel-checkbox" && item.options)
       ) {
         return "";
       }
       if (name == "el-date-picker" || name == "el-time-select") {
         return null;
       }
-      if (
-        name == "el-switch" ||
-        (equalAgName(name, "agel-checkbox") && !item.options)
-      ) {
+      if (name == "el-switch" || (name == "agel-checkbox" && !item.options)) {
         return false;
       }
-      if (
-        name == "el-slider" ||
-        name == "el-rate" ||
-        name == "el-input-number"
-      ) {
+      if (name == "el-slider" || name == "el-rate") {
         return 0;
       }
       if (
         name == "el-cascader" ||
         name == "el-transfer" ||
-        equalAgName(name, "agel-upload")
+        name == "agel-upload"
       ) {
         return [];
       }
+      // if (name == "el-input-number") return undefined;
+      return undefined;
+    },
+    getName(item) {
+      let name = item.component || defaultComponent;
+      return agComponentsKeys.includes("ag" + name) ? "ag" + name : name;
     },
     getPlaceholder(item) {
       if (item.placeholder) return item.placeholder;
-      let name = item.component || defaultComponent;
-      let text = typeof item.label == "string" ? item.label : "";
+      let name = this.getName(item);
+      let label = typeof item.label == "string" ? item.label : "";
       if (inputArr.includes(name)) {
-        return "请输入" + text;
+        return "请输入" + label;
       }
-      if (
-        name == "el-cascader" ||
-        name == "el-time-select" ||
-        name == "el-date-picker" ||
-        equalAgName(name, "agel-select") ||
-        equalAgName(name, "agel-tree-select")
-      ) {
-        return "请选择" + text;
+      if (selectArr.includes(name)) {
+        return "请选择" + label;
       }
     },
     getSlots(slots) {

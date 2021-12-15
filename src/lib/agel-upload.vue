@@ -1,5 +1,7 @@
 <template>
-  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" :autoUpload="autoUpload" :file-list="value" :before-upload="beforeUpload" :on-success="onSuccess" :on-remove="onRemove" :on-exceed="onExceed" :on-preview="onPreview" :on-error="onError" :on-change="onChange" v-bind="$attrs" v-on="$listeners">
+  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" :listType="listType" :autoUpload="autoUpload"
+    :file-list="value" :before-upload="beforeUpload" :on-success="onSuccess" :on-remove="onRemove" :on-exceed="onExceed" :on-preview="onPreview"
+    :on-error="onError" :on-change="onChange" v-bind="$attrs" v-on="$listeners">
     <slot slot="trigger" name="trigger"> </slot>
     <template v-slot:default>
       <slot name="default">
@@ -10,7 +12,7 @@
             <em>点击上传</em>
           </div>
         </template>
-        <i v-else-if="$attrs.listType=='picture-card'" class="el-icon-plus"></i>
+        <i v-else-if="listType=='picture-card'" class="el-icon-plus"></i>
         <el-button v-else size="small" type="primary">点击{{autoUpload?'上传':'选取'}}</el-button>
       </slot>
     </template>
@@ -42,6 +44,7 @@ export default {
     limitSize: Number,
     limitHide: Boolean,
     tip: String,
+    listType: String,
     autoUpload: {
       type: Boolean,
       default: true,

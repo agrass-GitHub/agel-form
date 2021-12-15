@@ -2,13 +2,21 @@
 
 `agel-tree-select` 组件是基于 `el-select` `el-tree` 组件的二次封装组件。
 
-## 搭配表单使用
+## 使用
 
 `options` 属性支持多种数据类型，`Array[Object]`，`Promise`，`Function`，若是 `Function` 类型，可以通过 `getRef` 获取组件实例调用 `getOptions` 进行主动刷新。
 
-多选时 `value` 属性可以设置为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔，默认为字符串。
+`value` 属性多选时可为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔，默认为字符串。
 
 开启 `lazy` 懒加载时，`nodeKey` 只能绑定 `props.label`。
+
+<ClientOnly><tree-select-demo/></ClientOnly>
+
+::: details 点击查看代码
+<<< @/docs/.vuepress/components/tree-select-demo.vue
+::: 
+
+## 演示
 
 <ClientOnly><tree-select-form/></ClientOnly>
 
@@ -16,13 +24,9 @@
 <<< @/docs/.vuepress/components/tree-select-form.vue
 ::: 
 
-## 单独引入使用
 
-<ClientOnly><tree-select-demo/></ClientOnly>
 
-::: details 点击查看代码
-<<< @/docs/.vuepress/components/tree-select-demo.vue
-::: 
+
 
 ## TreeSelect Attributes
 

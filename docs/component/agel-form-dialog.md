@@ -11,7 +11,7 @@
 - 弹窗 `loading` 时无法关闭，并防止重复提交
 - 设置 `top` 为 `center` 弹窗可居中
 - 设置 `height` 弹窗 body 高度
-- 设置 `cusotm-class` 为 `ag-dialog` 可使用样式UI
+- 设置 `cusotm-class` 为 `ag-dialog` 可使用内置样式UI
 
 值得注意是，弹窗内隐藏的表单是不会被验证的。
 

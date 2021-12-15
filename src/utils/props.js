@@ -107,6 +107,8 @@ export const agItemProps = function () {
     vmodel: true,
     // Boolean 是否必填 自动回填必填 rules
     required: false,
+    // Any 默认数据 在全局可设置组件默认值，局部可设置初始值
+    defaultValue: undefined,
     // String 组件名称
     component: defaultComponent,
     // Object/Funciton/Vnode/String 是否自定义 Component slots

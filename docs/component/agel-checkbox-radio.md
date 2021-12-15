@@ -1,29 +1,31 @@
-# Checkbox Radio 选择框
-
-`agel-checkbox` 组件是基于 `el-checkbox` `el-checkbox-group` 组件的二次封装组件。
+# Radio Checkbox 选择框
 
 `agel-radio` 组件是基于  `el-radio` `el-radio-group` 组件的二次封装组件。
 
-## 搭配表单使用
+`agel-checkbox` 组件是基于 `el-checkbox` `el-checkbox-group` 组件的二次封装组件。
 
-`options` 属性支持多种数据类型，`Array[string]`，`Array[Object]`，`Promise`，`Function`，若是 `Function` 类型，可以通过 `getRef` 获取组件实例调用 `getOptions` 进行主动刷新。
+## 使用
 
-`agel-checkbox` 多选时 `value` 属性可以设置为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔，默认为字符串。
+
+`options` 属性支持多种数据类型，`String`，`Array[String]`，`Array[Object]`，`Promise`，`Function`，若是 `Function` 类型，可以通过 `getOptions` 进行主动刷新。
+
+`value` 属性多选时可为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔，默认为字符串。
 
 `border` 属性实现边框样式风格，`button` 属性可实现按钮样式风格。
-
-<ClientOnly><checkbox-radio-form/></ClientOnly>
-
-::: details 点击查看代码
-<<< @/docs/.vuepress/components/checkbox-radio-form.vue
-::: 
-
-## 单独引入使用
 
 <ClientOnly><checkbox-radio-demo/></ClientOnly>
 
 ::: details 点击查看代码
 <<< @/docs/.vuepress/components/checkbox-radio-demo.vue
+::: 
+
+
+## 演示
+
+<ClientOnly><checkbox-radio-form/></ClientOnly>
+
+::: details 点击查看代码
+<<< @/docs/.vuepress/components/checkbox-radio-form.vue
 ::: 
 
 ## Radio Checkbox Attributes
@@ -60,7 +62,8 @@
 ## Radio Checkbox Methods
 
 | 属性          | 参数           |  说明                                   | 
-| -----------   | ------------  |  ------------------------------------  | 
+| -----------   | ------------  |  ------------------------------------  |
+| getOptions    | -             |  刷新数据， options 为 Function 时可调用           |
 | getValueOption  | -           |  返回 value 所对应的 option 对象，多选时为数组 |
 
 ## Radio Checkbox事件
