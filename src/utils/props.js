@@ -1,4 +1,3 @@
-import agComponents from "../lib/index"
 
 // 支持 el-form 的参数 
 export const formPropKeys = [
@@ -23,18 +22,13 @@ export const formItemPropKyes = ["prop", "label", "label-width", "required", "ru
 export const rowPropsKeys = ["gutter", "type", "justify", "align", "tag"];
 
 // 支持 el-Col 的参数 
-export const colPorpKeys = [
-  "span",
-  "offset",
-  "push",
-  "pull",
-  "xs",
-  "sm",
-  "md",
-  "lg",
-  "xl",
-  "tag",
-];
+export const colPorpKeys = ["span", "offset", "push", "pull", "xs", "sm", "md", "lg", "xl", "tag",];
+
+// 支持的 el-table 的参数
+export const tablePropsKeys = ['height', 'max-height', 'stripe', 'border', 'size', 'fit', 'show-header', 'highlight-current-row', "empty-text", "tooltip-effect", "show-summary", "sum-text", "summary-method"]
+
+// 支持的 el-table-column 的参数
+export const tableColumnPropsKeys = ['prop', 'type', 'width', 'min-width', 'show-overflow-tooltip', 'align', 'header-align', 'formatter']
 
 // 支持 el-descriptions-item 的参数 
 export const descriptionsPropkeys = [
@@ -77,8 +71,8 @@ export const agFormProps = function () {
     responsive: undefined,
     // Funciton 自定义响应式规则
     responsiveMethod: undefined,
-    // Boolean 是否开启描述组件
-    descriptions: undefined,
+    // String 布局方式 可选 [grid,inline,descriptions,tableditor]
+    layout: 'grid',
     // 暴露出去的方法
     getRef: this.getRef,
     getItem: this.getItem,
@@ -123,4 +117,3 @@ export const agItemProps = function () {
 
 export const agItemPropKyes = Object.keys(agItemProps());
 
-export const agComponentsKeys = Object.keys(agComponents);

@@ -26,19 +26,23 @@ export default {
         items: [
           divider("label 属性使用演示，自定义 Item Label 的插槽"),
           {
+            prop: "x1",
             label: () => <el-button>自定义label</el-button>,
             labelWidth: "100px",
           },
           divider("slot 属性使用演示，自定义 Form Item 的插槽"),
           {
+            prop: "x2",
             label: "Function 插槽",
             slot: () => <el-tag>这是一段 render 函数类型自定义插槽</el-tag>,
           },
           {
+            prop: "x3",
             label: "String 插槽",
             slot: "这是一段 string 类型自定义插槽",
           },
           {
+            prop: "x4",
             label: "VNode 插槽",
             slot: this.$createElement(
               "el-tag",
@@ -47,12 +51,14 @@ export default {
             ),
           },
           {
+            prop: "x5",
             prop: "name",
             label: "Template 插槽",
             slot: true,
           },
           divider("slots 属性使用演示 ，自定义组件 Component 的插槽"),
           {
+            prop: "x6",
             component: "el-input",
             label: "子插槽",
             slots: {
@@ -62,6 +68,7 @@ export default {
             },
           },
           {
+            prop: "x7",
             label: "参数子插槽",
             component: "el-checkbox",
             options: ["带有", "参数", "插槽"],

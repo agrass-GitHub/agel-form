@@ -1,6 +1,6 @@
 <template>
   <div class="agel-map-input">
-    <el-input ref="ref" :value="proxyValue" :clearable="clearable" :prefix-icon="prefixIcon" v-bind="inputPorps" v-on="$listeners" @clear="clear"
+    <el-input ref="ref" :value="proxyValue" :clearable="clearable" :prefix-icon="prefixIcon" v-bind="elInputPorps" v-on="$listeners" @clear="clear"
       @focus="loadDialog">
       <template v-slot:prefix>
         <slot name="prefix"></slot>
@@ -73,6 +73,7 @@ export default {
   props: {
     value: {
       type: [String, Array],
+      default: () => new Array(),
     },
     prefixIcon: {
       type: String,
@@ -125,15 +126,12 @@ export default {
     };
   },
   computed: {
-    inputPorps() {
+    elInputPorps() {
       return getIncludeAttrs(propsKeys, this.$attrs);
     },
     proxyValue() {
       return Array.isArray(this.value) ? this.value[0] || "" : this.value;
     },
-  },
-  created() {
-    if (this.value == undefined) this.$emit("input", []);
   },
   methods: {
     loadDialog() {

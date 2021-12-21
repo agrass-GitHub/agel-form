@@ -29,18 +29,20 @@
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......        | .........   | 支持 [el-select 属性](https://element.eleme.cn/#/zh-CN/component/select#select-attributes)      | 
 | filter      | Boolean       | false       | 是否开启过滤查询                | 
 | options     | String/Array/Function/Promise    |  -     | option 配置项         | 
 | props       | Object        |  {label,value}     | 数据配置选项          |
+| ......      | ......        | .........   |  [el-select 属性](https://element.eleme.cn/#/zh-CN/component/select#select-attributes)      | 
 
 ## Select Option
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......        | .........   | 支持 [el-select option group  属性](https://element.eleme.cn/#/zh-CN/component/select#option-attributes)      | 
-| class       | Boolean       |  -                 | class名称    |
-| style       | Object/String        | -           | 内联样式     |  
+| label       | String        |  -                  | label 名称    |
+| value       | String/Number |  -                  | value 值    | 
+| style       | String/Object | -                   | 内联样式     | 
+| class       | String/Object/Array       |  -      | class名称    |
+| ......      | ......        | .........   |  [el-select option 属性](https://element.eleme.cn/#/zh-CN/component/select#option-attributes)      | 
 
 ## Select Slots
 
@@ -65,5 +67,5 @@
 
 | 属性          | 参数           |  说明                                   | 
 | -----------   | ------------  |  ------------------------------------  | 
-| ......        | ......        | 支持 [el-select 事件](https://element.eleme.cn/#/zh-CN/component/select#tree-events)      | 
+| ......        | ......        | [el-select 事件](https://element.eleme.cn/#/zh-CN/component/select#tree-events)      | 
 

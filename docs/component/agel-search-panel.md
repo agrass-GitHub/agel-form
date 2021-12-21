@@ -34,14 +34,15 @@
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......        | .........   | 支持 [agel-form 属性](/example/agel-form.html#form-attributes)      | 
-| inline        | Boolean     | true         | 默认是内联表单，建议使用此布局方式                | 
-| panelPosition | String       | right       | 布局方式，可选 left right         | 
+| layout        | String       | inline         | 默认是内联表单，建议使用此布局方式                | 
+| panelPosition | String       | right          | 布局方式，可选 left right         | 
 | searchButton  | Boolean/Object      | true        | 是否显示搜索按钮/按钮属性配置          |
 | resetButton   | Boolean/Object      | true        | 是否显示初始化按钮/按钮属性配置    | 
 | collapseButton| Boolean      | false       | 是否显示折叠按钮    | 
 | collapse      | Boolean      | false       | 当前折叠状态    | 
 | collapseAlive | Array[prop]      | false       | 折叠情况下保留的搜索条件 prop    | 
+| ......      | ......        | .........   |  [agel-form 属性](/example/agel-form.html#form-attributes)      | 
+
 
 ## searchButton resetButton Attributes
 

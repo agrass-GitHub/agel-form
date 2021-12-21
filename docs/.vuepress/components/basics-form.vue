@@ -19,7 +19,11 @@ export default {
         },
         items: [
           { label: "活动名称", prop: "name" },
-          { label: "建议反馈", prop: "desc", type: "textarea" },
+          {
+            label: "建议反馈",
+            prop: "desc",
+            type: "textarea",
+          },
           {
             component: "el-input-number",
             label: "活动人数",

@@ -1,5 +1,6 @@
 <template>
-  <el-dialog :custom-class="customClassName" :top="topStyle" :close-on-click-modal="closeOnClickModal" :close-on-press-escape="closeOnPressEscape" :before-close="beforeClose" @close="close" v-bind="$attrs" v-on="$listeners">
+  <el-dialog :custom-class="customClassName" :top="topStyle" :close-on-click-modal="closeOnClickModal" :close-on-press-escape="closeOnPressEscape"
+    :before-close="beforeClose" @close="close" v-bind="$attrs" v-on="$listeners">
     <template v-slot:title>
       <slot name="title"></slot>
     </template>
@@ -16,7 +17,6 @@
         </div>
       </slot>
     </template>
-
   </el-dialog>
 </template>
 

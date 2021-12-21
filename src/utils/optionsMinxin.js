@@ -1,4 +1,3 @@
-
 export default {
   props: {
     options: [String, Array, Function, Promise],
@@ -29,19 +28,22 @@ export default {
     }
   },
   computed: {
-    isProxy() {
+    isProxyStrValue() {
       return this.multiple && !Array.isArray(this.value);
     },
     proxyValue() {
-      return this.isProxy ?
-        String(this.value).split(',').filter(v => v.trim() != "") :
-        this.value;
+      if (this.isProxyStrValue) {
+        return String(this.value).split(',').filter(v => v.trim() != "")
+      }
+      return this.value;
     },
   },
   methods: {
     proxyInput(value) {
       if (value === this.value) return;
-      if (this.isProxy) value = Array.isArray(value) ? value.join() : "";
+      if (this.isProxyStrValue) {
+        value = Array.isArray(value) ? value.join() : ""
+      }
       this.$emit("input", value);
     },
     proxyChange() {
@@ -73,13 +75,13 @@ export default {
           return {
             ...option,
             label: String(option[props.label]),
-            value: this.isProxy && typeof value === 'number' ? String(value) : value,
+            value: this.isProxyStrValue && typeof value === 'number' ? String(value) : value,
             options: this.transformOptions(option.options || [])
           };
         } else if (option.constructor == String || option.constructor == Number) {
           return {
             label: String(option),
-            value: this.isProxy && typeof option === 'number' ? String(option) : option
+            value: this.isProxyStrValue && typeof option === 'number' ? String(option) : option
           };
         }
         return false;

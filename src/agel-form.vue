@@ -1,39 +1,30 @@
 <template>
-  <el-form :class="['agel-form', 'agel-form-' + layout]" ref="form" :model="value.data" v-bind="attrs.$form" v-on="value.on||{}">
+  <el-form class="agel-form" ref="form" v-bind="attrs.$form" :inline="value.layout=='inline'" v-on="value.on||{}">
 
-    <!-- 内联布局 -->
-    <template v-if="layout=='inline'">
-      <slot name="prepend"></slot>
-      <agel-form-item v-for="item in items" :value.sync="value.data[item.prop]" :item="item" :ref="item.prop" :key="item.prop" v-show="item.show" />
-      <slot name="append"></slot>
-    </template>
+    <!-- 内联 布局 -->
+    <inline-layout v-if="value.layout=='inline'" :data="value.data" :items="items" ref="layout">
+      <slot v-for="name in ['prepend','append']" :slot="name" :name="name" />
+    </inline-layout>
 
-    <!-- 栅格布局 -->
-    <el-row class="agel-item-w100" v-if="layout=='grid'" v-bind="attrs.$row">
-      <slot name="prepend"></slot>
-      <el-col v-for="item in items" v-bind="item.$col" :key="item.prop" v-show="item.show">
-        <agel-form-item :value.sync="value.data[item.prop]" :item="item" :ref="item.prop" />
-      </el-col>
-      <slot name="append"></slot>
-    </el-row>
+    <!-- 栅格 布局 -->
+    <grid-layout v-else-if="value.layout=='grid'" v-bind="attrs.$row" :data="value.data" :items="items" ref="layout">
+      <slot v-for="name in ['prepend','append']" :slot="name" :name="name" />
+    </grid-layout>
 
     <!-- descriptions 布局 -->
-    <el-descriptions class="agel-item-w100" v-else-if="layout=='desc'" v-bind="attrs.$descriptions">
-      <slot name="title" slot="title"></slot>
-      <slot name="extra" slot="extra"></slot>
-      <slot name="append"></slot>
-      <el-descriptions-item v-for="item in items" v-bind="item.$descriptionsItem" :key="item.prop">
-        <slot-render v-if="item.label && item.label.constructor!==String" :render="item.label" slot="label"></slot-render>
-        <agel-form-item :value.sync="value.data[item.prop]" :item="item" :ref="item.prop" :showLabel="false" v-show="item.show" />
-      </el-descriptions-item>
-      <slot name="append"></slot>
-    </el-descriptions>
+    <descriptions-layout v-else-if="value.layout=='descriptions'" v-bind="attrs.$descriptions" :data="value.data" :items="items" :getRequiredAsteriskClass="getRequiredAsteriskClass" ref="layout">
+      <slot v-for="name in ['prepend','append','title','extra']" :slot="name" :name="name" />
+    </descriptions-layout>
+
+    <!-- tableditor 布局 -->
+    <tableditor-layout v-else-if="value.layout=='tableditor'" v-bind="attrs.$table" v-on="value.on||{}" :data="value.data" :items="items" :getRequiredAsteriskClass="getRequiredAsteriskClass" ref="layout">
+      <slot v-for="name in ['prepend','append']" :slot="name" :name="name" />
+    </tableditor-layout>
 
   </el-form>
 </template>
 
 <script>
-import { isVNode } from "element-ui/src/utils/vdom";
 import {
   addResizeListener,
   removeResizeListener,
@@ -53,17 +44,19 @@ import {
   agFormProps,
   agItemProps,
   agItemPropKyes,
-  agComponentsKeys,
   formPropKeys,
   formItemPropKyes,
   rowPropsKeys,
   colPorpKeys,
   descriptionsPropkeys,
   descriptionsItemPropkeys,
+  tablePropsKeys,
+  tableColumnPropsKeys,
 } from "./utils/props";
 
-import slotRender from "./lib/slot-render";
-import agelFormItem from "./agel-form-item.vue";
+import gridLayout from "./layout/agel-form-grid.vue";
+import inlineLayout from "./layout/agel-form-inline.vue";
+import tableditorLayout from "./layout/agel-form-tableditor.vue";
 
 const inputArr = ["el-input", "el-input-number", "el-autocomplete"];
 const selectArr = [
@@ -74,12 +67,24 @@ const selectArr = [
   "agel-tree-select",
 ];
 
+const agComponents = {
+  "agel-radio": () => import("./lib/agel-radio"),
+  "agel-checkbox": () => import("./lib/agel-checkbox"),
+  "agel-select": () => import("./lib/agel-select"),
+  "agel-upload": () => import("./lib/agel-upload"),
+  "agel-tree-select": () => import("./lib/agel-tree-select"),
+  "agel-map-input": () => import("./lib/agel-map-input"),
+  "agel-text": () => import("./lib/agel-text"),
+};
+
 export default {
   name: "agel-form",
   inheritAttrs: false,
   components: {
-    agelFormItem,
-    slotRender,
+    inlineLayout: inlineLayout,
+    gridLayout: gridLayout,
+    tableditorLayout,
+    descriptionsLayout: () => import("./layout/agel-form-descriptions"),
   },
   props: {
     value: {
@@ -104,6 +109,9 @@ export default {
         const agelFormConfig = this.$agelFormConfig || {};
         extend(this.value, agelFormConfig.form || {});
         extend(this.value, agFormProps.call(this));
+        // patch 此处兼容 v.0.3.3 之前版本
+        if (this.value.inline) this.value.layout = "inline";
+        if (this.value.descriptions) this.value.layout = "descriptions";
       },
     },
     attach: {
@@ -115,7 +123,7 @@ export default {
     },
   },
   mounted() {
-    if (this.value.responsive) {
+    if (this.value.responsive && value.layout == "grid") {
       this.resize();
       addResizeListener(this.$refs.form.$el, this.resize);
     }
@@ -124,47 +132,64 @@ export default {
     removeResizeListener(this.$refs.form.$el, this.resize);
   },
   computed: {
-    layout() {
-      if (this.value.inline) {
-        return "inline";
-      } else if (this.value.descriptions) {
-        return "desc";
-      } else {
-        return "grid";
-      }
-    },
     attrs() {
       const $form = getIncludeAttrs(formPropKeys, this.value);
-      if (this.layout == "inline") return { $form };
-      if (this.layout == "grid") {
+      $form.model = this.value.data;
+      if (this.value.layout == "inline") return { $form };
+      if (this.value.layout == "grid") {
         const $row = getIncludeAttrs(rowPropsKeys, this.value);
         extend($form, { labelWidth: "auto" });
         extend($row, { type: "flex", gutter: 15 });
         return { $form, $row };
       }
-      if (this.layout == "desc") {
+      if (this.value.layout == "descriptions") {
         const $descriptions = getIncludeAttrs(descriptionsPropkeys, this.value);
         return { $form, $descriptions };
+      }
+      if (this.value.layout == "tableditor") {
+        const $table = getIncludeAttrs(tablePropsKeys, this.value);
+        extend($table, { border: true });
+        $form.model = {};
+        this.items.forEach((v) => {
+          let prop = v.prop;
+          this.value.data.forEach((row, index) => {
+            $form.model[`${prop}-${index}`] = row[prop];
+          });
+        });
+        return { $form, $table };
       }
     },
     items() {
       return each(this.value.items, "map", (v, i, k) => {
         const item = this.injectItemAttr(v, k);
         const agItem = this.getAgFormItemAttrs(item);
-        agItem.$descriptionsItem = this.getDescriptionsItemAttrs(item);
         agItem.$formItem = this.getFormItemAttrs(item);
-        agItem.$col = this.getColAttrs(item);
         agItem.$component = this.getComponentAttrs(item);
+        if (this.value.layout == "grid") {
+          agItem.$col = Object.assign(
+            getIncludeAttrs(colPorpKeys, this.value),
+            getIncludeAttrs(colPorpKeys, item)
+          );
+        }
+        if (this.value.layout == "descriptions") {
+          agItem.$descriptionsItem = getIncludeAttrs(
+            descriptionsItemPropkeys,
+            item
+          );
+        }
+        if (this.value.layout == "tableditor") {
+          agItem.$tableColumn = getIncludeAttrs(tableColumnPropsKeys, item);
+        }
         return agItem;
       }).filter((v) => v.display);
     },
   },
   methods: {
+    // items 相关
     injectItemAttr(item, prop) {
       const agelFormConfig = this.$agelFormConfig || {};
       if (!item.prop && prop) item.prop = prop;
-      if (!item.component) item.component = defaultComponent;
-      let config = agelFormConfig[item.component];
+      let config = agelFormConfig[this.getName(item)];
       if (config && config.constructor == Function) {
         config = config(item.prop, item, this.value);
       }
@@ -175,7 +200,8 @@ export default {
         item.prop = "_aguid_" + guid();
       }
       if (
-        item.prop.indexOf("_aguid_") == -1 &&
+        this.value.data.constructor === Object &&
+        item.prop.indexOf("_aguid_") === -1 &&
         !this.value.data.hasOwnProperty(item.prop)
       ) {
         this.$set(this.value.data, item.prop, this.getItemValue(item));
@@ -183,11 +209,12 @@ export default {
       return item;
     },
     getAgFormItemAttrs(item) {
+      const name = this.getName(item);
       const agItem = Object.assign(
         agItemProps(),
         getIncludeAttrs(agItemPropKyes, item)
       );
-      agItem.component = this.getName(item);
+      agItem.component = agComponents[name] ? agComponents[name] : name;
       agItem.display =
         typeof item.display == "function"
           ? item.display(this.value.data, item)
@@ -198,13 +225,11 @@ export default {
           : agItem.show;
       agItem.slot =
         item.slot === true ? this.$scopedSlots[item.prop] : agItem.slot;
-      agItem.slots = this.getSlots(agItem.slots);
       return agItem;
     },
     getFormItemAttrs(item) {
       const formItem = getIncludeAttrs(formItemPropKyes, item);
       const rules = item.rules || (this.value.rules || {})[item.prop];
-      formItem.label = typeof item.label == "string" ? item.label : "";
       if (item.required && rules == undefined) {
         formItem.required = undefined;
         formItem.rules = [
@@ -217,34 +242,12 @@ export default {
       }
       return formItem;
     },
-    getDescriptionsItemAttrs(item) {
-      if (this.layout !== "desc") return {};
-      const descItem = getIncludeAttrs(descriptionsItemPropkeys, item);
-      descItem.label = typeof item.label == "string" ? item.label : "";
-      descItem.labelClassName = descItem.labelClassName || "";
-      if (!getProp(this.value, "hide-required-asterisk")) {
-        const rules = item.rules || (this.value.rules || {})[item.prop] || {};
-        const required =
-          item.required ||
-          (Array.isArray(rules)
-            ? rules.some((v) => v.required)
-            : rules.required);
-        if (required) descItem.labelClassName += " required-label";
-      }
-      return descItem;
-    },
-    getColAttrs(item) {
-      if (this.layout !== "grid") return {};
-      return Object.assign(
-        getIncludeAttrs(colPorpKeys, this.value),
-        getIncludeAttrs(colPorpKeys, item)
-      );
-    },
     getComponentAttrs(item) {
       const ignoreKeys = [].concat(
         colPorpKeys,
         formItemPropKyes,
         agItemPropKyes,
+        descriptionsItemPropkeys,
         this.itemExtendKeys
       );
       const component = Object.assign(
@@ -291,8 +294,10 @@ export default {
       return undefined;
     },
     getName(item) {
-      let name = item.component || defaultComponent;
-      return agComponentsKeys.includes("ag" + name) ? "ag" + name : name;
+      const name = item.component || defaultComponent;
+      return typeof name == "string" && agComponents["ag" + name]
+        ? "ag" + name
+        : name;
     },
     getPlaceholder(item) {
       if (item.placeholder) return item.placeholder;
@@ -305,21 +310,13 @@ export default {
         return "请选择" + label;
       }
     },
-    getSlots(slots) {
-      let noPorpsSlots = {};
-      let hasPorpsSlots = {};
-      if (slots.constructor !== Object || isVNode(slots)) {
-        slots = { default: slots };
-      }
-      for (const name in slots) {
-        let slot = slots[name];
-        if (slot.constructor == Function && slot.length != 0) {
-          hasPorpsSlots[name] = slot;
-        } else {
-          noPorpsSlots[name] = slot;
-        }
-      }
-      return { hasPorpsSlots, noPorpsSlots };
+    getRequiredAsteriskClass(item) {
+      if (getProp(this.value, "hide-required-asterisk")) return "";
+      const rules = item.rules || (this.value.rules || {})[item.prop] || {};
+      const required =
+        item.required ||
+        (Array.isArray(rules) ? rules.some((v) => v.required) : rules.required);
+      return required ? "agel-required-label" : "";
     },
     // 根据容器宽度响应式变化
     resize() {
@@ -345,7 +342,17 @@ export default {
     // 暴露出去的功能函数
     getRef(prop) {
       if (prop == undefined) return this.$refs.form;
-      return this.$refs[prop] ? this.$refs[prop][0].getRef() : null;
+      const layoutRef = this.$refs.layout;
+      if (prop == "layout:tableditor") {
+        return layoutRef.$refs.tableditor;
+      }
+      const agFormItemRef = layoutRef.$refs[prop];
+      if (!agFormItemRef || agFormItemRef.length == 0) return null;
+      if (agFormItemRef.length == 1) {
+        return agFormItemRef[0].$refs.component;
+      } else {
+        return agFormItemRef.map((v) => v.$refs.component);
+      }
     },
     getItem(prop, deep) {
       if (deep) return this.items.find((v) => v.prop == prop);
@@ -381,3 +388,4 @@ export default {
 <style>
 @import "./style.css";
 </style>
+import { layout } from 'echarts/lib/layout/barGrid'

@@ -13,7 +13,7 @@
 
 ## 行内表单 
 
-这是一个最简单的例子，设置`inline:true` 开启行内表单模式。
+这是一个最简单的例子，设置 `layout：inline` 开启行内表单模式。
 
 <ClientOnly><inline-form/></ClientOnly>
 
@@ -23,11 +23,12 @@
 
 ## 栅格表单
 
-表单通过 [Layout](https://element.eleme.cn/#/zh-CN/component/layout#layout-bu-ju) 组件来实现栅格布局。
+表单通过 [Layout](https://element.eleme.cn/#/zh-CN/component/layout#layout-bu-ju) 组件来实现栅格布局，设置 `layout：grid` 开启栅格表单（默认）。
 
 `form` 支持 [el-row](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes)，[el-col](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)组件的的所有属性，默认为 `flex` 模式。
 
 `item` 支持 [el-col](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes) 组件的所有属性，若未设置将会默认继承 `form` 对象上的 `el-col` 属性， `labelWidth`，`labelPosition` 可以调整 label 标签的宽度与对齐方向。
+
 
 <ClientOnly><layout-form/></ClientOnly>
 
@@ -37,7 +38,7 @@
 
 ## 描述表单
 
-表单通过 [Descriptions](https://element.eleme.cn/#/zh-CN/component/descriptions) 组件来实现表格式布局，对 `error message` , `required *` 做了样式兼容。
+表单通过 [Descriptions](https://element.eleme.cn/#/zh-CN/component/descriptions) 组件来实现详情式布局，设置 `layout：descriptions` 开启描述表单。
 
 `form` 支持 [el-descriptions](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)组件的的所有属性，同样支持相关插槽。
 
@@ -49,9 +50,25 @@
 <<< @/docs/.vuepress/components/descriptions-form.vue
 :::
 
+## 表格编辑器表单
+
+表单通过 [Table](https://element.eleme.cn/#/zh-CN/component/descriptions) 组件来实现表格式布局，，设置 `layout：tableditor` 开启表格编辑表单。
+
+
+`form` 支持 [el-table](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)组件的的部分属性，和所有事件。
+
+`item` 支持 [el-table-column](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 组件的部分属性。
+
+<ClientOnly><tableditor-form/></ClientOnly>
+
+::: details 点击查看代码
+<<< @/docs/.vuepress/components/tableditor-form.vue
+:::
+
+
 ## 响应式表单
 
-响应式是基于栅格表单实现，设置 `responsive:true` 开启响应式。
+响应式是基于 `grid` 栅格表单实现，设置 `responsive:true` 开启响应式。
 
 表单会根据容器宽度自动调整栅格大小，但 `item` 的栅格属性优先级最高，响应式规则如下：
 
@@ -155,9 +172,8 @@ slots:"查询"  ===  slots:h("span",{},"查询")  ===  slots:{ default:h("span",
 | data        | Object       | { }    | 表单数据                                  | 
 | items       | Array/Object | { }    | 表单项配置                         | 
 | on          | Object       | { }    | 表单事件                |  
-| inline      | Boolean      | false  | 内联样式布局      | 
-| descriptions| Boolean      | false  | 描述表格样式布局      |
-| responsive  | Boolean      | false  | 响应式布局      | 
+| layout      | String       | grid   | 布局方式 grid,inline,descriptions,tableditor      | 
+| responsive  | Boolean      | false  | 是否响应式 grid 布局生效      | 
 | responsiveMethod | Funciton| -      | 自定义响应式规则      | 
 | labelWidth  | String       | auto   | 继承自 el-form  | 
 | type        | String       | flex   | 继承自 el-row   | 

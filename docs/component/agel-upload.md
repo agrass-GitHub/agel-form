@@ -33,7 +33,6 @@
  
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......          | .........   | 支持 [el-upload 属性](https://element.eleme.cn/#/zh-CN/component/upload#upload-attributes)      | 
 | drag        | Boolean         | false       | 是否开启拖拽                | 
 | tip         | String          | -           | 提示语                      | 
 | limitSize   | Number          | -           | 文件大小限制,单位kb                     | 
@@ -41,6 +40,7 @@
 | preview     | Boolean/Funciton| true        | 是否开启文件预览                      | 
 | message     | Boolean         | true        | 是否开启钩子函数的默认提示                   |
 | onSuccess   | Funciton        | -           | 需返回一个包含 {name,url} 的对象               |
+| ......      | ......          | .........   | [el-upload 属性](https://element.eleme.cn/#/zh-CN/component/upload#upload-attributes)      | 
 
 ## Upload slots
 
@@ -61,4 +61,4 @@
 
 | 属性          | 参数           |  说明                                   | 
 | -----------   | ------------  |  ------------------------------------  | 
-| ......        | ......        | 支持 [el-upload 事件](https://element.eleme.cn/#/zh-CN/component/upload#upload-events)      | 
+| ......        | ......        | [el-upload 事件](https://element.eleme.cn/#/zh-CN/component/upload#upload-events)      | 

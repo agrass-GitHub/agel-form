@@ -3,22 +3,44 @@ title: 更新日志
 sidebar: auto
 ---
 
-随便写写记录下，一般来说，尽量保证不会有破坏性更新，有新版本建议升新版本。
-
 
 ## v.0.3.3
 
 #### agel-form
-- `bug` 修复 agel-radio 因回填默认值触发表单 rules
+- `bug` 修复部分内置组件初始值为 undefined 时触发表单 rules
+- `bug` 修复 el-descriptions-item 的属性被注入到 component 中
+- `new` 新增 form.layout tableditor 表格编辑器布局
+- `new` 新增 item.vmodel 属性支持 .number .trim 修饰符
 - `new` 新增 item.defaultValue 属性
+- `new` 对 item.componet 的支持类型进行了加强 , 支持组件实例，异步组件
 - `change` el-input-number 默认值由 0 调整为 undefined；
 - `change` 优化 descriptions 布局 在 border:false 时排版
-
+- `patch` 新增 form.layout 属性支持布局，仍兼容旧写法（不推荐）
+```js
+// old
+const form = { inline:true }  || { descriptions:true }
+// new
+const form = { layout:"inline" }  || { layout:'descriptions' }
+```
 
 #### agel-search-panel
-- `bug` 修复自定义表单插槽(item.slot)时 input v-model 失效
+- `bug` 修复自定义表单插槽时 input v-model 失效
 - `new` 在点击查询按钮时验证表单规则
+- `new` 新增了折叠，搜索，重置按钮插槽，移除了按钮属性配置
+- `change` 移除了该组件的全局配置
 - `change` 优化按钮在栅格布局下的排版
+- `patch` props 参数修改为依靠组件本身传递，仍兼容从 form 中获取 porps 参数（不推荐）
+```vue
+<template>
+  <!--old--->
+  <agel-search-panel :form="{panelPosition,searchButton, resetButton,collapse,collapseButton,collapseAlive}"/>
+  <!--new--->
+  <agel-search-panel :form="form" panelPosition searchButton resetButton collapse collapseButton collapseAlive/>
+</template>
+```
+
+#### agel-checkbox
+- `new` 新增 active-value inactive-value 属性
 
 #### agel-map-input
 - `new` 新增地图选择器组件

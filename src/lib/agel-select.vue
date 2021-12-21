@@ -1,5 +1,5 @@
 <template>
-  <el-select class="agel-select agel-item-loading" v-loading="optionsLoading" ref="ref" v-bind="$attrs" v-on="$listeners" :value="proxyValue" :multiple="multiple" :loading="isLoading" :placeholder="placeholder" :loading-text="loadingText" :popperClass="popperClass">
+  <el-select class="agel-select agel-item-loading" v-loading="optionsLoading" ref="ref" v-bind="$attrs" v-on="$listeners" :value="proxyValue" :multiple="multiple" :loading="isLoading" :loading-text="loadingText" :popperClass="popperClass">
     <template v-slot:prefix>
       <slot name="prefix"></slot>
     </template>
@@ -43,11 +43,13 @@ export default {
   inheritAttrs: false,
   mixins: [optionsMinxin],
   props: {
-    value: [String, Number, Array],
+    value: {
+      type: [String, Number, Array],
+      default: "",
+    },
     filter: Boolean,
     loading: Boolean,
     multiple: Boolean,
-    placeholder: String,
     loadingText: {
       type: String,
       default: "加载中...",

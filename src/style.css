@@ -20,26 +20,28 @@
   padding: 0px 12px 0px 0px;
 }
 
-.agel-form-inline {
+.agel-form.el-form--inline,.agel-form-inline-layout{
   display: inline-block;
 }
-.agel-form-grid .el-row--flex {
-  flex-wrap: wrap;
-}
 
-/* 对 el-descriptions 排版下样式优化 */
-.agel-form-desc .el-form-item{
+/* 对 descriptions table 排版下样式优化 */
+.agel-form-descriptions-layout .el-form-item,
+.agel-form-tableditor-layout .el-form-item{
   margin-bottom: 0px;
 }
-.agel-form-desc .required-label:before {
+.agel-form-descriptions-layout .el-form-item__error,
+.agel-form-tableditor-layout .el-form-item__error
+{
+  position: inherit;
+}
+
+.agel-required-label:before {
   content: "*";
   color: #f56c6c;
   margin-right: 4px;
 }
-.agel-form-desc .el-form-item__error{
-  position: inherit;
-}
-.agel-form-desc .el-form-item__content{
+
+.agel-form-descriptions-layout .el-form-item__content{
   line-height: 1.5;
   font-size: inherit;
 }

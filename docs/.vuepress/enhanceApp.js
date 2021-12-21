@@ -10,6 +10,7 @@ import {
   agelSearchPanel,
   agelFormDialog,
   agelRadio,
+  tableditorMenuColumn,
   agelCheckbox,
   agelSelect,
   agelUpload,
@@ -77,16 +78,19 @@ export default ({ Vue }) => {
       if (item.type == "daterange" || item.type == "datetimerange") {
         item.unlinkPanels = true;
       }
-    }
+    },
   });
-  Vue.use(agelRadio);
-  Vue.use(agelCheckbox);
-  Vue.use(agelSelect);
-  Vue.use(agelUpload);
-  Vue.use(agelTreeSelect);
-  Vue.use(agelSearchPanel);
-  Vue.use(agelFormDialog);
-  Vue.use(agelMapInput);
+
+
+  Vue.component(agelRadio.name, agelRadio);
+  Vue.component(agelCheckbox.name, agelCheckbox);
+  Vue.component(agelSelect.name, agelSelect);
+  Vue.component(agelUpload.name, agelUpload);
+  Vue.component(agelTreeSelect.name, agelTreeSelect);
+  Vue.component(agelSearchPanel.name, agelSearchPanel);
+  Vue.component(agelFormDialog.name, agelFormDialog);
+  Vue.component(agelMapInput.name, agelMapInput);
+  Vue.component(tableditorMenuColumn.name, tableditorMenuColumn)
 
   Vue.prototype.$AMapKey = "56f6a360f541889552ce0aea6469a3e3";
 

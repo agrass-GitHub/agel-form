@@ -27,7 +27,10 @@ export default {
   inheritAttrs: false,
   mixins: [optionsMinxin],
   props: {
-    value: [String, Number, Array],
+    value: {
+      type: [String, Number, Array],
+      default: "",
+    },
     filter: Boolean,
     leafOnly: Boolean,
     includeHalfChecked: Boolean,

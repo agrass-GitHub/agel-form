@@ -26,15 +26,12 @@
 
 
 
-
-
 ## TreeSelect Attributes
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| ......      | ......          | .........   | 支持 [el-tree 属性](https://element.eleme.cn/#/zh-CN/component/tree#tree-attributes)      | 
 | options     | Array/Function/Promise        | -    |  treeData 数据         | 
-| nodeKey     | Boolean         | label       | 继承自 el-tree，用做绑定表单的字段名    | 
+| nodeKey     | Boolean         | label       | 继承自 el-tree，绑定表单的字段名    | 
 | props       | Boolean         | label       | 继承自 el-tree，数据配置选项    | 
 | filter      | Boolean         | false       | 是否开启过滤查询                | 
 | leafOnly    | Boolean         | false       | 是否只是叶子节点，多选生效    | 
@@ -46,14 +43,19 @@
 | collapseTags | Boolean        | -           | 继承自 el-select  | 
 | popperClass  | String         | -           | 继承自 el-select  | 
 | loadingText  | String         | -           | 继承自 el-select  | 
+| ......      | ......          | .........   | [el-tree 属性](https://element.eleme.cn/#/zh-CN/component/tree#tree-attributes)    |
+
 
 ## TreeSelect Option
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
-| label       | String        |  -                 | 节点名称     |
-| class       | Boolean       |  -                 | class名称    |
-| style       | Object/String        | -           | 内联样式     |  
+| label       | String        |  -                  | label 名称    |
+| style       | String/Object | -                   | 内联样式     | 
+| class       | String/Object/Array       |  -      | class名称    |
+| ......      | ......          | .........   | [el-tree props 属性](https://element.eleme.cn/#/zh-CN/component/tree#props)    |  
+
+
 
 ## TreeSelect Slots
 

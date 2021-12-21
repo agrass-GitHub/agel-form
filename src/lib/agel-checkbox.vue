@@ -7,7 +7,7 @@
       <slot name="option" :option="option" :index="index">{{option.label}}</slot>
     </component>
   </el-checkbox-group>
-  <component v-else class="agel-checkbox" :is="is" :value="value" ref="ref" v-bind="getProps($attrs)" v-on="$listeners">
+  <component v-else class="agel-checkbox" :is="is" :value="proxyValue" ref="ref" v-bind="getProps($attrs)" v-on="$listeners">
     <template v-slot:default>
       <slot name="default" />
     </template>
@@ -39,7 +39,18 @@ export default {
   inheritAttrs: false,
   mixins: [optionsMinxin],
   props: {
-    value: [String, Number, Boolean, Array],
+    value: {
+      type: [String, Number, Boolean, Array],
+      default: "",
+    },
+    activeValue: {
+      type: [Boolean, String, Number],
+      default: true,
+    },
+    inactiveValue: {
+      type: [Boolean, String, Number],
+      default: false,
+    },
     button: {
       type: Boolean,
       default: false,
@@ -52,11 +63,40 @@ export default {
     multiple() {
       return this.options !== undefined;
     },
+    proxyValue() {
+      if (this.multiple) {
+        if (this.isProxyStrValue) {
+          return String(this.value)
+            .split(",")
+            .filter((v) => v.trim() != "");
+        }
+        return this.value;
+      } else {
+        return this.value === this.activeValue;
+      }
+    },
   },
   created() {
-    if (this.value === undefined) this.proxyInput(this.multiple ? "" : false);
+    if (
+      !this.multiple &&
+      this.value !== this.activeValue &&
+      this.value !== this.inactiveValue
+    ) {
+      this.$emit("input", this.inactiveValue);
+    }
   },
   methods: {
+    proxyInput(value) {
+      if (value === this.value) return;
+      if (this.multiple) {
+        if (this.isProxyStrValue) {
+          value = Array.isArray(value) ? value.join() : "";
+        }
+      } else {
+        value = value ? this.activeValue : this.inactiveValue;
+      }
+      this.$emit("input", value);
+    },
     getProps(traget) {
       return getIncludeAttrs(propsKeys, traget);
     },

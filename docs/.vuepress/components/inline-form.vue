@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       form: {
-        inline: true,
+        layout: "inline",
         data: {},
         items: [
           // component 该属性不填写将默认为 el-input

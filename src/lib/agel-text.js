@@ -9,6 +9,6 @@ export default {
   },
   render(h, context) {
     const { valueFormat, value } = context.props;
-    return h("span", { class: "agel-text" }, valueFormat ? valueFormat(value) : value);
+    return h("span", { class: "agel-text", ...context.data }, valueFormat ? valueFormat(value) : value);
   },
 };

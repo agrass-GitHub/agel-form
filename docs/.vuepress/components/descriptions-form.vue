@@ -16,9 +16,10 @@ export default {
       form: {
         size: "medium",
         title: "agel-form descriptions 描述排版",
-        descriptions: true,
+        layout: "descriptions",
         border: true,
         column: 3,
+        labelWidth: "200px",
         labelStyle: { "min-width": "70px" },
         data: {
           name: "kooriookami",

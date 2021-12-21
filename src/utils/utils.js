@@ -1,6 +1,5 @@
 
 import Vue from 'vue';
-import { agComponentsKeys } from "./props";
 
 // 驼峰转短横线 
 export function kebabcase(v) {
@@ -63,14 +62,6 @@ export const extend = function (obj, target = {}, cover = false) {
   }
 }
 
-// 是否是包装组件
-export const equalAgName = function (name, agName) {
-  if (agComponentsKeys.includes(agName)) {
-    return name === agName || 'ag' + name === agName
-  }
-  return false;
-}
-
 // 循环 arr obj
 export const each = function (obj, each, call,) {
   if (Array.isArray(obj)) {
@@ -81,3 +72,4 @@ export const each = function (obj, each, call,) {
     return indexKeys.map(key => obj[key])[each]((item, index) => call(item, index, indexKeys[index]))
   }
 }
+
