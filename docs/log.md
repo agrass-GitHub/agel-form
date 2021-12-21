@@ -10,9 +10,9 @@ sidebar: auto
 - `bug` 修复部分内置组件初始值为 undefined 时触发表单 rules
 - `bug` 修复 el-descriptions-item 的属性被注入到 component 中
 - `new` 新增 form.layout tableditor 表格编辑器布局
-- `new` 新增 item.vmodel 属性支持 .number .trim 修饰符
 - `new` 新增 item.defaultValue 属性
-- `new` 对 item.componet 的支持类型进行了加强 , 支持组件实例，异步组件
+- `new` 新增 item.vmodel 支持 .number .trim 修饰符
+- `new` 新增 item.componet 支持类型 支持组件实例，异步组件
 - `change` el-input-number 默认值由 0 调整为 undefined；
 - `change` 优化 descriptions 布局 在 border:false 时排版
 - `patch` 新增 form.layout 属性支持布局，仍兼容旧写法（不推荐）

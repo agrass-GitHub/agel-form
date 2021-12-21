@@ -123,7 +123,7 @@ export default {
     },
   },
   mounted() {
-    if (this.value.responsive && value.layout == "grid") {
+    if (this.value.responsive && this.value.layout == "grid") {
       this.resize();
       addResizeListener(this.$refs.form.$el, this.resize);
     }
