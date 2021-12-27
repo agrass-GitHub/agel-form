@@ -1,5 +1,6 @@
 <template>
-  <el-select class="agel-select agel-item-loading" v-loading="optionsLoading" ref="ref" v-bind="$attrs" v-on="$listeners" :value="proxyValue" :multiple="multiple" :loading="isLoading" :loading-text="loadingText" :popperClass="popperClass">
+  <el-select class="agel-select" v-loading="optionsLoading" ref="ref" v-bind="$attrs" v-on="$listeners" :value="proxyValue" :multiple="multiple"
+    :loading="isLoading" :loading-text="loadingText" :popperClass="popperClass">
     <template v-slot:prefix>
       <slot name="prefix"></slot>
     </template>
@@ -133,6 +134,22 @@ export default {
 </script>
 
 <style>
+.agel-select .el-loading-mask {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.agel-select .el-loading-mask .el-loading-spinner {
+  top: 0px;
+  margin-top: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.agel-select .el-loading-spinner .circular {
+  width: 20px;
+  height: 20px;
+}
+
 .agel-select-popper .filter-item {
   padding: 0px 10px;
   margin-bottom: 10px;

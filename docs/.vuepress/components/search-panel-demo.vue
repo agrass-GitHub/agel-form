@@ -1,6 +1,6 @@
 <template>
   <div class="demo">
-    <agel-search-panel :form="search" @search="getList">
+    <agel-search-panel :form="search" panel-position="right" @search="getList">
       <el-button>新增</el-button>
       <el-button>导入</el-button>
       <template v-slot:address>
@@ -25,7 +25,6 @@ export default {
   data() {
     return {
       search: {
-        panelPosition: "right",
         data: { address: "agel-form" },
         items: [
           { prop: "name", label: "姓名", style: "width:100px" },

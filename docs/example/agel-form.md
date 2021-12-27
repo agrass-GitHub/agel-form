@@ -9,7 +9,7 @@
 - `item.component` 为空是默认为 `el-input`
 :::
 
-`agel-form` 表单支持四种布局模式，行内表单，栅格表单，响应式表单，描述表单，例子如下。
+`agel-form` 表单支持四种布局模式，行内表单，栅格表单，描述表单，表格编辑表单，例子如下。
 
 ## 行内表单 
 
@@ -253,9 +253,3 @@ slots:"查询"  ===  slots:h("span",{},"查询")  ===  slots:{ default:h("span",
     ]
   },
 ```
-
-::: details 点击查看支持的 props 详情
-<<< @/src/utils/props.js
-::: 
-
-源码相关：[agel-form/props.js](https://github.com/agrass-GitHub/agel-form/blob/master/src/utils/props.js)

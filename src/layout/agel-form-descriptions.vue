@@ -1,34 +1,87 @@
 <template>
-  <el-descriptions class="agel-form-tableditor-layout  agel-item-w100" v-bind="$attrs">
+  <el-descriptions class="agel-form-descriptions" v-bind="$attrs" :border="border">
     <slot name="title" slot="title"></slot>
     <slot name="extra" slot="extra"></slot>
     <slot name="prepend"></slot>
-    <el-descriptions-item v-for="item in items" v-bind="item.$descriptionsItem" label="" :key="item.prop">
+    <el-descriptions-item v-for="item in agItems" v-bind="item.$descriptionsItem" label="" :key="item.prop">
       <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item)" slot="label"></render-component>
-      <agel-form-item v-model="data[item.prop]" v-bind="item.$formItem" label="" label-width="0px" :item="item" :ref="item.prop" v-show="item.show" />
+      <agel-form-item v-show="item.show" v-model="data[item.prop]" v-bind="item.$formItem" :component="item.$component" label="" label-width="0px"
+        :ref="item.prop" />
     </el-descriptions-item>
     <slot name="append"></slot>
   </el-descriptions>
 </template>
  
 <script>
-import agelFormItem from "./agel-form-item.vue";
+import itemsMinxin from "../utils/itemsMixin";
 import renderComponent from "./render-component";
+import { getIncludeAttrs } from "../utils/utils";
+
+export const descriptionsItemPropkeys = [
+  "label",
+  "span",
+  "labelClassName",
+  "contentClassName",
+  "labelStyle",
+  "contentStyle",
+];
+
 export default {
-  name: "agel-form-descriptions-layout",
+  name: "agel-form-descriptions",
+  mixins: [itemsMinxin],
   inheritAttrs: false,
   components: {
-    agelFormItem,
     renderComponent,
   },
   props: {
-    data: Object,
-    items: Array,
-    getRequiredAsteriskClass: Function,
+    border: {
+      typoe: Boolean,
+      default: true,
+    },
   },
   data() {
-    return {};
+    return {
+      agItemExtendKeys: descriptionsItemPropkeys,
+    };
+  },
+  methods: {
+    agItemExtendHandle(agItem, item) {
+      agItem.$descriptionsItem = getIncludeAttrs(
+        descriptionsItemPropkeys,
+        item
+      );
+      return agItem;
+    },
+  },
+  install(vue) {
+    vue.component(this.name, this);
   },
 };
 </script>
  
+<style>
+.agel-form-descriptions .el-date-editor.el-input,
+.agel-form-descriptions .el-date-editor.el-input__inner,
+.agel-form-descriptions .el-select,
+.agel-form-descriptions .el-cascader,
+.agel-form-descriptions .el-input-number,
+.agel-form-descriptions .el-autocomplete {
+  width: 100%;
+}
+
+.agel-form-descriptions .el-form-item__content {
+  line-height: inherit;
+  font-size: inherit;
+}
+.agel-form-descriptions .el-form-item {
+  margin-bottom: 0px;
+}
+.agel-form-descriptions .el-form-item__error {
+  position: inherit;
+}
+.agel-form-descriptions .agel-required-label:before {
+  content: "*";
+  color: #f56c6c;
+  margin-right: 4px;
+}
+</style>

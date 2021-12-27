@@ -6,7 +6,9 @@
 
 ## 引用
 
-若是完整引入 `Element-UI`，可直接导入组件进行开发使用。
+若是完整引入 `Element-UI`，可直接导入组件进行开发使用；
+
+若是按需引入 `Element-UI`，至少需要全局引入 `Form, FormItem, Row, Col, Input` 五个表单组件。
 
 ```js
 import Vue from 'vue';
@@ -20,38 +22,31 @@ Vue.use(ElementUI);
 Vue.use(agelForm,formConfig);
 ```
 
-若是按需引入 `Element-UI`，至少需要全局引入 `Form, FormItem, Row, Col, Input` 五个表单组件 `agelForm` 才可正常使用。
+`Vue.use(agelForm)` 默认会注册所有核心组件到全局，无需在单独引入，组件列表如下：
 
 ```js
-import { Form, FormItem, Row, Col, Input } from 'element-ui';
-import agelForm from 'agel-form';
+const coreComponents = [agelForm, agelFormItem, agelFormGrid, agelFormInline, agelFormTableditor, agelFormDescriptions,agelRadio,agelCheckbox, agelSelect,agelTreeSelect,agelUpload,agelText]
 ```
 
-### 引用单组件
 
-默认只会导入 `agel-form`组件，内置单组件在 `agel-form` 中以懒加载使用，不会额外增加代码体积。
+### 引用其他单组件
 
-你也可以在项目中单独引入单组件进行开发使用，完整组件列表如下：
+你也可以根据需求，按需引入其他单组件到项目进行开发使用。
 
 ```js
 import {
+  // 核心组件
   agelForm,
-  // 内置单组件，在 agel-form 是以懒加载使用
-  agelRadio, 
-  agelCheckbox, 
-  agelSelect, 
-  agelUpload, 
-  agelTreeSelect,
- // 其他组件, 按需引用
+  // 其他组件按需引入
+  agelMapInput,
   agelSearchPanel,
   agelFormDialog,
+  tableditorMenuColumn,
 } from "agel-form";
 ```
 
 ## 全局配置
 
-支持属性，配置将被继承到每个表单上。
-
-也可单独为某个表单子组件设置全局配置，表单子组件支持函数写法，更加灵活。
+支持全局属性，配置将被继承到每个表单上，也可单独为某个表单子组件设置全局配置，表单子组件支持函数写法。这是一把双刃剑，要仔细权衡利弊，宁缺毋滥。
 
 <<< @/docs/.vuepress/components/agel-form-config.js

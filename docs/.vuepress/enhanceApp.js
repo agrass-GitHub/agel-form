@@ -5,18 +5,7 @@ import Element from "element-ui/lib/index";
 
 import AMapLoader from "@amap/amap-jsapi-loader";
 
-import {
-  agelForm,
-  agelSearchPanel,
-  agelFormDialog,
-  agelRadio,
-  tableditorMenuColumn,
-  agelCheckbox,
-  agelSelect,
-  agelUpload,
-  agelTreeSelect,
-  agelMapInput
-} from "../../src/index";
+import { agelForm, agelSearchPanel, agelFormDialog, tableditorMenuColumn, agelMapInput } from "../../src/index";
 
 
 window._AMapSecurityConfig = { securityJsCode: '37c6baee599002d347756e3d1277246c' }
@@ -82,11 +71,7 @@ export default ({ Vue }) => {
   });
 
 
-  Vue.component(agelRadio.name, agelRadio);
-  Vue.component(agelCheckbox.name, agelCheckbox);
-  Vue.component(agelSelect.name, agelSelect);
-  Vue.component(agelUpload.name, agelUpload);
-  Vue.component(agelTreeSelect.name, agelTreeSelect);
+
   Vue.component(agelSearchPanel.name, agelSearchPanel);
   Vue.component(agelFormDialog.name, agelFormDialog);
   Vue.component(agelMapInput.name, agelMapInput);

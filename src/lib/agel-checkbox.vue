@@ -1,6 +1,6 @@
 <template>
   <span v-if="optionsLoading">
-    <i class="agel-options-loading el-icon-loading"></i>
+    <i class="el-icon-loading" style="width:inherit;height:inherit"></i>
   </span>
   <el-checkbox-group v-else-if="multiple" ref="ref" class="agel-checkbox-group" :value="proxyValue" v-bind="getGroupPorps($attrs)" v-on="$listeners">
     <component :is="is" v-for="(option,index) of proxyOptions" v-bind="getProps(option)" :key="option.value" :label="option.value">

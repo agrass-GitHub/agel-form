@@ -1,6 +1,7 @@
 <template>
   <div class="demo border">
-    <agel-form-dialog :visible.sync="form.show" :loading="form.loading" :title="form.title" width="500px" height="400px" custom-class="ag-dialog" top="center" confirmBtn="提 交" @validated="submit">
+    <agel-form-dialog :visible.sync="form.show" :loading="form.loading" :title="form.title" width="500px" height="400px" custom-class="ag-dialog"
+      top="center" confirmBtn="提 交" @validated="submit">
       <p>el-form 表单</p>
       <el-form :model="formData" label-width="auto">
         <el-form-item prop="name" label="姓名" :rules="[{required:true,message:'姓名必填',trigger:'blur'}]">
@@ -49,11 +50,16 @@ export default {
     toEdit() {
       this.form.title = "编辑";
       this.form.show = true;
-      this.form.data = {
-        name: "使用组件",
-        desc: "有什么建议吗",
-      };
-      this.formData.name = "agrass";
+      this.form.loading = true;
+      setTimeout(() => {
+        this.form.data = {
+          name: "使用组件",
+          desc: "有什么建议吗",
+        };
+        this.formData.name = "agrass";
+        this.$message.success("获取详情成功");
+        this.form.loading = false;
+      }, 2000);
     },
     // 弹窗表单校验成功之后触发
     submit() {
@@ -63,7 +69,7 @@ export default {
         this.$message.success("操作成功");
         this.form.loading = false;
         this.form.show = false;
-      }, 4000);
+      }, 3000);
     },
     close() {
       console.log("xx");

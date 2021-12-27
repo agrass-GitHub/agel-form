@@ -1,17 +1,14 @@
 <template>
-  <agel-search-panel class="demo border" :form="search"> </agel-search-panel>
+  <agel-search-panel class="demo border" :form="search" collapseButton collapse :collapseAlive="collapseAlive"> </agel-search-panel>
 </template>
  
 <script>
 export default {
   data() {
     return {
+      collapseAlive: ["name1"], // 不被折叠的 prop
       search: {
-        collapseButton: true, // 显示折叠按钮
-        collapse: true, // 默认折叠
-        collapseAlive: ["name1"], // 不被折叠的 prop
-        searchButton: { text: "搜索" }, // 配置按钮图标属性等
-        resetButton: { text: "初始化" }, // 配置按钮图标属性等
+        labelWidth: "50px",
         data: {},
         items: [
           { prop: "name1", label: "姓名1" },

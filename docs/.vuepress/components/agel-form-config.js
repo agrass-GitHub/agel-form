@@ -3,7 +3,7 @@ import agelForm from "agel-form";
 const formConfig = {
   // 为每个表单设置 
   form: {
-    labelWidth: "100px",
+    labelWidth: "auto",
     span: 8,
   },
   // 设置所有上传组件的公用参数 ----- 可以通过函数 return 一个配置对象

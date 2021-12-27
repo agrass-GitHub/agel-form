@@ -41,7 +41,7 @@ export default {
         on: {
           validate: (v) => {
             setTimeout(() => {
-              this.$notify.error("验证失败字段：" + v);
+              this.$notify.info("验证字段：" + v);
             }, 500);
           },
         },

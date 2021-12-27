@@ -11,10 +11,10 @@
     </div>
     <template v-slot:footer>
       <slot name="footer">
-        <div class="dialog-footer" v-if="confirmBtn||$slots.button">
+        <el-form :model="{}" :disabled="loading" class="dialog-footer" v-if="confirmBtn||$slots.button">
           <slot name="button"></slot>
-          <el-button v-if="confirmBtn" :loading="loading" type="primary" @click="confirm">{{confirmBtn}}</el-button>
-        </div>
+          <el-button v-if="confirmBtn" type="primary" @click="confirm">{{confirmBtn}}</el-button>
+        </el-form>
       </slot>
     </template>
   </el-dialog>

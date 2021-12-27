@@ -1,5 +1,7 @@
 <template>
-  <el-select class="agel-tree-select agel-item-loading" v-loading="optionsLoading" :popper-class="treePopperClass" ref="select" :value="selectValue" :multiple="multiple" :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" :loading="optionsLoading" :placeholder="placeholder" :loading-text="loadingText" v-on="$listeners" @click.native="initScroll" @clear="handleClear">
+  <el-select :class="selectClass" v-loading="optionsLoading" :popper-class="treePopperClass" ref="select" :value="selectValue" :multiple="multiple"
+    :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" :loading="optionsLoading" :placeholder="placeholder"
+    :loading-text="loadingText" @click.native="initScroll" @clear="handleClear" @remove-tag="removeTag" v-on="selectListeners">
     <template v-slot:prefix>
       <slot name="prefix"></slot>
     </template>
@@ -8,7 +10,9 @@
     </div>
     <el-option value="" disabled>
       <!-- :data="lazy?undefined:treeData" -->
-      <el-tree ref="ref" class="tree-option" :data="treeData" :lazy="lazy" :load="loadNode" :props="props" :show-checkbox="multiple" :highlight-current="!multiple" :node-key="nodeKey" :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs" v-on="$listeners" @current-change="handleCurrentChange" @check="handleCheck">
+      <el-tree ref="ref" class="tree-option" :data="treeData" :lazy="lazy" :load="loadNode" :props="props" :show-checkbox="multiple"
+        :highlight-current="!multiple" :node-key="valueKey" :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs"
+        v-on="$listeners" @current-change="handleCurrentChange" @check="handleCheck">
         <slot name="option" slot-scope="scope" v-bind="scope">
           <span class="el-tree-node__label" :style="scope.data.style" :class="scope.data.class">{{scope.node.label}}</span>
         </slot>
@@ -31,22 +35,26 @@ export default {
       type: [String, Number, Array],
       default: "",
     },
-    filter: Boolean,
-    leafOnly: Boolean,
-    includeHalfChecked: Boolean,
-    lazy: Boolean,
-    load: Function,
-    props: Object, // 使用 el-tree 的 props 解析， 覆盖 optionsMinxin 默认函数
+    // select porps
     multiple: Boolean,
     placeholder: String,
     disabled: Boolean,
     clearable: Boolean,
+    clearableTags: Boolean,
     collapseTags: Boolean,
     popperClass: String,
     loadingText: {
       type: String,
       default: "加载中...",
     },
+    // tree props
+    nodeKey: String,
+    filter: Boolean,
+    leafOnly: Boolean,
+    includeHalfChecked: Boolean,
+    lazy: Boolean,
+    load: Function,
+    props: Object, // 使用 el-tree 的 props 解析， 覆盖 optionsMinxin 默认函数
   },
   data() {
     return {
@@ -61,10 +69,8 @@ export default {
       let props = this.props || {};
       return props.label || "label";
     },
-    nodeKey() {
-      return this.lazy
-        ? this.labelKey
-        : getProp(this.$attrs, "nodeKey") || this.labelKey;
+    valueKey() {
+      return this.lazy ? this.labelKey : this.nodeKey || this.labelKey;
     },
     treeData() {
       if (this.lazy) {
@@ -89,6 +95,16 @@ export default {
     treePopperClass() {
       return `agel-tree-select-popper ${this.popperClass || ""}`;
     },
+    selectClass() {
+      return [
+        "agel-tree-select",
+        { "agel-tree-select-hide-tags": !this.clearableTags && this.multiple },
+      ];
+    },
+    selectListeners() {
+      const { input, change, ...otherEvent } = this.$listeners;
+      return otherEvent;
+    },
   },
   watch: {
     filterText(val) {
@@ -106,12 +122,12 @@ export default {
     handleCurrentChange(nodeData, treeNode) {
       if (treeNode.disabled) return;
       this.currentNode = this.getValueOption();
-      this.emitInput(this.currentNode[this.nodeKey]);
+      this.selectInput(this.currentNode[this.valueKey]);
       this.blur();
     },
     handleCheck() {
       this.checkedNodes = this.getValueOption();
-      this.emitInput(this.checkedNodes.map((v) => v[this.nodeKey]));
+      this.selectInput(this.checkedNodes.map((v) => v[this.valueKey]));
     },
     handleFilterNode(filterText, data) {
       let value = filterText.trim();
@@ -129,11 +145,11 @@ export default {
         let nodes = this.getValueOption();
         nodes.forEach((node) => tree.setChecked(node, false));
         this.checkedNodes = [];
-        this.emitInput([]);
+        this.selectInput([]);
       } else {
         tree.setCurrentKey(null);
         this.currentNode = null;
-        this.emitInput("");
+        this.selectInput("");
       }
     },
     loadNode(node, resolve) {
@@ -145,12 +161,27 @@ export default {
           let equal = Array.isArray(this.selectValue)
             ? this.selectValue.join() == this.proxyValue.join()
             : this.selectValue == this.proxyValue;
-          if (!equal) this.emitInput(this.selectValue);
+          if (!equal) this.selectInput(this.selectValue);
         });
       });
     },
-    // 代理掉 el-select 的 input 事件
-    emitInput(value) {
+    removeTag(removeLabel) {
+      let tree = this.$refs.ref;
+      if (!tree) return;
+      let node = this.checkedNodes.find((v) => v[this.labelKey] == removeLabel);
+      if (node) {
+        tree.setChecked(node[this.valueKey], false, true);
+        this.handleCheck();
+      } else {
+        if (this.lazy) {
+          let value = [...this.proxyValue];
+          value.splice(value.indexOf(removeLabel), 1);
+          this.selectInput(value);
+        }
+      }
+    },
+    // 替代掉 el-select 的 input 事件
+    selectInput(value) {
       if (value === this.value) return;
       this.proxyInputing = true;
       this.proxyInput(value);
@@ -208,7 +239,23 @@ export default {
 </script>
  
 <style>
-.agel-tree-select .el-tag__close {
+.agel-tree-select .el-loading-mask {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.agel-tree-select .el-loading-mask .el-loading-spinner {
+  top: 0px;
+  margin-top: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.agel-tree-select .el-loading-spinner .circular {
+  width: 20px;
+  height: 20px;
+}
+
+.agel-tree-select-hide-tags .el-tag__close {
   display: none;
 }
 

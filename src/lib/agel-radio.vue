@@ -1,6 +1,6 @@
 <template>
   <span v-if="optionsLoading">
-    <i class="agel-options-loading el-icon-loading"></i>
+    <i class="el-icon-loading" style="width:inherit;height:inherit"></i>
   </span>
   <el-radio-group v-else-if="proxyOptions.length>0" ref="ref" class="agel-radio-group" :value="value" v-bind="getGroupPorps($attrs)"
     v-on="$listeners">

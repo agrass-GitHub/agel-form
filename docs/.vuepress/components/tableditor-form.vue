@@ -22,46 +22,32 @@ export default {
         span: 15,
         data: [
           {
-            name: "使用 agel-form",
+            name: "使用 agel-form 使用 agel-form",
             delivery: true,
-            slider: 20,
             _edit_: false,
           },
           {
             name: "使用 agel-form",
+            delivery: false,
+          },
+          {
+            name: "使用 agel-form",
             delivery: true,
-            slider: 20,
+          },
+          {
+            name: "使用 agel-form",
+            delivery: true,
           },
         ],
         items: [
-          {
-            type: "expand",
-            width: "50px",
-            slot: () => {
-              return <span>11111111</span>;
-            },
-          },
           { type: "selection", align: "center", width: "50px" },
           { label: "#", type: "index", align: "center", width: "50px" },
           {
             label: "名称",
             prop: "name",
             required: true,
-            width: "200px",
+            width: "150px",
             "show-overflow-tooltip": true,
-          },
-          {
-            component: "el-select",
-            label: "活动区域",
-            options: ["区域1", "区域2"],
-            width: "200px",
-            prop: "region",
-          },
-          {
-            component: "el-date-picker",
-            label: "活动时间",
-            prop: "date",
-            width: "200px",
           },
           {
             component: "el-switch",
@@ -72,11 +58,17 @@ export default {
             },
           },
           {
-            component: "el-rate",
-            label: "活动评分",
-            prop: "rate",
-              width: "200px",
-            defaultValue: 3,
+            component: "el-select",
+            label: "活动区域",
+            options: ["区域1", "区域2"],
+            width: "150px",
+            prop: "region",
+          },
+          {
+            component: "el-date-picker",
+            label: "活动时间",
+            prop: "date",
+            width: "150px",
           },
         ],
         on: {

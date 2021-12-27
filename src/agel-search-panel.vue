@@ -1,40 +1,19 @@
 <template>
   <div :class="['agel-search-panel',{'position-right':attrs.panelPosition=='right' }]">
-    <agel-form v-model="form" :item-ignore-keys="['collapseAlive']">
+    <agel-form v-model="form" :item-extend-keys="['collapseAlive']">
       <slot name="prepend" slot="prepend"></slot>
 
-      <!-- 具名插槽 -->
       <template v-for="prop in slotKeys" v-slot:[prop]>
-        <render-component :render="$scopedSlots[prop]" :key="prop" />
+        <slot :name="prop" />
       </template>
 
       <template v-slot:append>
-        <el-form-item v-if="attrs.collapseButton" :label-width="gutterLabelWidth" @click.native="emitCollapse">
-          <slot name="collapseButton" :collapse="isCollapse">
-            <el-button class="agel-collapse-button" circle>
-              <i class="el-icon-arrow-down" :style="`transform: rotate(${isCollapse?0:180}deg)`"></i>
-            </el-button>
-          </slot>
-        </el-form-item>
-        <el-form-item v-if="attrs.searchButton" :label-width="attrs.collapseButton?'10px':gutterLabelWidth" @click.native="emitSearch">
-          <slot name="searchButton">
-            <el-button class="agel-search-button" icon="el-icon-search" type="primary">查询</el-button>
-          </slot>
-        </el-form-item>
-        <el-form-item v-if="attrs.resetButton" :label-width="attrs.collapseButton||attrs.searchButton?'10px':gutterLabelWidth"
-          @click.native="emitReset">
-          <slot name="resetButton">
-            <el-button class="agel-reset-button" icon="el-icon-refresh-right" type="primary">重置</el-button>
-          </slot>
-        </el-form-item>
-        <!-- 按钮插槽 -->
-        <template v-for="(vnode,i) in $slots.default">
-          <el-form-item :key="i" v-if="vnode.tag">
-            <render-component :render="vnode" />
-          </el-form-item>
-        </template>
+        <slot name="append"> </slot>
+        <render-component v-if="attrs.collapseButton" :render="collapseButtonRender" :h="h" :clickEvent="emitCollapse" :collapse="isCollapse" />
+        <render-component v-if="attrs.searchButton" :render="searchButtonRender" :clickEvent="emitSearch" :h="h" />
+        <render-component v-if="attrs.resetButton" :render="resetButtonRender" :clickEvent="emitReset" :h="h" />
+        <slot></slot>
       </template>
-
     </agel-form>
   </div>
 </template>
@@ -42,7 +21,46 @@
 <script>
 import { getIncludeAttrs, each } from "./utils/utils";
 import renderComponent from "./layout/render-component";
-import { formPropKeys } from "./utils/props";
+
+const searchButtonRender = function ({ h, clickEvent }) {
+  return h(
+    "el-button",
+    {
+      props: { icon: "el-icon-search", type: "primary" },
+      on: { click: clickEvent },
+    },
+    "查询"
+  );
+};
+const resetButtonRender = function ({ h, clickEvent }) {
+  return h(
+    "el-button",
+    {
+      props: {
+        icon: "el-icon-refresh-right",
+        type: "primary",
+      },
+      on: { click: clickEvent },
+    },
+    "重置"
+  );
+};
+const collapseButtonRender = function ({ h, clickEvent, collapse }) {
+  return h(
+    "el-button",
+    {
+      class: "agel-collapse-button",
+      props: { circle: true },
+      on: { click: clickEvent },
+    },
+    [
+      h("i", {
+        class: "el-icon-arrow-down",
+        style: `transform: rotate(${collapse ? 0 : 180}deg)`,
+      }),
+    ]
+  );
+};
 
 export default {
   name: "agel-search-panel",
@@ -50,7 +68,13 @@ export default {
   props: {
     form: {
       type: Object,
-      require: true,
+      required: true,
+      default: () => {
+        return {
+          data: {},
+          items: [],
+        };
+      },
     },
     panelPosition: {
       type: String,
@@ -79,14 +103,18 @@ export default {
     },
   },
   data() {
+    const config = this.$agelFormConfig["agel-search-panel"] || {};
     return {
-      formSearchPanelPorps: {},
-      isUsePropsByForm: false,
+      h: this.$createElement,
+      searchButtonRender: config.searchButtonRender || searchButtonRender,
+      resetButtonRender: config.resetButtonRender || resetButtonRender,
+      collapseButtonRender: config.collapseButtonRender || collapseButtonRender,
+      useFormPorps: null,
       isCollapse: false,
     };
   },
   created() {
-    // patch formPorps 从 form 读取 props 对象，兼容 v.0.3.3 之前版本
+    // patch  从 form 对象读取 props 对象，为了兼容 v.0.3.3 之前版本
     const compatiblePropsKeys = [
       "panelPosition",
       "searchButton",
@@ -95,31 +123,22 @@ export default {
       "collapseButton",
       "collapseAlive",
     ];
-    const formSearchPanelPorps = getIncludeAttrs(
-      compatiblePropsKeys,
-      this.form
-    );
-    this.isUsePropsByForm = Object.keys(formSearchPanelPorps).length > 0;
-    if (this.isUsePropsByForm) {
-      this.formSearchPanelPorps = { ...this.$props, ...formSearchPanelPorps };
+    const useFormPorps = getIncludeAttrs(compatiblePropsKeys, this.form);
+    if (Object.keys(useFormPorps).length > 0) {
+      this.useFormPorps = { ...this.$props, ...useFormPorps };
     }
-    this.isCollapse = this.formSearchPanelPorps.collapse || this.collapse;
-    // end
-    if (!this.form.layout) {
-      this.$set(this.form, "layout", "inline");
-    }
+    this.isCollapse = useFormPorps.collapse || this.collapse;
+    // patch end
+    this.$set(this.form, "layout", "inline");
     if (this.attrs.collapseButton) {
-      each(this.form.items, "forEach", (v) => {
-        this.$set(v, "show", this.itemCollapseShow);
-      });
+      each(this.form.items, "forEach", (v) =>
+        this.$set(v, "show", this.itemCollapseShow)
+      );
     }
   },
   computed: {
     attrs() {
-      return this.isUsePropsByForm ? this.formSearchPanelPorps : this.$props;
-    },
-    gutterLabelWidth() {
-      return (this.form.gutter || 15) / 2 + "px";
+      return this.useFormPorps ? this.useFormPorps : this.$props;
     },
     collapseAliveKeys() {
       if (this.attrs.collapseButton === false) return [];
@@ -179,8 +198,14 @@ export default {
   padding-left: 10px;
 }
 
-.agel-search-panel .agel-form {
+.agel-search-panel .agel-form-inline {
   margin-top: 10px;
+}
+
+.agel-search-panel .agel-form-inline > button {
+  margin-bottom: 10px;
+  margin-right: 10px;
+  margin-left: 0px;
 }
 
 .agel-search-panel .el-form-item {

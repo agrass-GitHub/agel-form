@@ -35,12 +35,13 @@
 | props       | Boolean         | label       | 继承自 el-tree，数据配置选项    | 
 | filter      | Boolean         | false       | 是否开启过滤查询                | 
 | leafOnly    | Boolean         | false       | 是否只是叶子节点，多选生效    | 
-| includeHalfChecked  | Boolean | false       | 是否包含半选节点，多选生效    | 
-| multiple     | Boolean        | false       | 继承自 el-select，是否多选          | 
+| includeHalfChecked  | Boolean | false       | 是否包含半选节点，多选生效    |
+| multiple     | Boolean        | false       | 是否多选          | 
+| clearableTags| Boolean        | false       | 多选时标签是否可清除
+| collapseTags | Boolean        | -           | 多选时标签是否可折叠 |
 | placeholder  | String         | -           | 继承自 el-select                   | 
 | disabled     | Boolean        | -           | 继承自 el-select                        |
 | clearable    | Boolean        | -           | 继承自 el-select  | 
-| collapseTags | Boolean        | -           | 继承自 el-select  | 
 | popperClass  | String         | -           | 继承自 el-select  | 
 | loadingText  | String         | -           | 继承自 el-select  | 
 | ......      | ......          | .........   | [el-tree 属性](https://element.eleme.cn/#/zh-CN/component/tree#tree-attributes)    |

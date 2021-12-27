@@ -43,6 +43,17 @@ export function getExcludeAttrs(keys, target) {
   return obj;
 }
 
+// 获取自定义的 porps
+export function getCustomProps(props, attrs) {
+  const propsKyes = Object.keys(props);
+  const defaultProps = {};
+  propsKyes.forEach(k => {
+    defaultProps[k] = typeof props[k].default == 'function' ? props[k].default() : props[k].default
+  })
+  return Object.assign(defaultProps, getIncludeAttrs(propsKyes, attrs));
+};
+
+
 // 生成一个 id 
 export function guid() {
   return "xxxxxxxx".replace(/[x]/g, (c) => {
