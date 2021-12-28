@@ -1,5 +1,5 @@
 <template>
-  <el-table class="agel-form-tableditor" ref="tableditor" :data="data" v-bind="$attrs" :border="border" v-on="$listeners">
+  <el-table class="agel-form-tableditor" ref="elTable" :data="data" v-bind="$attrs" :border="border" v-on="$listeners">
     <slot name="prepend"></slot>
     <el-table-column v-for="item in agItems" v-bind="item.$tableColumn" label="" :key="item.prop">
       <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item)" slot="header"></render-component>
@@ -17,17 +17,7 @@
 import itemsMinxin from "../utils/itemsMixin";
 import renderComponent from "./render-component";
 import { getIncludeAttrs } from "../utils/utils";
-
-const tableColumnPropsKeys = [
-  "prop",
-  "type",
-  "width",
-  "min-width",
-  "show-overflow-tooltip",
-  "align",
-  "header-align",
-  "formatter",
-];
+import { tableColumnPropsKeys } from "../utils/props";
 
 export default {
   name: "agel-form-tableditor",
@@ -45,8 +35,8 @@ export default {
       type: Array,
       default: () => new Array(),
     },
-    model: {
-      tyoe: Object,
+    modelProxy: {
+      type: Object,
     },
   },
   provide() {
@@ -76,8 +66,8 @@ export default {
     tableFormModel: {
       immediate: true,
       handler() {
-        if (!this.model) return;
-        this.$emit("update:model", this.tableFormModel);
+        if (!this.modelProxy) return;
+        this.$emit("update:modelProxy", this.tableFormModel);
       },
     },
   },

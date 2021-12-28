@@ -3,7 +3,6 @@ node_modules/
 distdocs/
 dist/
 todo/
-test-form.vue
 
 # local env files
 .env.local

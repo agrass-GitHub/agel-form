@@ -12,6 +12,9 @@ export const formPropKeys = [
   "disabled",
 ];
 
+export const formItemPropKyes = ["prop", "label", "label-width", "required", "rules", "show-message", "inline-message"];
+
+
 export const gridPropKeys = [
   "responsive",
   "responsiveMethod",
@@ -31,6 +34,29 @@ export const gridPropKeys = [
   "tag",
 ];
 
+export const descriptionsPropkeys = [
+  "border",
+  "column",
+  "direction",
+  "size",
+  "title",
+  "extra",
+  "colon",
+  "labelClassName",
+  "contentClassName",
+  "labelStyle",
+  "contentStyle",
+];
+
+export const descriptionsItemPropkeys = [
+  "label",
+  "span",
+  "labelClassName",
+  "contentClassName",
+  "labelStyle",
+  "contentStyle",
+];
+
 export const tablePropsKeys = [
   "height",
   "max-height",
@@ -47,16 +73,26 @@ export const tablePropsKeys = [
   "summary-method",
 ];
 
-export const descriptionsPropkeys = [
-  "border",
-  "column",
-  "direction",
-  "size",
-  "title",
-  "extra",
-  "colon",
-  "labelClassName",
-  "contentClassName",
-  "labelStyle",
-  "contentStyle",
+export const tableColumnPropsKeys = [
+  "prop",
+  "type",
+  "width",
+  "min-width",
+  "show-overflow-tooltip",
+  "align",
+  "header-align",
+  "formatter",
 ];
+
+export const defaultComponent = "el-input";
+
+// 可省略 ag 前缀的组件
+export const agComponents = [
+  "agel-radio",
+  "agel-checkbox",
+  "agel-select",
+  "agel-upload",
+  "agel-tree-select",
+  "agel-text",
+  "agel-map-input",
+]

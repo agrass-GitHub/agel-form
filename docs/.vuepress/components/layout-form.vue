@@ -1,31 +1,85 @@
 <template>
-  <agel-form class="demo" v-model="form"> </agel-form>
+  <div class="demo border">
+    <el-divider content-position="left">el-form 包裹</el-divider>
+    <el-form :model="{...data,...tableMode}" class="border" label-width="auto" ref="form">
+      <!-- 内联布局 -->
+      <el-divider content-position="left">agel-form-inline 内联布局</el-divider>
+      <agel-form-inline :items="inlineItems" :data="data"></agel-form-inline>
+
+      <!-- 栅格布局 -->
+      <el-divider content-position="left">agel-form-grid 栅格布局</el-divider>
+      <agel-form-grid :items="gridItems" :data="data" :span="12"></agel-form-grid>
+
+      <!-- 描述布局 -->
+      <el-divider content-position="left">agel-form-descriptions 描述布局</el-divider>
+      <agel-form-descriptions :items="gridItems" :data="data" :column="2"></agel-form-descriptions>
+
+      <!-- 表格编辑器布局, 如果有验证的话，需要使用 model-proxy 属性 -->
+      <el-divider content-position="left">agel-form-tableditor 表格编辑器布局</el-divider>
+      <agel-form-tableditor :items="tableItems" :data="data.list" :model-proxy.sync="tableMode"></agel-form-tableditor>
+
+      <!-- 自定义布局 -->
+      <el-divider content-position="left">custom 自定义布局</el-divider>
+      <el-row type="flex" justify="space-between">
+        <el-form-item prop="e1" label="姓名" :rules="{required:true,message:'必填',trigger:'blur'}">
+          <el-input v-model="data.e1"></el-input>
+        </el-form-item>
+        <el-form-item prop="e1" label="地址">
+          <el-input v-model="data.e2"></el-input>
+        </el-form-item>
+      </el-row>
+
+      <!-- 随意穿插其他内容  -->
+      <el-button style="margin-top:20px" @click="validate" type="primary">验证</el-button>
+    </el-form>
+  </div>
 </template>
  
 <script>
 export default {
   data() {
     return {
-      form: {
-        labelWidth: "80px",
-        labelPosition: "right",
-        data: {},
-        gutter: 5, // 栅格间距
-        span: 20, // 全局span
-        xs: { span: 24, push: 0 }, // <768px 设置为 24 span
-        items: [
-          { prop: "name", label: "姓名", span: 10 },
-          { prop: "region", label: "地址", span: 9, push: 1 },
-          { prop: "intor", label: "介绍" },
-          {
-            prop: "email",
-            label: "标签很长很长",
-            labelWidth: "135px",
-            labelPosition: "left",
-          },
+      data: {
+        e1: "",
+        e2: "",
+        list: [
+          { d1: "姓名", d2: "xxx自治区", _edit: false },
+          { d1: "", d2: "" },
+          { d1: "", d2: "" },
         ],
       },
+      inlineItems: [
+        { prop: "a1", label: "姓名", required: true },
+        { prop: "a2", label: "地址" },
+      ],
+      gridItems: [
+        { prop: "b1", label: "姓名", required: true },
+        { prop: "b2", label: "地址" },
+        { prop: "b3", label: "介绍", type: "textarea", span: 24 },
+      ],
+      decItems: [
+        { prop: "c1", label: "姓名", required: true },
+        { prop: "c2", label: "地址" },
+        { prop: "c3", label: "介绍", type: "textarea", span: 2 },
+      ],
+      tableMode: {}, // table 表单验证的 model 对象
+      tableItems: [
+        { label: "#", type: "index" },
+        { prop: "d1", label: "姓名", required: true, width: "100px" },
+        { prop: "d2", label: "地址", minWidth: "100px" },
+      ],
     };
+  },
+  methods: {
+    validate() {
+      this.$refs.form.validate((is) => {
+        if (is) {
+          this.$message.success("成功");
+        } else {
+          this.$message.error("验证失败");
+        }
+      });
+    },
   },
 };
 </script>

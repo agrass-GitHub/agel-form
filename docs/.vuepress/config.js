@@ -29,6 +29,7 @@ module.exports = {
         collapsable: false,
         sidebarDepth: 0,
         children: [
+          '/component/agel-form-layout',
           '/component/agel-checkbox-radio',
           '/component/agel-select',
           '/component/agel-tree-select',

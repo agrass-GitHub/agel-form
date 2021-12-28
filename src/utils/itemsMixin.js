@@ -7,14 +7,12 @@ import {
   each,
 } from "../utils/utils";
 
-
-const defaultComponent = "el-input";
+import { formItemPropKyes, agComponents, defaultComponent } from "./props"
 
 const agItemProps = {
   // 是否自定义 Label slot
   label: {
     type: String,
-    default: "",
   },
   // 关联表单字段名称
   prop: {
@@ -35,10 +33,6 @@ const agItemProps = {
   slot: {
     type: [Boolean, Function, Object, String],
     default: false,
-  },
-  // 初始值
-  defaultValue: {
-    default: undefined,
   },
 }
 
@@ -68,17 +62,6 @@ const componentPorps = {
     default: false,
   }
 }
-const formItemPropKyes = ["prop", "label", "label-width", "required", "rules",];
-
-const agComponents = [
-  "agel-radio",
-  "agel-checkbox",
-  "agel-select",
-  "agel-upload",
-  "agel-tree-select",
-  "agel-text",
-  "agel-map-input",
-]
 
 export default {
   inject: {
@@ -169,8 +152,13 @@ export default {
         component.name = item.slot === true ? (scopedSlots[item.prop] || "") : item.slot;
         component.isTag = false;
       } else {
-        const agItemPropKyes = Object.keys(agItemProps);
-        const ignoreAttrKeys = [].concat('component', agItemPropKyes, formItemPropKyes, this.agItemExtendKeys, this.itemExtendKeys);
+        const ignoreAttrKeys = [].concat('component',
+          Object.keys(componentPorps),
+          Object.keys(agItemProps),
+          formItemPropKyes,
+          this.agItemExtendKeys,
+          this.itemExtendKeys
+        );
         component.name = this.getName(item);
         component.isTag = typeof component.name === 'string';
         component.attrs = Object.assign(getExcludeAttrs(ignoreAttrKeys, item), item.$component || {});
@@ -184,7 +172,7 @@ export default {
     },
     getItemValue(item) {
       let name = this.getName(item);
-      if (item.hasOwnProperty("defaultValue")) return item.defaultValue;
+      // if (item.hasOwnProperty("defaultValue")) return item.defaultValue;
       if (
         name == "el-input" ||
         name == "el-autocomplete" ||
@@ -247,12 +235,12 @@ export default {
     },
     // 暴露出去的功能函数
     getRef(prop) {
-      const agFormItemRef = this.$refs[prop];
-      if (!agFormItemRef || agFormItemRef.length == 0) return null;
-      if (agFormItemRef.length == 1) {
-        return agFormItemRef[0].$refs.component;
+      const ref = this.$refs[prop];
+      if (!ref || ref.length == 0) return null;
+      if (Array.isArray(ref) && ref.every((v) => v.$options._componentTag == 'agel-form-item')) {
+        return ref.length == 1 ? ref[0].$refs.component : ref.map((v) => v.$refs.component);
       } else {
-        return agFormItemRef.map((v) => v.$refs.component);
+        return ref
       }
     },
     getItem(prop, deep) {

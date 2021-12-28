@@ -8,11 +8,12 @@
     <template v-slot:append>
       <el-form-item>
         <el-button type="primary">查询</el-button>
-        <el-button type="primary">初始化</el-button>
       </el-form-item>
       <!-- 
-        // 栅格布局的情况下可用 eL-col 包裹
+        // grid 布局的情况下用 eL-col 包裹
         <el-col :span="8"> </el-col>
+        // tableditor 布局的情况下用 eL-table-column 包裹
+        <eL-table-column > </eL-table-column>
        -->
     </template>
   </agel-form>
@@ -23,7 +24,7 @@ export default {
   data() {
     return {
       form: {
-        inline: true,
+        layout: "inline",
         data: {},
         items: [
           { prop: "user", label: "审批人" },

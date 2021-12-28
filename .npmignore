@@ -6,8 +6,7 @@ public/
 todo/
 
 # local env files
-vue.config
-babel.config
+.config.js
 .eslintrc
 .env.local
 .env.*.local

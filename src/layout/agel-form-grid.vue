@@ -1,5 +1,5 @@
 <template>
-  <el-row class="agel-form-grid" ref="ELROW" v-bind="rowProps" style="flex-wrap: wrap">
+  <el-row class="agel-form-grid" ref="elRow" v-bind="rowProps" style="flex-wrap: wrap">
     <slot name="prepend"></slot>
     <el-col v-for="item in agItems" v-bind="item.$col" :key="item.prop" v-show="item.show">
       <agel-form-item v-model="data[item.prop]" v-bind="item.$formItem" :component="item.$component" :label="item.label" :ref="item.prop" />
@@ -69,10 +69,7 @@ export default {
       type: Function,
       default: responsiveMethod,
     },
-    labelWidth: {
-      type: String,
-      default: "auto",
-    },
+    labelPositionProxy: String,
     ...rowProps,
     ...colProps,
   },
@@ -84,11 +81,11 @@ export default {
   },
   mounted() {
     if (this.responsive) {
-      addResizeListener(this.$refs.ELROW.$el, this.resize);
+      addResizeListener(this.elForm.$el, this.resize);
     }
   },
   beforeDestroy() {
-    removeResizeListener(this.$refs.ELROW.$el, this.resize);
+    removeResizeListener(this.elForm.$el, this.resize);
   },
   computed: {
     rowProps() {
@@ -97,8 +94,6 @@ export default {
   },
   methods: {
     agItemExtendHandle(agItem, item) {
-      // if (agItem.$formItem.labelWidth) {
-      // }
       agItem.$col = Object.assign(
         getIncludeAttrs(colPropsKeys, this.$props),
         getIncludeAttrs(colPropsKeys, this.resizeLayoutProps),
@@ -107,9 +102,15 @@ export default {
       return agItem;
     },
     resize() {
-      let width = this.$refs.ELROW.$el.clientWidth;
+      let width = this.$refs.elRow.$el.clientWidth;
       if (!this.responsive || width == 0) return;
       this.resizeLayoutProps = this.responsiveMethod(width);
+      if (this.resizeLayoutProps.labelPosition) {
+        this.$emit(
+          "update:labelPositionProxy",
+          this.resizeLayoutProps.labelPosition
+        );
+      }
     },
   },
   install(vue) {

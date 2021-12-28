@@ -7,7 +7,8 @@
       </el-link>
     </div>
     <template v-slot:default="{row,$index}">
-      <el-link v-if="edit" size="mini" type="primary" style="margin:0px 3px" @click="editTableRow(row,$index)">{{row._edit_?'保存':'编辑'}}</el-link>
+      <el-link v-if="edit" size="mini" type="primary" style="margin:0px 3px" @click="editTableRow(row,$index)">{{row._edit_!==false?'保存':'编辑'}}
+      </el-link>
       <el-link v-if="del" size="mini" type="primary" style="margin:0px 3px" @click="delTableRow($index)">删除</el-link>
       <slot></slot>
     </template>

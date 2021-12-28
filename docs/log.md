@@ -9,19 +9,18 @@ sidebar: auto
 #### agel-form
 - `bug` 修复 agel-radio 组件因初始值为 undefined 时触发表单 rules
 - `bug` 修复 el-descriptions-item 的属性被注入到 component 中
-- `new` 新增 form.layout tableditor 表格编辑器布局
+- `new` 新增 表格编辑器布局
 - `new` 新增 item.vmodel 支持 .number .trim 修饰符
-- `new` 新增 item.componet 支持类型 支持组件实例，异步组件
-- `new` 新增 全局配置单组件 defaultValue 初始值
+- `new` 新增 item.componet 支持类型 支持组件实例，异步组件，对插槽支持类型进行增强
+- `new` 新增(拆分) inline grid descriptions tableditor 四个布局子组件
 - `change` el-input-number 默认值由 0 调整为 undefined；
 - `change` el-date-picker el-time-select 默认值由 null 调整为 ""
 - `change` descriptions 布局默认开启 border样式，优化在 border:false 时排版，
-- `change` gird 组件响应式只支持动态响应 el-col 组件属性
 - `change` 修改组件导入逻辑, Vue.use(agelForm) 会默认注册核心组件到全局, 组件本身移除相关依赖
 ```js
 const coreComponents = [agelForm, agelFormItem, agelFormGrid, agelFormInline, agelFormTableditor, agelFormDescriptions,agelRadio,agelCheckbox, agelSelect,agelTreeSelect,agelUpload,agelText]
 ```
-- `destructive` 重构了代码逻辑；拆分(新增)出 inline grid descriptions tableditor 四个布局子组件，agel-form 转为包装组件，布局由 form.layout 属性来支持，暂时仍兼容旧写法（不推荐）
+- `destructive` 重构了代码逻辑，agel-form 转为包装组件，布局由 form.layout 属性来支持，暂时仍兼容旧写法（不推荐）
 ```js
 // old
 const form = { inline:true }  || { descriptions:true }

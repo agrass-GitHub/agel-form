@@ -1,12 +1,12 @@
 <template>
-  <el-form class="agel-form" ref="form" v-bind="formPorps" v-on="value.on||{}">
+  <el-form class="agel-form" ref="elForm" v-bind="formPorps" v-on="value.on||{}">
     <!-- 内联 布局 -->
     <agel-form-inline v-if="value.layout=='inline'" v-bind="layoutProps" ref="layout">
       <slot v-for="name in ['prepend', 'append']" :slot="name" :name="name" />
     </agel-form-inline>
 
     <!-- 栅格 布局 -->
-    <agel-form-grid v-if="value.layout=='grid'" v-bind="layoutProps" ref="layout">
+    <agel-form-grid v-else-if="value.layout=='grid'" v-bind="layoutProps" :labelPositionProxy.sync="gridLabelPositionProxy" ref="layout">
       <slot v-for="name in ['prepend', 'append']" :slot="name" :name="name" />
     </agel-form-grid>
 
@@ -16,7 +16,8 @@
     </agel-form-descriptions>
 
     <!-- tableditor 布局 -->
-    <agel-form-tableditor v-else-if="value.layout=='tableditor'" v-bind="layoutProps" :model.sync="tableditorFormModel" v-on="value.on||{}" ref="layout">
+    <agel-form-tableditor v-else-if="value.layout=='tableditor'" v-bind="layoutProps" :modelProxy.sync="tableditorModelProxy" v-on="value.on||{}"
+      ref="layout">
       <slot v-for="name in ['prepend', 'append']" :slot="name" :name="name" />
     </agel-form-tableditor>
 
@@ -65,9 +66,9 @@ export default {
         const agelFormConfig = this.$agelFormConfig || {};
         extend(this.value, agelFormConfig.form || {});
         extend(this.value, {
+          layout: "grid",
           items: [],
           data: {},
-          layout: "grid",
           getRef: this.getRef,
           getItem: this.getItem,
           validate: this.validate,
@@ -89,16 +90,19 @@ export default {
   },
   data() {
     return {
-      tableditorFormModel: {},
+      gridLabelPositionProxy: "",
+      tableditorModelProxy: {},
     };
   },
   computed: {
     formPorps() {
       const props = getIncludeAttrs(formPropKeys, this.value);
       extend(props, { labelWidth: "auto" });
-      if (this.value.layout == "inline") props.inline = true;
-      if (this.value.layout == "tableditor") {
-        props.model = this.tableditorFormModel;
+      if (this.value.layout === "grid" && this.value.responsive) {
+        props.labelPosition = this.gridLabelPositionProxy;
+      }
+      if (this.value.layout === "tableditor") {
+        props.model = this.tableditorModelProxy;
       } else {
         props.model = this.value.data;
       }
@@ -128,14 +132,15 @@ export default {
   methods: {
     // 暴露出去的功能函数
     getRef(prop) {
-      if (prop == undefined) return this.$refs.form;
+      if (prop == undefined || prop === "elForm") return this.$refs.elForm;
+      if (prop === "elLayout") return this.$refs.layout;
       return this.$refs.layout.getRef(prop);
     },
     getItem(prop, deep) {
       return this.$refs.layout.getItem(prop, deep);
     },
     validate(callback, erroCallback) {
-      this.$refs.form.validate((is) => {
+      this.$refs.elForm.validate((is) => {
         if (is) {
           callback && callback(this.value.data);
         } else {
@@ -144,10 +149,10 @@ export default {
       });
     },
     resetFields() {
-      this.$refs.form.resetFields();
+      this.$refs.elForm.resetFields();
     },
     clearValidate(props) {
-      this.$refs.form.clearValidate(props);
+      this.$refs.elForm.clearValidate(props);
     },
   },
 };

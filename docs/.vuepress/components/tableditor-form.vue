@@ -5,8 +5,8 @@
       <tableditor-menu-column slot="append" :data="form.data"></tableditor-menu-column>
     </agel-form>
     <div style="margin-top:10px">
-      <el-button @click="validate">验证</el-button>
-      <el-button @click="getTableRef">获取 table vue 实例</el-button>
+      <el-button @click="validateRow">验证第三行表单</el-button>
+      <el-button @click="getRef">获取组件实例</el-button>
     </div>
   </div>
 </template>
@@ -18,8 +18,7 @@ export default {
     return {
       form: {
         layout: "tableditor",
-        labelWidth: "80px",
-        span: 15,
+        maxHeight: "300px",
         data: [
           {
             name: "使用 agel-form 使用 agel-form",
@@ -27,17 +26,13 @@ export default {
             _edit_: false,
           },
           {
-            name: "使用 agel-form",
-            delivery: false,
-          },
-          {
-            name: "使用 agel-form",
+            name: "使用 agel-form 使用 agel-form",
             delivery: true,
+            _edit_: false,
           },
-          {
-            name: "使用 agel-form",
-            delivery: true,
-          },
+          { name: "", delivery: false },
+          { name: "", delivery: true },
+          { name: "", delivery: true },
         ],
         items: [
           { type: "selection", align: "center", width: "50px" },
@@ -50,9 +45,9 @@ export default {
             "show-overflow-tooltip": true,
           },
           {
-            component: "el-switch",
             label: "即时配送",
             prop: "delivery",
+            component: "el-switch",
             formatter: (row, column, cellValue, index) => {
               return cellValue ? "即时" : "延时";
             },
@@ -60,18 +55,21 @@ export default {
           {
             component: "el-select",
             label: "活动区域",
+            prop: "region",
+            required: true,
+            component: "el-select",
             options: ["区域1", "区域2"],
             width: "150px",
-            prop: "region",
           },
           {
-            component: "el-date-picker",
             label: "活动时间",
             prop: "date",
+            component: "el-date-picker",
             width: "150px",
           },
         ],
         on: {
+          // 可以触发 el-table event
           "selection-change": (selection) => {
             console.log(selection);
             this.$message.info(`已选取${selection.length}条数据`);
@@ -81,12 +79,17 @@ export default {
     };
   },
   methods: {
-    validate() {
-      this.form.validate();
+    validateRow() {
+      // agel-form-tableditor 实例
+      this.form.getRef("elLayout").validateRow(2, () => {
+        this.$message.success("验证成功");
+      });
     },
-    getTableRef() {
-      console.log("---------- table实例 ----------");
-      console.log(this.form.getRef("layout:tableditor"));
+    getRef() {
+      console.log("---------- Form 实例 ----------");
+      console.log(this.form.getRef("elForm"));
+      console.log("---------- Table 实例 ----------");
+      console.log(this.form.getRef("elTable"));
       console.log("---------- 组件实例，若存在多个为数组----------");
       console.log(this.form.getRef("name"));
       this.$message.info("获取实例成功，查看控制台");

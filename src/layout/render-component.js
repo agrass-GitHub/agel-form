@@ -19,10 +19,7 @@ export default {
     const isComponentInstance = (v) => v && typeof v === 'object' && typeof v.render === 'function'
     const isComponentAsyncFun = (v) => v && v instanceof Promise
     const isComponent = (v) => isComponentName(v) || isComponentInstance(v) || isComponentAsyncFun(v)
-    const isVNode = (v) => {
-      const is = v && typeof v === 'object' && v.hasOwnProperty('componentOptions');
-      return v && typeof v === 'object' && v.hasOwnProperty('componentOptions');
-    }
+    const isVNode = (v) => v && typeof v === 'object' && v.hasOwnProperty('componentOptions')
     const isText = (v) => (typeof v === "string" && !isComponentName(v)) || typeof v == "number"
     const isVNodes = (v) => Array.isArray(v) && v.length > 0 && v.every(k => isVNode(k))
     const wrapvnode = (vnode) => {

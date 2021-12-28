@@ -66,7 +66,7 @@ export default {
             typeof this.label === "string" ? this.label + "必填" : "该字段必填",
         });
       }
-      return rules;
+      return rules.length > 0 ? rules : undefined;
     },
     slots() {
       let slots = this.component.slots || {};

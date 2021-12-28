@@ -24,8 +24,8 @@ import agelFormDialog from "./agel-form-dialog.vue";
 const coreComponents = [
   agelForm,
   agelFormItem,
-  agelFormGrid,
   agelFormInline,
+  agelFormGrid,
   agelFormTableditor,
   agelFormDescriptions,
   agelRadio,

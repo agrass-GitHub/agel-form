@@ -23,12 +23,6 @@ const formConfig = {
       if (item.type == "year") item.valueFormat = "yyyy";
     }
   },
-  // 为某个组件设置 表单智能回填 的默认值
-  "xxxx-input": function () {
-    return {
-      defaultValue: []
-    }
-  }
 }
 
 Vue.use(agelForm, formConfig);
