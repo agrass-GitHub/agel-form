@@ -1,11 +1,10 @@
 <template>
-  <el-form-item v-bind="$attrs" label="" :required="false" :rules="rules" :class="className">
+  <el-form-item v-bind="$attrs" :prop="prop" label="" :required="false" :rules="rules" :class="className">
     <slot slot="label" name="label">
       <render-component v-if="label" :render="label" />
     </slot>
     <slot>
-      <render-component v-if="component.name" :value="value" :render="component.name" v-on="component.on" v-bind="component.attrs" @input="input"
-        ref="component" :is-tag="component.isTag">
+      <render-component v-if="component.name" :value="value" :render="component.name" v-on="component.on" v-bind="component.attrs" @input="input" :ref="prop||'component'" :is-tag="component.isTag">
         <template v-for="(slot,staticName) in slots.staticSlots" v-slot:[staticName]>
           <render-component :key="staticName" :render="slot" />
         </template>
@@ -27,6 +26,7 @@ export default {
     renderComponent,
   },
   props: {
+    prop: String,
     // Object[Vnode]
     label: [String, Number, Object, Array, Function],
     // 生成必填 rules

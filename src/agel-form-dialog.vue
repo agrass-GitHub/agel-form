@@ -65,7 +65,7 @@ export default {
       this.$emit("confirm");
     },
     validate(call, err) {
-      const formRefs = this.findRefs();
+      const formRefs = this.findElForm();
       if (formRefs.length > 0) {
         let count = 0;
         formRefs.forEach((form) => form.validate((is) => is && count++));
@@ -77,7 +77,7 @@ export default {
       }
     },
     close() {
-      const formRefs = this.findRefs();
+      const formRefs = this.findElForm();
       formRefs.forEach((form) => form.resetFields());
     },
     beforeClose(done) {
@@ -87,7 +87,7 @@ export default {
         if (!this.loading) done();
       }
     },
-    findRefs(vm = this, refs = []) {
+    findElForm(vm = this, refs = []) {
       vm.$children.forEach((item) => {
         if (
           item.$options._componentTag == "el-form" &&
@@ -96,7 +96,7 @@ export default {
         ) {
           refs.push(item);
         }
-        this.findRefs(item, refs);
+        this.findElForm(item, refs);
       });
       return refs;
     },

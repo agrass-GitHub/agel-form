@@ -2,7 +2,7 @@
   <el-row class="agel-form-grid" ref="elRow" v-bind="rowProps" style="flex-wrap: wrap">
     <slot name="prepend"></slot>
     <el-col v-for="item in agItems" v-bind="item.$col" :key="item.prop" v-show="item.show">
-      <agel-form-item v-model="data[item.prop]" v-bind="item.$formItem" :component="item.$component" :label="item.label" :ref="item.prop" />
+      <agel-form-item v-model="value[item.prop]" v-bind="item.$formItem" :component="item.$component" :label="item.label" />
     </el-col>
     <slot name="append"></slot>
   </el-row>
@@ -61,6 +61,10 @@ export default {
   mixins: [itemsMinxin],
   inheritAttrs: false,
   props: {
+    value: {
+      type: Object,
+      require: true,
+    },
     responsive: {
       type: Boolean,
       default: false,

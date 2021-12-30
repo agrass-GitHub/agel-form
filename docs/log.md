@@ -6,6 +6,8 @@ sidebar: auto
 
 ## v.0.3.3
 
+该版本重构了部分逻辑，有破坏性更新。
+
 #### agel-form
 - `bug` 修复 agel-radio 组件因初始值为 undefined 时触发表单 rules
 - `bug` 修复 el-descriptions-item 的属性被注入到 component 中
@@ -20,19 +22,27 @@ sidebar: auto
 ```js
 const coreComponents = [agelForm, agelFormItem, agelFormGrid, agelFormInline, agelFormTableditor, agelFormDescriptions,agelRadio,agelCheckbox, agelSelect,agelTreeSelect,agelUpload,agelText]
 ```
-- `destructive` 重构了代码逻辑，agel-form 转为包装组件，布局由 form.layout 属性来支持，暂时仍兼容旧写法（不推荐）
+- `破坏性` agel-form 转为包装组件，布局由 form.layout 属性来支持，暂时仍兼容旧写法（不推荐）
 ```js
 // old
 const form = { inline:true }  || { descriptions:true }
 // new
 const form = { layout:"inline" }  || { layout:'descriptions' }
 ```
+- `破坏性` 全局配置逻辑修改，函数配置移除 prop form 参数，不支持直接修改 item 对象。
+```js
+// old
+"el-date-picker":(prop,item,form)=> item.valueFormat="yyyy-MM-dd"
+// new
+"el-date-picker":(item)=> return { valueFormat:"yyyy-MM-dd"}
+```
+
 
 #### agel-search-panel
 - `bug` 修复自定义表单插槽时 input v-model 失效
 - `new` 在点击查询按钮时验证表单规则
-- `destructive` 移除了按钮属性配置，调整为在全局配置提供按钮 render
-- `destructive` props 参数不再由 form 对象中获取, 调整为组件中获取，暂时仍兼容旧写法（不推荐）
+- `破坏性` 移除了按钮属性配置，调整为在全局配置提供按钮 render
+- `破坏性` props 参数不再由 form 对象中获取, 调整为组件中获取，暂时仍兼容旧写法（不推荐）
 ```vue
 <template>
   <!--old--->
@@ -52,8 +62,8 @@ const form = { layout:"inline" }  || { layout:'descriptions' }
 - `new` 新增 clearableTags 属性
 
 #### agel-form-dialog
-- `change` loading 时操作按钮调整为禁用状态
-
+- `new` 开启 loading 时 dialog footer 插槽中所有按钮都会禁用
+- `change` loading 开启时确定按钮由 loading 调整为禁用状态，避免某些场景歧义
 
 ## v.0.3.2
 

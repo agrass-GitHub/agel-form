@@ -71,7 +71,6 @@ export default {
             component: "el-rate",
             label: "活动评分",
             prop: "rate",
-            defaultValue: 3,
           },
           {
             component: "el-upload",

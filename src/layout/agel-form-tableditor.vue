@@ -1,12 +1,14 @@
 <template>
-  <el-table class="agel-form-tableditor" ref="elTable" :data="data" v-bind="$attrs" :border="border" v-on="$listeners">
+  <el-table class="agel-form-tableditor" ref="elTable" :data="value" v-bind="$attrs" :border="border" v-on="$listeners">
     <slot name="prepend"></slot>
     <el-table-column v-for="item in agItems" v-bind="item.$tableColumn" label="" :key="item.prop">
       <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item)" slot="header"></render-component>
-      <template v-if="!types.includes(item.$tableColumn.type)" v-slot:default="{row,column,$index}">
-        <agel-form-item v-if="row._edit_!==false||item.$tableColumn.type=='expand'" v-show="item.show" v-model="row[item.prop]"
-          v-bind="item.$formItem" :component="item.$component" label="" label-width="0px" :prop="`${item.prop}-${$index}`" :ref="item.prop" />
+      <template v-slot:default="{row,column,$index}">
+
+        <agel-form-item v-if="row._edit_!==false||item.$tableColumn.type=='expand'" v-show="item.show" v-model="row[item.prop]" v-bind="item.$formItem" :component="item.$component" label="" label-width="0px" :prop="getFormItemProp(item,$index)" />
+
         <span class="tableditor-cell-text" v-else>{{getColumnText(item,row,column,row[item.prop],$index)}}</span>
+
       </template>
     </el-table-column>
     <slot name="append"></slot>
@@ -27,16 +29,10 @@ export default {
     renderComponent,
   },
   props: {
+    value: Array,
     border: {
       type: Boolean,
       default: true,
-    },
-    data: {
-      type: Array,
-      default: () => new Array(),
-    },
-    modelProxy: {
-      type: Object,
     },
   },
   provide() {
@@ -46,40 +42,10 @@ export default {
   },
   data() {
     return {
-      types: ["selection", "index"],
       agItemExtendKeys: tableColumnPropsKeys,
     };
   },
-  computed: {
-    tableFormModel() {
-      const model = {};
-      this.data.forEach((row, index) => {
-        this.agItems.forEach((v) => {
-          if (v.prop.indexOf("_aguid_") !== -1) return;
-          model[`${v.prop}-${index}`] = row[v.prop];
-        });
-      });
-      return model;
-    },
-  },
-  watch: {
-    tableFormModel: {
-      immediate: true,
-      handler() {
-        if (!this.modelProxy) return;
-        this.$emit("update:modelProxy", this.tableFormModel);
-      },
-    },
-  },
   methods: {
-    validateRow(index, callback) {
-      let props = this.agItems.map((v) => `${v.prop}-${index}`);
-      let ok = true;
-      this.elForm.validateField(props, (errMsg) => {
-        if (errMsg) ok = false;
-      });
-      ok && callback && callback();
-    },
     agItemExtendHandle(agItem, item) {
       agItem.$tableColumn = getIncludeAttrs(tableColumnPropsKeys, item);
       return agItem;
@@ -89,12 +55,26 @@ export default {
         ? item.$tableColumn.formatter(row, column, cellValue, index)
         : cellValue;
     },
+    getFormItemProp(agItem, index) {
+      return this.modelProp
+        ? `${this.modelProp}.${index}.${agItem.prop}`
+        : agItem.prop;
+    },
+    validateRow(index, callback) {
+      let props = this.agItems.map((v) => this.getFormItemProp(v, index));
+      let ok = true;
+      this.elForm.validateField(props, (errMsg) => {
+        if (errMsg) ok = false;
+      });
+      ok && callback && callback();
+    },
   },
   install(vue) {
     vue.component(this.name, this);
   },
 };
 </script>
+
 <style>
 .agel-form-tableditor .el-date-editor.el-input,
 .agel-form-tableditor .el-date-editor.el-input__inner,

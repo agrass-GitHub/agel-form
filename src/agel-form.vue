@@ -16,8 +16,7 @@
     </agel-form-descriptions>
 
     <!-- tableditor 布局 -->
-    <agel-form-tableditor v-else-if="value.layout=='tableditor'" v-bind="layoutProps" :modelProxy.sync="tableditorModelProxy" v-on="value.on||{}"
-      ref="layout">
+    <agel-form-tableditor v-else-if="value.layout=='tableditor'" v-bind="layoutProps" v-on="value.on||{}" ref="layout">
       <slot v-for="name in ['prepend', 'append']" :slot="name" :name="name" />
     </agel-form-tableditor>
 
@@ -26,7 +25,7 @@
 </template>
 
 <script>
-import { getIncludeAttrs, extend, each } from "./utils/utils";
+import { getIncludeAttrs, extend } from "./utils/utils";
 
 import {
   formPropKeys,
@@ -102,7 +101,7 @@ export default {
         props.labelPosition = this.gridLabelPositionProxy;
       }
       if (this.value.layout === "tableditor") {
-        props.model = this.tableditorModelProxy;
+        props.model = { tableditor: this.value.data };
       } else {
         props.model = this.value.data;
       }
@@ -110,7 +109,7 @@ export default {
     },
     layoutProps() {
       const props = {
-        data: this.value.data,
+        value: this.value.data,
         items: this.value.items,
         itemExtendKeys: this.itemExtendKeys,
       };
@@ -124,6 +123,7 @@ export default {
           break;
         case "tableditor":
           layoutPropsKeys = tablePropsKeys;
+          props.modelProp = "tableditor";
           break;
       }
       return Object.assign(getIncludeAttrs(layoutPropsKeys, this.value), props);
@@ -133,7 +133,7 @@ export default {
     // 暴露出去的功能函数
     getRef(prop) {
       if (prop == undefined || prop === "elForm") return this.$refs.elForm;
-      if (prop === "elLayout") return this.$refs.layout;
+      if (prop == "layout") return this.$refs.layout;
       return this.$refs.layout.getRef(prop);
     },
     getItem(prop, deep) {

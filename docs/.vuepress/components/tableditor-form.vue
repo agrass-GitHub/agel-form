@@ -1,11 +1,14 @@
 <template>
   <div class="demo border">
     <agel-form v-model="form">
-      <!-- 可使用 agel-form 的操作列组件使用，或者自定义 el-table-column  -->
+      <template v-slot:prepend>
+        <el-table-column type="selection" align="center" :width="50"></el-table-column>
+        <el-table-column label="#" type="index" align="center" :width="50" :index="(i)=>i"></el-table-column>
+      </template>
       <tableditor-menu-column slot="append" :data="form.data"></tableditor-menu-column>
     </agel-form>
     <div style="margin-top:10px">
-      <el-button @click="validateRow">验证第三行表单</el-button>
+      <el-button @click="validateRow">验证某一行表单</el-button>
       <el-button @click="getRef">获取组件实例</el-button>
     </div>
   </div>
@@ -35,8 +38,6 @@ export default {
           { name: "", delivery: true },
         ],
         items: [
-          { type: "selection", align: "center", width: "50px" },
-          { label: "#", type: "index", align: "center", width: "50px" },
           {
             label: "名称",
             prop: "name",
@@ -81,17 +82,16 @@ export default {
   methods: {
     validateRow() {
       // agel-form-tableditor 实例
-      this.form.getRef("elLayout").validateRow(2, () => {
+      console.log( this.form.getRef("layout"))
+      this.form.getRef("layout").validateRow(2, () => {
         this.$message.success("验证成功");
       });
     },
     getRef() {
-      console.log("---------- Form 实例 ----------");
-      console.log(this.form.getRef("elForm"));
       console.log("---------- Table 实例 ----------");
       console.log(this.form.getRef("elTable"));
-      console.log("---------- 组件实例，若存在多个为数组----------");
-      console.log(this.form.getRef("name"));
+      console.log( "---------- 组件实例，index 为 2 prop 为 name 组件----------" );
+      console.log(this.form.getRef("tableditor.2.name"));
       this.$message.info("获取实例成功，查看控制台");
     },
   },

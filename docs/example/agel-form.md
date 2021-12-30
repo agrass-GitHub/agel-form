@@ -12,11 +12,11 @@
 
 ## 行内表单 
 
-表单通过 [agel-form-inline]() 布局组件实现行内布局，设置 `layout：inline` 开启。
+表单通过 [agel-form-inline](/agel-form/component/agel-form-layout.html#layout-attributes) 布局组件实现行内布局，设置 `layout：inline` 开启。
 
-`form` 支持 [el-form]() 组件的属性, `label-width` 默认为 `atuo`。
+`form` 支持 [el-form](https://element.eleme.cn/#/zh-CN/component/form#form-attributes) 组件的属性, `label-width` 默认为 `atuo`。
 
-`item` 支持 [el-form-item]() 组件的属性，支持 `component` 组件的动态属性。
+`item` 支持 [el-form-item](https://element.eleme.cn/#/zh-CN/component/form#form-item-attributes) 组件的属性，支持 `component` 组件的动态属性。
 
 以上是一个最基础的属性支持，在不同的布局下额外支持不同的组件属性。
 
@@ -28,7 +28,7 @@
 
 ## 栅格表单
 
-表单通过 [agel-form-grid](https://element.eleme.cn/#/zh-CN/component/layout#layout-bu-ju) 组件来实现栅格布局，设置 `layout：grid` 开启栅格表单（默认）。
+表单通过 [agel-form-grid](/component/agel-form-layout.html#agelformgrid) 组件来实现栅格布局，设置 `layout：grid` 开启栅格表单（默认）。
 
 `form` 支持 [el-row](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes)，[el-col](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)组件的属性，默认为 `flex` 模式。
 
@@ -42,7 +42,7 @@
 
 ## 描述表单
 
-表单通过 [agel-form-descriptions](https://element.eleme.cn/#/zh-CN/component/descriptions) 组件来实现描述布局，设置 `layout：descriptions` 开启。
+表单通过 [agel-form-descriptions](/component/agel-form-layout.html#agelformdescriptions) 组件来实现描述布局，设置 `layout：descriptions` 开启。
 
 `form` 支持 [el-descriptions](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)组件的的属性，同样支持相关插槽。
 
@@ -56,13 +56,13 @@
 
 ## 表格编辑器表单
 
-表单通过 [agel-form-tableditor]() 组件来实现表格编辑器，设置 `layout：tableditor` 开启。
+表单通过 [agel-form-tableditor](/agel-form/component/agel-form-layout.html#agelformtableditor) 组件来实现表格编辑器，设置 `layout：tableditor` 开启。
 
 `form` 支持 [el-table](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)组件的的部分属性，和所有事件。
 
 `item` 支持 [el-table-column](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 组件的部分属性。
 
-在该布局下，`form.data` 必须为数组；通过 `row._edit_` 属性可控制列表行是否处于编辑状态；可以从 `agel-form` 中导入 [tableditor-menu-column]() 表格列组件，实现了动态增删改的功能。
+在该布局下，`form.data` 必须为数组；通过 `row._edit_` 属性可控制列表行是否处于编辑状态；可以从 `agel-form` 中导入 [tableditor-menu-column](/component/agel-form-layout.html#tableditormenucolumn) 表格列组件，实现了动态增删改的功能。
 
 <ClientOnly><tableditor-form/></ClientOnly>
 
@@ -92,6 +92,17 @@
 <<< @/docs/.vuepress/components/resize-form.vue
 ::: 
 
+## 复杂表单
+
+你甚至可以把 `layout` 组件作为单组件使用，但是这样的数据结构会过于复杂，难以维护和理解。
+
+在更复杂的场景下，例如一个表单下有多个分组、块的概念，且样式排版各不同，建议使用 `layout` 组件来实现需求，例子参考 [agel-form-layout](/component/agel-form-layout.html#使用)。
+
+<ClientOnly><complex-form/></ClientOnly>
+
+::: details 点击查看代码
+<<< @/docs/.vuepress/components/complex-form.vue
+::: 
 
 ## 表单联动
 
@@ -106,7 +117,7 @@
 ## 表单方法
 
 
-和传统的通过 `$refs.form.xxx()` 来调用组件方法有所不同，在 `agelForm` 中方法会自动注入到 `form` 对象中，建议直接通过 `form.xxx()` 来调用。
+和传统的通过 `$refs.form.xxx()` 来调用组件方法有所不同，在 `agelForm` 中方法会自动注入到 `form` 对象中，可以直接通过 `form.xxx()` 来调用。
 
 表单事件通过 `form.on` 定义，组件事件通过 `item.on` 进行定义，表单验证通过 `form.rules` 和 `item.rules` 定义，`rules` 为空的情况下设置 `required:true` 将回填一个必填 `rules`。
 
@@ -116,8 +127,12 @@
 <<< @/docs/.vuepress/components/method-form.vue
 :::
 
-
 ## 表单插槽
+
+:::tip 
+插槽功能是保证 `agel-form` 灵活性的一个很核心的功能。
+:::
+
 
 ### 表单插槽 prepend append 
 
@@ -132,9 +147,8 @@
 
 ### 表单项插槽 label slot slots
 
-这是保证 `agel-form` 灵活性的一个很核心的功能。
-
-表单项插槽支持 `Funciton`，`VNode`，`String` 写法，只有 `slot` 属性可额外持 `template` 模板写法。
+- 表单项插槽支持多种类型， `String`，`VNode`，`Array[Vnode]`，`Function`，`Component`
+- 只有 `slot` 属性可额外持 `Template` 模板写法
 
 <ClientOnly><slot-item-form/></ClientOnly>
 
@@ -169,7 +183,7 @@ slots:"查询"  ===  slots:h("span",{},"查询")  ===  slots:{ default:h("span",
 | items       | Array/Object | { }    | 表单项配置                         | 
 | on          | Object       | { }    | 表单事件                |  
 | layout      | String       | grid   | 布局方式 grid,inline,descriptions,tableditor      | 
-| ......      | ......       | ...... | [Layout 属性]()      |
+| ......      | ......       | ...... | [Layout 属性](/component/agel-form-layout.html#basic-layout)      |
 
 
 ### Form Item Attributes
@@ -188,10 +202,10 @@ slots:"查询"  ===  slots:h("span",{},"查询")  ===  slots:{ default:h("span",
 | component   | String/Component/Async Function | el-input    | 组件名称                |
 | disabled    | Boolean/Funciton| false       | 组件是否禁用              |
 | vmodel      | Boolean         | true        | 组件双向绑定，支持修饰符.number .trim              |  
-| slots       | Object/String/Funciton/Vnode   | { }         | 组件插槽 | 
+| slots       | Object/String/Funciton/Vnode  | { }         | 组件插槽 | 
 | on          | Object          | { }         | 组件事件  |
 | ......      | ......          | ......      | 组件动态属性      |
-| ......      | ......          | ......       |  [Layout Item 属性]()      |
+| ......      | ......          | ......      | [Layout Item 属性](/component/agel-form-layout.html#basic-layout)      |
 
   <!--
   | ......      | ......          | ...... | [el-col 属性](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)      | 
@@ -222,3 +236,10 @@ slots:"查询"  ===  slots:h("span",{},"查询")  ===  slots:{ default:h("span",
 | append         |  表单尾部追加内容                        |
 | ......          |  表单项的 prop 具名插槽           |
 
+### Props Keys
+
+::: details 点击查看各布局下支持的 props 属性详情
+<<< @/src/utils/props.js
+::: 
+
+相关源码 [agel-form/src/utils/props.js](https://github.com/agrass-GitHub/agel-form/blob/master/src/utils/props.js)

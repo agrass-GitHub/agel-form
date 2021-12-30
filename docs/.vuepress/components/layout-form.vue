@@ -1,22 +1,22 @@
 <template>
   <div class="demo border">
     <el-divider content-position="left">el-form 包裹</el-divider>
-    <el-form :model="{...data,...tableMode}" class="border" label-width="auto" ref="form">
+    <el-form :model="data" class="border" label-width="auto" ref="form">
       <!-- 内联布局 -->
       <el-divider content-position="left">agel-form-inline 内联布局</el-divider>
-      <agel-form-inline :items="inlineItems" :data="data"></agel-form-inline>
+      <agel-form-inline :items="inlineItems" :value="data"></agel-form-inline>
 
       <!-- 栅格布局 -->
       <el-divider content-position="left">agel-form-grid 栅格布局</el-divider>
-      <agel-form-grid :items="gridItems" :data="data" :span="12"></agel-form-grid>
+      <agel-form-grid :items="gridItems" :value="data" :span="12"></agel-form-grid>
 
       <!-- 描述布局 -->
       <el-divider content-position="left">agel-form-descriptions 描述布局</el-divider>
-      <agel-form-descriptions :items="gridItems" :data="data" :column="2"></agel-form-descriptions>
+      <agel-form-descriptions :items="decItems" :value="data" :column="2"></agel-form-descriptions>
 
-      <!-- 表格编辑器布局, 如果有验证的话，需要使用 model-proxy 属性 -->
+      <!-- 表格编辑器布局, 如果有验证的话，需要使用 model-prop 属性关联表单 -->
       <el-divider content-position="left">agel-form-tableditor 表格编辑器布局</el-divider>
-      <agel-form-tableditor :items="tableItems" :data="data.list" :model-proxy.sync="tableMode"></agel-form-tableditor>
+      <agel-form-tableditor :items="tableItems" :value="data.list" model-prop="list"></agel-form-tableditor>
 
       <!-- 自定义布局 -->
       <el-divider content-position="left">custom 自定义布局</el-divider>
@@ -62,7 +62,6 @@ export default {
         { prop: "c2", label: "地址" },
         { prop: "c3", label: "介绍", type: "textarea", span: 2 },
       ],
-      tableMode: {}, // table 表单验证的 model 对象
       tableItems: [
         { label: "#", type: "index" },
         { prop: "d1", label: "姓名", required: true, width: "100px" },

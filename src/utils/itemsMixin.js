@@ -7,12 +7,12 @@ import {
   each,
 } from "../utils/utils";
 
-import { formItemPropKyes, agComponents, defaultComponent } from "./props"
+import { formItemPropKyes } from "./props";
 
 const agItemProps = {
   // 是否自定义 Label slot
   label: {
-    type: String,
+    type: [String, Object, Function],
   },
   // 关联表单字段名称
   prop: {
@@ -31,11 +31,12 @@ const agItemProps = {
   },
   // 插槽
   slot: {
-    type: [Boolean, Function, Object, String],
+    type: [Boolean, String, Object, Function],
     default: false,
   },
 }
 
+// 渲染组件对象结构
 const componentPorps = {
   name: {
     type: [String, Object, Function],
@@ -63,6 +64,27 @@ const componentPorps = {
   }
 }
 
+export const defaultComponent = "el-input";
+
+// 可省略 ag 前缀的组件
+export const agComponents = [
+  "agel-radio",
+  "agel-checkbox",
+  "agel-select",
+  "agel-upload",
+  "agel-tree-select",
+  "agel-text",
+  "agel-map-input",
+]
+
+// 作为单组件使用的 layout 组件
+const layoutComponents = [
+  "agel-form-grid",
+  "agel-form-descriptions",
+  "agel-form-inline",
+  "agel-form-tableditor",
+]
+
 export default {
   inject: {
     elForm: {
@@ -73,19 +95,16 @@ export default {
     }
   },
   props: {
-    data: {
-      type: Object,
-      required: true,
-    },
     items: {
       type: [Array, Object],
-      required: true,
       default: () => new Array()
     },
     itemExtendKeys: {
       type: Array,
       default: () => new Array()
-    }
+    },
+    // 关联 elForm.model 的 prop 名称，用于表单验证
+    modelProp: String,
   },
   data() {
     return {
@@ -96,9 +115,9 @@ export default {
     agItems() {
       return each(this.items, "map", (v, i, k) => {
         const item = this.injectItemAttr(v, k);
-        const agItem = this.getAgFormItemAttrs(item);
+        const agItem = this.getAgItemAttrs(item);
+        agItem.$formItem = this.getFormItemAttrs(item);
         agItem.$component = this.getComponentAttrs(item);
-        agItem.$formItem = getIncludeAttrs(formItemPropKyes, item);
         return this.agItemExtendHandle(agItem, item);
       }).filter((v) => v.display);
     },
@@ -121,29 +140,36 @@ export default {
       if (item.prop == undefined) {
         item.prop = "_aguid_" + guid();
       }
-      this.injectDataDefaultValue(item, this.data)
+      this.injectDataDefaultValue(item, this.value)
       return item;
     },
     injectDataDefaultValue(item, data) {
       if (
-        data.constructor === Object &&
+        data && data.constructor === Object &&
         item.prop.indexOf("_aguid_") === -1 &&
         !data.hasOwnProperty(item.prop)
       ) {
         this.$set(data, item.prop, this.getItemValue(item));
       }
     },
-    getAgFormItemAttrs(item) {
+    getAgItemAttrs(item) {
       const agItem = getCustomProps(agItemProps, item);
       agItem.display =
         typeof item.display == "function"
-          ? item.display(this.data, item)
+          ? item.display(this.value, item)
           : agItem.display;
       agItem.show =
         typeof item.show == "function"
-          ? item.show(this.data, item)
+          ? item.show(this.value, item)
           : agItem.show;
       return agItem;
+    },
+    getFormItemAttrs(item) {
+      const formItem = getIncludeAttrs(formItemPropKyes, item);
+      formItem.prop = this.modelProp
+        ? `${this.modelProp}.${item.prop}`
+        : item.prop;
+      return formItem;
     },
     getComponentAttrs(item) {
       const component = getCustomProps(componentPorps, item);
@@ -152,7 +178,7 @@ export default {
         component.name = item.slot === true ? (scopedSlots[item.prop] || "") : item.slot;
         component.isTag = false;
       } else {
-        const ignoreAttrKeys = [].concat('component',
+        const ignoreAttrKeys = ['component', '$component'].concat(
           Object.keys(componentPorps),
           Object.keys(agItemProps),
           formItemPropKyes,
@@ -164,15 +190,19 @@ export default {
         component.attrs = Object.assign(getExcludeAttrs(ignoreAttrKeys, item), item.$component || {});
         component.attrs.disabled =
           typeof item.disabled == "function"
-            ? item.disabled(this.data)
+            ? item.disabled(this.value)
             : item.disabled;
         component.attrs.placeholder = this.getPlaceholder(item);
+
+        // 当布局组件作为单组件使用时，可用
+        if (layoutComponents.includes(component.name)) {
+          component.attrs.modelProp = item.prop;
+        }
       }
       return component
     },
     getItemValue(item) {
       let name = this.getName(item);
-      // if (item.hasOwnProperty("defaultValue")) return item.defaultValue;
       if (
         name == "el-input" ||
         name == "el-autocomplete" ||
@@ -233,15 +263,21 @@ export default {
       const rulesHasRequired = (Array.isArray(rules) ? rules.some((v) => v.required) : rules.required);
       return formItem.required || rulesHasRequired ? "agel-required-label" : "";
     },
+    findRef(context, refName) {
+      if (context.$refs[refName]) {
+        return context.$refs[refName];
+      } else {
+        let ref = null;
+        context.$children.every(vm => {
+          ref = this.findRef(vm, refName);
+          return ref === null;
+        })
+        return ref;
+      }
+    },
     // 暴露出去的功能函数
     getRef(prop) {
-      const ref = this.$refs[prop];
-      if (!ref || ref.length == 0) return null;
-      if (Array.isArray(ref) && ref.every((v) => v.$options._componentTag == 'agel-form-item')) {
-        return ref.length == 1 ? ref[0].$refs.component : ref.map((v) => v.$refs.component);
-      } else {
-        return ref
-      }
+      return this.findRef(this, prop);
     },
     getItem(prop, deep) {
       if (deep) return this.agItems.find((v) => v.prop == prop);

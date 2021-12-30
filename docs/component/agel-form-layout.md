@@ -2,13 +2,10 @@
 
 `agel-form` 实质上是一个包装组件，在内部包装了 `el-form` 和 `layout` 组件。
 
-在复杂的场景下，例如一个表单有多个 `Block` 的概念，你可能更需要原始的 `layout` 来实现需求。
+在复杂的场景下，例如一个表单下有多个分组、块的概念，且样式排版各不同，你可能更需要原始的 `layout` 组件来实现需求。
 
 ## 使用
 
-在单独使用 `tableditor` 时，如果有验证的话需要使用 `model-proxy` 属性手动关联到 `el-form` 中。 
-
-在单独使用 `grid` 时，如果开启自适应需要使用 `label-position-proxy` 属性手动关联到 `el-form` 中。 
 
 <ClientOnly><layout-form/></ClientOnly>
 
@@ -17,10 +14,11 @@
 :::
 
 
-## Layout Attributes
+## Layout 
 
 :::tip 
-每个布局组件都共有的基础属性，插槽，方法。
+- 每个布局组件都共有的基础属性，插槽，方法
+- 各布局组件额外属性的支持情况，请参考 [Props keys](/example/agel-form.html#props-keys)
 :::
 
 | 属性           | 类型         | 默认值  | 说明                                 | 
@@ -29,9 +27,9 @@
 | data           | Object/Array  |  -     | 表单数据         | 
 | itemExtendKeys | Array         |  -     | 包含在内的属性名不会被注入到组件中
 
-`item` 配置项支持 `component` 动态属性。
+`item` 配置项支持 `component` 组件的动态属性。
 
-`item` 配置项支持 `el-form-item` 属性。
+`item` 配置项支持 [el-form-item 属性](https://element.eleme.cn/#/zh-CN/component/form#form-item-attributes)。
 
 #### Mehtod
 
@@ -57,21 +55,26 @@
 | responsive     | Boolean       | false  | 是否响应式布局        | 
 | responsiveMethod | Funciton    | -      | 自定义响应式规则      | 
 | labelPositionProxy | String    | -      | 表单自适应 labelPosition ，需使用.sync     | 
-| ......         | ......        | ...... | [el-row 属性](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes)      | 
+| ......         | ......        | ...... | [el-row 属性]([el-row](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes))      | 
 | ......         | ......        | ...... | [el-col 属性](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)      | 
 
-`item` 配置项可额外支持 `el-col` 属性。
+`item` 配置项可额外支持 [el-col 属性](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes) 。
+
+#### Mehtod
+| 属性          | 参数           |  说明                                   | 
+| -----------   | ------------  |  ------------------------------------  | 
+| resize        | -             | 手动刷新 自适应  | 
+
 
 ## AgelFormDescriptions 
 
 | 属性           | 类型         | 默认值  | 说明                                 | 
 | -------------- | ------------  | ------ | ------------------------------------ | 
 | border         | Boolean       | true   | border 样式        | 
-| model-proxy     | Object        | true  | 表单验证 model 对象，需使用.sync       | 
-| ......         | ......        | ...... | [el-descriptions 属性](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes)      | 
+| ......         | ......        | ...... | [el-descriptions 属性](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)      | 
 
 
-`item` 配置项可额外支持 `el-descriptions-item` 属性。：
+`item` 配置项可额外支持 [el-descriptions-item 属性](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)。
 
 ## AgelFormTableditor 
 
@@ -79,19 +82,27 @@
 | -------------- | ------------  | ------ | ------------------------------------ |
 | data           | Array         | -      |  列表数据        |  
 | border         | Boolean       | true   | border 样式        | 
-| ......         | ......        | ...... | [el-table 属性](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes)      | 
+| model-proxy    | Object        | -  | 表单验证 model 对象，需使用.sync       | 
+| ......         | ......        | ...... | [el-table 属性](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)      | 
 
-item 配置项可额外支持 `el-table-column` 属性。
+item 配置项可额外支持 [el-table-column 属性](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 。
+
+#### Mehtod
+
+| 属性          | 参数           |  说明                                   | 
+| -----------   | ------------  |  ------------------------------------  | 
+| validateRow   | (index,successCallback)             | 对列表某一行的表单进行验证  | 
 
 
 ## TableditorMenuColumn 
 
-该组件一般用于搭配 `tableditor` 布局。
+编辑菜单列，该组件一般用于搭配 `tableditor` 布局使用，点击保存时会验证当前行。
 
 | 属性           | 类型         | 默认值  | 说明                                 | 
 | -------------- | ------------  | ------ | ------------------------------------ | 
 | data           | Array         | -      |  列表数据        |  
 | fixed          | String        | right  |  固定        |  
 | add            | Boolean       | true   |  显示添加按钮        | 
-| edit           | Boolean       | true   |  显示编辑按钮        |
-| del            | Boolean       | true   |  显示删除按钮        |  
+| edit           | Boolean       | true   |  显示编辑保存按钮        |
+| del            | Boolean       | true   |  显示删除按钮        | 
+| ......         | ......        | ...... | [el-table-column 属性](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)      |  

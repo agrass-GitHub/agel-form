@@ -1,3 +1,4 @@
+// el-form 组件支持的参数
 export const formPropKeys = [
   "rules",
   "label-position",
@@ -12,9 +13,19 @@ export const formPropKeys = [
   "disabled",
 ];
 
-export const formItemPropKyes = ["prop", "label", "label-width", "required", "rules", "show-message", "inline-message"];
+// el-form-item 组件支持的参数
+export const formItemPropKyes = [
+  "prop",
+  "label",
+  "label-width",
+  "required",
+  "rules",
+  "show-message",
+  "error",
+  "inline-message"
+];
 
-
+// agel-form-grid 组件支持的参数
 export const gridPropKeys = [
   "responsive",
   "responsiveMethod",
@@ -34,6 +45,7 @@ export const gridPropKeys = [
   "tag",
 ];
 
+// el-descriptions 组件支持的参数
 export const descriptionsPropkeys = [
   "border",
   "column",
@@ -48,6 +60,7 @@ export const descriptionsPropkeys = [
   "contentStyle",
 ];
 
+// el-descriptions-item 组件支持的参数
 export const descriptionsItemPropkeys = [
   "label",
   "span",
@@ -57,6 +70,7 @@ export const descriptionsItemPropkeys = [
   "contentStyle",
 ];
 
+// el-table 组件支持的参数
 export const tablePropsKeys = [
   "height",
   "max-height",
@@ -73,9 +87,9 @@ export const tablePropsKeys = [
   "summary-method",
 ];
 
+// el-table-column 组件支持的参数
 export const tableColumnPropsKeys = [
   "prop",
-  "type",
   "width",
   "min-width",
   "show-overflow-tooltip",
@@ -83,16 +97,3 @@ export const tableColumnPropsKeys = [
   "header-align",
   "formatter",
 ];
-
-export const defaultComponent = "el-input";
-
-// 可省略 ag 前缀的组件
-export const agComponents = [
-  "agel-radio",
-  "agel-checkbox",
-  "agel-select",
-  "agel-upload",
-  "agel-tree-select",
-  "agel-text",
-  "agel-map-input",
-]

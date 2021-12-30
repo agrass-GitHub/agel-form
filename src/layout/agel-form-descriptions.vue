@@ -5,7 +5,7 @@
     <slot name="prepend"></slot>
     <el-descriptions-item v-for="item in agItems" v-bind="item.$descriptionsItem" label="" :key="item.prop">
       <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item)" slot="label"></render-component>
-      <agel-form-item v-show="item.show" v-model="data[item.prop]" v-bind="item.$formItem" :component="item.$component" label="" label-width="0px" :ref="item.prop" />
+      <agel-form-item v-show="item.show" v-model="value[item.prop]" v-bind="item.$formItem" :component="item.$component" label="" label-width="0px" :ref="item.prop" />
     </el-descriptions-item>
     <slot name="append"></slot>
   </el-descriptions>
@@ -25,6 +25,10 @@ export default {
     renderComponent,
   },
   props: {
+    value: {
+      type: Object,
+      require: true,
+    },
     border: {
       typoe: Boolean,
       default: true,

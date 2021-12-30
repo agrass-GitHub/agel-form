@@ -17,15 +17,7 @@ export default {
           descriptions: { name: "descriptions" },
         },
         items: [
-          {
-            prop: "name",
-            label: "姓名",
-            span: 12,
-            required: true,
-            $component: {
-              "show-password":true,
-            },
-          },
+          { prop: "name", label: "姓名", span: 12, required: true },
           {
             prop: "inline",
             label: "inline",

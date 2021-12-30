@@ -20,6 +20,10 @@
   margin: 0px;
 }
 
+.el-descriptions__table{
+  margin: 0px;
+}
+
 .el-table td, .el-table th {
   border: 0px;
 }
