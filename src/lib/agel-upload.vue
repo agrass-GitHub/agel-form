@@ -116,18 +116,25 @@ export default {
       }
       if (file.url && isPreview && this.$msgbox) {
         const h = this.$createElement;
-        let suffix = file.url.split(".").pop().toLowerCase();
-        let image = ["png", "jpg", "jpeg", "bmp", "gif"];
-        let xdoc = ["doc", "docx", "xls", "xlsx", "csv"];
-        let video = ["mp4", "ogg", "webm"];
-        let audio = ["mp3", "wav", "ogg"];
+        const image = ["png", "jpg", "jpeg", "bmp", "gif"];
+        const xdoc = ["doc", "docx", "xls", "xlsx", "csv"];
+        const video = ["mp4", "ogg", "webm"];
+        const audio = ["mp3", "wav", "ogg"];
+        const includesSuffix = (arr) => {
+          const suffix = file.url.split(".").pop().toLowerCase();
+          return (
+            arr.includes(suffix) ||
+            arr.map((v) => v.toUpperCase()).includes(suffix)
+          );
+        };
         let message = null;
-        if (image.includes(suffix)) {
+
+        if (includesSuffix(image)) {
           message = h("img", {
             class: "agel-upload-preview-img",
             attrs: { src: file.url },
           });
-        } else if (xdoc.includes(suffix)) {
+        } else if (includesSuffix(xdoc)) {
           let url = encodeURIComponent(file.url);
           message = h("iframe", {
             class: "agel-upload-preview-doc",
@@ -136,12 +143,12 @@ export default {
               border: 0,
             },
           });
-        } else if (video.includes(suffix)) {
+        } else if (includesSuffix(video)) {
           message = h("video", {
             class: "agel-upload-preview-video",
             attrs: { src: file.url, controls: true },
           });
-        } else if (audio.includes(suffix)) {
+        } else if (includesSuffix(audio)) {
           message = h("audio", {
             class: "agel-upload-preview-audio",
             attrs: { src: file.url, controls: true },
@@ -150,7 +157,7 @@ export default {
           message = h("p", null, "该文件不支持预览");
         }
         this.$msgbox({
-          title: " 附件预览",
+          title: "附件预览",
           customClass: "agel-upload-preview-msgbox",
           center: true,
           message,

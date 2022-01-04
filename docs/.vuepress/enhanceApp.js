@@ -3,22 +3,9 @@ import "./styles/style.css";
 import "element-ui/lib/theme-chalk/index.css";
 import Element from "element-ui/lib/index";
 
-import AMapLoader from "@amap/amap-jsapi-loader";
 
-import { agelForm, agelSearchPanel, agelFormDialog, tableditorMenuColumn, agelMapInput } from "../../src/index";
+import { agelForm, agelSearchPanel, agelFormDialog, tableditorMenuColumn, agelMapInput, agelDynamicTags } from "../../src/index";
 
-
-window._AMapSecurityConfig = { securityJsCode: '37c6baee599002d347756e3d1277246c' }
-AMapLoader.load({
-  key: "56f6a360f541889552ce0aea6469a3e3",
-  plugins: [
-    "AMap.PlaceSearch",
-    "AMap.Autocomplete",
-    "AMap.Geocoder"
-  ],
-}).then((AMap) => {
-  window.AMap = AMap;
-});
 
 const mockData = {
   random() {
@@ -56,26 +43,35 @@ const mockData = {
 export default ({ Vue }) => {
   Vue.use(Element, { size: 'mini' });
   Vue.use(agelForm, {
-    "el-date-picker": function (prop, item, form) {
-      if (item.valueFormat == undefined) {
-        if (item.type == undefined || item.type == "daterange") item.valueFormat = "yyyy-MM-dd";
-        if (item.type == "datetime" || item.type == "datetimerange") item.valueFormat = "yyyy-MM-dd HH:mm:ss";
-        if (item.type == "month") item.valueFormat = "yyyy-MM";
-        if (item.type == "year") item.valueFormat = "yyyy";
+    "el-input": {
+      clearable: true,
+      defaultValue: "123",
+    },
+    "xx-array-input": function () {
+      return { defaultValue: [] }
+    },
+    "el-date-picker": function (item) {
+      if (item.type == undefined || item.type == 'date' || item.type == "daterange") {
+        return { valueFormat: "yyyy-MM-dd" }
       }
-
-      if (item.type == "daterange" || item.type == "datetimerange") {
-        item.unlinkPanels = true;
+      if (item.type == "datetime" || item.type == "datetimerange") {
+        return { valueFormat: "yyyy-MM-dd HH:mm:ss" }
+      }
+      if (item.type == "month" || item.type == "monthrange") {
+        return { valueFormat: "yyyy-MM" }
+      }
+      if (item.type == "year") {
+        return { valueFormat: "yyyy" }
       }
     },
   });
-
 
 
   Vue.component(agelSearchPanel.name, agelSearchPanel);
   Vue.component(agelFormDialog.name, agelFormDialog);
   Vue.component(agelMapInput.name, agelMapInput);
   Vue.component(tableditorMenuColumn.name, tableditorMenuColumn)
+  Vue.component(agelDynamicTags.name, agelDynamicTags)
 
   Vue.prototype.$AMapKey = "56f6a360f541889552ce0aea6469a3e3";
 

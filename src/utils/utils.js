@@ -1,10 +1,11 @@
 
-import Vue from 'vue';
+
 
 // 驼峰转短横线 
 export function kebabcase(v) {
-  return v.replace(/([A-Z])/g, "-$1").toLowerCase()
+  return v.replace(/([^-])([A-Z])/g, '$1-$2').toLowerCase()
 };
+
 
 // 短横线转驼峰 
 export function humpcase(v) {
@@ -43,7 +44,7 @@ export function getExcludeAttrs(keys, target) {
   return obj;
 }
 
-// 获取自定义的 porps
+// 获取自定义的 props
 export function getCustomProps(props, attrs) {
   const propsKyes = Object.keys(props);
   const defaultProps = {};
@@ -64,23 +65,68 @@ export function guid() {
 };
 
 // 继承属性 关联响应式
-export const extend = function (obj, target = {}, cover = false) {
+export const extend = function (obj, target = {}, vueset, cover = false) {
   for (const key in target) {
     let a = getProp(obj, key) !== undefined && !cover;
     let b = getProp(target, key) === undefined;
     if (a || b) continue;
-    Vue.set(obj, key, target[key]);
+    vueset(obj, key, target[key]);
   }
 }
 
-// 循环 arr obj
-export const each = function (obj, each, call,) {
-  if (Array.isArray(obj)) {
-    return obj[each]((item, index) => call(item, index));
+export const findRef = function (context, refName) {
+  if (context.$refs[refName]) {
+    return context.$refs[refName];
   } else {
-    // return Object.keys(obj)[each]((key, index) => call(obj[key], index, key));
-    const indexKeys = Object.keys(obj);
-    return indexKeys.map(key => obj[key])[each]((item, index) => call(item, index, indexKeys[index]))
+    let ref = null;
+    context.$children.every(vm => {
+      ref = findRef(vm, refName);
+      return ref === null;
+    })
+    return ref;
   }
 }
 
+export const getArrItems = function (arr) {
+  if (Array.isArray(arr)) {
+    return arr.map(item => {
+      item.prop = item.prop || "_aguid_" + guid();
+      return item;
+    })
+  } else {
+    return Object.keys(arr).map(key => {
+      arr[key].prop = arr[key].prop || key;
+      return arr[key]
+    })
+  }
+}
+
+export const getDefaultValue = function (name) {
+  if (
+    name == "el-input" ||
+    name == "el-autocomplete" ||
+    name == "agel-select" ||
+    name == "agel-tree-select" ||
+    name == "el-date-picker" ||
+    name == "el-time-select" ||
+    name == "agel-radio" ||
+    (name == "agel-checkbox" && item.options)
+  ) {
+    return "";
+  }
+  if (name == "el-switch" || name == "agel-checkbox") {
+    return false;
+  }
+  if (name == "el-slider" || name == "el-rate") {
+    return 0;
+  }
+  if (
+    name == "el-cascader" ||
+    name == "el-transfer" ||
+    name == "agel-upload" ||
+    name == "agel-dynamic-tags"
+  ) {
+    return [];
+  }
+  // if (name == "el-input-number") return undefined;
+}

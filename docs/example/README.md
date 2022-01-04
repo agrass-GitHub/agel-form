@@ -15,6 +15,7 @@
 - 支持 element-ui 所有表单组件 slots 插槽
 - 支持 element-ui Row Col 组件布局
 - 支持 element-ui Descriptions 组件布局
+- 支持 element-ui Table 表单编辑器
 - 响应式布局
 - 联动显示隐藏禁用
 - 智能回填 form.data，placeholder，rules
@@ -23,17 +24,25 @@
 - 灵活自定义组件 / 搭配第三方组件
 
 
-### 单组件
+#### 表单布局组件
 
-为了更好的搭配 agel-form，将 `element-ui` 其中几个常见的组件进行了数据化，在使用方式上同原组件保持一致，没有任何的破坏性，并且额外添加了扩展功能，完全可以代替原组件进行开发使用。
+- [agel-form-inline](https://agrass.gitee.io/agel-form/component/layout.html) 
+- [agel-form-grid](https://agrass.gitee.io/agel-form/component/layout.html) 
+- [agel-form-descriptions](https://agrass.gitee.io/agel-form/component/layout.html) 
+- [agel-form-tableditor](https://agrass.gitee.io/agel-form/component/layout.html)
 
-另外添加了一些其他单组件，你可以按需使用。
+#### 表单子组件
 
-- [agel-select](https://agrass.gitee.io/agel-form/component/agel-select.html) 
 - [agel-checkbox](https://agrass.gitee.io/agel-form/component/agel-checkbox-radio.html) 
 - [agel-radio](https://agrass.gitee.io/agel-form/component/agel-checkbox-radio.html) 
-- [agel-upload](https://agrass.gitee.io/agel-form/component/agel-upload.html) 
+- [agel-select](https://agrass.gitee.io/agel-form/component/agel-select.html) 
 - [agel-tree-select](https://agrass.gitee.io/agel-form/component/agel-tree-select.html) 
+- [agel-upload](https://agrass.gitee.io/agel-form/component/agel-upload.html) 
+- [agel-map-input](https://agrass.gitee.io/agel-form/component/agel-map-input.html)
+- [agel-dynamic-tags](https://agrass.gitee.io/agel-form/component/agel-dynamic-tags.html)  
+
+#### 其他
+
 - [agel-search-panel](https://agrass.gitee.io/agel-form/component/agel-search-panel.html) 
 - [agel-form-dialog](https://agrass.gitee.io/agel-form/component/agel-form-dialog.html) 
 

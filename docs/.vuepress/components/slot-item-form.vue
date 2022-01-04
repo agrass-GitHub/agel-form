@@ -1,7 +1,7 @@
 <template>
   <agel-form class="demo border" v-model="form">
     <!-- slot 名称要与 item.porp 保持一致 -->
-    <template slot="name">
+    <template v-slot:name>
       <el-tag>这是一段 template 类型自定义插槽</el-tag>
     </template>
   </agel-form>

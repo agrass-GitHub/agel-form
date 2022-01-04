@@ -1,6 +1,6 @@
 <template>
   <div class="agel-map-input">
-    <el-input ref="ref" :value="proxyValue" :clearable="clearable" :prefix-icon="prefixIcon" v-bind="elInputPorps" v-on="$listeners" @clear="clear"
+    <el-input ref="ref" :value="proxyValue" :clearable="clearable" :prefix-icon="prefixIcon" v-bind="elInputProps" v-on="$listeners" @clear="clear"
       @focus="loadDialog">
       <template v-slot:prefix>
         <slot name="prefix"></slot>
@@ -81,7 +81,7 @@ export default {
     },
     clearable: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     // 是否可编辑
     editable: {
@@ -126,7 +126,7 @@ export default {
     };
   },
   computed: {
-    elInputPorps() {
+    elInputProps() {
       return getIncludeAttrs(propsKeys, this.$attrs);
     },
     proxyValue() {

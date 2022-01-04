@@ -5,17 +5,20 @@
 </template>
  
 <script>
+
 export default {
   data() {
     return {
       form: {
-        labelWidth: "80px",
+        // labelWidth: "150px",
         span: 15,
         data: {
           name: "使用 agel-form",
           desc: "素人开发,若你决定尝试,有什么问题可以联系本人微信:agrass-weixin",
           delivery: true,
           slider: 20,
+          // address: ["重庆欢乐谷", 106.51715, 29.667352],
+          tags: ["游乐园"],
         },
         items: [
           { label: "活动名称", prop: "name" },
@@ -23,6 +26,11 @@ export default {
             label: "建议反馈",
             prop: "desc",
             type: "textarea",
+          },
+          {
+            component: "agel-map-input",
+            label: "活动地址",
+            prop: "address",
           },
           {
             component: "el-input-number",
@@ -42,8 +50,13 @@ export default {
           },
           {
             component: "el-switch",
-            label: "即时配送",
+            label: "是否开启",
             prop: "delivery",
+          },
+          {
+            component: "agel-dynamic-tags",
+            label: "活动标签",
+            prop: "tags",
           },
           {
             component: "el-slider",

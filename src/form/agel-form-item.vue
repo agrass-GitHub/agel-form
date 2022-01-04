@@ -1,15 +1,15 @@
 <template>
-  <el-form-item v-bind="$attrs" :prop="prop" label="" :required="false" :rules="rules" :class="className">
+  <el-form-item v-bind="$attrs" :prop="prop" label="" class="agel-form-item" ref="elFormItem">
     <slot slot="label" name="label">
       <render-component v-if="label" :render="label" />
     </slot>
     <slot>
-      <render-component v-if="component.name" :value="value" :render="component.name" v-on="component.on" v-bind="component.attrs" @input="input" :ref="prop||'component'" :is-tag="component.isTag">
+      <render-component v-if="component.name" :value="field.v" :render="component.name" v-on="component.on" v-bind="component.attrs" @input="input" :ref="prop||'component'" :is-tag="component.isTag">
         <template v-for="(slot,staticName) in slots.staticSlots" v-slot:[staticName]>
           <render-component :key="staticName" :render="slot" />
         </template>
-        <template v-for="(slot,scopedName) in slots.scopedSlots" v-slot:[scopedName]="slotPorps">
-          <render-component :key="scopedName" :render="slot" v-bind="slotPorps" />
+        <template v-for="(slot,scopedName) in slots.scopedSlots" v-slot:[scopedName]="slotProps">
+          <render-component :key="scopedName" :render="slot" v-bind="slotProps" />
         </template>
       </render-component>
     </slot>
@@ -18,6 +18,7 @@
  
 <script>
 import renderComponent from "./render-component";
+import { getPropByPath } from "element-ui/src/utils/util";
 
 export default {
   name: "agel-form-item",
@@ -25,48 +26,20 @@ export default {
   components: {
     renderComponent,
   },
+  inject: ["elForm"],
   props: {
     prop: String,
     // Object[Vnode]
     label: [String, Number, Object, Array, Function],
-    // 生成必填 rules
-    required: Boolean,
-    // 组件 value
-    value: {},
     // 组件对象结构
     component: {
       type: Object,
-      default: () => {
-        return {
-          name: "",
-          vmodel: true,
-          attrs: {},
-          slots: {},
-          on: {},
-        };
-      },
+      required: true,
     },
   },
   computed: {
-    className() {
-      const name = this.component.name;
-      const nameClass =
-        name && typeof name === "string" ? "form-item-" + name : "";
-      return ["agel-form-item", nameClass];
-    },
-    rules() {
-      const inputArr = ["el-input", "el-input-number", "el-autocomplete"];
-      const arr = this.$attrs.rules || [];
-      const rules = Array.isArray(arr) ? [...arr] : [arr];
-      if (this.required) {
-        rules.push({
-          required: true,
-          trigger: inputArr.includes(this.component.name) ? "blur" : "change",
-          message:
-            typeof this.label === "string" ? this.label + "必填" : "该字段必填",
-        });
-      }
-      return rules.length > 0 ? rules : undefined;
+    field() {
+      return getPropByPath(this.elForm.model, this.prop || "", true) || {};
     },
     slots() {
       let slots = this.component.slots || {};
@@ -86,9 +59,9 @@ export default {
       }
       return { scopedSlots, staticSlots };
     },
-    isRenderLabel() {
-      return typeof this.label !== "string";
-    },
+  },
+  created() {
+    this.initDefaultValue();
   },
   methods: {
     input(value) {
@@ -101,7 +74,16 @@ export default {
           value = parseFloat(value);
         }
       }
-      this.$emit("input", value);
+      this.field.o[this.field.k] = value;
+    },
+    initDefaultValue() {
+      if (
+        this.prop &&
+        this.prop.indexOf("_aguid_") === -1 &&
+        !this.field.o.hasOwnProperty(this.field.k)
+      ) {
+        this.$set(this.field.o, this.field.k, this.component.defaultValue);
+      }
     },
   },
   install(vue) {
@@ -118,16 +100,11 @@ export default {
 .agel-form-item.el-form--label-top .el-form-item__label {
   padding: 0px;
 }
+
 .el-form--label-top .agel-form-item .el-form-item__label,
 .el-form--label-top .agel-form-item .el-form-item__label {
   display: inline-block;
   padding: 0px 12px 0px 0px;
-}
-
-/* 对 checkbox radio 在 label-top 情况下的展示优化*/
-.el-form--label-top .form-item-agel-checkbox .el-form-item__content,
-.el-form--label-top .form-item-agel-radio .el-form-item__content {
-  display: inline-block;
 }
 
 /*  对某些组件排版进行优化 */

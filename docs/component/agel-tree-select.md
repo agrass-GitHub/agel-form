@@ -37,7 +37,7 @@
 | leafOnly    | Boolean         | false       | 是否只是叶子节点，多选生效    | 
 | includeHalfChecked  | Boolean | false       | 是否包含半选节点，多选生效    |
 | multiple     | Boolean        | false       | 是否多选          | 
-| clearableTags| Boolean        | false       | 多选时标签是否可清除
+| closableTags | Boolean        | false       | 多选时标签是否关闭
 | collapseTags | Boolean        | -           | 多选时标签是否可折叠 |
 | placeholder  | String         | -           | 继承自 el-select                   | 
 | disabled     | Boolean        | -           | 继承自 el-select                        |

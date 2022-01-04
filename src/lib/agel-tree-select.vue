@@ -35,12 +35,12 @@ export default {
       type: [String, Number, Array],
       default: "",
     },
-    // select porps
+    // select props
     multiple: Boolean,
     placeholder: String,
     disabled: Boolean,
     clearable: Boolean,
-    clearableTags: Boolean,
+    closableTags: Boolean,
     collapseTags: Boolean,
     popperClass: String,
     loadingText: {
@@ -98,7 +98,7 @@ export default {
     selectClass() {
       return [
         "agel-tree-select",
-        { "agel-tree-select-hide-tags": !this.clearableTags && this.multiple },
+        { "agel-tree-select-hide-tags": !this.closableTags && this.multiple },
       ];
     },
     selectListeners() {

@@ -7,7 +7,7 @@
 
 `value` 支持 `array` `string` 两种类型，区别在于是否包含经纬度信息。
 
-<ClientOnly><agel-map-input-demo/></ClientOnly>
+<ClientOnly><agel-map-input-demo-warp/></ClientOnly>
 
 ::: details 点击查看代码
 <<< @/docs/.vuepress/components/agel-map-input-demo.vue
@@ -42,7 +42,7 @@ export default {
 | value        | Array/String    | []     | 绑定值                |  
 | AMap         | Function        | (cb)=> cb(Window.AMap)      | AMap Loader       |
 | keywordSearch| Boolean         | true   | 是否可关键字检索            |  
-| clearable    | Boolean         | true   | 是否可清空                |  
+| clearable    | Boolean         | false  | 是否可清空                |  
 | editable     | Boolean         | false  | 是否可编辑                |  
 | destroyDialogOnClose| Boolean  | false  | dialog 关闭时是否销毁     |
 

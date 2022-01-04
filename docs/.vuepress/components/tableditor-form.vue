@@ -81,16 +81,14 @@ export default {
   },
   methods: {
     validateRow() {
-      // agel-form-tableditor 实例
-      console.log( this.form.getRef("layout"))
-      this.form.getRef("layout").validateRow(2, () => {
+      this.form.getRef("agLayout").validateRow(2, () => {
         this.$message.success("验证成功");
       });
     },
     getRef() {
       console.log("---------- Table 实例 ----------");
       console.log(this.form.getRef("elTable"));
-      console.log( "---------- 组件实例，index 为 2 prop 为 name 组件----------" );
+      console.log("----- 组件实例，index 为 2 prop 为 name 组件----");
       console.log(this.form.getRef("tableditor.2.name"));
       this.$message.info("获取实例成功，查看控制台");
     },

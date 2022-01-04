@@ -15,7 +15,7 @@
         <el-option class="empty-option" v-if="filter && filterOptions.length==0" :label="filterEmptyText" :value="filterEmptyText" disabled>
         </el-option>
         <template v-if="isGroup">
-          <el-option-group v-for="group in filterOptions" :key="group.label" v-bind="getGroupPorps(group)">
+          <el-option-group v-for="group in filterOptions" :key="group.label" v-bind="getGroupProps(group)">
             <el-option v-for="(option,index) of group.options || [] " :key="option.value" v-bind="getOptionProps(option)">
               <slot name="option" :option="option" :index="index" :group="group"></slot>
             </el-option>
@@ -114,7 +114,7 @@ export default {
     getOptionProps(traget) {
       return getIncludeAttrs(optionPropsKeys, traget);
     },
-    getGroupPorps(traget) {
+    getGroupProps(traget) {
       return getIncludeAttrs(groupPropsKyes, traget);
     },
     setSelected() {

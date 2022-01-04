@@ -3,9 +3,9 @@
     <slot name="title" slot="title"></slot>
     <slot name="extra" slot="extra"></slot>
     <slot name="prepend"></slot>
-    <el-descriptions-item v-for="item in agItems" v-bind="item.$descriptionsItem" label="" :key="item.prop">
-      <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item)" slot="label"></render-component>
-      <agel-form-item v-show="item.show" v-model="value[item.prop]" v-bind="item.$formItem" :component="item.$component" label="" label-width="0px" :ref="item.prop" />
+    <el-descriptions-item v-for="(item,index) in agItems" v-bind="item.$descriptionsItem" label="" :key="item.prop||index">
+      <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item)" slot="label"/>
+      <agel-form-item v-show="item.show" v-bind="item.$formItem" :component="item.$component" label="" label-width="0px" />
     </el-descriptions-item>
     <slot name="append"></slot>
   </el-descriptions>
@@ -15,7 +15,7 @@
 import itemsMinxin from "../utils/itemsMixin";
 import renderComponent from "./render-component";
 import { getIncludeAttrs } from "../utils/utils";
-import { descriptionsItemPropkeys } from "../utils/props";
+import { descriptionsItemPropkeys } from "../utils/const";
 
 export default {
   name: "agel-form-descriptions",

@@ -14,9 +14,13 @@
       <el-divider content-position="left">agel-form-descriptions 描述布局</el-divider>
       <agel-form-descriptions :items="decItems" :value="data" :column="2"></agel-form-descriptions>
 
-      <!-- 表格编辑器布局, 如果有验证的话，需要使用 model-prop 属性关联表单 -->
+      <!-- 表格编辑器布局, 需要使用 model-prop 属性关联表单-->
       <el-divider content-position="left">agel-form-tableditor 表格编辑器布局</el-divider>
-      <agel-form-tableditor :items="tableItems" :value="data.list" model-prop="list"></agel-form-tableditor>
+      <agel-form-tableditor :items="tableItems" :value="data.list" model-prop="list">
+        <template v-slot:index="scope">
+          <el-tag>{{scope.$index}}：{{scope.row.d1}}</el-tag>
+        </template>
+      </agel-form-tableditor>
 
       <!-- 自定义布局 -->
       <el-divider content-position="left">custom 自定义布局</el-divider>
@@ -43,7 +47,7 @@ export default {
         e1: "",
         e2: "",
         list: [
-          { d1: "姓名", d2: "xxx自治区", _edit: false },
+          { d1: "小王", d2: "xxx自治区" },
           { d1: "", d2: "" },
           { d1: "", d2: "" },
         ],
@@ -63,9 +67,9 @@ export default {
         { prop: "c3", label: "介绍", type: "textarea", span: 2 },
       ],
       tableItems: [
-        { label: "#", type: "index" },
-        { prop: "d1", label: "姓名", required: true, width: "100px" },
-        { prop: "d2", label: "地址", minWidth: "100px" },
+        { prop: "index", label: "自定义", slot: true, width: 100 },
+        { prop: "d1", label: "姓名", required: true, width: 100 },
+        { prop: "d2", label: "地址", minWidth: 100 },
       ],
     };
   },

@@ -31,7 +31,7 @@ export default {
       return vnode
     }
     const fragments = (vnodes) => {
-      if (vnodes.length === 1) return wrapvnode(vnodes[0]);
+      if (vnodes.length === 1) return wrapvnode(vnodes[0])
       const vnode = h('span', null, vnodes)
       setTimeout(() => {
         vnode.children.forEach((v, i) => {
@@ -44,7 +44,7 @@ export default {
       }, 0)
       return vnode
     }
-    const render = context.props.render;
+    const render = context.props.render
     const value = typeof render === "function" ? render(context.data.attrs) : render
     if (isText(value)) return h('span', context.data, value)
     if (isComponent(value)) return h(render, context.data, context.children)

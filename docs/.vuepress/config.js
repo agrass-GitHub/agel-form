@@ -35,6 +35,7 @@ module.exports = {
           '/component/agel-tree-select',
           '/component/agel-upload',
           '/component/agel-map-input',
+          '/component/agel-dynamic-tags',
           '/component/agel-search-panel',
           '/component/agel-form-dialog',
         ]

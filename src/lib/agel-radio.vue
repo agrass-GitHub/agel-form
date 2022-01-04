@@ -2,7 +2,7 @@
   <span v-if="optionsLoading">
     <i class="el-icon-loading" style="width:inherit;height:inherit"></i>
   </span>
-  <el-radio-group v-else-if="proxyOptions.length>0" ref="ref" class="agel-radio-group" :value="value" v-bind="getGroupPorps($attrs)"
+  <el-radio-group v-else-if="proxyOptions.length>0" ref="ref" class="agel-radio-group" :value="value" v-bind="getGroupProps($attrs)"
     v-on="$listeners">
     <component :is="is" v-for="(option,index) of proxyOptions" v-bind="getProps(option)" :key="option.value" :label="option.value">
       <slot name="option" :option="option" :index="index">{{option.label}}</slot>
@@ -54,7 +54,7 @@ export default {
     getProps(traget) {
       return getIncludeAttrs(propsKeys, traget);
     },
-    getGroupPorps(traget) {
+    getGroupProps(traget) {
       return getIncludeAttrs(groupPropsKyes, traget);
     },
   },

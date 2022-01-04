@@ -3,67 +3,77 @@ title: 更新日志
 sidebar: auto
 ---
 
-
 ## v.0.3.3
 
-该版本重构了部分逻辑，有破坏性更新。
+:::warning
+v.0.3.3 版本重构了部分代码，有破坏性更新，请按照升级提示操作。
+:::
 
 #### agel-form
-- `bug` 修复 agel-radio 组件因初始值为 undefined 时触发表单 rules
+- `bug` 修复 agel-radio 组件因初始值为 undefined 时触发表单 rules，初始值调整为 ""
 - `bug` 修复 el-descriptions-item 的属性被注入到 component 中
 - `new` 新增 表格编辑器布局
-- `new` 新增 item.vmodel 支持 .number .trim 修饰符
-- `new` 新增 item.componet 支持类型 支持组件实例，异步组件，对插槽支持类型进行增强
 - `new` 新增(拆分) inline grid descriptions tableditor 四个布局子组件
+- `new`  item.prop 支持深层级深结构绑定
+- `new`  item.vmodel 支持 .number .trim 修饰符
+- `new`  item.componet 支持组件实例，异步组件
+- `new`  item.slot slots label 插槽支持组件实例
 - `change` el-input-number 默认值由 0 调整为 undefined；
 - `change` el-date-picker el-time-select 默认值由 null 调整为 ""
-- `change` descriptions 布局默认开启 border样式，优化在 border:false 时排版，
-- `change` 修改组件导入逻辑, Vue.use(agelForm) 会默认注册核心组件到全局, 组件本身移除相关依赖
+- `change` descriptions 布局默认开启 border样式，优化在 border:false 时排版
+- `change` grid 布局自适应规则调整，只支持响应 el-col 参数
+- `change` 修改组件导入逻辑, Vue.use(agelForm) 会默认注册核心组件到全局
 ```js
 const coreComponents = [agelForm, agelFormItem, agelFormGrid, agelFormInline, agelFormTableditor, agelFormDescriptions,agelRadio,agelCheckbox, agelSelect,agelTreeSelect,agelUpload,agelText]
 ```
-- `破坏性` agel-form 转为包装组件，布局由 form.layout 属性来支持，暂时仍兼容旧写法（不推荐）
+- `破坏性` 全局配置逻辑修改，单组件配置必须使用函数返回配置，移除 prop form 参数，新增可配置组件初始值 defaultValue 
+```js
+// old
+"el-input":{ clearable:true }
+"el-input":(prop,item,form)=> return { clearable:true }
+// new
+"el-input":(item)=> return { clearable:true }
+```
+- `破坏性` agel-form 转为包装组件，布局由 form.layout 属性来支持
 ```js
 // old
 const form = { inline:true }  || { descriptions:true }
 // new
 const form = { layout:"inline" }  || { layout:'descriptions' }
 ```
-- `破坏性` 全局配置逻辑修改，函数配置移除 prop form 参数，不支持直接修改 item 对象。
-```js
-// old
-"el-date-picker":(prop,item,form)=> item.valueFormat="yyyy-MM-dd"
-// new
-"el-date-picker":(item)=> return { valueFormat:"yyyy-MM-dd"}
-```
-
 
 #### agel-search-panel
 - `bug` 修复自定义表单插槽时 input v-model 失效
 - `new` 在点击查询按钮时验证表单规则
+- `change` 默认折叠调整为 true
 - `破坏性` 移除了按钮属性配置，调整为在全局配置提供按钮 render
-- `破坏性` props 参数不再由 form 对象中获取, 调整为组件中获取，暂时仍兼容旧写法（不推荐）
-```vue
-<template>
-  <!--old--->
-  <agel-search-panel :form="{panelPosition,searchButton, resetButton,collapse,collapseButton,collapseAlive}"/>
-  <!--new--->
-  <agel-search-panel :form="form" panelPosition searchButton resetButton collapse collapseButton collapseAlive/>
-</template>
+- `破坏性` 移除了 form 参数，调整为从组件中获取 props 参数，把 :form 改成 v-bind 可快速兼容
+
+```html
+<!--old--->
+<agel-search-panel :form="{data,items,....}"/>  || <agel-search-panel :form="form" />
+<!--new--->
+<agel-search-panel :data="data" :items="items" /> || <agel-search-panel v-bind="form" />
 ```
 
 #### agel-map-input
 - `new` 新增地图选择器组件
 
+#### agel-dynamic-tags
+- `new` 新增动态标签组件
+
 #### agel-checkbox
 - `new` 新增 active-value inactive-value 属性
 
 #### agel-tree-select
-- `new` 新增 clearableTags 属性
+- `new` 新增 closableTags 属性
 
 #### agel-form-dialog
 - `new` 开启 loading 时 dialog footer 插槽中所有按钮都会禁用
-- `change` loading 开启时确定按钮由 loading 调整为禁用状态，避免某些场景歧义
+- `change` loading 开启时确定按钮由 loading 调整为禁用状态，避免场景歧义
+
+#### agel-upload
+- `new` 文件预览兼容大写后缀名
 
 ## v.0.3.2
 
@@ -75,13 +85,12 @@ const form = { layout:"inline" }  || { layout:'descriptions' }
 - `change` 移除 item.ignore 属性
  
 #### agel-upload
-
 - `bug` beforeUpload 钩子函数未生效
 - `bug` 修复手动上传错误，样式不可调整
 - `bug` abort 方法失效
 
 #### agel-form-dialog 
-`new` 新增表单弹窗组件
+- `new` 新增表单弹窗组件
 
 
 ## v.0.3.1

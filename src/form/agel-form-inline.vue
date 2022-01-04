@@ -1,7 +1,8 @@
 <template>
   <div class="agel-form-inline">
     <slot name="prepend"></slot>
-    <agel-form-item v-for="item in agItems" :key="item.prop" v-show="item.show" v-model="value[item.prop]" v-bind="item.$formItem" :component="item.$component" :label="item.label"  />
+    <agel-form-item v-for="(item,index) in agItems" :key="item.prop||index" v-show="item.show" v-bind="item.$formItem" :component="item.$component"
+      :label="item.label" />
     <slot name="append"></slot>
   </div>
 </template>

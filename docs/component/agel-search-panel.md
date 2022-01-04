@@ -1,11 +1,11 @@
 # SearchPanel 搜索面板
 
-`agel-search-panel` 组件是基于  `agel-form` 组件的二次封装组件。
+`agel-search-panel` 组件是基于  `agel-form-inline` 组件的二次封装组件。
 
 
 ## 使用
 
-基于 `agel-form`的基础, 为其添加了额外的属性，一般常用于列表搜索等，默认使用内联布局，点击查询时也会对表单进行验证。
+基于 `agel-form-inline` 的基础, 为其添加了额外的属性，一般常用于列表搜索等，点击查询时也会对表单进行验证。
 
 <ClientOnly><search-panel-demo/></ClientOnly>
 
@@ -53,14 +53,16 @@ Vue.use(agelSearchPanel);
 ## SearchPanel Attributes
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
-| ----------- | ------------  | ------ | ------------------------------------ | 
-| form         | Object        | -      |  [agel-form 属性](/example/agel-form.html#form-attributes)      | 
-| panelPosition | String       | right          | 布局方式，可选 left right         | 
+| ----------- | ------------  | ------ | ------------------------------------ |
+| items          | Object/Array  | []     | 表单配置项                | 
+| data           | Object/Array  |  -     | 表单数据         |  
+| panelPosition | String       | left          | 布局方式，可选 left right         | 
 | searchButton  | Boolean      | true        | 是否显示搜索按钮          |
 | resetButton   | Boolean      | true        | 是否显示初始化按钮    | 
 | collapseButton| Boolean      | false       | 是否显示折叠按钮    | 
-| collapse      | Boolean      | false       | 默认折叠状态    | 
-| collapseAlive | Array[prop]  | false   | 折叠情况下保留的搜索条件 prop    | 
+| collapse      | Boolean      | true        | 默认折叠状态    | 
+| collapseAlive | Array[prop]  | -           | 折叠情况下保留的搜索条件 prop    | 
+| ......        | ......       | ......      | [elForm 属性](https://element.eleme.cn/#/zh-CN/component/form#form-attributes)      |   
 
 
 ## SearchPanel Slots

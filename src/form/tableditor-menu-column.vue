@@ -54,18 +54,24 @@ export default {
     editTableRow(row, inedx) {
       if (!row.hasOwnProperty("_edit_")) {
         this.$set(row, "_edit_", true);
+        return;
       }
       if (row._edit_) {
-        this.validateRow(inedx, () => (row._edit_ = false));
+        this.validateRow(inedx, () => {
+          row._edit_ = false;
+          this.$emit("save");
+        });
       } else {
         row._edit_ = true;
       }
     },
     addTableRow() {
       this.data.splice(this.data.length, 0, {});
+      this.$emit("add");
     },
     delTableRow(index) {
       this.data.splice(index, 1);
+      this.$emit("del");
     },
   },
   install(vue) {

@@ -1,26 +1,25 @@
 <template>
-  <div :class="['agel-search-panel',{'position-right':attrs.panelPosition=='right' }]">
-    <agel-form v-model="form" :item-extend-keys="['collapseAlive']">
-      <slot name="prepend" slot="prepend"></slot>
+  <el-form :model="data" :class="['agel-search-panel',{'position-right':panelPosition=='right' }]" v-bind="formProps" ref="elForm">
+    <agel-form-inline :value="data" :items="items" :item-extend-keys="['collapseAlive']" ref="layout">
 
-      <template v-for="prop in slotKeys" v-slot:[prop]>
-        <slot :name="prop" />
-      </template>
+      <slot name="prepend" slot="prepend"></slot>
 
       <template v-slot:append>
         <slot name="append"> </slot>
-        <render-component v-if="attrs.collapseButton" :render="collapseButtonRender" :h="h" :clickEvent="emitCollapse" :collapse="isCollapse" />
-        <render-component v-if="attrs.searchButton" :render="searchButtonRender" :clickEvent="emitSearch" :h="h" />
-        <render-component v-if="attrs.resetButton" :render="resetButtonRender" :clickEvent="emitReset" :h="h" />
+        <render-component v-if="collapseButton" :render="collapseButtonRender" :h="h" :clickEvent="emitCollapse" :collapse="isCollapse" />
+        <render-component v-if="searchButton" :render="searchButtonRender" :clickEvent="emitSearch" :h="h" />
+        <render-component v-if="resetButton" :render="resetButtonRender" :clickEvent="emitReset" :h="h" />
         <slot></slot>
       </template>
-    </agel-form>
-  </div>
+    </agel-form-inline>
+  </el-form>
 </template>
- 
+  
 <script>
-import { getIncludeAttrs, each } from "./utils/utils";
-import renderComponent from "./layout/render-component";
+import { getArrItems } from "../utils/utils";
+import renderComponent from "./render-component";
+import { getIncludeAttrs } from "../utils/utils";
+import { formPropKeys } from "../utils/const";
 
 const searchButtonRender = function ({ h, clickEvent }) {
   return h(
@@ -66,15 +65,13 @@ export default {
   name: "agel-search-panel",
   components: { renderComponent },
   props: {
-    form: {
+    items: {
+      type: [Array, Object],
+      default: () => new Array(),
+    },
+    data: {
       type: Object,
-      required: true,
-      default: () => {
-        return {
-          data: {},
-          items: [],
-        };
-      },
+      default: () => new Object(),
     },
     panelPosition: {
       type: String,
@@ -99,71 +96,52 @@ export default {
     // 默认是否折叠搜索条件
     collapse: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
+  provide() {
+    return {
+      wrapForm: this,
+    };
+  },
   data() {
-    const config = this.$agelFormConfig["agel-search-panel"] || {};
+    const config = (this.$agelFormConfig || {})["agel-search-panel"] || {};
     return {
       h: this.$createElement,
       searchButtonRender: config.searchButtonRender || searchButtonRender,
       resetButtonRender: config.resetButtonRender || resetButtonRender,
       collapseButtonRender: config.collapseButtonRender || collapseButtonRender,
-      useFormPorps: null,
       isCollapse: false,
     };
   },
   created() {
-    // patch  从 form 对象读取 props 对象，为了兼容 v.0.3.3 之前版本
-    const compatiblePropsKeys = [
-      "panelPosition",
-      "searchButton",
-      "resetButton",
-      "collapse",
-      "collapseButton",
-      "collapseAlive",
-    ];
-    const useFormPorps = getIncludeAttrs(compatiblePropsKeys, this.form);
-    if (Object.keys(useFormPorps).length > 0) {
-      this.useFormPorps = { ...this.$props, ...useFormPorps };
-    }
-    this.isCollapse = useFormPorps.collapse || this.collapse;
-    // patch end
-    this.$set(this.form, "layout", "inline");
-    if (this.attrs.collapseButton) {
-      each(this.form.items, "forEach", (v) =>
-        this.$set(v, "show", this.itemCollapseShow)
-      );
+    if (this.collapseButton) {
+      this.isCollapse = this.collapse;
+      getArrItems(this.items).forEach((item) => {
+        this.$set(item, "show", this.itemCollapseShow);
+      });
     }
   },
   computed: {
-    attrs() {
-      return this.useFormPorps ? this.useFormPorps : this.$props;
+    formProps() {
+      return getIncludeAttrs(formPropKeys, this.$attrs);
     },
     collapseAliveKeys() {
-      if (this.attrs.collapseButton === false) return [];
-      let keys = [].concat(this.attrs.collapseAlive || []);
-      each(this.form.items, "forEach", (v, i, k) => {
-        v.collapseAlive && keys.push(v.prop || k);
+      if (this.collapseButton === false) return [];
+      let keys = [].concat(this.collapseAlive || []);
+      let defaultKeys = [];
+      getArrItems(this.items).forEach((item, index) => {
+        if (!item.prop) return;
+        index < 3 && defaultKeys.push(item.prop);
+        item.collapseAlive && keys.push(item.prop);
       });
-      if (keys.length == 0) {
-        each(this.form.items, "forEach", (v, i, k) => {
-          i < 3 && keys.push(v.prop || k);
-        });
-      }
-      return keys;
-    },
-    slotKeys() {
-      let keys = [];
-      each(this.form.items, "forEach", (v, i, k) => {
-        v.slot && keys.push(v.prop || k);
-      });
+      if (keys.length == 0) keys = defaultKeys;
       return keys;
     },
   },
   methods: {
     itemCollapseShow(data, item) {
-      if (this.attrs.collapseButton === false) return true;
+      if (this.collapseButton === false) return true;
       if (this.collapseAliveKeys.includes(item.prop)) return true;
       return !this.isCollapse;
     },
@@ -175,12 +153,10 @@ export default {
       });
     },
     emitSearch() {
-      this.form.validate(() => {
-        this.$emit("search");
-      });
+      this.$refs.elForm.validate((is) => is && this.$emit("search"));
     },
     emitReset() {
-      this.form.resetFields();
+      this.$refs.elForm.resetFields();
       this.$emit("reset");
       this.$emit("search");
     },

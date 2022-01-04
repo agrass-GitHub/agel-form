@@ -88,7 +88,7 @@ export default {
     getRef() {
       this.$message.success("获取成功，查看控制台");
       console.log("form:", this.form.getRef("elForm"));
-      console.log("layout:", this.form.getRef("elLayout"));
+      console.log("layout:", this.form.getRef("agLayout"));
       console.log("user input:", this.form.getRef("user"));
     },
     // 在 items 为数组的情况下，可使用该方法快速获取 item 对象进行修改

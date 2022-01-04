@@ -19,7 +19,6 @@ export default {
         layout: "descriptions",
         border: true,
         column: 3,
-        labelWidth: "200px",
         labelStyle: { "min-width": "70px" },
         data: {
           name: "kooriookami",
@@ -32,24 +31,29 @@ export default {
         },
         items: [
           {
-            component: "el-text",
+            component: "agel-text",
             prop: "name",
             label: "用户名",
           },
-          { component: "el-text", label: "手机号", prop: "phone" },
+          { component: "agel-text", label: "手机号", prop: "phone" },
           {
-            component: "el-text",
+            component: "agel-text",
             prop: "addr",
             label: "居住地",
             valueFormat: (v) => "中国" + v,
           },
           {
-            component: "el-text",
+            component: "agel-text",
             prop: "remark",
             label: () => <el-tag>备注</el-tag>,
             slot: () => <el-tag>{this.form.data.remark}</el-tag>,
           },
-          { component: "el-text", label: "联系地址", prop: "address", span: 2 },
+          {
+            component: "agel-text",
+            label: "联系地址",
+            prop: "address",
+            span: 2,
+          },
           {
             component: "el-checkbox",
             label: "快递方式",

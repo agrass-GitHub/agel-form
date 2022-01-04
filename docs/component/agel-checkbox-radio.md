@@ -36,6 +36,7 @@
 | ----------- | ------------  | ------ | ------------------------------------ | 
 | options     | String/Array/Function/Promise    |  -     | option 配置项         | 
 | props       | Object        |  {label,value}     | 数据配置选项          |
+| border      | Boolean       |  -                 | 是否开启 border 样式         |
 | button      | Boolean       |  -                 | 是否开启 button 样式         |
 | active-value   | Boolean/String/Number       |  true                  | checkbox 已勾选时的值         |
 | inactive-value | Boolean/String/Number       |  false                 | checkbox 未勾选时的值         |

@@ -1,6 +1,6 @@
 # Layout 表单布局
 
-`agel-form` 实质上是一个包装组件，在内部包装了 `el-form` 和 `layout` 组件。
+`agel-form` 实质上是一个包装组件，在内部包装了 `el-form` 和 `layout` 组件，可以少些写代码罢了。
 
 在复杂的场景下，例如一个表单下有多个分组、块的概念，且样式排版各不同，你可能更需要原始的 `layout` 组件来实现需求。
 
@@ -82,7 +82,7 @@
 | -------------- | ------------  | ------ | ------------------------------------ |
 | data           | Array         | -      |  列表数据        |  
 | border         | Boolean       | true   | border 样式        | 
-| model-proxy    | Object        | -  | 表单验证 model 对象，需使用.sync       | 
+| model-prop     | String        | -      | 关联到表单的 prop 名称       | 
 | ......         | ......        | ...... | [el-table 属性](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)      | 
 
 item 配置项可额外支持 [el-table-column 属性](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 。
@@ -96,7 +96,7 @@ item 配置项可额外支持 [el-table-column 属性](https://element.eleme.cn/
 
 ## TableditorMenuColumn 
 
-编辑菜单列，该组件一般用于搭配 `tableditor` 布局使用，点击保存时会验证当前行。
+编辑菜单列，该组件用于搭配 `tableditor` 布局使用，点击保存时会验证当前行。
 
 | 属性           | 类型         | 默认值  | 说明                                 | 
 | -------------- | ------------  | ------ | ------------------------------------ | 

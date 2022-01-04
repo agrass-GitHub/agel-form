@@ -5,7 +5,7 @@
       <el-slider v-model="width" :step="100" show-stops :min="300" :max="1600"></el-slider>
     </div>
     <div style="overflow:auto;">
-      <agel-form v-model="form" :style="{width:width+'px',border:'1px dotted #3eaf7c',padding:'10px',boxSizing:'border-box'} "> </agel-form>
+      <agel-form class="border" v-model="form" :style="{width:width+'px'} "> </agel-form>
     </div>
   </div>
 </template>
@@ -18,13 +18,13 @@ export default {
       items.push({ prop: "test" + i, label: "栅格" + (i + 1) });
     }
     return {
-      width: 1500,
+      width: 600,
       form: {
         layout: "grid",
         responsive: true,
         // 也可以通过配置 `responsiveMethod` 属性来自定义响应式规则
         // responsiveMethod: (width) => {
-        //   return width < 500 ? {span:12,...el-col porps } : {....}
+        //   return width < 500 ? {span:12,...el-col props } : {....}
         // },
         data: {},
         items: [

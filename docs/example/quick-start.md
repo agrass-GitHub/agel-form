@@ -22,10 +22,23 @@ Vue.use(ElementUI);
 Vue.use(agelForm,formConfig);
 ```
 
-`Vue.use(agelForm)` 默认会注册所有核心组件到全局，无需在单独引入，组件列表如下：
+`Vue.use(agelForm)` 默认会注册所有核心组件到全局，无需再单独引入，组件列表如下：
 
 ```js
-const coreComponents = [agelForm, agelFormItem, agelFormGrid, agelFormInline, agelFormTableditor, agelFormDescriptions,agelRadio,agelCheckbox, agelSelect,agelTreeSelect,agelUpload,agelText]
+const coreComponents = [
+  agelForm, 
+  agelFormItem,
+  agelFormGrid, 
+  agelFormInline,
+  agelFormTableditor,
+  agelFormDescriptions,
+  agelRadio,
+  agelCheckbox, 
+  agelSelect,
+  agelTreeSelect,
+  agelUpload,
+  agelText
+]
 ```
 
 
@@ -39,6 +52,7 @@ import {
   agelForm,
   // 其他组件按需引入
   agelMapInput,
+  agelDynamicTags,
   agelSearchPanel,
   agelFormDialog,
   tableditorMenuColumn,
@@ -47,36 +61,36 @@ import {
 
 ## 全局配置
 
-支持全局属性，配置将被继承到每个表单上，也可单独为某个表单子组件设置全局配置，表单子组件支持函数写法。这是一把双刃剑，要仔细权衡利弊，宁缺毋滥。
+支持全局属性，配置将被继承到每个表单上和子组件上，子组件配置需函数返回; `defaultValue` 只有在全局配置生效。
+
 
 ```js
 import agelForm from "agel-form";
 
 const formConfig = {
-  // 设置所有上传组件的公用参数
-  "el-upload": {
-    action: "/api/xxx/upload",
-    data: { token: "xxxx", id: prop, },
-    onSuccess: (res) => res.data,
+  // 设置所有表单
+  form:{
+    labelWidth:"auto",
   },
-  // 设置日期组件的格式化  ----- 可以通过函数 return 一个配置对象
+  // 设置日期组件的格式化  
   "el-date-picker": function (item) {
-    if (!item.valueFormat) {
-      if (item.type == undefined || item.type == 'date' || item.type == "daterange") {
-        return { valueFormat: "yyyy-MM-dd" }
-      }
-      if (item.type == "datetime" || item.type == "datetimerange") {
-        return { valueFormat: "yyyy-MM-dd HH:mm:ss" }
-      }
-      if (item.type == "month" || item.type == "monthrange") {
-        return { valueFormat: "yyyy-MM" }
-      }
-      if (item.type == "year") {
-        return { valueFormat: "yyyy" }
-      }
+    if (item.type == undefined || item.type == 'date' || item.type == "daterange") {
+      return { valueFormat: "yyyy-MM-dd" }
+    }
+    if (item.type == "datetime" || item.type == "datetimerange") {
+      return { valueFormat: "yyyy-MM-dd HH:mm:ss" }
+    }
+    if (item.type == "month" || item.type == "monthrange") {
+      return { valueFormat: "yyyy-MM" }
+    }
+    if (item.type == "year") {
+      return { valueFormat: "yyyy" }
     }
   },
-
+  // 为第三方/自定义组件设置组件默认回填初始值
+  "xx-array-input": function () {
+    return { defaultValue: [] }
+  },
 }
 
 Vue.use(agelForm, formConfig);
