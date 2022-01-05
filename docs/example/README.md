@@ -26,10 +26,10 @@
 
 #### 表单布局组件
 
-- [agel-form-inline](https://agrass.gitee.io/agel-form/component/layout.html) 
-- [agel-form-grid](https://agrass.gitee.io/agel-form/component/layout.html) 
-- [agel-form-descriptions](https://agrass.gitee.io/agel-form/component/layout.html) 
-- [agel-form-tableditor](https://agrass.gitee.io/agel-form/component/layout.html)
+- [agel-form-inline](https://agrass.gitee.io/agel-form/component/agel-form-layout.html) 
+- [agel-form-grid](https://agrass.gitee.io/agel-form/component/agel-form-layout.html) 
+- [agel-form-descriptions](https://agrass.gitee.io/agel-form/component/agel-form-layout.html) 
+- [agel-form-tableditor](https://agrass.gitee.io/agel-form/component/agel-form-layout.html)
 
 #### 表单子组件
 
