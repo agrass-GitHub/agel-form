@@ -1,3 +1,8 @@
+const vmodel = {
+  get: (v, is) => is ? String(v).split(',').filter(v => v.trim() != "") : v,
+  set: (v, is) => is ? Array.isArray(v) ? v.join() : "" : v
+}
+
 export default {
   props: {
     options: [String, Array, Function, Promise],
@@ -15,40 +20,27 @@ export default {
     }
   },
   created() {
-    this.$listeners.input = this.proxyInput
-    this.$listeners.change = this.proxyChange
+    ['input', 'change'].forEach(k => {
+      if (this.$listeners[k]) {
+        this.$listeners[k] = (v) => this.$emit(k, vmodel.set(v, this.isProxyStrValue))
+      }
+    })
   },
   watch: {
     options: {
       immediate: true,
       handler: "getOptions"
     },
-    proxyOptions() {
-      this.$nextTick(() => this.setSelected && this.setSelected())
-    }
   },
   computed: {
     isProxyStrValue() {
       return this.multiple && !Array.isArray(this.value)
     },
     proxyValue() {
-      if (this.isProxyStrValue) {
-        return String(this.value).split(',').filter(v => v.trim() != "")
-      }
-      return this.value
+      return vmodel.get(this.value, this.isProxyStrValue)
     },
   },
   methods: {
-    proxyInput(value) {
-      if (value === this.value) return
-      if (this.isProxyStrValue) {
-        value = Array.isArray(value) ? value.join() : ""
-      }
-      this.$emit("input", value)
-    },
-    proxyChange() {
-      this.$nextTick(() => this.$emit("change", this.value))
-    },
     async getOptions() {
       let options = this.options || []
       this.proxyOptions = []

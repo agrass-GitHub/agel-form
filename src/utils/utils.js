@@ -100,33 +100,3 @@ export const getArrItems = function (arr) {
     })
   }
 }
-
-export const getDefaultValue = function (name) {
-  if (
-    name == "el-input" ||
-    name == "el-autocomplete" ||
-    name == "agel-select" ||
-    name == "agel-tree-select" ||
-    name == "el-date-picker" ||
-    name == "el-time-select" ||
-    name == "agel-radio" ||
-    (name == "agel-checkbox" && item.options)
-  ) {
-    return "";
-  }
-  if (name == "el-switch" || name == "agel-checkbox") {
-    return false;
-  }
-  if (name == "el-slider" || name == "el-rate") {
-    return 0;
-  }
-  if (
-    name == "el-cascader" ||
-    name == "el-transfer" ||
-    name == "agel-upload" ||
-    name == "agel-dynamic-tags"
-  ) {
-    return [];
-  }
-  // if (name == "el-input-number") return undefined;
-}

@@ -3,11 +3,20 @@ title: 更新日志
 sidebar: auto
 ---
 
-## v.0.3.3
-
 :::warning
 v.0.3.3 版本重构了部分代码，有破坏性更新，请按照升级提示操作。
 :::
+
+## v.0.3.31
+
+#### agel-select
+- `bug` 修复开启 remote remote-method 异常展示的问题 [issues[5]](https://github.com/agrass-GitHub/agel-form/issues/5)
+
+#### agel-select，agel-tree-select，agel-checkbox，agel-radio 
+- `bug` 修复 :value="xx" 时未绑定事件报错的问题
+- `bug` 修复 :value="xx" 时未绑定 @input，@change 值为空的问题
+
+## v.0.3.3
 
 #### agel-form
 - `bug` 修复 agel-radio 组件因初始值为 undefined 时触发表单 rules，初始值调整为 ""

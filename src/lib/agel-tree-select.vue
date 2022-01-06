@@ -1,7 +1,5 @@
 <template>
-  <el-select :class="selectClass" v-loading="optionsLoading" :popper-class="treePopperClass" ref="select" :value="selectValue" :multiple="multiple"
-    :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" :loading="optionsLoading" :placeholder="placeholder"
-    :loading-text="loadingText" @click.native="initScroll" @clear="handleClear" @remove-tag="removeTag" v-on="selectListeners">
+  <el-select :class="selectClass" v-loading="optionsLoading" :popper-class="treePopperClass" ref="select" :value="selectValue" :multiple="multiple" :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" :loading="optionsLoading" :placeholder="placeholder" :loading-text="loadingText" @click.native="initScroll" @clear="handleClear" @remove-tag="removeTag" v-on="selectListeners">
     <template v-slot:prefix>
       <slot name="prefix"></slot>
     </template>
@@ -10,9 +8,7 @@
     </div>
     <el-option value="" disabled>
       <!-- :data="lazy?undefined:treeData" -->
-      <el-tree ref="ref" class="tree-option" :data="treeData" :lazy="lazy" :load="loadNode" :props="props" :show-checkbox="multiple"
-        :highlight-current="!multiple" :node-key="valueKey" :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs"
-        v-on="$listeners" @current-change="handleCurrentChange" @check="handleCheck">
+      <el-tree ref="ref" class="tree-option" :data="treeData" :lazy="lazy" :load="loadNode" :props="props" :show-checkbox="multiple" :highlight-current="!multiple" :node-key="valueKey" :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs" v-on="$listeners" @current-change="handleCurrentChange" @check="handleCheck">
         <slot name="option" slot-scope="scope" v-bind="scope">
           <span class="el-tree-node__label" :style="scope.data.style" :class="scope.data.class">{{scope.node.label}}</span>
         </slot>
@@ -110,9 +106,13 @@ export default {
     filterText(val) {
       this.$refs.ref.filter(val);
     },
+    // tree value change 手动勾选，由组件外部修改
     proxyValue() {
-      if (this.proxyInputing) return;
-      this.setSelected(); // 由组件外部修改 value 时触发
+      this.setSelected();
+    },
+    // tree options change 手动勾选
+    proxyOptions() {
+      this.$nextTick(this.setSelected);
     },
   },
   mounted() {
@@ -122,12 +122,12 @@ export default {
     handleCurrentChange(nodeData, treeNode) {
       if (treeNode.disabled) return;
       this.currentNode = this.getValueOption();
-      this.selectInput(this.currentNode[this.valueKey]);
+      this.input(this.currentNode[this.valueKey]);
       this.blur();
     },
     handleCheck() {
       this.checkedNodes = this.getValueOption();
-      this.selectInput(this.checkedNodes.map((v) => v[this.valueKey]));
+      this.input(this.checkedNodes.map((v) => v[this.valueKey]));
     },
     handleFilterNode(filterText, data) {
       let value = filterText.trim();
@@ -145,11 +145,11 @@ export default {
         let nodes = this.getValueOption();
         nodes.forEach((node) => tree.setChecked(node, false));
         this.checkedNodes = [];
-        this.selectInput([]);
+        this.input([]);
       } else {
         tree.setCurrentKey(null);
         this.currentNode = null;
-        this.selectInput("");
+        this.input("");
       }
     },
     loadNode(node, resolve) {
@@ -161,7 +161,7 @@ export default {
           let equal = Array.isArray(this.selectValue)
             ? this.selectValue.join() == this.proxyValue.join()
             : this.selectValue == this.proxyValue;
-          if (!equal) this.selectInput(this.selectValue);
+          if (!equal) this.input(this.selectValue);
         });
       });
     },
@@ -176,16 +176,16 @@ export default {
         if (this.lazy) {
           let value = [...this.proxyValue];
           value.splice(value.indexOf(removeLabel), 1);
-          this.selectInput(value);
+          this.input(value);
         }
       }
     },
     // 替代掉 el-select 的 input 事件
-    selectInput(value) {
+    input(value) {
       if (value === this.value) return;
       this.proxyInputing = true;
-      this.proxyInput(value);
-      this.proxyChange();
+      this.$listeners.input && this.$listeners.input(value);
+      this.$listeners.change && this.$listeners.change(value);
       this.$nextTick(() => (this.proxyInputing = false));
     },
     initScroll() {
@@ -207,7 +207,7 @@ export default {
     // 根据 value 选中 高亮 树节点
     setSelected() {
       let tree = this.$refs.ref;
-      if (!tree) return;
+      if (!tree || this.proxyInputing) return;
       if (isEmpty(this.proxyValue)) {
         this.handleClear();
       } else if (this.multiple) {

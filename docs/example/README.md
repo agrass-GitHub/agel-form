@@ -26,25 +26,25 @@
 
 #### 表单布局组件
 
-- [agel-form-inline](https://agrass.gitee.io/agel-form/component/agel-form-layout.html) 
-- [agel-form-grid](https://agrass.gitee.io/agel-form/component/agel-form-layout.html) 
-- [agel-form-descriptions](https://agrass.gitee.io/agel-form/component/agel-form-layout.html) 
-- [agel-form-tableditor](https://agrass.gitee.io/agel-form/component/agel-form-layout.html)
+- [agel-form-inline](/component/agel-form-layout.html) 
+- [agel-form-grid](/component/agel-form-layout.html) 
+- [agel-form-descriptions](/component/agel-form-layout.html) 
+- [agel-form-tableditor](/component/agel-form-layout.html)
 
 #### 表单子组件
 
-- [agel-checkbox](https://agrass.gitee.io/agel-form/component/agel-checkbox-radio.html) 
-- [agel-radio](https://agrass.gitee.io/agel-form/component/agel-checkbox-radio.html) 
-- [agel-select](https://agrass.gitee.io/agel-form/component/agel-select.html) 
-- [agel-tree-select](https://agrass.gitee.io/agel-form/component/agel-tree-select.html) 
-- [agel-upload](https://agrass.gitee.io/agel-form/component/agel-upload.html) 
-- [agel-map-input](https://agrass.gitee.io/agel-form/component/agel-map-input.html)
-- [agel-dynamic-tags](https://agrass.gitee.io/agel-form/component/agel-dynamic-tags.html)  
+- [agel-checkbox](/component/agel-checkbox-radio.html) 
+- [agel-radio](/component/agel-checkbox-radio.html) 
+- [agel-select](/component/agel-select.html) 
+- [agel-tree-select](/component/agel-tree-select.html) 
+- [agel-upload](/component/agel-upload.html) 
+- [agel-map-input](/component/agel-map-input.html)
+- [agel-dynamic-tags](/component/agel-dynamic-tags.html)  
 
 #### 其他
 
-- [agel-search-panel](https://agrass.gitee.io/agel-form/component/agel-search-panel.html) 
-- [agel-form-dialog](https://agrass.gitee.io/agel-form/component/agel-form-dialog.html) 
+- [agel-search-panel](/component/agel-search-panel.html) 
+- [agel-form-dialog](/component/agel-form-dialog.html) 
 
 ### 例子
 
