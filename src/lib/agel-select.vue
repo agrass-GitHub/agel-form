@@ -1,6 +1,5 @@
 <template>
-  <el-select class="agel-select" v-loading="optionsLoading" ref="ref" v-bind="$attrs" v-on="$listeners" :value="proxyValue" :multiple="multiple"
-    :loading="isLoading" :loading-text="loadingText" :popperClass="popperClass">
+  <el-select class="agel-select" v-loading="optionsLoading" ref="ref" v-bind="$attrs" v-on="$listeners" :value="proxyValue" :multiple="multiple" :loading="isLoading" :loading-text="loadingText" :popperClass="popperClass">
     <template v-slot:prefix>
       <slot name="prefix"></slot>
     </template>
@@ -68,6 +67,13 @@ export default {
     return {
       filterText: "",
     };
+  },
+  watch: {
+    proxyOptions() {
+      if (!this.$attrs.remote) {
+        this.$nextTick(this.setSelected);
+      }
+    },
   },
   computed: {
     isLoading() {

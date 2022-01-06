@@ -7,7 +7,7 @@ sidebar: auto
 v.0.3.3 版本重构了部分代码，有破坏性更新，请按照升级提示操作。
 :::
 
-## v.0.3.31
+## v.0.3.32
 
 #### agel-select
 - `bug` 修复开启 remote remote-method 异常展示的问题 [issues[5]](https://github.com/agrass-GitHub/agel-form/issues/5)

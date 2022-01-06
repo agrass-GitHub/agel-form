@@ -1,171 +1,159 @@
 <template>
-  <div class="demo border">
-    <el-select v-model="a.value"  filterable remote placeholder="请输入关键词" reserve-keyword :remote-method="a.remoteMethod" :loading="a.loading">
-      <el-option v-for="item in a.options" :key="item.value" :label="item.label" :value="item.value">
-      </el-option>
-    </el-select>
-
-    <agel-select v-model="b.value"   :options="b.options" filterable remote reserve-keyword placeholder="请输入关键词" :remote-method="b.remoteMethod" :loading="b.loading">
-    </agel-select>
-
-    <agel-tree-select v-model="c.value" multiple node-key="value" :options="c.data" filter  @input="c.input" @change="c.change">
-    </agel-tree-select>
-
-    <agel-checkbox v-model="b.value" :options="b.options" @input="b.input" @change="b.change">
-
-    </agel-checkbox>
-    <agel-form v-model="form"> </agel-form>
-
-  </div>
+  <agel-form class="demo border" v-model="form"></agel-form>
 </template>
  
 <script>
-// import { tableditorMenuColumn } from "agel-form"
-// import { agelSelect } from "../../../src/index";
 export default {
   data() {
     return {
-      a: {
-        value: [],
-        loading: false,
-        options: [],
-        remoteMethod: (query) => {
-          if (query !== "") {
-            setTimeout(() => {
-              this.a.options =
-                query == "a"
-                  ? [
-                      { label: "0", value: "0" },
-                      { label: "1", value: "1" },
-                      { label: "2", value: "2" },
-                      { label: "3", value: "3" },
-                      { label: "4", value: "4" },
-                    ]
-                  : [];
-            }, 200);
-          } else {
-            this.a.options = [];
-          }
+      form: {
+        span: 12,
+        data: {
+          demo0: "北京,重庆",
         },
-        input: (v) => {
-          console.log("input", v);
-        },
-        change: (v) => {
-          console.log("change", v);
-        },
-      },
-      b: {
-        value: "",
-        loading: false,
-        options: [],
-        remoteMethod: (query) => {
-          if (query !== "") {
-            setTimeout(() => {
-              this.b.options =
-                query == "a"
-                  ? [
-                      { label: "0", value: "0" },
-                      { label: "1", value: "1" },
-                      { label: "2", value: "2" },
-                      { label: "3", value: "3" },
-                      { label: "4", value: "4" },
-                    ]
-                  : [];
-            }, 200);
-          } else {
-            this.b.options = [];
-          }
-        },
-        input: (v) => {
-          console.log("input", v);
-        },
-        change: (v) => {
-          console.log("change", v);
-        },
-      },
-      c: {
-        value: "1",
-        data: [
+        items: [
           {
-            label: "一级 1",
-            value: "1",
-            children: [
+            prop: "demo0",
+            label: "字符串",
+            component: "el-select",
+            options: "北京,上海,重庆",
+            multiple: true,
+          },
+          {
+            prop: "demo1",
+            label: "字符串数组",
+            component: "el-select",
+            options: ["北京", "上海"],
+            multiple: true,
+          },
+          {
+            prop: "demo2",
+            label: "对象数组",
+            component: "el-select",
+            options: [
+              { label: "北京", value: "Beijing", disabled: true },
+              { label: "上海", value: "Shanghai" },
+            ],
+          },
+          {
+            prop: "demo3",
+            label: "Promise对象",
+            component: "el-select",
+            options: this.$http.get("/api/getRandomData"),
+          },
+          {
+            prop: "demo4",
+            label: "Function函数",
+            component: "el-select",
+            clearable: true,
+            options: async () => {
+              let data = await this.$http.get("/api/getRandomData");
+              return data;
+            },
+          },
+          {
+            prop: "button",
+            component: "el-button",
+            type: "primary",
+            slots: "点击属性 options",
+            labelWidth:"0px",
+            span: 12,
+            on: {
+              click: () => {
+                const vm = this.form.getRef("demo4");
+                vm.getOptions();
+                vm.focus();
+              },
+            },
+          },
+          {
+            prop: "demo5",
+            label: "分组过滤",
+            component: "el-select",
+            filter: true,
+            clearable: true,
+            props: { label: "name", value: "id" },
+            options: [
               {
-                label: "二级 1-1",
-                value: "1-1",
-                children: [{ label: "三级 1-1-1", value: "1-1-1" }],
+                name: "热门城市",
+                options: [
+                  { id: "Shanghai", name: "上海" },
+                  { id: "Beijing", name: "北京", disabled: true },
+                ],
+              },
+              {
+                name: "城市名",
+                options: [
+                  { id: "Chengdu", name: "成都" },
+                  { id: "Shenzhen", name: "深圳" },
+                  { id: "Guangzhou", name: "广州" },
+                  { id: "Dalian", name: "大连" },
+                ],
               },
             ],
           },
-          { label: "二级 ", value: "2" },
-        ],
-        input: (v) => {
-          console.log("input", v);
-        },
-        change: (v) => {
-          console.log("change", v);
-        },
-      },
-      form: {
-        data: {},
-        rules: {},
-        items: [
           {
+            prop: "demo6",
+            label: "插槽样式",
             component: "el-select",
-            prop: "region",
+            options: [
+              { value: "Shanghai", label: "上海" },
+              { value: "Beijing", label: "北京" },
+            ],
+            slots: {
+              option: ({ option, index }) => {
+                return (
+                  <div>
+                    <span style="float: left">{option.label}</span>
+                    <span style="float: right; color: #8492a6; font-size: 13px">
+                      {option.value}
+                    </span>
+                  </div>
+                );
+              },
+              prefix: () => {
+                let style = "color:#409EFF;line-height:28px;font-size:20px";
+                return <i class="el-icon-platform-eleme" style={style} />;
+              },
+            },
+          },
+          {
+            prop: "demo7",
             label: "远程搜索",
+            component: "el-select",
             remote: true,
             filterable: true,
-            loading: false,
+            multiple: true,
             reserveKeyword: true,
+            loading: false,
+            placeholder: "请输入1进行远程搜索",
             options: [],
             remoteMethod: (query) => {
-              const vm = this.form.getItem("region");
-              vm.loading = true;
+              let vm = this.form.getItem("demo7");
               if (query !== "") {
+                vm.loading = true;
                 setTimeout(() => {
-                  vm.options =
-                    query == "a"
-                      ? [
-                          { label: "0", value: "0" },
-                          { label: "1", value: "1" },
-                          { label: "2", value: "2" },
-                          { label: "3", value: "3" },
-                          { label: "4", value: "4" },
-                        ]
-                      : [];
+                  vm.options = query == "1" ? ["1k", "1w"] : [];
                   vm.loading = false;
                 }, 200);
               } else {
                 vm.options = [];
               }
             },
-            slots: {
-              empty: () => {
-                return <div>自定义空插槽</div>;
-              },
-            },
+          },
+          {
+            prop: "demo8",
+            label: "创建条目",
+            component: "el-select",
+            multiple: true,
+            filterable: true,
+            allowCreate: true,
+            defaultFirstOption: true,
+            options: ["HTML", "CSS", "JavaScript"],
           },
         ],
       },
     };
-  },
-  methods: {
-    getRules() {},
-    validateRow() {
-      // agel-form-tableditor 实例
-      console.log(this.form.getRef("layout"));
-      this.form.getRef("layout").validateRow(2, () => {
-        this.$message.success("验证成功");
-      });
-    },
-    getRef() {
-      console.log("---------- Table 实例 ----------");
-      console.log(this.form.getRef("elTable"));
-      console.log("----- 组件实例，index 为 2 prop 为 name 组件----");
-      console.log(this.form.getRef("tableditor.2.name"));
-      this.$message.info("获取实例成功，查看控制台");
-    },
   },
 };
 </script>

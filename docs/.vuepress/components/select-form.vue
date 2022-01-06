@@ -55,8 +55,9 @@ export default {
             prop: "button",
             component: "el-button",
             type: "primary",
-            slots: "刷新 options",
-            span: 24,
+            slots: "点击属性 options",
+            labelWidth:"0px",
+            span: 12,
             on: {
               click: () => {
                 const vm = this.form.getRef("demo4");
@@ -115,6 +116,40 @@ export default {
                 return <i class="el-icon-platform-eleme" style={style} />;
               },
             },
+          },
+          {
+            prop: "demo7",
+            label: "远程搜索",
+            component: "el-select",
+            remote: true,
+            filterable: true,
+            multiple: true,
+            reserveKeyword: true,
+            loading: false,
+            placeholder: "请输入1进行远程搜索",
+            options: [],
+            remoteMethod: (query) => {
+              let vm = this.form.getItem("demo7");
+              if (query !== "") {
+                vm.loading = true;
+                setTimeout(() => {
+                  vm.options = query == "1" ? ["1k", "1w"] : [];
+                  vm.loading = false;
+                }, 200);
+              } else {
+                vm.options = [];
+              }
+            },
+          },
+          {
+            prop: "demo8",
+            label: "创建条目",
+            component: "el-select",
+            multiple: true,
+            filterable: true,
+            allowCreate: true,
+            defaultFirstOption: true,
+            options: ["HTML", "CSS", "JavaScript"],
           },
         ],
       },
