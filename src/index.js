@@ -5,7 +5,7 @@ import agelFormGrid from "./form/agel-form-grid.vue";
 import agelFormInline from "./form/agel-form-inline.vue";
 import agelFormDescriptions from "./form/agel-form-descriptions.vue";
 import agelFormTableditor from "./form/agel-form-tableditor.vue";
-import tableditorMenuColumn from "./form/tableditor-menu-column"
+import tableditorMenuColumn from "./form/tableditor-menu-column.vue"
 
 // 其他组件
 import agelSearchPanel from "./form/agel-search-panel.vue";
