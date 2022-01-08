@@ -4,19 +4,19 @@
     <el-form :model="data" class="border" label-width="auto" ref="form">
       <!-- 内联布局 -->
       <el-divider content-position="left">agel-form-inline 内联布局</el-divider>
-      <agel-form-inline :items="inlineItems" :value="data"></agel-form-inline>
+      <agel-form-inline :items="inlineItems"></agel-form-inline>
 
       <!-- 栅格布局 -->
       <el-divider content-position="left">agel-form-grid 栅格布局</el-divider>
-      <agel-form-grid :items="gridItems" :value="data" :span="12"></agel-form-grid>
+      <agel-form-grid :items="gridItems" :span="12"></agel-form-grid>
 
       <!-- 描述布局 -->
       <el-divider content-position="left">agel-form-descriptions 描述布局</el-divider>
-      <agel-form-descriptions :items="decItems" :value="data" :column="2"></agel-form-descriptions>
+      <agel-form-descriptions :items="decItems" :column="2"></agel-form-descriptions>
 
-      <!-- 表格编辑器布局, 需要使用 model-prop 属性关联表单-->
+      <!-- 表格编辑器布局, 需要使用 model-prop 属性关联表单数据-->
       <el-divider content-position="left">agel-form-tableditor 表格编辑器布局</el-divider>
-      <agel-form-tableditor :items="tableItems" :value="data.list" model-prop="list">
+      <agel-form-tableditor :items="tableItems" model-prop="list">
         <template v-slot:index="scope">
           <el-tag>{{scope.$index}}：{{scope.row.d1}}</el-tag>
         </template>

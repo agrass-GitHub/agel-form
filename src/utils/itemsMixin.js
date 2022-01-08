@@ -111,11 +111,11 @@ export default {
       const agItem = getCustomProps(agItemProps, item)
       agItem.display =
         typeof item.display == "function"
-          ? item.display(this.value, item)
+          ? item.display(this.elForm.model)
           : agItem.display
       agItem.show =
         typeof item.show == "function"
-          ? item.show(this.value, item)
+          ? item.show(this.elForm.model)
           : agItem.show
       return agItem
     },
@@ -164,7 +164,7 @@ export default {
         )
         component.attrs.disabled =
           typeof item.disabled == "function"
-            ? item.disabled(this.value)
+            ? item.disabled(this.elForm.model)
             : item.disabled
         component.attrs.placeholder = this.getPlaceholder(item)
 

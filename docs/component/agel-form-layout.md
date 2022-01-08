@@ -1,17 +1,27 @@
 # Layout 表单布局
 
-`agel-form` 实质上是一个包装组件，在内部包装了 `el-form` 和 `layout` 组件，可以少些写代码罢了。
-
-在复杂的场景下，例如一个表单下有多个分组、块的概念，且样式排版各不同，你可能更需要原始的 `layout` 组件来实现需求。
 
 ## 使用
 
+在复杂的场景下，例如一个表单下有多个分组、块的概念，且样式排版各不同，你可能更需要原始的 `layout` 组件来实现需求。
+
+`el-form` 组件的 `model` 属性是必须的。
 
 <ClientOnly><layout-form/></ClientOnly>
 
 ::: details 点击查看代码
 <<< @/docs/.vuepress/components/layout-form.vue
 :::
+
+## 作为单组件使用
+
+你甚至可以把 `layout` 组件作为单组件使用，但是这样的数据结构会稍显复杂，灵活性降低。
+
+<ClientOnly><complex-form/></ClientOnly>
+
+::: details 点击查看代码
+<<< @/docs/.vuepress/components/complex-form.vue
+::: 
 
 
 ## Layout 
@@ -25,6 +35,7 @@
 | -------------- | ------------  | ------ | ------------------------------------ | 
 | items          | Object/Array  | []     | 表单配置项                | 
 | data           | Object/Array  |  -     | 表单数据         | 
+| model-prop     | String        | -      | 关联到表单的 prop 名称，使用tableditor时必填        | 
 | itemExtendKeys | Array         |  -     | 包含在内的属性名不会被注入到组件中
 
 `item` 配置项支持 `component` 组件的动态属性。
@@ -35,8 +46,9 @@
 
 | 属性          | 参数           |  说明                                   | 
 | -----------   | ------------  |  ------------------------------------  | 
-| getItem       | prop:string，deep:boolean   | 获取指定 item 对象，deep 可获取完整属性  | 
+| getItem       | prop:string   | 获取指定 item 对象  | 
 | getRef        | prop:string   |  获取指定组件的 vue 实例  |
+
 
 #### Slot 
 
@@ -54,7 +66,6 @@
 | type           | String        | flex   | 继承自 el-row   | 
 | responsive     | Boolean       | false  | 是否响应式布局        | 
 | responsiveMethod | Funciton    | -      | 自定义响应式规则      | 
-| labelPositionProxy | String    | -      | 表单自适应 labelPosition ，需使用.sync     | 
 | ......         | ......        | ...... | [el-row 属性]([el-row](https://element.eleme.cn/#/zh-CN/component/layout#row-attributes))      | 
 | ......         | ......        | ...... | [el-col 属性](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)      | 
 
@@ -80,12 +91,12 @@
 
 | 属性           | 类型         | 默认值  | 说明                                 | 
 | -------------- | ------------  | ------ | ------------------------------------ |
-| data           | Array         | -      |  列表数据        |  
 | border         | Boolean       | true   | border 样式        | 
-| model-prop     | String        | -      | 关联到表单的 prop 名称       | 
 | ......         | ......        | ...... | [el-table 属性](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)      | 
 
-item 配置项可额外支持 [el-table-column 属性](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 。
+item 配置项可额外支持 [el-table-column 属性](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes);
+
+item.formatter 支持返回 Vnode，在 `row._edit_` = false 渲染。
 
 #### Mehtod
 
@@ -93,15 +104,12 @@ item 配置项可额外支持 [el-table-column 属性](https://element.eleme.cn/
 | -----------   | ------------  |  ------------------------------------  | 
 | validateRow   | (index,successCallback)             | 对列表某一行的表单进行验证  | 
 
-
 ## TableditorMenuColumn 
 
 编辑菜单列，该组件用于搭配 `tableditor` 布局使用，点击保存时会验证当前行。
 
 | 属性           | 类型         | 默认值  | 说明                                 | 
 | -------------- | ------------  | ------ | ------------------------------------ | 
-| data           | Array         | -      |  列表数据        |  
-| fixed          | String        | right  |  固定        |  
 | add            | Boolean       | true   |  显示添加按钮        | 
 | edit           | Boolean       | true   |  显示编辑保存按钮        |
 | del            | Boolean       | true   |  显示删除按钮        | 

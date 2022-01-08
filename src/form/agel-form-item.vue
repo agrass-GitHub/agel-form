@@ -4,7 +4,8 @@
       <render-component v-if="label" :render="label" />
     </slot>
     <slot>
-      <render-component v-if="component.name" :value="field.v" :render="component.name" v-on="component.on" v-bind="component.attrs" @input="input" :ref="prop||'component'" :is-tag="component.isTag">
+      <render-component v-if="component.name" :value="field.v" :render="component.name" v-on="component.on" v-bind="component.attrs" @input="input"
+        :ref="prop||'component'" :is-tag="component.isTag">
         <template v-for="(slot,staticName) in slots.staticSlots" v-slot:[staticName]>
           <render-component :key="staticName" :render="slot" />
         </template>

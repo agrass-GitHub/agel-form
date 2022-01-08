@@ -63,7 +63,7 @@
 
 `item` 支持 [el-table-column](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 组件的部分属性。
 
-在该布局下，`form.data` 必须为数组；通过 `row._edit_` 属性可控制列表行是否处于编辑状态；可以从 `agel-form` 中导入 [tableditor-menu-column](/component/agel-form-layout.html#tableditormenucolumn) 表格列组件，实现了动态表单的功能。
+该布局实际上也是一个动态表单，`form.data` 必须为数组；通过 `row._edit_` 属性可控制列表行是否处于编辑状态；可以从 `agel-form` 中导入 [tableditor-menu-column](/component/agel-form-layout.html#tableditormenucolumn) 表格列组件，实现了增删改的功能。
 
 <ClientOnly><tableditor-form/></ClientOnly>
 
@@ -72,9 +72,9 @@
 :::
 
 
-## 响应式表单
+## 自适应表单
 
-响应式是基于 [agel-form-grid](/component/agel-form-layout.html#agelformgrid) 组件实现，设置 `responsive:true` 开启响应式。
+自适应是基于 [agel-form-grid](/component/agel-form-layout.html#agelformgrid) 组件实现，设置 `responsive:true` 开启响应式。
 
 表单会根据 `gird` 容器宽度自动调整栅格大小，但 `item` 的栅格属性优先级最高，响应式规则如下：
 
@@ -94,17 +94,10 @@
 <<< @/docs/.vuepress/components/resize-form.vue
 ::: 
 
-## 复杂表单
 
-你甚至可以把 `layout` 组件作为单组件使用，但是这样的数据结构会稍显复杂。
-
-在更复杂的场景下，例如一个表单下有多个分组、块的概念，且样式排版各不同，建议使用 `layout` 组件来实现需求，例子参考 [agel-form-layout](/component/agel-form-layout.html#使用)。
-
-<ClientOnly><complex-form/></ClientOnly>
-
-::: details 点击查看代码
-<<< @/docs/.vuepress/components/complex-form.vue
-::: 
+:::tip agel-form 和 layout 的关系
+agel-form 实质上是一个包装组件，在内部包装了 `el-form` 和 `layout` 组件，可以让你少写很多代码。在更复杂的场景下，例如一个表单下有多个分组、块的概念，且样式排版各不同，建议使用 layout 组件来实现需求，[例子参考 Layout](/component/agel-form-layout.html#使用)。
+:::
 
 ## 表单联动
 
@@ -210,13 +203,6 @@ slots:"查询"  ===  slots:h("span",{},"查询")  ===  slots:{ default:h("span",
 | ......      | ......          | ......      | 组件动态属性      |
 | ......      | ......          | ......      | [Layout Item 属性](/example/agel-form.html#props-keys)      |
 
-  <!--
-  | ......      | ......          | ...... | [el-col 属性](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes)      | 
-| ......      | ......          | ...... | [el-form-item 属性](https://element.eleme.cn/#/zh-CN/component/form#form-item-attributes)      |
-| ......      | ......          | ...... | [el-descriptions-item 属性](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-item-attributes)      |    
-  
-    -->
-
 
 ### Form Methods
 
@@ -227,7 +213,7 @@ slots:"查询"  ===  slots:h("span",{},"查询")  ===  slots:{ default:h("span",
 | clearValidate | -             |  清空验证                        |
 | resetFields   | -             |  表单重置            | 
 | validate      | callback,errcallback        |  表单验证                    |
-| getItem       | prop:string，deep:boolean   | 获取指定 item 对象，deep 可获取完整属性  | 
+| getItem       | prop:string   | 获取指定 item 对象  | 
 | getRef        | prop:string   |  获取指定组件的 vue 实例  |
 
 

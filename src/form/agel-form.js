@@ -102,8 +102,8 @@ export default {
     formProps["label-width"] = formProps["label-width"] || "auto"
 
     if (layout === 'tableditor') {
-      formProps.model = { tableditor: option.data }
-      layoutProps.modelProp = "tableditor"
+      formProps.model = { dynamicData: option.data }
+      layoutProps.modelProp = "dynamicData"
     }
 
     return h("el-form", { class: "agel-form", attrs: formProps, on: on, ref: "elForm" }, [

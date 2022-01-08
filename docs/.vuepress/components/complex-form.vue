@@ -46,10 +46,15 @@ export default {
               { prop: "region", label: "地址" },
               { prop: "intor", label: "介绍" },
             ],
+            slots: {
+              append: () => {
+                return <tableditor-menu-column></tableditor-menu-column>
+              },
+            },
           },
         ],
       },
-    };
+    }
   },
-};
+}
 </script>

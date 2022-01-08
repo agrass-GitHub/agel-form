@@ -3,7 +3,7 @@
     <agel-form v-model="form">
       <template v-slot:extra>
         <el-checkbox v-model="form.border" style="margin-right:20px">border 样式</el-checkbox>
-        <el-button type="primary" @click="()=>form.validate()">提交单号</el-button>
+        <el-button type="primary" @click="test">提交单号</el-button>
       </template>
     </agel-form>
   </div>
@@ -71,6 +71,9 @@ export default {
             action: "xx/xx/",
           },
         ],
+      },
+      test: () => {
+        console.log(this.form.getRef("name"));
       },
     };
   },

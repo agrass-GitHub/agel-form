@@ -4,8 +4,27 @@ sidebar: auto
 ---
 
 :::warning
-v.0.3.3 版本重构了部分代码，有破坏性更新，请按照升级提示操作。
+[#v.0.3.3](/log.html#v-0-3-3) 版本重构了部分代码，有破坏性更新，请按照升级提示操作。
 :::
+
+## v.0.3.33
+
+#### agel-form
+- `bug` 修复使用 vite 启动项目报错[issues[6]](https://github.com/agrass-GitHub/agel-form/issues/6)
+
+#### agel-form-grid/inline/descriptions/tableditor
+- `change` 移除 value 参数，不必要的参数
+
+#### agel-form-tableditor
+- `bug` 修复 row._edit_ = false 时，文字渲染失败的问题
+- `bug` 修复 被删除行的验证信息继承到下一行的问题
+- `new` item.formatter 支持返回 Vnode，在 row._edit_ = false 渲染
+
+#### tableditor-menu-column
+- `bug` 修复编辑保存需要点击两次的问题
+- `new` add edit del 属性支持函数回调
+- `new` 新增 delConfirm 删除确认属性
+- `change` 移除 data 参数，不必要的参数
 
 ## v.0.3.32
 

@@ -1,10 +1,10 @@
 <template>
-  <el-descriptions class="agel-form-descriptions" ref="elDescriptions" v-bind="$attrs" :border="border">
+  <el-descriptions class="agel-form-descriptions" ref="elDescriptions" v-bind="$attrs" :border="border" :value="undefined">
     <slot name="title" slot="title"></slot>
     <slot name="extra" slot="extra"></slot>
     <slot name="prepend"></slot>
     <el-descriptions-item v-for="(item,index) in agItems" v-bind="item.$descriptionsItem" label="" :key="item.prop||index">
-      <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item)" slot="label"/>
+      <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item)" slot="label" />
       <agel-form-item v-show="item.show" v-bind="item.$formItem" :component="item.$component" label="" label-width="0px" />
     </el-descriptions-item>
     <slot name="append"></slot>
@@ -25,10 +25,6 @@ export default {
     renderComponent,
   },
   props: {
-    value: {
-      type: Object,
-      require: true,
-    },
     border: {
       typoe: Boolean,
       default: true,

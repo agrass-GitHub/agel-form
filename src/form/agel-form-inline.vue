@@ -1,5 +1,5 @@
 <template>
-  <div class="agel-form-inline">
+  <div class="agel-form-inline" :value="undefined">
     <slot name="prepend"></slot>
     <agel-form-item v-for="(item,index) in agItems" :key="item.prop||index" v-show="item.show" v-bind="item.$formItem" :component="item.$component"
       :label="item.label" />
@@ -14,12 +14,6 @@ export default {
   name: "agel-form-inline",
   mixins: [itemsMinxin],
   inheritAttrs: false,
-  props: {
-    value: {
-      type: Object,
-      require: true,
-    },
-  },
 };
 </script>
  

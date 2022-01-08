@@ -93,6 +93,7 @@ export const tablePropsKeys = [
 export const tableColumnPropsKeys = [
   "prop",
   "width",
+  "fixed",
   "min-width",
   "show-overflow-tooltip",
   "align",
