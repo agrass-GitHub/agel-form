@@ -101,7 +101,7 @@ export default {
     formProps.model = option.data;
     formProps["label-width"] = formProps["label-width"] || "auto"
 
-    if (layout === 'tableditor') {
+    if (Array.isArray(option.data)) {
       formProps.model = { dynamicData: option.data }
       layoutProps.modelProp = "dynamicData"
     }

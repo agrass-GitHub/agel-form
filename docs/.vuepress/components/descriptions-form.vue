@@ -2,6 +2,7 @@
   <div class="demo border">
     <agel-form v-model="form">
       <template v-slot:extra>
+        <el-checkbox v-model="form.data._edit_" style="margin-right:20px">表单模式</el-checkbox>
         <el-checkbox v-model="form.border" style="margin-right:20px">border 样式</el-checkbox>
         <el-button type="primary" @click="test">提交单号</el-button>
       </template>
@@ -14,12 +15,11 @@ export default {
   data() {
     return {
       form: {
-        size: "medium",
         title: "agel-form descriptions 描述排版",
         layout: "descriptions",
         border: true,
         column: 3,
-        labelStyle: { "min-width": "70px" },
+        labelStyle: { "min-width": "80px" },
         data: {
           name: "kooriookami",
           phone: "18100000000",
@@ -28,28 +28,27 @@ export default {
           number: 100,
           address: "江苏省苏州市吴中区吴中大道 1188 号",
           delivery: true,
+          _edit_: true,
         },
         items: [
           {
-            component: "agel-text",
             prop: "name",
             label: "用户名",
+            _edit_: false,
           },
-          { component: "agel-text", label: "手机号", prop: "phone" },
           {
-            component: "agel-text",
+            label: "手机号",
+            prop: "phone",
+          },
+          {
             prop: "addr",
             label: "居住地",
-            valueFormat: (v) => "中国" + v,
           },
           {
-            component: "agel-text",
             prop: "remark",
             label: () => <el-tag>备注</el-tag>,
-            slot: () => <el-tag>{this.form.data.remark}</el-tag>,
           },
           {
-            component: "agel-text",
             label: "联系地址",
             prop: "address",
             span: 2,
@@ -61,7 +60,16 @@ export default {
             options: ["顺丰", "圆通"],
             required: true,
           },
-          { component: "el-switch", label: "即时配送", prop: "delivery" },
+          {
+            component: "el-switch",
+            label: "即时配送",
+            prop: "delivery",
+            formatter: (value) => {
+              return (
+                <el-tag disable-transitions>{value ? "即时" : "延时"}</el-tag>
+              )
+            },
+          },
           { component: "el-rate", label: "评分", prop: "rate" },
           {
             component: "el-upload",
@@ -69,13 +77,14 @@ export default {
             prop: "upload",
             listType: "picture-card",
             action: "xx/xx/",
+            _edit_: true,
           },
         ],
       },
       test: () => {
-        console.log(this.form.getRef("name"));
+        console.log(this.form.getRef("name"))
       },
-    };
+    }
   },
-};
+}
 </script>

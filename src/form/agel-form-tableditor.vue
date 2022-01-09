@@ -1,16 +1,15 @@
 <template>
-  <el-table class="agel-form-tableditor" ref="elTable" :value="undefined" :data="tableData" v-bind="$attrs" :border="border" v-on="$listeners">
+  <el-table class="agel-form-tableditor" ref="elTable" :value="undefined" :data="dynamicData" v-bind="$attrs" :border="border" v-on="$listeners">
     <slot name="prepend"></slot>
-    <el-table-column v-for="(item,index) in agItems" v-bind="item.$tableColumn" label="" :key="item.prop||index">
-
-      <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item)" slot="header" />
-
-      <template v-slot:default="scope">
-        <agel-form-item v-if="scope.row._edit_!==false" v-show="item.show" v-bind="getFormItemHandle(item,scope)"
-          :component="getComponentHandle(item,scope)" label="" label-width="0px" :key="scope.row._key_" />
-        <render-component v-else :render="getColumnSlot(item,scope)" />
+    <el-table-column v-for="(item,colIndex) in agItems" v-bind="getLayoutItemAttrs(item)" label="" :key="item.prop">
+      <template v-slot:header="scope">
+        <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item,scope.$index)" slot="header" />
       </template>
-
+      <template v-slot:default="scope">
+        <agel-form-item v-show="item.show" label="" label-width="0px" :key="scope.row._key_"
+          v-bind="getFormItemAttrs({item,colIndex,row:scope.row,rowIndex:scope.$index})"
+          :component="getComponentAttrs({item,colIndex,row:scope.row,rowIndex:scope.$index})" />
+      </template>
     </el-table-column>
     <slot name="append"></slot>
   </el-table>
@@ -19,7 +18,6 @@
 <script>
 import itemsMinxin from "../utils/itemsMixin"
 import renderComponent from "./render-component"
-import { getIncludeAttrs, guid } from "../utils/utils"
 import { tableColumnPropsKeys } from "../utils/const"
 
 export default {
@@ -42,50 +40,14 @@ export default {
   },
   data() {
     return {
-      agItemExtendKeys: tableColumnPropsKeys,
+      layoutItemKeys: tableColumnPropsKeys,
     }
   },
-  computed: {
-    tableData() {
-      return this.elForm && this.elForm.model && this.modelProp
-        ? this.elForm.model[this.modelProp]
-        : []
-    },
-  },
-  watch: {
-    tableData() {
-      this.tableData.forEach((row) => {
-        if (row._edit_ == undefined) this.$set(row, "_edit_", true)
-        if (row._key_ == undefined) row._key_ = guid()
-      })
-    },
-  },
   methods: {
-    agItemExtendHandle(agItem, item) {
-      agItem.$tableColumn = getIncludeAttrs(tableColumnPropsKeys, item)
-      return agItem
-    },
-    getComponentHandle(agItem, slotProps) {
-      let component = Object.assign({}, agItem.$component)
-      if (agItem.slot && typeof component.name == "function") {
-        component.attrs = slotProps
-      }
-      return component
-    },
-    getFormItemHandle(agItem, slotProps) {
-      let formItem = Object.assign({}, agItem.$formItem)
-      formItem.prop = this.getFormItemProp(agItem, slotProps.$index)
-      return formItem
-    },
-    getFormItemProp(agItem, index) {
-      return this.modelProp
-        ? `${this.modelProp}.${index}.${agItem.prop}`
-        : agItem.prop
-    },
-    getColumnSlot(agItem, slotProps) {
-      const cellValue = slotProps.row[agItem.prop]
-      return agItem.$tableColumn.formatter
-        ? agItem.$tableColumn.formatter(
+    getColumnSlot(item, slotProps) {
+      const cellValue = slotProps.row[item.prop]
+      return item.formatter
+        ? item.formatter(
             slotProps.row,
             slotProps.column,
             cellValue,

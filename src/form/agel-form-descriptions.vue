@@ -1,21 +1,23 @@
 <template>
-  <el-descriptions class="agel-form-descriptions" ref="elDescriptions" v-bind="$attrs" :border="border" :value="undefined">
-    <slot name="title" slot="title"></slot>
-    <slot name="extra" slot="extra"></slot>
-    <slot name="prepend"></slot>
-    <el-descriptions-item v-for="(item,index) in agItems" v-bind="item.$descriptionsItem" label="" :key="item.prop||index">
-      <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item)" slot="label" />
-      <agel-form-item v-show="item.show" v-bind="item.$formItem" :component="item.$component" label="" label-width="0px" />
-    </el-descriptions-item>
-    <slot name="append"></slot>
-  </el-descriptions>
+  <div class="agel-form-descriptions">
+    <el-descriptions ref="ElDescriptions" v-bind="$attrs" :value="undefined" :border="border" v-for="(row,rowIndex) in dynamicData" :key="row._key_">
+      <slot name="title" slot="title" v-bind="{row,rowIndex}"></slot>
+      <slot name="extra" slot="extra" v-bind="{row,rowIndex}"></slot>
+      <slot name="prepend" v-bind="{row,rowIndex}"></slot>
+      <el-descriptions-item v-for="(item,colIndex) in agItems" v-bind="getLayoutItemAttrs(item)" label="" :key="item.prop">
+        <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item,rowIndex)" slot="label" />
+        <agel-form-item v-show="item.show" label="" label-width="0px" v-bind="getFormItemAttrs({item,colIndex,row,rowIndex})"
+          :component="getComponentAttrs({item,colIndex,row,rowIndex})" />
+      </el-descriptions-item>
+      <slot name="append" v-bind="{row,rowIndex}"></slot>
+    </el-descriptions>
+  </div>
 </template>
- 
+
 <script>
-import itemsMinxin from "../utils/itemsMixin";
-import renderComponent from "./render-component";
-import { getIncludeAttrs } from "../utils/utils";
-import { descriptionsItemPropkeys } from "../utils/const";
+import itemsMinxin from "../utils/itemsMixin"
+import renderComponent from "./render-component"
+import { descriptionsItemPropkeys } from "../utils/const"
 
 export default {
   name: "agel-form-descriptions",
@@ -32,22 +34,13 @@ export default {
   },
   data() {
     return {
-      agItemExtendKeys: descriptionsItemPropkeys,
-    };
-  },
-  methods: {
-    agItemExtendHandle(agItem, item) {
-      agItem.$descriptionsItem = getIncludeAttrs(
-        descriptionsItemPropkeys,
-        item
-      );
-      return agItem;
-    },
+      layoutItemKeys: descriptionsItemPropkeys,
+    }
   },
   install(vue) {
-    vue.component(this.name, this);
+    vue.component(this.name, this)
   },
-};
+}
 </script>
  
 <style>

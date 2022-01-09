@@ -51,7 +51,7 @@ export function getCustomProps(props, attrs) {
   propsKyes.forEach(k => {
     defaultProps[k] = typeof props[k].default == 'function' ? props[k].default() : props[k].default
   })
-  return Object.assign(defaultProps, getIncludeAttrs(propsKyes, attrs));
+  return attrs ? Object.assign(defaultProps, getIncludeAttrs(propsKyes, attrs)) : defaultProps;
 };
 
 
@@ -75,16 +75,16 @@ export const extend = function (obj, target = {}, vueset, cover = false) {
 }
 
 export const findRef = function (context, refName) {
+  let ref = null;
   if (context.$refs[refName]) {
-    return context.$refs[refName];
+    ref = context.$refs[refName];
   } else {
-    let ref = null;
     context.$children.every(vm => {
       ref = findRef(vm, refName);
       return ref === null;
     })
-    return ref;
   }
+  return Array.isArray(ref) && ref.length == 1 ? ref[0] : ref;
 }
 
 export const getArrItems = function (arr) {

@@ -1,5 +1,7 @@
 <template>
-  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" :listType="listType" :autoUpload="autoUpload" :file-list="value" :before-upload="beforeUpload" :on-success="onSuccess" :on-remove="onRemove" :on-exceed="onExceed" :on-preview="onPreview" :on-error="onError" :on-change="onChange" v-bind="$attrs" v-on="$listeners">
+  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" :listType="listType" :autoUpload="autoUpload"
+    :file-list="value" :before-upload="beforeUpload" :on-success="onSuccess" :on-remove="onRemove" :on-exceed="onExceed" :on-preview="onPreview"
+    :on-error="onError" :on-change="onChange" v-bind="$attrs" v-on="$listeners">
     <slot slot="trigger" name="trigger"> </slot>
     <template v-slot:default>
       <slot name="default">
@@ -26,6 +28,14 @@ import { getProp } from "../utils/utils";
 export default {
   name: "agel-upload",
   inheritAttrs: false,
+  inject: {
+    elForm: {
+      default: "",
+    },
+    elFormItem: {
+      default: "",
+    },
+  },
   props: {
     value: {
       type: Array,
@@ -55,6 +65,11 @@ export default {
   },
   created() {
     if (this.value == undefined) this.$emit("input", []);
+  },
+  watch: {
+    value() {
+      if (this.elFormItem) this.elFormItem.$emit("el.form.change");
+    },
   },
   methods: {
     onMessage(type, message) {

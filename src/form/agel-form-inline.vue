@@ -1,20 +1,22 @@
 <template>
-  <div class="agel-form-inline" :value="undefined">
-    <slot name="prepend"></slot>
-    <agel-form-item v-for="(item,index) in agItems" :key="item.prop||index" v-show="item.show" v-bind="item.$formItem" :component="item.$component"
-      :label="item.label" />
-    <slot name="append"></slot>
+  <div class="agel-form-inline">
+    <template v-for="(row,rowIndex) in dynamicData">
+      <slot name="prepend" v-bind="{row,rowIndex}"></slot>
+      <agel-form-item v-for="(item,colIndex) in agItems" :key="row._key_+item.prop" v-show="item.show"
+        v-bind="getFormItemAttrs({item,colIndex,row,rowIndex})" :component="getComponentAttrs({item,colIndex,row,rowIndex})" />
+      <slot name="append" v-bind="{row,rowIndex}"></slot>
+    </template>
   </div>
 </template>
  
 <script>
-import itemsMinxin from "../utils/itemsMixin";
+import itemsMinxin from "../utils/itemsMixin"
 
 export default {
   name: "agel-form-inline",
   mixins: [itemsMinxin],
   inheritAttrs: false,
-};
+}
 </script>
  
  <style>

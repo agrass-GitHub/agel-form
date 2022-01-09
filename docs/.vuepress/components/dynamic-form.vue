@@ -1,68 +1,82 @@
 <template>
-  <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" class="demo-dynamic">
-    <el-form-item prop="email" label="邮箱" :rules="[
-      { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-      { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-    ]">
-      <el-input v-model="dynamicValidateForm.email"></el-input>
-      <template v-slot:error="{error }">
-        <span>{{error}}</span>
-      </template>
-    </el-form-item>
-    <el-form-item v-for="(domain, index) in dynamicValidateForm.domains" :label="'域名' + index" :key="domain.key" :prop="'domains.' + index + '.value'"
-      :rules="{
-      required: true, message: '域名不能为空', trigger: 'blur'
-    }">
-      <el-input v-model="domain.value"></el-input>
-      <el-button @click.prevent="removeDomain(domain)">删除</el-button>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
-      <el-button @click="addDomain">新增域名</el-button>
-      <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
-    </el-form-item>
-  </el-form>
+  <div class="dynamic-form">
+    <div class="demo border">
+      <agel-form v-model="dynamicGridForm">
+        <template v-slot:prepend="scope">
+          <el-col :span="24" style="margin-bottom:10px">
+            <b>栅格表单 {{scope.rowIndex+1}}</b>
+          </el-col>
+        </template>
+        <template v-slot:append="scope">
+          <el-col :span="4">
+            <el-button @click="del(dynamicGridForm,scope)" type="primary">删除</el-button>
+          </el-col>
+        </template>
+      </agel-form>
+      <el-button @click="push(dynamicGridForm)" type="primary">新增</el-button>
+    </div>
+
+    <div class="demo border">
+      <agel-form v-model="dynamicDescForm">
+        <template v-slot:title="scope">
+          <span>描述表单 {{scope.rowIndex+1}}：</span>
+        </template>
+        <template v-slot:extra="scope">
+          <el-button @click="del(dynamicDescForm,scope)" type="primary">删除</el-button>
+        </template>
+        <template v-slot:age="scope">
+          <el-button> {{scope.row.age}} </el-button>
+        </template>
+      </agel-form>
+      <el-button @click="push(dynamicDescForm)" style="margin-top:10px" type="primary">新增</el-button>
+      <el-button @click="getRef()" type="primary">获取组件实例</el-button>
+    </div>
+  </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
-      dynamicValidateForm: {
-        domains: [
-          {
-            value: "",
-          },
+      dynamicGridForm: {
+        span: 10,
+        data: [{ name: "栅格布局" }],
+        items: [
+          { label: "姓名", prop: "name", required: true },
+          { label: "年龄", prop: "age" },
         ],
-        email: "",
       },
-    };
+      dynamicDescForm: {
+        column: 1,
+        data: [{ name: "描述布局", age: "18岁了" }],
+        layout: "descriptions",
+        items: [
+          { label: "姓名", prop: "name", required: true },
+          { label: "年龄", prop: "age", slot: true },
+        ],
+      },
+    }
   },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+    push(form) {
+      form.data.push({ name: "", age: "18岁了" })
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    del(form, scope) {
+      form.data.splice(scope.rowIndex, 1)
     },
-    removeDomain(item) {
-      var index = this.dynamicValidateForm.domains.indexOf(item);
-      if (index !== -1) {
-        this.dynamicValidateForm.domains.splice(index, 1);
-      }
-    },
-    addDomain() {
-      this.dynamicValidateForm.domains.push({
-        value: "",
-        key: Date.now(),
-      });
+    getRef() {
+      this.$message.success("获取组件实例成功，查看控制台")
+      console.log(this.dynamicGridForm.getRef("dynamicData.0.name"))
     },
   },
-};
+}
 </script>
+
+<style>
+.dynamic-form .el-descriptions__header {
+  margin-bottom: 10px;
+}
+.dynamic-form .el-descriptions {
+  margin-bottom: 10px;
+}
+</style>

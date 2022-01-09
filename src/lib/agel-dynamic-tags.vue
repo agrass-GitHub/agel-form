@@ -1,10 +1,12 @@
 <template>
   <div class="agel-dynamic-tags">
-    <el-tag v-for="(tag,index) in value" :key="tag+'-'+index" :disable-transitions="true" v-bind="getTagProps(tag,index)" @close="handleClose(tag,index)" @click="handleClick(tag,index)">
+    <el-tag v-for="(tag,index) in value" :key="tag+'-'+index" :disable-transitions="true" v-bind="getTagProps(tag,index)"
+      @close="handleClose(tag,index)" @click="handleClick(tag,index)">
       <span>{{tag}}</span>
     </el-tag>
     <template v-if="createable">
-      <el-input v-if="inputVisible" class="new-tag-input" v-model="inputValue" disable-transitions :disabled="isDisabled" ref="saveTagInput" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
+      <el-input v-if="inputVisible" class="new-tag-input" v-model="inputValue" disable-transitions :disabled="isDisabled" ref="saveTagInput"
+        @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
       </el-input>
       <el-button v-else class="new-tag-button" :disabled="isDisabled" @click="showInput">+ New Tag</el-button>
     </template>
@@ -18,7 +20,10 @@ export default {
   inheritAttrs: false,
   inject: {
     elForm: {
-      default: null,
+      default: "",
+    },
+    elFormItem: {
+      default: "",
     },
   },
   props: {
@@ -54,6 +59,11 @@ export default {
       return this.elForm ? this.elForm.disabled : this.disabled;
     },
   },
+  watch: {
+    value() {
+      if (this.elFormItem) this.elFormItem.$emit("el.form.change");
+    },
+  },
   methods: {
     getTagProps(tag, index) {
       const keys = ["closable", "type", "hit", "color", "effect"];
@@ -84,6 +94,7 @@ export default {
       let inputValue = this.inputValue;
       if (inputValue && this.value.indexOf(inputValue) == -1) {
         this.$emit("input", this.value.concat(this.inputValue));
+        this.$emit("create", inputValue);
       }
       this.inputVisible = false;
       this.inputValue = "";

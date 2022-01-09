@@ -5,33 +5,11 @@ import {
   getArrItems,
   kebabcase,
   findRef,
+  guid,
 } from "../utils/utils"
 
-import { formItemPropKeys, inputArr, selectArr, componentDefaultValue, defaultComponentName, agComponentNames, layoutComponentNames } from "./const"
-
-// agItem 组件对象结构
-const agItemProps = {
-  label: {
-    type: [String, Object, Function],
-    default: "",
-  },
-  prop: {
-    type: String,
-    default: "",
-  },
-  show: {
-    type: Boolean,
-    default: true,
-  },
-  display: {
-    type: Boolean,
-    default: true,
-  },
-  slot: {
-    type: [Boolean, String, Object, Function],
-    default: false,
-  },
-}
+import { agItemProps, formItemPropKeys, inputArr, selectArr, componentDefaultValue, defaultComponentName, agComponentNames, layoutComponentNames } from "./const"
+import renderComponent from "../form/render-component"
 
 // 渲染组件对象结构
 const componentProps = {
@@ -68,6 +46,9 @@ const componentPropKeys = Object.keys(componentProps)
 const agItemPropKeys = Object.keys(agItemProps)
 
 export default {
+  components: {
+    renderComponent,
+  },
   inject: {
     elForm: {
       default: null
@@ -85,30 +66,32 @@ export default {
       type: Array,
       default: () => new Array()
     },
-    // 关联 elForm.model 的 prop 名称，用于表单验证
+    // 关联 elForm.model 的 prop 
     modelProp: String,
   },
   data() {
     return {
-      agItemExtendKeys: [],
+      layoutItemKeys: [],
     }
   },
   computed: {
     agItems() {
-      return getArrItems(this.items).map(item => {
-        const agItem = this.getAgItemAttrs(item)
-        agItem.$formItem = this.getFormItemAttrs(item)
-        agItem.$component = this.getComponentAttrs(item)
-        return this.agItemExtendHandle(agItem, item)
-      }).filter((v) => v.display)
+      return getArrItems(this.items).map(this.getAgItemAttrs).filter((v) => v.display)
+    },
+    isDynamic() {
+      return Array.isArray(this.elForm.model[this.modelProp])
+    },
+    dynamicData() {
+      const data = this.isDynamic ? this.elForm.model[this.modelProp] : [this.elForm.model]
+      return data.map(row => {
+        if (this.isDynamic && row._key_ == undefined) row._key_ = guid()
+        return row;
+      })
     },
   },
   methods: {
-    agItemExtendHandle(agItrm) {
-      return agItrm
-    },
     getAgItemAttrs(item) {
-      const agItem = getCustomProps(agItemProps, item)
+      const agItem = Object.assign(getCustomProps(agItemProps), item)
       agItem.display =
         typeof item.display == "function"
           ? item.display(this.elForm.model)
@@ -117,12 +100,18 @@ export default {
         typeof item.show == "function"
           ? item.show(this.elForm.model)
           : agItem.show
+      agItem.disabled =
+        typeof item.disabled == "function"
+          ? item.disabled(this.elForm.model)
+          : item.disabled
+      agItem.placeholder = this.getPlaceholder(item);
       return agItem
     },
-    getFormItemAttrs(item) {
+    getFormItemAttrs(scope) {
+      const { item, rowIndex } = scope;
       const formItem = getIncludeAttrs(formItemPropKeys, item)
-      formItem.prop = this.modelProp ? `${this.modelProp}.${item.prop}` : item.prop
-      const rules = [].concat(formItem.rules || [], (this.elForm.rules || {})[formItem.prop] || [])
+      const prop = this.getFormItemProp(item, rowIndex)
+      const rules = [].concat(formItem.rules || [], (this.elForm.rules || {})[prop] || [])
       const label = typeof item.label == "string" ? item.label : ""
       if (formItem.required && rules.length === 0) {
         formItem.required = undefined
@@ -134,46 +123,57 @@ export default {
           },
         ]
       }
+      formItem.prop = prop
       return formItem
     },
-    getComponentAttrs(item) {
+    getComponentAttrs(scope) {
+      const { item, row } = scope;
       const component = getCustomProps(componentProps, item)
+      if (item._edit_ === false || (row._edit_ === false && !item._edit_)) {
+        component.name = ({ value = "" }) => item.formatter ? item.formatter(value) : String(value)
+        component.isTag = false
+        return component
+      }
       if (item.slot) {
         const scopedSlots = this.wrapForm ? this.wrapForm.$scopedSlots : this.$scopedSlots
         component.name = item.slot === true ? (scopedSlots[item.prop] || "") : item.slot
         component.isTag = false
-      } else {
-        const agConfig = this.$agelFormConfig || {}
-        const componentConfigFun = agConfig[item.component] || agConfig[this.getName(item)]
-        const componentConfig = typeof componentConfigFun == 'function' ? componentConfigFun(item) : {}
-        const { defaultValue, ...componentGlobalAttrs } = componentConfig
-        const invalidKeys = ['component', '$component'].concat(
-          formItemPropKeys,
-          componentPropKeys,
-          agItemPropKeys,
-          this.agItemExtendKeys,
-          this.itemExtendKeys
-        )
-        component.name = this.getName(item, false)
-        component.isTag = typeof component.name === 'string'
-        component.defaultValue = componentConfig.hasOwnProperty('defaultValue') ? defaultValue : this.getDefaultValue(item)
-        component.attrs = Object.assign(
-          { ...componentGlobalAttrs },
-          getExcludeAttrs(invalidKeys, item),
-          item.$component || {}
-        )
-        component.attrs.disabled =
-          typeof item.disabled == "function"
-            ? item.disabled(this.elForm.model)
-            : item.disabled
-        component.attrs.placeholder = this.getPlaceholder(item)
-
-        // 当布局组件作为单组件使用时
-        if (layoutComponentNames.includes(component.name)) {
-          component.attrs.modelProp = item.prop
-        }
+        component.attrs = typeof component.name === "function" ? scope : {}
+        return component
+      }
+      const agConfig = this.$agelFormConfig || {}
+      const componentConfigFun = agConfig[item.component] || agConfig[this.getName(item)]
+      const componentConfig = typeof componentConfigFun == 'function' ? componentConfigFun(item) : {}
+      const { defaultValue, ...componentGlobalAttrs } = componentConfig
+      const invalidKeys = ['component', '$component'].concat(
+        agItemPropKeys,
+        formItemPropKeys,
+        componentPropKeys,
+        this.layoutItemKeys,
+        this.itemExtendKeys
+      )
+      component.name = this.getName(item, false)
+      component.isTag = typeof component.name === 'string'
+      component.defaultValue = componentConfig.hasOwnProperty('defaultValue') ? defaultValue : this.getDefaultValue(item)
+      component.attrs = Object.assign(
+        { ...componentGlobalAttrs },
+        getExcludeAttrs(invalidKeys, item),
+        item.$component || {}
+      )
+      // 当布局组件作为单组件使用时
+      if (layoutComponentNames.includes(component.name)) {
+        component.attrs.modelProp = item.prop
       }
       return component
+    },
+    getLayoutItemAttrs(item) {
+      return getIncludeAttrs(this.layoutItemKeys, item)
+    },
+    getFormItemProp(item, rowIndex) {
+      return [this.modelProp, this.isDynamic ? String(rowIndex) : '']
+        .concat(item.prop.split("."))
+        .filter((v) => v)
+        .join(".")
     },
     getPlaceholder(item) {
       if (item.placeholder) return item.placeholder
@@ -197,18 +197,18 @@ export default {
       }
       return value
     },
-    getRequiredAsteriskClass(agItem) {
+    getRequiredAsteriskClass(item, rowIndex) {
       if (this.elForm.hideRequiredAsterisk) return ""
-      const formItem = agItem.$formItem
-      const rules = [].concat(formItem.rules || [], (this.elForm.rules || {})[formItem.prop] || [])
-      return formItem.required || rules.some((v) => v.required) ? "agel-required-label" : ""
+      const prop = this.getFormItemProp(item, rowIndex)
+      const rules = [].concat(item.rules || [], (this.elForm.rules || {})[prop] || [])
+      return item.required || rules.some((v) => v.required) ? "agel-required-label" : ""
     },
     getDefaultValue(item) {
       const name = this.getName(item)
       let value = undefined
       componentDefaultValue.every(v => {
         if (v.keys.includes(name)) {
-          value = typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : v.value
+          value = typeof v.value === 'function' ? v.value() : v.value
         }
         return value === undefined
       })

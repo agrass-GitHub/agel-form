@@ -41,42 +41,11 @@
 <<< @/docs/.vuepress/components/grid-form.vue
 :::
 
-## 描述表单
-
-表单通过 [agel-form-descriptions](/component/agel-form-layout.html#agelformdescriptions) 组件来实现描述布局，设置 `layout：descriptions` 开启。
-
-`form` 支持 [el-descriptions](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)组件的的属性，同样支持相关插槽。
-
-`item` 支持 [el-descriptions-item](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 组件的属性，使用 `agel-text` 组件可实现纯文字展示。
-
-<ClientOnly><descriptions-form/></ClientOnly>
-
-::: details 点击查看代码
-<<< @/docs/.vuepress/components/descriptions-form.vue
-:::
-
-## 表格表单
-
-表单通过 [agel-form-tableditor](/component/agel-form-layout.html#agelformtableditor) 组件来实现表格编辑器，设置 `layout：tableditor` 开启。
-
-`form` 支持 [el-table](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)组件的的部分属性，和所有事件。
-
-`item` 支持 [el-table-column](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 组件的部分属性。
-
-该布局实际上也是一个动态表单，`form.data` 必须为数组；通过 `row._edit_` 属性可控制列表行是否处于编辑状态；可以从 `agel-form` 中导入 [tableditor-menu-column](/component/agel-form-layout.html#tableditormenucolumn) 表格列组件，实现了增删改的功能。
-
-<ClientOnly><tableditor-form/></ClientOnly>
-
-::: details 点击查看代码
-<<< @/docs/.vuepress/components/tableditor-form.vue
-:::
-
-
 ## 自适应表单
 
 自适应是基于 [agel-form-grid](/component/agel-form-layout.html#agelformgrid) 组件实现，设置 `responsive:true` 开启响应式。
 
-表单会根据 `gird` 容器宽度自动调整栅格大小，但 `item` 的栅格属性优先级最高，响应式规则如下：
+表单会根据 `gird` 容器宽度（非窗口宽度）自动调整栅格大小，但 `item` 的栅格属性优先级最高，响应式规则如下：
 
 ```js
   let span = 24;
@@ -94,6 +63,48 @@
 <<< @/docs/.vuepress/components/resize-form.vue
 ::: 
 
+## 描述表单
+
+表单通过 [agel-form-descriptions](/component/agel-form-layout.html#agelformdescriptions) 组件来实现描述布局，设置 `layout：descriptions` 开启。
+
+`form` 支持 [el-descriptions](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)组件的的属性，同样支持相关插槽。
+
+`item` 支持 [el-descriptions-item](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 组件的属性，使用 `agel-text` 组件可实现纯文字展示。
+
+<ClientOnly><descriptions-form/></ClientOnly>
+
+::: details 点击查看代码
+<<< @/docs/.vuepress/components/descriptions-form.vue
+:::
+
+## 表格编辑表单
+
+表单通过 [agel-form-tableditor](/component/agel-form-layout.html#agelformtableditor) 组件来实现表格编辑器，设置 `layout：tableditor` 开启。
+
+`form` 支持 [el-table](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)组件的的部分属性，和所有事件。
+
+`item` 支持 [el-table-column](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 组件的部分属性。
+
+该布局实际上是一个动态表单，`form.data` 必须为数组；通过 `row._edit_` 属性可控制列表行是否处于编辑状态。
+
+可以从 `agel-form` 中导入 [tableditor-menu-column](/component/agel-form-layout.html#tableditormenucolumn) 表格列组件，实现了增删改的功能。
+
+<ClientOnly><tableditor-form/></ClientOnly>
+
+::: details 点击查看代码
+<<< @/docs/.vuepress/components/tableditor-form.vue
+:::
+
+
+## 动态增减表单
+
+同表格编辑表单一样，要实现在其他布局下的动态表单，只需要把 `form.data` 修改成数组，然后在合适的插槽写添加增减逻辑，插槽作用域里均可获取 `scope.row` `scope.$index` 参数。
+
+<ClientOnly><dynamic-form/></ClientOnly>
+
+::: details 点击查看代码
+<<< @/docs/.vuepress/components/dynamic-form.vue
+::: 
 
 :::tip agel-form 和 layout 的关系
 agel-form 实质上是一个包装组件，在内部包装了 `el-form` 和 `layout` 组件，可以让你少写很多代码。在更复杂的场景下，例如一个表单下有多个分组、块的概念，且样式排版各不同，建议使用 layout 组件来实现需求，[例子参考 Layout](/component/agel-form-layout.html#使用)。
@@ -174,7 +185,7 @@ slots:"查询"  ===  slots:h("span",{},"查询")  ===  slots:{ default:h("span",
 | 属性        | 类型         | 默认值  | 说明                                   | 
 | ----------- | ------------ | ------ | ------------------------------------  |
 | labelWidth  | String       | auto   | 继承自 el-form  | 
-| data        | Object       | { }    | 表单数据                                  | 
+| data        | Object/Array       | { }    | 表单数据                                  | 
 | items       | Array/Object | { }    | 表单项配置                         | 
 | on          | Object       | { }    | 表单事件                |  
 | layout      | String       | grid   | 布局方式 grid,inline,descriptions,tableditor      |
@@ -195,7 +206,7 @@ slots:"查询"  ===  slots:h("span",{},"查询")  ===  slots:{ default:h("span",
 | show        | Boolean/Funciton| true        | 是否显示                 | 
 | required    | Boolean         | false       | 是否生成必填验证   |
 | slot        | Boolean/Funciton/Vnode/String  | false       | Item 自定义插槽  |
-| component   | String/Component/Async Component | el-input    | 组件名称                |
+| component   | String/Component/Async Component | el-input    | 组件名称/实例/异步组件                |
 | disabled    | Boolean/Funciton| false       | 组件是否禁用              |
 | vmodel      | Boolean/String  | true        | false 或 .number .trim              |  
 | slots       | Object/String/Funciton/Vnode  | { }         | 组件插槽 | 

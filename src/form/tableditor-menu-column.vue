@@ -26,7 +26,7 @@
 export default {
   name: "tableditor-menu-column",
   inheritAttrs: false,
-  inject: ["tableditor"],
+  inject: ["tableditor", "elForm"],
   props: {
     align: {
       type: String,
@@ -61,31 +61,25 @@ export default {
   methods: {
     // 编辑保存行
     editRow(scope) {
+      if (scope.row._edit_ === undefined) {
+        this.$set(scope.row, "_edit_", true)
+      }
       if (scope.row._edit_) {
         this.tableditor.validateRow(scope.$index, () => {
-          this.doneCallBack(scope, this.edit, () => (scope.row._edit_ = false))
+          this.doneCallBack(scope, this.edit, (isok = true) => {
+            isok && (scope.row._edit_ = false)
+          })
         })
       } else {
         scope.row._edit_ = true
       }
     },
-    // 添加行
-    addRow(scope) {
-      this.doneCallBack(scope, this.add, (newRow = {}) => {
-        newRow._key_ = Date.now()
-        this.tableditor.tableData.splice(
-          this.tableditor.tableData.length,
-          0,
-          newRow
-        )
-      })
-    },
     // 删除行
     delRow(scope) {
       const done = () => {
-        this.doneCallBack(scope, this.del, () =>
-          this.tableditor.tableData.splice(scope.$index, 1)
-        )
+        this.doneCallBack(scope, this.del, (isok = true) => {
+          isok && this.elForm.model.dynamicData.splice(scope.$index, 1)
+        })
       }
       if (this.delConfirm) {
         this.$msgbox
@@ -103,14 +97,25 @@ export default {
         done()
       }
     },
+    // 添加行
+    addRow(scope) {
+      this.doneCallBack(scope, this.add, (newRow = {}) => {
+        newRow._key_ = Date.now()
+        this.elForm.model.dynamicData.splice(
+          this.elForm.model.dynamicData.length,
+          0,
+          newRow
+        )
+      })
+    },
     doneCallBack(scope, done, doneCallBack) {
       if (typeof done == "function") {
         if (scope.row && scope.row._loading_ === undefined) {
           this.$set(scope.row, "_loading_", false)
         }
         scope.row && (scope.row._loading_ = true)
-        done(scope, (params) => {
-          scope.row && (scope.row._loading_ = true)
+        done({ scope, rowIndex: scope.$index }, (params) => {
+          scope.row && (scope.row._loading_ = false)
           doneCallBack(params)
         })
       } else {

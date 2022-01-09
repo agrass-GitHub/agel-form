@@ -1,11 +1,12 @@
 # Layout 表单布局
 
+在复杂的场景下，例如一个表单下有多个分组、块的概念，且样式排版各不同，你可能更需要原始的布局组件来实现需求。
 
 ## 使用
 
-在复杂的场景下，例如一个表单下有多个分组、块的概念，且样式排版各不同，你可能更需要原始的 `layout` 组件来实现需求。
+使用布局组件 `el-form` 组件的 `model` 属性是必须的，所有数据源都取自这里。
 
-`el-form` 组件的 `model` 属性是必须的。
+使用动态表单，则需要手动关联布局组件的 `model-prop` 到 `el-form.model`，且数据源必须是数组 。
 
 <ClientOnly><layout-form/></ClientOnly>
 
@@ -35,7 +36,7 @@
 | -------------- | ------------  | ------ | ------------------------------------ | 
 | items          | Object/Array  | []     | 表单配置项                | 
 | data           | Object/Array  |  -     | 表单数据         | 
-| model-prop     | String        | -      | 关联到表单的 prop 名称，使用tableditor时必填        | 
+| model-prop     | String        | -      | 关联到表单的 prop 名称，动态表单必填        | 
 | itemExtendKeys | Array         |  -     | 包含在内的属性名不会被注入到组件中
 
 `item` 配置项支持 `component` 组件的动态属性。

@@ -110,7 +110,7 @@ export const componentDefaultValue = [
   { value: "", keys: ["el-input", "el-autocomplete", "agel-select", "agel-tree-select", "el-date-picker", "el-time-select", "agel-radio"], },
   { value: false, keys: ["el-switch", "agel-checkbox"] },
   { value: 0, keys: ["el-slider", "el-rate"] },
-  { value: [], keys: ["el-cascader", "el-transfer", "agel-upload", "agel-dynamic-tags", "agel-map-input"] },
+  { value: () => [], keys: ["el-cascader", "el-transfer", "agel-upload", "agel-dynamic-tags", "agel-map-input"] },
 ]
 
 
@@ -134,3 +134,68 @@ export const layoutComponentNames = [
 
 // 默认组件名称
 export const defaultComponentName = "el-input"
+
+// form.item 对象基础结构
+export const agItemProps = {
+  // label 名称 / 插槽
+  label: {
+    type: [String, Object, Function],
+    default: "",
+  },
+  // data 关联字段名
+  prop: {
+    type: String,
+    default: "",
+  },
+  // 是否渲染
+  display: {
+    type: [Boolean, Function],
+    default: true,
+  },
+  // 是否显示
+  show: {
+    type: [Boolean, Function],
+    default: true,
+  },
+  // 是否生成必填验证
+  required: {
+    type: Boolean,
+    default: false,
+  },
+  // 是否开启 vmoedl，可选 .number .trim 修饰符
+  vmodel: {
+    type: [Boolean, String],
+    default: true,
+  },
+  // Item 自定义插槽
+  slot: {
+    type: [Boolean, String, Object, Function],
+    default: false,
+  },
+  // 组件名称/实例/异步组件
+  component: {
+    type: [String, Object, Function],
+    default: defaultComponentName,
+  },
+  // 组件是否禁用
+  disabled: {
+    type: [Boolean, Function],
+    default: true,
+  },
+  // 组件的子插槽
+  slots: {
+    type: [String, Object, Function],
+    default: () => new Object,
+  },
+  // 组件的事件
+  on: {
+    type: Object,
+    default: () => new Object,
+  },
+  _edit_: {
+    type: Boolean,
+  },
+  formatter: {
+    type: Function
+  },
+}

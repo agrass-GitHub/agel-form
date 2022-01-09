@@ -16,11 +16,7 @@
 
       <!-- 表格编辑器布局, 需要使用 model-prop 属性关联表单数据-->
       <el-divider content-position="left">agel-form-tableditor 表格编辑器布局</el-divider>
-      <agel-form-tableditor :items="tableItems" model-prop="list">
-        <template v-slot:index="scope">
-          <el-tag>{{scope.$index}}：{{scope.row.d1}}</el-tag>
-        </template>
-      </agel-form-tableditor>
+      <agel-form-tableditor :items="tableItems" model-prop="list"> </agel-form-tableditor>
 
       <!-- 自定义布局 -->
       <el-divider content-position="left">custom 自定义布局</el-divider>
@@ -71,18 +67,18 @@ export default {
         { prop: "d1", label: "姓名", required: true, width: 100 },
         { prop: "d2", label: "地址", minWidth: 100 },
       ],
-    };
+    }
   },
   methods: {
     validate() {
       this.$refs.form.validate((is) => {
         if (is) {
-          this.$message.success("成功");
+          this.$message.success("成功")
         } else {
-          this.$message.error("验证失败");
+          this.$message.error("验证失败")
         }
-      });
+      })
     },
   },
-};
+}
 </script>

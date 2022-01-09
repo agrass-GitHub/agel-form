@@ -5,7 +5,6 @@
 </template>
  
 <script>
-
 export default {
   data() {
     return {
@@ -57,6 +56,7 @@ export default {
             component: "agel-dynamic-tags",
             label: "活动标签",
             prop: "tags",
+            required: true,
           },
           {
             component: "el-slider",
@@ -96,10 +96,15 @@ export default {
             component: "el-button",
             type: "primary",
             slots: "提交",
+            on: {
+              click: () => {
+                this.form.validate()
+              },
+            },
           },
         ],
       },
-    };
+    }
   },
-};
+}
 </script>

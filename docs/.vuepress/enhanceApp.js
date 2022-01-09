@@ -43,9 +43,11 @@ const mockData = {
 export default ({ Vue }) => {
   Vue.use(Element, { size: 'mini' });
   Vue.use(agelForm, {
+    form: {
+      xs: { span: 24 }
+    },
     "el-input": {
       clearable: true,
-      defaultValue: "123",
     },
     "xx-array-input": function () {
       return { defaultValue: [] }
