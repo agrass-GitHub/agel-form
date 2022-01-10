@@ -10,35 +10,6 @@ import {
 
 import { agItemProps, agItemPropKeys, formItemPropKeys, inputArr, selectArr, componentDefaultValue, defaultComponentName, agComponentNames, layoutComponentNames } from "./const"
 
-// 渲染组件对象结构
-const componentProps = {
-  name: {
-    type: [String, Object, Function],
-    type: "",
-  },
-  vmodel: {
-    type: [Boolean, String],
-    default: true,
-  },
-  attrs: {
-    type: Object,
-    default: () => new Object,
-  },
-  slots: {
-    type: Object,
-    default: () => new Object,
-  },
-  on: {
-    type: Object,
-    default: () => new Object,
-  },
-  isTag: {
-    type: Boolean,
-    default: false,
-  },
-}
-
-
 export default {
   inject: {
     elForm: {
@@ -118,22 +89,21 @@ export default {
       }
       formItem.prop = prop
       formItem.defaultValue = this.getDefaultValue(item);
+      formItem.vmodel = item.vmodel;
       return formItem
     },
     getComponentAttrs(scope) {
       const { item, row } = scope;
-      const component = getCustomProps(componentProps, item)
+      const component = { name: "", isTag: false, attrs: {}, slots: item.slots, on: item.on, }
       // 视图查看模式
       if (item.viewModel || (row._view_ && item.viewModel !== false)) {
         component.name = ({ value = "" }) => item.viewFormat ? item.viewFormat({ value, ...scope }) : String(value)
-        component.isTag = false
         return component
       }
       // 插槽模式
       if (item.slot) {
         const scopedSlots = this.wrapForm ? this.wrapForm.$scopedSlots : this.$scopedSlots
         component.name = item.slot === true ? (scopedSlots[item.prop] || "") : item.slot
-        component.isTag = false
         component.attrs = typeof component.name === "function" ? scope : {}
         return component
       }

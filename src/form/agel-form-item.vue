@@ -30,11 +30,15 @@ export default {
   props: {
     prop: String,
     label: [String, Number, Object, Array, Function],
-    defaultValue: {},
+    vmodel: {
+      type: Boolean,
+      default: true,
+    },
     component: {
       type: Object,
       required: true,
     },
+    defaultValue: {},
   },
   computed: {
     field() {
@@ -71,7 +75,7 @@ export default {
   },
   methods: {
     input(value) {
-      const vmodel = this.component.vmodel;
+      const vmodel = this.vmodel;
       if (vmodel === false) return;
       if (typeof vmodel == "string" && typeof value === "string") {
         if (vmodel == ".trim") {
