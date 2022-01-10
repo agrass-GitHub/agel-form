@@ -6,9 +6,7 @@
         <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item,scope.$index)" slot="header" />
       </template>
       <template v-slot:default="scope">
-        <agel-form-item v-show="item.show" label="" label-width="0px" :key="scope.row._key_"
-          v-bind="getFormItemAttrs({item,colIndex,row:scope.row,rowIndex:scope.$index})"
-          :component="getComponentAttrs({item,colIndex,row:scope.row,rowIndex:scope.$index})" />
+        <agel-form-item v-show="item.show" label="" label-width="0px" :key="scope.row._key_" v-bind="getFormItemAttrs({item,colIndex,row:scope.row,rowIndex:scope.$index})" :component="getComponentAttrs({item,colIndex,row:scope.row,rowIndex:scope.$index})" />
       </template>
     </el-table-column>
     <slot name="append"></slot>
@@ -16,9 +14,9 @@
 </template>
  
 <script>
-import itemsMinxin from "../utils/itemsMixin"
-import renderComponent from "./render-component"
-import { tableColumnPropsKeys } from "../utils/const"
+import itemsMinxin from "../utils/itemsMixin";
+import renderComponent from "./render-component";
+import { tableColumnPropKeys } from "../utils/const";
 
 export default {
   name: "agel-form-tableditor",
@@ -36,38 +34,27 @@ export default {
   provide() {
     return {
       tableditor: this,
-    }
+    };
   },
   data() {
     return {
-      layoutItemKeys: tableColumnPropsKeys,
-    }
+      layoutItemKeys: tableColumnPropKeys,
+    };
   },
   methods: {
-    getColumnSlot(item, slotProps) {
-      const cellValue = slotProps.row[item.prop]
-      return item.formatter
-        ? item.formatter(
-            slotProps.row,
-            slotProps.column,
-            cellValue,
-            slotProps.$index
-          )
-        : cellValue || ""
-    },
     validateRow(index, callback) {
-      let props = this.agItems.map((v) => this.getFormItemProp(v, index))
-      let ok = true
+      let props = this.agItems.map((v) => this.getFormItemProp(v, index));
+      let ok = true;
       this.elForm.validateField(props, (errMsg) => {
-        if (errMsg) ok = false
-      })
-      ok && callback && callback()
+        if (errMsg) ok = false;
+      });
+      ok && callback && callback();
     },
   },
   install(vue) {
-    vue.component(this.name, this)
+    vue.component(this.name, this);
   },
-}
+};
 </script>
 
 <style>

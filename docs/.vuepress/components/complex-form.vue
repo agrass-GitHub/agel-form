@@ -19,15 +19,6 @@ export default {
         items: [
           { prop: "name", label: "姓名", span: 12, required: true },
           {
-            prop: "inline",
-            label: "inline",
-            component: "agel-form-inline",
-            items: [
-              { prop: "name", label: "姓名", required: true },
-              { prop: "region", label: "地址" },
-            ],
-          },
-          {
             prop: "descriptions",
             label: "descriptions",
             component: "agel-form-descriptions",
@@ -48,7 +39,7 @@ export default {
             ],
             slots: {
               append: () => {
-                return <tableditor-menu-column></tableditor-menu-column>
+                return <tableditor-menu-column data={this.form.data.tableditor} edit={false} width={80}></tableditor-menu-column>
               },
             },
           },

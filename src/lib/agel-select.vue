@@ -35,7 +35,6 @@ import optionsMinxin from "../utils/optionsMinxin";
 import { getProp, getIncludeAttrs } from "../utils/utils";
 
 const optionPropsKeys = ["value", "label", "disabled", "style", "class"];
-
 const groupPropsKyes = ["label", "disabled", "style", "class"];
 
 export default {

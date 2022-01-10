@@ -1,112 +1,40 @@
 <template>
-  <div class="demo border">
-    <el-input></el-input>
-    <agel-form v-model="form"> </agel-form>
+  <div class="demo">
+    <div>
+      <span>拖拽宽度进度条查看响应式效果：</span>
+      <el-slider v-model="width" :step="100" show-stops :min="300" :max="1600"></el-slider>
+    </div>
+    <div style="overflow:auto;">
+      <agel-form class="border" v-model="form" :style="{width:width+'px'} "> </agel-form>
+    </div>
   </div>
 </template>
  
 <script>
 export default {
   data() {
+    let items = [];
+    for (let i = 0; i < 8; i++) {
+      items.push({ prop: "test" + i, label: "栅格" + (i + 1) });
+    }
     return {
+      width: 600,
       form: {
-        // labelWidth: "150px",
-        span: 15,
-        data: {
-          name: "使用 agel-form",
-          desc: "素人开发,若你决定尝试,有什么问题可以联系本人微信:agrass-weixin",
-          delivery: true,
-          slider: 20,
-          address: ["重庆欢乐谷", 106.51715, 29.667352],
-          tags: ["游乐园"],
-        },
+        layout: "grid",
+        responsive: true,
+        // 也可以通过配置 `responsiveMethod` 属性来自定义响应式规则
+        // responsiveMethod: (width) => {
+        //   return width < 500 ? {span:12,...el-col props } : {....}
+        // },
+        data: {},
         items: [
-          { label: "活动名称", prop: "name" },
           {
-            label: "建议反馈",
-            prop: "desc",
-            type: "textarea",
+            prop: "name",
+            label: "不受影响",
+            placeholder: "该组件 span 不受响应式影响",
+            span: 24,
           },
-          {
-            component: "agel-map-input",
-            label: "活动地址",
-            prop: "address",
-            required: true,
-            clearable: true,
-          },
-          {
-            component: "el-input-number",
-            label: "活动人数",
-            prop: "number",
-          },
-          {
-            component: "el-select",
-            label: "活动区域",
-            options: ["区域1", "区域2"],
-            prop: "region",
-          },
-          {
-            component: "el-date-picker",
-            label: "活动时间",
-            prop: "date",
-          },
-          {
-            component: "el-switch",
-            label: "是否开启",
-            prop: "delivery",
-          },
-          {
-            component: "agel-dynamic-tags",
-            label: "活动标签",
-            prop: "tags",
-            required: true,
-          },
-          {
-            component: "el-slider",
-            label: "活动进度",
-            prop: "slider",
-          },
-          {
-            component: "el-checkbox",
-            label: "活动性质",
-            prop: "type",
-            options: [
-              "美食/餐厅线上活动",
-              "地推活动",
-              "线下主题活动",
-              "单纯品牌曝光",
-            ],
-          },
-          {
-            component: "el-radio",
-            label: "特殊资源",
-            prop: "resource",
-            options: ["线上品牌商赞助", "线下场地免费"],
-          },
-          {
-            component: "el-rate",
-            label: "活动评分",
-            prop: "rate",
-          },
-          {
-            component: "el-upload",
-            label: "活动照片",
-            prop: "upload",
-            listType: "picture-card",
-            action: "xx/xx/",
-            required: true,
-          },
-          {
-            component: "el-button",
-            type: "primary",
-            slots: "提交",
-            on: {
-              click: () => {
-                // this.form.validate()
-                this.form.data.upload.push({ name: "xx", url: "xxx" });
-              },
-            },
-          },
+          ...items,
         ],
       },
     };

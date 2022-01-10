@@ -4,8 +4,7 @@
       <render-component v-if="label" :render="label" />
     </slot>
     <slot>
-      <render-component v-if="component.name" :value="field.v" :render="component.name" v-on="component.on" v-bind="component.attrs" @input="input"
-        :ref="prop||'component'" :is-tag="component.isTag">
+      <render-component v-if="component.name" :value="field.v" :render="component.name" v-on="component.on" v-bind="component.attrs" @input="input" :ref="prop||'component'" :is-tag="component.isTag">
         <template v-for="(slot,staticName) in slots.staticSlots" v-slot:[staticName]>
           <render-component :key="staticName" :render="slot" />
         </template>
@@ -18,8 +17,8 @@
 </template>
  
 <script>
-import renderComponent from "./render-component"
-import { getPropByPath } from "element-ui/src/utils/util"
+import renderComponent from "./render-component";
+import { getPropByPath } from "element-ui/src/utils/util";
 
 export default {
   name: "agel-form-item",
@@ -30,9 +29,8 @@ export default {
   inject: ["elForm"],
   props: {
     prop: String,
-    // Object[Vnode]
     label: [String, Number, Object, Array, Function],
-    // 组件对象结构
+    defaultValue: {},
     component: {
       type: Object,
       required: true,
@@ -40,57 +38,64 @@ export default {
   },
   computed: {
     field() {
-      return getPropByPath(this.elForm.model, this.prop || "", true) || {}
+      return getPropByPath(this.elForm.model, this.prop, true) || {};
     },
     slots() {
-      let slots = this.component.slots || {}
-      let scopedSlots = {}
-      let staticSlots = {}
+      let slots = this.component.slots || {};
+      let scopedSlots = {};
+      let staticSlots = {};
       if (slots.constructor == Object) {
         for (const name in slots) {
-          const slot = slots[name]
+          const slot = slots[name];
           if (slot.constructor == Function && slot.length > 0) {
-            scopedSlots[name] = slot
+            scopedSlots[name] = slot;
           } else {
-            staticSlots[name] = slot
+            staticSlots[name] = slot;
           }
         }
       } else {
-        staticSlots = { default: slots }
+        staticSlots = { default: slots };
       }
-      return { scopedSlots, staticSlots }
+      return { scopedSlots, staticSlots };
     },
   },
-  created() {
-    this.initDefaultValue()
+  watch: {
+    "elForm.model": {
+      immediate: true,
+      handler(newv, oldv) {
+        if (newv !== oldv) {
+          this.setFieldDefaultValue();
+        }
+      },
+    },
   },
   methods: {
     input(value) {
-      const vmodel = this.component.vmodel
-      if (vmodel === false) return
+      const vmodel = this.component.vmodel;
+      if (vmodel === false) return;
       if (typeof vmodel == "string" && typeof value === "string") {
         if (vmodel == ".trim") {
-          value = value.trim()
+          value = value.trim();
         } else if (vmodel == ".number" && !isNaN(parseFloat(value))) {
-          value = parseFloat(value)
+          value = parseFloat(value);
         }
       }
-      this.field.o[this.field.k] = value
+      this.field.o[this.field.k] = value;
     },
-    initDefaultValue() {
+    setFieldDefaultValue() {
       if (
         this.prop &&
         this.prop.indexOf("_aguid_") === -1 &&
         !this.field.o.hasOwnProperty(this.field.k)
       ) {
-        this.$set(this.field.o, this.field.k, this.component.defaultValue)
+        this.$set(this.field.o, this.field.k, this.defaultValue);
       }
     },
   },
   install(vue) {
-    vue.component(this.name, this)
+    vue.component(this.name, this);
   },
-}
+};
 </script>
 
 <style>

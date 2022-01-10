@@ -5,9 +5,9 @@
 - 表单创建时会根据组件类型智能回填 `form.data`，关联响应式不必手动 set 
 - 表单创建时会根据组件类型智能回填 `placeholder`
 - 表单组件会根据 `required` 智能回填必填验证规则
-- 表单搭配内置的核心单组件可以省略掉 `ag` 前缀
 - `form.items` 支持数组/对象配置，对象 key 将默认为 `item.prop`
 - `item.component` 为空是默认为 `el-input`
+- el-radio checkbox select upload 会被默认转为被数据化的 agel-xx 组件
 :::
 
 
@@ -53,9 +53,10 @@
   if (width >= 900 && width < 1200) span = 8;
   if (width >= 1200 && width < 1600) span = 6;
   if (width >= 1600) span = 4;
+  return { span }
 ```
 
-可以通过配置 `responsiveMethod` 属性来自定义响应式规则，接受一个宽度参数，需要返回一个对象，[el-col](https://element.eleme.cn/#/zh-CN/component/layout#col-attributes) 组件参数对象。
+可以通过 `responsiveMethod` 属性来自定义自适应规则，支持 el-col 参数。
 
 <ClientOnly><resize-form/></ClientOnly>
 
@@ -69,7 +70,9 @@
 
 `form` 支持 [el-descriptions](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)组件的的属性，同样支持相关插槽。
 
-`item` 支持 [el-descriptions-item](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 组件的属性，使用 `agel-text` 组件可实现纯文字展示。
+`item` 支持 [el-descriptions-item](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 组件的属性。
+
+设置`data._view_`可开启视图查看模式，整个表单只会渲染 value（不再渲染组件），可通过 `item.viewFormat` 对数据进行格式化，支持返回 `Vnode`，也可以单独设置`item.viewModel`控制某个字段。
 
 <ClientOnly><descriptions-form/></ClientOnly>
 
@@ -85,9 +88,9 @@
 
 `item` 支持 [el-table-column](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 组件的部分属性。
 
-该布局实际上是一个动态表单，`form.data` 必须为数组；通过 `row._edit_` 属性可控制列表行是否处于编辑状态。
+该布局实际上是一个动态表单，`form.data` 必须为数组，可以从 `agel-form` 中导入 [tableditor-menu-column](/component/agel-form-layout.html#tableditormenucolumn) 表格列组件，实现了增删改的功能。
 
-可以从 `agel-form` 中导入 [tableditor-menu-column](/component/agel-form-layout.html#tableditormenucolumn) 表格列组件，实现了增删改的功能。
+同表描述表单一样，你可以设置 `data._view_` 控制该行是否开启视图模式，`item.videModel` 设置单独字段。
 
 <ClientOnly><tableditor-form/></ClientOnly>
 
@@ -98,7 +101,7 @@
 
 ## 动态增减表单
 
-同表格编辑表单一样，要实现在其他布局下的动态表单，只需要把 `form.data` 修改成数组，然后在合适的插槽写添加增减逻辑，插槽作用域里均可获取 `scope.row` `scope.$index` 参数。
+同表格编辑表单一样，要实现在其他布局下的动态表单，只需要把 `form.data` 修改成数组，然后在合适的插槽写添加增减逻辑，插槽作用域里均可获取 `scope.row` `scope.rowIndex` 参数。
 
 <ClientOnly><dynamic-form/></ClientOnly>
 
@@ -205,6 +208,8 @@ slots:"查询"  ===  slots:h("span",{},"查询")  ===  slots:{ default:h("span",
 | display     | Boolean/Funciton| true        | 是否渲染                 | 
 | show        | Boolean/Funciton| true        | 是否显示                 | 
 | required    | Boolean         | false       | 是否生成必填验证   |
+| viewModel   | Boolean         | -       | 是否开启视图查看模式   |
+| viewFormat  | Function        | -           | 视图模式格式化函数   |
 | slot        | Boolean/Funciton/Vnode/String  | false       | Item 自定义插槽  |
 | component   | String/Component/Async Component | el-input    | 组件名称/实例/异步组件                |
 | disabled    | Boolean/Funciton| false       | 组件是否禁用              |

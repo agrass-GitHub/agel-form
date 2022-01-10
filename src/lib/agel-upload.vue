@@ -1,7 +1,5 @@
 <template>
-  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" :listType="listType" :autoUpload="autoUpload"
-    :file-list="value" :before-upload="beforeUpload" :on-success="onSuccess" :on-remove="onRemove" :on-exceed="onExceed" :on-preview="onPreview"
-    :on-error="onError" :on-change="onChange" v-bind="$attrs" v-on="$listeners">
+  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" :listType="listType" :autoUpload="autoUpload" :file-list="value" :before-upload="beforeUpload" :on-success="onSuccess" :on-remove="onRemove" :on-exceed="onExceed" :on-preview="onPreview" :on-error="onError" :on-change="onChange" v-bind="$attrs" v-on="$listeners">
     <slot slot="trigger" name="trigger"> </slot>
     <template v-slot:default>
       <slot name="default">
@@ -24,6 +22,7 @@
 
 <script>
 import { getProp } from "../utils/utils";
+import { valueEquals } from "element-ui/src/utils/util";
 
 export default {
   name: "agel-upload",
@@ -67,8 +66,10 @@ export default {
     if (this.value == undefined) this.$emit("input", []);
   },
   watch: {
-    value() {
-      if (this.elFormItem) this.elFormItem.$emit("el.form.change");
+    value(newv, oldv) {
+      if (this.elFormItem && !valueEquals(newv, oldv)) {
+        this.elFormItem.$emit("el.form.change");
+      }
     },
   },
   methods: {
@@ -196,7 +197,7 @@ export default {
       this.$refs.ref.abort(file);
     },
     clearFiles() {
-      this.$refs.ref.clearFiles(file);
+      this.$refs.ref.clearFiles();
       this.$emit("input", []);
     },
   },

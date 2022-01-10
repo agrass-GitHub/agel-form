@@ -71,7 +71,7 @@ export const descriptionsItemPropkeys = [
 ]
 
 // 支持的 el-table 组件参数
-export const tablePropsKeys = [
+export const tablePropKeys = [
   "height",
   "max-height",
   "stripe",
@@ -90,7 +90,7 @@ export const tablePropsKeys = [
 ]
 
 // 支持的 el-table-column 组件参数
-export const tableColumnPropsKeys = [
+export const tableColumnPropKeys = [
   "prop",
   "width",
   "fixed",
@@ -98,7 +98,6 @@ export const tableColumnPropsKeys = [
   "show-overflow-tooltip",
   "align",
   "header-align",
-  "formatter",
 ]
 
 // 用于判断 placeholder[输入/选择]  rules.trigger[blur/change] 
@@ -112,7 +111,6 @@ export const componentDefaultValue = [
   { value: 0, keys: ["el-slider", "el-rate"] },
   { value: () => [], keys: ["el-cascader", "el-transfer", "agel-upload", "agel-dynamic-tags", "agel-map-input"] },
 ]
-
 
 // 内置的核心单组件 可省略 ag 前缀的组件
 export const agComponentNames = [
@@ -177,10 +175,15 @@ export const agItemProps = {
     type: [String, Object, Function],
     default: defaultComponentName,
   },
+  // 组件的动态属性，解决属性名冲突使用
+  $component: {
+    type: Object,
+    default: {},
+  },
   // 组件是否禁用
   disabled: {
     type: [Boolean, Function],
-    default: true,
+    default: false,
   },
   // 组件的子插槽
   slots: {
@@ -192,10 +195,14 @@ export const agItemProps = {
     type: Object,
     default: () => new Object,
   },
-  _edit_: {
+  // 是否开启视图模式
+  viewModel: {
     type: Boolean,
   },
-  formatter: {
+  // 视图模式 对 value 进行格式化 可返回 Vnode
+  viewFormat: {
     type: Function
   },
 }
+
+export const agItemPropKeys = Object.keys(agItemProps)

@@ -8,8 +8,7 @@ import {
   guid,
 } from "../utils/utils"
 
-import { agItemProps, formItemPropKeys, inputArr, selectArr, componentDefaultValue, defaultComponentName, agComponentNames, layoutComponentNames } from "./const"
-import renderComponent from "../form/render-component"
+import { agItemProps, agItemPropKeys, formItemPropKeys, inputArr, selectArr, componentDefaultValue, defaultComponentName, agComponentNames, layoutComponentNames } from "./const"
 
 // 渲染组件对象结构
 const componentProps = {
@@ -37,18 +36,10 @@ const componentProps = {
     type: Boolean,
     default: false,
   },
-  defaultValue: {
-    default: undefined,
-  }
 }
 
-const componentPropKeys = Object.keys(componentProps)
-const agItemPropKeys = Object.keys(agItemProps)
 
 export default {
-  components: {
-    renderComponent,
-  },
   inject: {
     elForm: {
       default: null
@@ -89,6 +80,13 @@ export default {
       })
     },
   },
+  watch: {
+    "elForm.model"(newv, oldv) {
+      if (newv !== oldv) {
+        this.$nextTick(this.elForm.clearValidate)
+      }
+    }
+  },
   methods: {
     getAgItemAttrs(item) {
       const agItem = Object.assign(getCustomProps(agItemProps), item)
@@ -100,11 +98,6 @@ export default {
         typeof item.show == "function"
           ? item.show(this.elForm.model)
           : agItem.show
-      agItem.disabled =
-        typeof item.disabled == "function"
-          ? item.disabled(this.elForm.model)
-          : item.disabled
-      agItem.placeholder = this.getPlaceholder(item);
       return agItem
     },
     getFormItemAttrs(scope) {
@@ -124,16 +117,19 @@ export default {
         ]
       }
       formItem.prop = prop
+      formItem.defaultValue = this.getDefaultValue(item);
       return formItem
     },
     getComponentAttrs(scope) {
       const { item, row } = scope;
       const component = getCustomProps(componentProps, item)
-      if (item._edit_ === false || (row._edit_ === false && !item._edit_)) {
-        component.name = ({ value = "" }) => item.formatter ? item.formatter(value) : String(value)
+      // 视图查看模式
+      if (item.viewModel || (row._view_ && item.viewModel !== false)) {
+        component.name = ({ value = "" }) => item.viewFormat ? item.viewFormat({ value, ...scope }) : String(value)
         component.isTag = false
         return component
       }
+      // 插槽模式
       if (item.slot) {
         const scopedSlots = this.wrapForm ? this.wrapForm.$scopedSlots : this.$scopedSlots
         component.name = item.slot === true ? (scopedSlots[item.prop] || "") : item.slot
@@ -141,25 +137,25 @@ export default {
         component.attrs = typeof component.name === "function" ? scope : {}
         return component
       }
-      const agConfig = this.$agelFormConfig || {}
-      const componentConfigFun = agConfig[item.component] || agConfig[this.getName(item)]
-      const componentConfig = typeof componentConfigFun == 'function' ? componentConfigFun(item) : {}
-      const { defaultValue, ...componentGlobalAttrs } = componentConfig
-      const invalidKeys = ['component', '$component'].concat(
+      // 组件模式
+      const invalidKeys = [].concat(
         agItemPropKeys,
         formItemPropKeys,
-        componentPropKeys,
         this.layoutItemKeys,
         this.itemExtendKeys
       )
       component.name = this.getName(item, false)
       component.isTag = typeof component.name === 'string'
-      component.defaultValue = componentConfig.hasOwnProperty('defaultValue') ? defaultValue : this.getDefaultValue(item)
       component.attrs = Object.assign(
-        { ...componentGlobalAttrs },
+        this.getComponentConfig(item),
         getExcludeAttrs(invalidKeys, item),
         item.$component || {}
       )
+      component.attrs.disabled =
+        typeof item.disabled == "function"
+          ? item.disabled(scope.row)
+          : item.disabled
+      component.attrs.placeholder = this.getPlaceholder(item);
       // 当布局组件作为单组件使用时
       if (layoutComponentNames.includes(component.name)) {
         component.attrs.modelProp = item.prop
@@ -204,6 +200,8 @@ export default {
       return item.required || rules.some((v) => v.required) ? "agel-required-label" : ""
     },
     getDefaultValue(item) {
+      const componentConfig = this.getComponentConfig(item);
+      if (componentConfig.hasOwnProperty('defaultValue')) return componentConfig.defaultValue
       const name = this.getName(item)
       let value = undefined
       componentDefaultValue.every(v => {
@@ -214,6 +212,11 @@ export default {
       })
       if (name == "agel-checkbox" && item.options) value = ""
       return value
+    },
+    getComponentConfig(item) {
+      const agConfig = this.$agelFormConfig || {}
+      const componentConfigFun = agConfig[item.component] || agConfig[this.getName(item)]
+      return typeof componentConfigFun == 'function' ? componentConfigFun(item) : {}
     },
     // 暴露出去的功能函数
     getRef(prop) {

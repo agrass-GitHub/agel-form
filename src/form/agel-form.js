@@ -3,7 +3,7 @@ import { getIncludeAttrs, extend, findRef } from "../utils/utils"
 import {
   formPropKeys,
   gridPropKeys,
-  tablePropsKeys,
+  tablePropKeys,
   descriptionsPropkeys,
 } from "../utils/const"
 
@@ -11,7 +11,7 @@ const layoutPropMap = {
   inline: [],
   grid: gridPropKeys,
   descriptions: descriptionsPropkeys,
-  tableditor: tablePropsKeys,
+  tableditor: tablePropKeys,
 }
 
 export default {

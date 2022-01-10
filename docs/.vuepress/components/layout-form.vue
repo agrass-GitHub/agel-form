@@ -43,7 +43,7 @@ export default {
         e1: "",
         e2: "",
         list: [
-          { d1: "小王", d2: "xxx自治区" },
+          { d1: "", d2: "" },
           { d1: "", d2: "" },
           { d1: "", d2: "" },
         ],
@@ -63,22 +63,22 @@ export default {
         { prop: "c3", label: "介绍", type: "textarea", span: 2 },
       ],
       tableItems: [
-        { prop: "index", label: "自定义", slot: true, width: 100 },
-        { prop: "d1", label: "姓名", required: true, width: 100 },
-        { prop: "d2", label: "地址", minWidth: 100 },
+        { prop: "d1", label: "姓名", width: 150 },
+        { prop: "d2", label: "姓名", required: true, width: 150 },
+        { prop: "d3", label: "介绍",  minWidth: 100 },
       ],
-    }
+    };
   },
   methods: {
     validate() {
       this.$refs.form.validate((is) => {
         if (is) {
-          this.$message.success("成功")
+          this.$message.success("成功");
         } else {
-          this.$message.error("验证失败")
+          this.$message.error("验证失败");
         }
-      })
+      });
     },
   },
-}
+};
 </script>

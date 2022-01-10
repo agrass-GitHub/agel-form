@@ -12,7 +12,7 @@
       <i v-if="scope.row._loading_" class="el-icon-loading"></i>
       <template v-else>
         <el-link v-if="edit" size="mini" type="primary" style="margin:0px 3px" @click="editRow(scope)">
-          {{scope.row._edit_!==false?'保存':'编辑'}}
+          {{scope.row._view_?'编辑':'保存'}}
         </el-link>
         <slot name="del">
           <el-link size="mini" type="primary" style="margin:0px 3px" @click="delRow(scope)">删除</el-link>
@@ -26,8 +26,12 @@
 export default {
   name: "tableditor-menu-column",
   inheritAttrs: false,
-  inject: ["tableditor", "elForm"],
+  inject: ["tableditor"],
   props: {
+    data: {
+      type: Array,
+      default: () => new Array(),
+    },
     align: {
       type: String,
       default: "center",
@@ -56,31 +60,31 @@ export default {
   data() {
     return {
       visible: false,
-    }
+    };
   },
   methods: {
     // 编辑保存行
     editRow(scope) {
-      if (scope.row._edit_ === undefined) {
-        this.$set(scope.row, "_edit_", true)
+      if (scope.row._view_ === undefined) {
+        this.$set(scope.row, "_view_", false);
       }
-      if (scope.row._edit_) {
+      if (scope.row._view_) {
+        scope.row._view_ = false;
+      } else {
         this.tableditor.validateRow(scope.$index, () => {
           this.doneCallBack(scope, this.edit, (isok = true) => {
-            isok && (scope.row._edit_ = false)
-          })
-        })
-      } else {
-        scope.row._edit_ = true
+            isok && (scope.row._view_ = true);
+          });
+        });
       }
     },
     // 删除行
     delRow(scope) {
       const done = () => {
         this.doneCallBack(scope, this.del, (isok = true) => {
-          isok && this.elForm.model.dynamicData.splice(scope.$index, 1)
-        })
-      }
+          isok && this.data.splice(scope.$index, 1);
+        });
+      };
       if (this.delConfirm) {
         this.$msgbox
           .confirm(
@@ -92,40 +96,36 @@ export default {
               type: "warning",
             }
           )
-          .then(done)
+          .then(done);
       } else {
-        done()
+        done();
       }
     },
     // 添加行
     addRow(scope) {
       this.doneCallBack(scope, this.add, (newRow = {}) => {
-        newRow._key_ = Date.now()
-        this.elForm.model.dynamicData.splice(
-          this.elForm.model.dynamicData.length,
-          0,
-          newRow
-        )
-      })
+        newRow._key_ = Date.now();
+        this.data.splice(this.data.length, 0, newRow);
+      });
     },
     doneCallBack(scope, done, doneCallBack) {
       if (typeof done == "function") {
         if (scope.row && scope.row._loading_ === undefined) {
-          this.$set(scope.row, "_loading_", false)
+          this.$set(scope.row, "_loading_", false);
         }
-        scope.row && (scope.row._loading_ = true)
-        done({ scope, rowIndex: scope.$index }, (params) => {
-          scope.row && (scope.row._loading_ = false)
-          doneCallBack(params)
-        })
+        scope.row && (scope.row._loading_ = true);
+        done((params) => {
+          scope.row && (scope.row._loading_ = false);
+          doneCallBack(params);
+        }, scope);
       } else {
-        doneCallBack()
+        doneCallBack();
       }
     },
   },
   install(vue) {
-    vue.component(this.name, this)
+    vue.component(this.name, this);
   },
-}
+};
 </script>
  

@@ -16,7 +16,9 @@
 - 支持 element-ui Row Col 组件布局
 - 支持 element-ui Descriptions 组件布局
 - 支持 element-ui Table 表单编辑器
-- 响应式布局
+- 表单视图查看模式
+- 动态增减表单
+- 容器宽度自适应布局
 - 联动显示隐藏禁用
 - 智能回填 form.data，placeholder，rules
 - 全局配置

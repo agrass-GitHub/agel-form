@@ -24,9 +24,6 @@
         <template v-slot:extra="scope">
           <el-button @click="del(dynamicDescForm,scope)" type="primary">删除</el-button>
         </template>
-        <template v-slot:age="scope">
-          <el-button> {{scope.row.age}} </el-button>
-        </template>
       </agel-form>
       <el-button @click="push(dynamicDescForm)" style="margin-top:10px" type="primary">新增</el-button>
       <el-button @click="getRef()" type="primary">获取组件实例</el-button>
@@ -39,37 +36,47 @@ export default {
   data() {
     return {
       dynamicGridForm: {
+        layout: "grid",
         span: 10,
-        data: [{ name: "栅格布局" }],
+        data: [{ name: "栅格布局", age: "今年芳龄18岁" }],
         items: [
           { label: "姓名", prop: "name", required: true },
-          { label: "年龄", prop: "age" },
+          {
+            label: "年龄",
+            prop: "age",
+          },
         ],
       },
       dynamicDescForm: {
-        column: 1,
-        data: [{ name: "描述布局", age: "18岁了" }],
         layout: "descriptions",
+        column: 1,
+        data: [{ name: "描述布局", age: "今年芳龄18岁" }],
         items: [
           { label: "姓名", prop: "name", required: true },
-          { label: "年龄", prop: "age", slot: true },
+          {
+            label: "年龄",
+            prop: "age",
+            slot: ({ row }) => {
+              return <el-tag>{row.age}</el-tag>;
+            },
+          },
         ],
       },
-    }
+    };
   },
   methods: {
     push(form) {
-      form.data.push({ name: "", age: "18岁了" })
+      form.data.push({ name: "", age: "今年芳龄18岁" });
     },
     del(form, scope) {
-      form.data.splice(scope.rowIndex, 1)
+      form.data.splice(scope.rowIndex, 1);
     },
     getRef() {
-      this.$message.success("获取组件实例成功，查看控制台")
-      console.log(this.dynamicGridForm.getRef("dynamicData.0.name"))
+      this.$message.success("获取组件实例成功，查看控制台");
+      console.log(this.dynamicGridForm.getRef("dynamicData.0.name"));
     },
   },
-}
+};
 </script>
 
 <style>

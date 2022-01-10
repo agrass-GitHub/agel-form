@@ -97,8 +97,6 @@
 
 item 配置项可额外支持 [el-table-column 属性](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes);
 
-item.formatter 支持返回 Vnode，在 `row._edit_` = false 渲染。
-
 #### Mehtod
 
 | 属性          | 参数           |  说明                                   | 
@@ -111,7 +109,7 @@ item.formatter 支持返回 Vnode，在 `row._edit_` = false 渲染。
 
 | 属性           | 类型         | 默认值  | 说明                                 | 
 | -------------- | ------------  | ------ | ------------------------------------ | 
-| add            | Boolean       | true   |  显示添加按钮        | 
-| edit           | Boolean       | true   |  显示编辑保存按钮        |
-| del            | Boolean       | true   |  显示删除按钮        | 
+| add            | Boolean/Function(done,scopd)      | true   |  是否显示/ done(要新增的数据)     | 
+| edit           | Boolean/Function(done,scopd)      | true   |  是否显示/ done(保存是否成功) |
+| del            | Boolean/Function(done,scopd)      | true   |  是否显示/ done(删除是否成功)       | 
 | ......         | ......        | ...... | [el-table-column 属性](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes)      |  

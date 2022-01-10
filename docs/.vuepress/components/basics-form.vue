@@ -12,24 +12,20 @@ export default {
         // labelWidth: "150px",
         span: 15,
         data: {
-          name: "使用 agel-form",
-          desc: "素人开发,若你决定尝试,有什么问题可以联系本人微信:agrass-weixin",
+          guide: {
+            name: "使用 agel-form",
+            desc: "素人开发,若你决定尝试,有什么问题可以联系本人微信:agrass-weixin",
+          },
           delivery: true,
           slider: 20,
-          // address: ["重庆欢乐谷", 106.51715, 29.667352],
           tags: ["游乐园"],
         },
         items: [
-          { label: "活动名称", prop: "name" },
+          { label: "活动名称", prop: "guide.name" },
           {
             label: "建议反馈",
-            prop: "desc",
+            prop: "guide.desc",
             type: "textarea",
-          },
-          {
-            component: "agel-map-input",
-            label: "活动地址",
-            prop: "address",
           },
           {
             component: "el-input-number",
@@ -98,13 +94,13 @@ export default {
             slots: "提交",
             on: {
               click: () => {
-                this.form.validate()
+                this.form.validate();
               },
             },
           },
         ],
       },
-    }
+    };
   },
-}
+};
 </script>
