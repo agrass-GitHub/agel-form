@@ -11,7 +11,7 @@ sidebar: auto
 
 #### agel-form
 - `bug` 修复form.data 被赋值新对象时回填默认值未生效 [[bug by v.0.3.3]]()
-- `bug` 修复回填组件默认值为数组时，引用对象地址相同的问题 [[bug by v.0.3.32]]()
+- `bug` 修复回填组件默认值为数组时，引用对象地址相同的问题 [[bug by v.0.3.3]]()
 - `bug` 修复使用 vite 启动项目报错[issues[6]](https://github.com/agrass-GitHub/agel-form/issues/6)
 - `new` form.data 被赋值新对象时会清空表单验证信息
 - `new` 新增动态表单功能，支持所有布局
