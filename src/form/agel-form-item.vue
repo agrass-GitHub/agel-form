@@ -31,7 +31,7 @@ export default {
     prop: String,
     label: [String, Number, Object, Array, Function],
     vmodel: {
-      type: Boolean,
+      type: [Boolean, String],
       default: true,
     },
     component: {
