@@ -8,7 +8,7 @@
 
 `value` 属性多选时可为数组 `[xx1,xx2]` 或者字符串 `xx1,xx2`，逗号间隔，默认为字符串。
 
-`filter` 属性可以开启关键字过滤，和 `filterable` 功能类似。
+`filter` 属性可以开启关键字过滤，数据量大的情况建议使用 el-select 的 `filterable` 属性。
 
 <ClientOnly><select-demo/></ClientOnly>
 
@@ -60,7 +60,7 @@
 | focus         | -             |  聚焦                        |
 | blur          | -             |  失焦            | 
 | getOptions    | -             |  刷新数据， options 为 Function 时可调用           |
-| getValueOption  | -           |  返回 value 所对应的 option 对象，多选时为数组 |
+| getValueOption| value           |  返回 value 所对应的 option 对象，多选时为数组 |
 
 ## Select Events
 

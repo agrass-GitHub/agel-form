@@ -1,6 +1,6 @@
 <template>
   <el-form :model="data" :class="['agel-search-panel',{'position-right':panelPosition=='right' }]" v-bind="formProps" ref="elForm">
-    <agel-form-inline :value="data" :items="items" :item-extend-keys="['collapseAlive']" ref="layout">
+    <agel-form-inline :value="data" :items="items" :item-extend-keys="['collapseAlive']" ref="agLayout">
 
       <slot name="prepend" slot="prepend"></slot>
 
@@ -118,7 +118,7 @@ export default {
     if (this.collapseButton) {
       this.isCollapse = this.collapse;
       getArrItems(this.items).forEach((item) => {
-        this.$set(item, "show", this.itemCollapseShow);
+        this.$set(item, "show", () => this.itemCollapseShow(item));
       });
     }
   },
@@ -140,7 +140,7 @@ export default {
     },
   },
   methods: {
-    itemCollapseShow(data, item) {
+    itemCollapseShow(item) {
       if (this.collapseButton === false) return true;
       if (this.collapseAliveKeys.includes(item.prop)) return true;
       return !this.isCollapse;
@@ -159,6 +159,9 @@ export default {
       this.$refs.elForm.resetFields();
       this.$emit("reset");
       this.$emit("search");
+    },
+    getRef(prop) {
+      return this.$refs.agLayout.getRef(prop);
     },
   },
   install(vue) {

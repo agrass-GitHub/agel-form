@@ -71,7 +71,7 @@
 | -----------   | ------------  |  ------------------------------------  | 
 | focus         | -             |  聚焦                        |
 | blur          | -             |  失焦            | 
-| setSelected      | -          |  刷新选中状态            |
+| setSelected      | -          |  刷新 tree 选中状态            |
 | getOptions    | -             |  刷新数据， options 为 Function 时可调用    |
 | getValueOption  | -           |  返回 value 所对应的 option 对象，多选时为数组 |
 

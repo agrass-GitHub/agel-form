@@ -55,8 +55,8 @@ export default {
             prop: "button",
             component: "el-button",
             type: "primary",
-            slots: "点击属性 options",
-            labelWidth:"0px",
+            slots: "点击刷新 options",
+            labelWidth: "0px",
             span: 12,
             on: {
               click: () => {
@@ -70,7 +70,7 @@ export default {
             prop: "demo5",
             label: "分组过滤",
             component: "el-select",
-            filter: true,
+            filterable: true,
             clearable: true,
             props: { label: "name", value: "id" },
             options: [
@@ -91,6 +91,11 @@ export default {
                 ],
               },
             ],
+            on: {
+              change: (v) => {
+               console.log( this.form.getRef("demo5").getValueOption(v))
+              },
+            },
           },
           {
             prop: "demo6",

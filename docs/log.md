@@ -7,6 +7,18 @@ sidebar: auto
 [#v.0.3.3](/log.html#v-0-3-3) 版本重构了部分代码，有破坏性更新，请按照升级提示操作。
 :::
 
+## v.0.3.34
+
+#### agel-form
+- `new` 新增在验证错误时返回验证信息 form.validate(call,errCall([errorInfo]())) 
+
+#### agel-slect，agel-radio，agel-checkbox
+- `bug` getValueOption 方法新增 value 参数，修复在 input change 事件获取异常；修复在多选时偶发性获取异常；修复 agel-slect 在分组下获取失败
+
+### agel-search-panel
+- `bug` 修复折叠报错的问题
+- `new` 新增 getRef 方法
+
 ## v.0.3.33
 
 #### agel-form

@@ -1,41 +1,44 @@
 <template>
   <div class="demo">
-    <div>
-      <span>拖拽宽度进度条查看响应式效果：</span>
-      <el-slider v-model="width" :step="100" show-stops :min="300" :max="1600"></el-slider>
-    </div>
-    <div style="overflow:auto;">
-      <agel-form class="border" v-model="form" :style="{width:width+'px'} "> </agel-form>
-    </div>
+    <!-- <el-select v-model="value" ref="select" @input="input" @change="change">
+      <el-option label="1" value="1"></el-option>
+      <el-option label="2" value="2"></el-option>
+    </el-select> -->
+    <agel-select ref="select" filter  v-model="value" :options="options" @input="input" @change="change">
+
+    </agel-select>
+
+    <agel-tree-select v-model="value2"  ref="select" filter  :options="treeoptions" @input="input" @change="change">
+    </agel-tree-select>
   </div>
 </template>
  
 <script>
+function createOptions(len, start = 0) {
+  return Array(len)
+    .fill(0)
+    .map((_, index) => ({
+      value: `选项${start + index}`,
+      label: `我是${start + index}`,
+    }));
+}
+
 export default {
   data() {
-    let items = [];
-    for (let i = 0; i < 8; i++) {
-      items.push({ prop: "test" + i, label: "栅格" + (i + 1) });
-    }
     return {
-      width: 600,
-      form: {
-        layout: "grid",
-        responsive: true,
-        // 也可以通过配置 `responsiveMethod` 属性来自定义响应式规则
-        // responsiveMethod: (width) => {
-        //   return width < 500 ? {span:12,...el-col props } : {....}
-        // },
-        data: {},
-        items: [
-          {
-            prop: "name",
-            label: "不受影响",
-            placeholder: "该组件 span 不受响应式影响",
-            span: 24,
-          },
-          ...items,
-        ],
+      treeoptions: createOptions(10),
+      options: [
+        { label: "分组1", options: createOptions(10) },
+        { label: "分组2", options: createOptions(10, 10) },
+      ],
+      value: "",
+      value2: "",
+      input: (v) => {
+        // console.log("input", v, this.value);
+      },
+      change: (v) => {
+        console.log("change 当前", v, this.value);
+        console.log(this.$refs.select.getValueOption(v));
       },
     };
   },

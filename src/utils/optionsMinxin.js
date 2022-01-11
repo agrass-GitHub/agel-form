@@ -79,11 +79,16 @@ export default {
         return false
       }).filter(v => v !== false)
     },
-    // 根据 value 获取对应的 option 数据
-    getValueOption() {
+    getValueOption(v) {
+      const options = this.isGroup
+        ? this.proxyOptions.reduce((a, b) =>
+          (Array.isArray(a) ? a : a.options).concat(b.options)
+        )
+        : this.proxyOptions;
+      const value = v ? vmodel.get(v, this.isProxyStrValue) : this.proxyValue;
       return this.multiple
-        ? this.proxyOptions.filter((v) => this.value.includes(v.value))
-        : this.proxyOptions.find((v) => this.value == v.value) || this.value
+        ? options.filter((v) => value.includes(v.value))
+        : options.find((v) => value == v.value);
     },
   }
 }

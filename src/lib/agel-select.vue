@@ -132,6 +132,20 @@ export default {
       this.$refs.ref.blur();
     },
   },
+  directives: {
+    "select-scroll": {
+      bind(el, binding) {
+        const selectWrap = el.querySelector(
+          ".el-select-dropdown .el-select-dropdown__wrap"
+        );
+        selectWrap.addEventListener("scroll", function () {
+          const condition =
+            this.scrollHeight - this.scrollTop <= this.clientHeight;
+          condition && binding.value();
+        });
+      },
+    },
+  },
   install(vue) {
     vue.component(this.name, this);
   },

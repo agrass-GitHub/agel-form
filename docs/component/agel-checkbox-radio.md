@@ -71,7 +71,7 @@
 | 属性          | 参数           |  说明                                   | 
 | -----------   | ------------  |  ------------------------------------  |
 | getOptions    | -             |  刷新数据， options 为 Function 时可调用           |
-| getValueOption  | -           |  返回 value 所对应的 option 对象，多选时为数组 |
+| getValueOption| value         |  返回 value 所对应的 option 对象，多选时为数组 |
 
 ## Radio Checkbox事件
 

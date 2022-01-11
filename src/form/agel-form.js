@@ -65,11 +65,11 @@ export default {
       return this.$refs.agLayout.getItem(prop, deep)
     },
     validate(callback, erroCallback) {
-      this.$refs.elForm.validate((is) => {
+      this.$refs.elForm.validate((is, errInfo) => {
         if (is) {
           callback && callback(this.value.data)
         } else {
-          erroCallback && erroCallback()
+          erroCallback && erroCallback(errInfo)
         }
       })
     },

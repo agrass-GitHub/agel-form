@@ -65,6 +65,11 @@ export default {
             multiple: true,
             leafOnly: true, // 只包含叶子节点
             options: treeData,
+            on: {
+              change: (v) => {
+                console.log(this.form.getRef('tree2').getValueOption(v))
+              },
+            },
           },
           {
             prop: "tree3",

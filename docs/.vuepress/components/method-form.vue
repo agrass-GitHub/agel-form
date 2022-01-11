@@ -75,7 +75,10 @@ export default {
       // 与 eleForm validate 有点不同，第一个参数为成功回调，第二个参数为失败回调
       this.form.validate(
         () => this.$notify.success("提交成功"),
-        () => this.$notify.error("验证失败")
+        (errInfo) => {
+          this.$notify.error("验证失败");
+          console.log(errInfo);
+        }
       );
     },
     rest() {

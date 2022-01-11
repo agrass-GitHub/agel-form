@@ -1,6 +1,6 @@
 {
   "name": "agel-form",
-  "version": "0.3.33",
+  "version": "0.3.34",
   "main": "src/index.js",
   "description": "a easy form of element-ui form",
   "homepage": "https://github.com/agrass-GitHub/agel-form",
