@@ -1,22 +1,63 @@
 <template>
-  <el-select class="agel-tree-select agel-item-loading" v-loading="optionsLoading" :popper-class="treePopperClass" ref="select" :value="selectValue" :multiple="multiple" :disabled="disabled" :collapseTags="collapseTags" :clearable="clearable" :loading="optionsLoading" :placeholder="placeholder" :loading-text="loadingText" v-on="$listeners" @click.native="initScroll" @clear="handleClear">
+  <el-select
+    class="agel-tree-select agel-item-loading"
+    v-loading="optionsLoading"
+    :popper-class="treePopperClass"
+    ref="select"
+    :value="selectValue"
+    :multiple="multiple"
+    :disabled="disabled"
+    :collapseTags="collapseTags"
+    :clearable="clearable"
+    :loading="optionsLoading"
+    :placeholder="placeholder"
+    :loading-text="loadingText"
+    v-on="$listeners"
+    @click.native="initScroll"
+    @clear="handleClear"
+  >
     <template v-slot:prefix>
       <slot name="prefix"></slot>
     </template>
     <div class="filter-item" v-if="filter">
-      <el-input v-model="filterText" placeholder="输入关键字进行过滤" size="mini"></el-input>
+      <el-input
+        v-model="filterText"
+        placeholder="输入关键字进行过滤"
+        size="mini"
+      ></el-input>
     </div>
     <el-option value="" disabled>
       <!-- :data="lazy?undefined:treeData" -->
-      <el-tree ref="ref" class="tree-option" :data="treeData" :lazy="lazy" :load="loadNode" :props="props" :show-checkbox="multiple" :highlight-current="!multiple" :node-key="nodeKey" :expand-on-click-node="false" :filter-node-method="handleFilterNode" v-bind="$attrs" v-on="$listeners" @current-change="handleCurrentChange" @check="handleCheck">
+      <el-tree
+        ref="ref"
+        class="tree-option"
+        :data="treeData"
+        :lazy="lazy"
+        :load="loadNode"
+        :props="props"
+        :show-checkbox="multiple"
+        :highlight-current="!multiple"
+        :node-key="nodeKey"
+        :expand-on-click-node="expandOnClickNode"
+        :filter-node-method="handleFilterNode"
+        v-bind="$attrs"
+        v-on="$listeners"
+        @current-change="handleCurrentChange"
+        @check="handleCheck"
+      >
         <slot name="option" slot-scope="scope" v-bind="scope">
-          <span class="el-tree-node__label" :style="scope.data.style" :class="scope.data.class">{{scope.node.label}}</span>
+          <span
+            class="el-tree-node__label"
+            :style="scope.data.style"
+            :class="scope.data.class"
+            >{{ scope.node.label }}</span
+          >
         </slot>
       </el-tree>
     </el-option>
   </el-select>
 </template>
- 
+
 <script>
 import optionsMinxin from "../utils/optionsMinxin";
 import { getProp } from "../utils/utils";
@@ -43,6 +84,10 @@ export default {
     loadingText: {
       type: String,
       default: "加载中...",
+    },
+    expandOnClickNode: {
+      type: Boolean,
+      defalult: false,
     },
   },
   data() {
@@ -203,7 +248,7 @@ export default {
   },
 };
 </script>
- 
+
 <style>
 .agel-tree-select .el-tag__close {
   display: none;
