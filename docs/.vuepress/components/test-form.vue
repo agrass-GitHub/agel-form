@@ -1,44 +1,76 @@
 <template>
-  <div class="demo">
-    <!-- <el-select v-model="value" ref="select" @input="input" @change="change">
-      <el-option label="1" value="1"></el-option>
-      <el-option label="2" value="2"></el-option>
-    </el-select> -->
-    <agel-select ref="select" filter  v-model="value" :options="options" @input="input" @change="change">
+  <div class="demo border">
+    <!-- <render-component render="el-input" :options="options" isTag>
+        <i slot="prefix" class="el-icon-platform-eleme"> </i>
+      <el-button slot="option" slot-scope="{option}">{{option.label}}</el-button>
+    </render-component> -->
 
-    </agel-select>
+    <!-- <render-component render="el-dropdown" isTag>
+      <el-button>测试</el-button>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item>黄金糕</el-dropdown-item>
+        <el-dropdown-item>狮子头</el-dropdown-item>
+        <el-dropdown-item>螺蛳粉</el-dropdown-item>
+        <el-dropdown-item disabled>双皮奶</el-dropdown-item>
+        <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+      </el-dropdown-menu>
+    </render-component> -->
 
-    <agel-tree-select v-model="value2"  ref="select" filter  :options="treeoptions" @input="input" @change="change">
-    </agel-tree-select>
+    <agel-form v-model="form"></agel-form>
   </div>
 </template>
  
 <script>
-function createOptions(len, start = 0) {
-  return Array(len)
-    .fill(0)
-    .map((_, index) => ({
-      value: `选项${start + index}`,
-      label: `我是${start + index}`,
-    }));
-}
-
 export default {
   data() {
     return {
-      treeoptions: createOptions(10),
-      options: [
-        { label: "分组1", options: createOptions(10) },
-        { label: "分组2", options: createOptions(10, 10) },
-      ],
-      value: "",
-      value2: "",
-      input: (v) => {
-        // console.log("input", v, this.value);
-      },
-      change: (v) => {
-        console.log("change 当前", v, this.value);
-        console.log(this.$refs.select.getValueOption(v));
+    
+      form: {
+        span: 15,
+        data: {
+          guide: {
+            name: "使用 agel-form",
+            desc: "素人开发,若你决定尝试,有什么问题可以联系本人微信:agrass-weixin",
+          },
+          delivery: true,
+          slider: 20,
+          tags: ["游乐园"],
+        },
+        items: [
+          {
+            component: "el-button",
+            slots: {
+              default: () => {
+                return "成功";
+              },
+            },
+          },
+          {
+            prop: "demo6",
+            label: "插槽样式",
+            component: "el-select",
+            options: [
+              { value: "Shanghai", label: "上海" },
+              { value: "Beijing", label: "北京" },
+            ],
+            slots: {
+              option: ({ option, index }) => {
+                return (
+                  <div>
+                    <span style="float: left">{option.label}</span>
+                    <span style="float: right; color: #8492a6; font-size: 13px">
+                      {option.value}
+                    </span>
+                  </div>
+                );
+              },
+              prefix: () => {
+                let style = "color:#409EFF;line-height:28px;font-size:20px";
+                return <i class="el-icon-platform-eleme" style={style} />;
+              },
+            },
+          },
+        ],
       },
     };
   },

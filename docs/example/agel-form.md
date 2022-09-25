@@ -88,7 +88,7 @@
 
 `item` 支持 [el-table-column](https://element.eleme.cn/#/zh-CN/component/descriptions#descriptions-attributes) 组件的部分属性。
 
-该布局实际上是一个动态表单，`form.data` 必须为数组，可以从 `agel-form` 中导入 [tableditor-menu-column](/component/agel-form-layout.html#tableditormenucolumn) 表格列组件，实现了增删改的功能。
+该布局实际上是一个动态表单，`form.data` 必须为数组，可以从 `agel-form` 中导入 [tableditor-menu-column](/component/agel-form-layout.html#tableditormenucolumn) 表格列组件，实现了增删改的功能，也可自定义实现代替。
 
 同表描述表单一样，你可以设置 `data._view_` 控制该行是否开启视图模式，`item.videModel` 设置单独字段。
 

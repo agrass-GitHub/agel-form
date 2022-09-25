@@ -36,6 +36,13 @@ module.exports = {
           '/component/agel-upload',
           '/component/agel-map-input',
           '/component/agel-dynamic-tags',
+        ]
+      },
+      {
+        title: '其他组件',
+        collapsable: false,
+        sidebarDepth: 0,
+        children: [
           '/component/agel-search-panel',
           '/component/agel-form-dialog',
         ]

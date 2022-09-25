@@ -5,6 +5,7 @@ import Element from "element-ui/lib/index";
 
 
 import { agelForm, agelSearchPanel, agelFormDialog, tableditorMenuColumn, agelMapInput, agelDynamicTags } from "../../src/index";
+import renderComponent from "../../src/form/render-component";
 
 
 const mockData = {
@@ -46,8 +47,11 @@ export default ({ Vue }) => {
     form: {
       xs: { span: 24 }
     },
-    "el-input": {
-      clearable: true,
+    "el-input": function () {
+      return {
+        placeholder:'踩踩踩踩踩踩踩踩踩',
+        clearable: true,
+      }
     },
     "xx-array-input": function () {
       return { defaultValue: [] }
@@ -68,7 +72,7 @@ export default ({ Vue }) => {
     },
   });
 
-
+  Vue.component(renderComponent.name, renderComponent);
   Vue.component(agelSearchPanel.name, agelSearchPanel);
   Vue.component(agelFormDialog.name, agelFormDialog);
   Vue.component(agelMapInput.name, agelMapInput);

@@ -5,7 +5,16 @@ sidebar: auto
 
 :::warning
 [#v.0.3.3](/log.html#v-0-3-3) 版本重构了部分代码，有破坏性更新，请按照升级提示操作。
+
+有需要可联系作者:agrass-weixin。
 :::
+
+## v.0.3.35 （ #2022-09-18 ）
+
+#### agel-form
+- `new` 新增支持 placeholder 属性在全局配置
+- `new` 新增支持 disabled 属性在全局配置
+- `bug` 修复渲染 Array[Vnode] 类型插槽报错
 
 ## v.0.3.34
 
@@ -15,7 +24,7 @@ sidebar: auto
 #### agel-slect，agel-radio，agel-checkbox
 - `bug` getValueOption 方法新增 value 参数，修复在 input change 事件获取异常；修复在多选时偶发性获取异常；修复 agel-slect 在分组下获取失败
 
-### agel-search-panel
+#### agel-search-panel
 - `bug` 修复折叠报错的问题
 - `new` 新增 getRef 方法
 

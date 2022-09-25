@@ -124,8 +124,11 @@ export default {
       component.attrs.disabled =
         typeof item.disabled == "function"
           ? item.disabled(scope.row)
-          : item.disabled
-      component.attrs.placeholder = this.getPlaceholder(item);
+          : component.attrs.disabled
+      component.attrs.placeholder = 
+        component.attrs.placeholder
+          ? component.attrs.placeholder
+          : this.getPlaceholder(item);
       // 当布局组件作为单组件使用时
       if (layoutComponentNames.includes(component.name)) {
         component.attrs.modelProp = item.prop

@@ -1,8 +1,13 @@
 <template>
   <div class="demo border">
     <agel-form v-model="form">
-      <el-table-column slot="prepend" label="#" type="selection" align="center" :width="50"></el-table-column>
-      <tableditor-menu-column slot="append" :data="form.data" :add="addRow" :edit="saveRow" :del="delRow" delConfirm></tableditor-menu-column>
+      <template v-slot:prepend>
+        <el-table-column type="selection" align="center" :width="50"></el-table-column>
+        <el-table-column label="序号" type="index" align="center" :width="50"></el-table-column>
+      </template>
+      <template v-slot:append>
+        <tableditor-menu-column :data="form.data" :add="addRow" :edit="saveRow" :del="delRow" delConfirm></tableditor-menu-column>
+      </template>
     </agel-form>
     <div style="margin-top:10px">
       <el-button type="primary" @click="validateRow">验证某一行表单</el-button>

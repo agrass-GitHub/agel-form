@@ -13,8 +13,6 @@ footer: MIT Licensed | Copyright ©agrss
 ---
 
 
-<ClientOnly><test-form/></ClientOnly>
-
 ### 如此简单
 
 ```html

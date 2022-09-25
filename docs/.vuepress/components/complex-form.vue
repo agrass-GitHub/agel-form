@@ -37,15 +37,31 @@ export default {
               { prop: "region", label: "地址" },
               { prop: "intor", label: "介绍" },
             ],
+            // 注意：使用函数插槽 prepend append 只能返回单列
             slots: {
+              prepend: () => {
+                return (
+                  <el-table-column
+                    type="selection"
+                    label="多选"
+                    key="selection"
+                  ></el-table-column>
+                );
+              },
               append: () => {
-                return <tableditor-menu-column data={this.form.data.tableditor} edit={false} width={80}></tableditor-menu-column>
+                return (
+                  <tableditor-menu-column
+                    data={this.form.data.tableditor}
+                    edit={false}
+                    width={80}
+                  ></tableditor-menu-column>
+                );
               },
             },
           },
         ],
       },
-    }
+    };
   },
-}
+};
 </script>

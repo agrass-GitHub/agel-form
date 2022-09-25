@@ -39,7 +39,7 @@ const form = {
   data:{ },
   items:[ 
     { prop:"a", vmodel:false, on:{ input:(v) => this.form.data.a = v.trim() }},
-    { prop:"b", vmodel:"trim" }}  
+    { prop:"b", vmodel:".trim" }}  
     { prop:"c", vmodel:".number", type:"number" }} 
   ]
 }

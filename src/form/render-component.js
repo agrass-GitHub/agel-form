@@ -33,15 +33,6 @@ export default {
     const fragments = (vnodes) => {
       if (vnodes.length === 1) return wrapvnode(vnodes[0])
       const vnode = h('span', null, vnodes)
-      setTimeout(() => {
-        vnode.children.forEach((v, i) => {
-          const vnodeElm = v.elm.parentNode
-          vnodeElm.parentNode.insertBefore(v.elm, vnodeElm)
-          if (i == vnode.children.length - 1) {
-            vnodeElm.parentNode.removeChild(vnodeElm)
-          }
-        })
-      }, 0)
       return vnode
     }
     const render = context.props.render

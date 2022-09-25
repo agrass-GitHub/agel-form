@@ -57,7 +57,8 @@ export default {
             label: "年龄",
             prop: "age",
             slot: ({ row }) => {
-              return <el-tag>{row.age}</el-tag>;
+              let index = this.dynamicDescForm.data.findIndex((v) => v == row);
+              return <el-tag>{"年龄:" + (index + 1) + " , " + row.age}</el-tag>;
             },
           },
         ],
