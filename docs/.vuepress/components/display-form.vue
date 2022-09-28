@@ -20,18 +20,18 @@ export default {
           {
             prop: "good",
             label: "好评",
-            show: () => this.form.data.grade == "很棒",
+            show: (data) => data.grade == "很棒",
           },
           {
             prop: "bad",
             label: "差评",
-            display: () => this.form.data.grade == "很糟糕",
+            display: (data) => data.grade == "很糟糕",
           },
           {
             component: "el-button",
             type: "primary",
             slots: "发表评价",
-            disabled: () => this.form.data.grade == "很糟糕",
+            disabled: (data) => data.grade == "很糟糕",
           },
         ],
       },

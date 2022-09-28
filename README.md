@@ -7,7 +7,8 @@
 
 ## 文档
 
-- [官网 - 使用文档](https://agrass.gitee.io/agel-form/) 
+- [使用文档 github](https://agrass-github.github.io/agel-form/)
+- [使用文档 gitee](https://agrass.gitee.io/agel-form/)
 
 
 ## 安装使用

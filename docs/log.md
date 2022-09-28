@@ -9,12 +9,17 @@ sidebar: auto
 有需要可联系作者:agrass-weixin。
 :::
 
-## v.0.3.35 （ #2022-09-18 ）
+## v.0.3.36 （ #2022-09-28 ）
+- `bug` disabled 失效 优先级调整
+- `bug` placeholder 优先级调整
+- `new` 支持动态增减表单 display show 为函数时可拿到当前表单数据 （tableditor display 除外）
+
+## v.0.3.35 （ #2022-09-25 ）
 
 #### agel-form
+- `bug` 修复渲染 Array[Vnode] 类型插槽报错
 - `new` 新增支持 placeholder 属性在全局配置
 - `new` 新增支持 disabled 属性在全局配置
-- `bug` 修复渲染 Array[Vnode] 类型插槽报错
 
 ## v.0.3.34
 

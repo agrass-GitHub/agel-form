@@ -38,7 +38,9 @@ export default {
   },
   computed: {
     agItems() {
-      return getArrItems(this.items).map(this.getAgItemAttrs).filter((v) => v.display)
+      return getArrItems(this.items)
+        .map((item) => Object.assign(getCustomProps(agItemProps), item))
+        .filter((v) => v.display)
     },
     isDynamic() {
       return Array.isArray(this.elForm.model[this.modelProp])
@@ -47,7 +49,7 @@ export default {
       const data = this.isDynamic ? this.elForm.model[this.modelProp] : [this.elForm.model]
       return data.map(row => {
         if (this.isDynamic && row._key_ == undefined) row._key_ = guid()
-        return row;
+        return row
       })
     },
   },
@@ -59,20 +61,8 @@ export default {
     }
   },
   methods: {
-    getAgItemAttrs(item) {
-      const agItem = Object.assign(getCustomProps(agItemProps), item)
-      agItem.display =
-        typeof item.display == "function"
-          ? item.display(this.elForm.model)
-          : agItem.display
-      agItem.show =
-        typeof item.show == "function"
-          ? item.show(this.elForm.model)
-          : agItem.show
-      return agItem
-    },
     getFormItemAttrs(scope) {
-      const { item, rowIndex } = scope;
+      const { item, rowIndex } = scope
       const formItem = getIncludeAttrs(formItemPropKeys, item)
       const prop = this.getFormItemProp(item, rowIndex)
       const rules = [].concat(formItem.rules || [], (this.elForm.rules || {})[prop] || [])
@@ -88,12 +78,12 @@ export default {
         ]
       }
       formItem.prop = prop
-      formItem.defaultValue = this.getDefaultValue(item);
-      formItem.vmodel = item.vmodel;
+      formItem.defaultValue = this.getDefaultValue(item)
+      formItem.vmodel = item.vmodel
       return formItem
     },
     getComponentAttrs(scope) {
-      const { item, row } = scope;
+      const { item, row } = scope
       const component = { name: "", isTag: false, attrs: {}, slots: item.slots, on: item.on, }
       // 视图查看模式
       if (item.viewModel || (row._view_ && item.viewModel !== false)) {
@@ -114,21 +104,14 @@ export default {
         this.layoutItemKeys,
         this.itemExtendKeys
       )
+      const config = this.getComponentConfig(item)
+      const attrs = getExcludeAttrs(invalidKeys, item)
+      const $attrs = item.$component || {}
       component.name = this.getName(item, false)
       component.isTag = typeof component.name === 'string'
-      component.attrs = Object.assign(
-        this.getComponentConfig(item),
-        getExcludeAttrs(invalidKeys, item),
-        item.$component || {}
-      )
-      component.attrs.disabled =
-        typeof item.disabled == "function"
-          ? item.disabled(scope.row)
-          : component.attrs.disabled
-      component.attrs.placeholder = 
-        component.attrs.placeholder
-          ? component.attrs.placeholder
-          : this.getPlaceholder(item);
+      component.attrs = Object.assign({}, config, attrs, $attrs)
+      component.attrs.placeholder = item.placeholder || config.placeholder || this.getPlaceholder(item)
+      component.attrs.disabled = (typeof item.disabled == 'function' ? item.disabled(scope.row) : item.disabled) || config.disabled
       // 当布局组件作为单组件使用时
       if (layoutComponentNames.includes(component.name)) {
         component.attrs.modelProp = item.prop
@@ -138,6 +121,14 @@ export default {
     getLayoutItemAttrs(item) {
       return getIncludeAttrs(this.layoutItemKeys, item)
     },
+    getVif(scope) {
+      const { item, row } = scope
+      return typeof item.display == "function" ? item.display(row || {}) : item.display
+    },
+    getVshow(scope) {
+      const { item, row } = scope
+      return typeof item.show == "function" ? item.show(row || {}) : item.display
+    },
     getFormItemProp(item, rowIndex) {
       return [this.modelProp, this.isDynamic ? String(rowIndex) : '']
         .concat(item.prop.split("."))
@@ -145,7 +136,6 @@ export default {
         .join(".")
     },
     getPlaceholder(item) {
-      if (item.placeholder) return item.placeholder
       let name = this.getName(item)
       let label = typeof item.label == "string" ? item.label : ""
       if (inputArr.includes(name)) {
@@ -173,8 +163,8 @@ export default {
       return item.required || rules.some((v) => v.required) ? "agel-required-label" : ""
     },
     getDefaultValue(item) {
-      const componentConfig = this.getComponentConfig(item);
-      if (componentConfig.hasOwnProperty('defaultValue')) return componentConfig.defaultValue
+      const config = this.getComponentConfig(item)
+      if (config.hasOwnProperty('defaultValue')) return config.defaultValue
       const name = this.getName(item)
       let value = undefined
       componentDefaultValue.every(v => {

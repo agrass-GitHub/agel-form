@@ -1,12 +1,13 @@
 <template>
+ <!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
   <el-table class="agel-form-tableditor" ref="elTable" :value="undefined" :data="dynamicData" v-bind="$attrs" :border="border" v-on="$listeners">
     <slot name="prepend"></slot>
-    <el-table-column v-for="(item,colIndex) in agItems" v-bind="getLayoutItemAttrs(item)" label="" :key="item.prop">
+    <el-table-column v-for="(item,colIndex) in agItems" v-if="getVif({item,colIndex})" v-bind="getLayoutItemAttrs(item)" label="" :key="item.prop">
       <template v-slot:header="scope">
         <render-component v-if="item.label" :render="item.label" :class="getRequiredAsteriskClass(item,scope.$index)" slot="header" />
       </template>
       <template v-slot:default="scope">
-        <agel-form-item v-show="item.show" label="" label-width="0px" :key="scope.row._key_" v-bind="getFormItemAttrs({item,colIndex,row:scope.row,rowIndex:scope.$index})" :component="getComponentAttrs({item,colIndex,row:scope.row,rowIndex:scope.$index})" />
+        <agel-form-item  v-show="getVshow({item,colIndex,row:scope.row,rowIndex:scope.$index})" label="" label-width="0px" :key="scope.row._key_" v-bind="getFormItemAttrs({item,colIndex,row:scope.row,rowIndex:scope.$index})" :component="getComponentAttrs({item,colIndex,row:scope.row,rowIndex:scope.$index})" />
       </template>
     </el-table-column>
     <slot name="append"></slot>

@@ -1,22 +1,22 @@
 <template>
+  <!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
   <div class="agel-form-inline">
     <template v-for="(row,rowIndex) in dynamicData">
       <slot name="prepend" v-bind="{row,rowIndex}"></slot>
-      <agel-form-item v-for="(item,colIndex) in agItems" :key="row._key_+item.prop" v-show="item.show"
-        v-bind="getFormItemAttrs({item,colIndex,row,rowIndex})" :component="getComponentAttrs({item,colIndex,row,rowIndex})" />
+      <agel-form-item v-for="(item,colIndex) in agItems" :key="row._key_+item.prop" v-if="getVif({item,colIndex,row,rowIndex})" v-show="getVshow({item,colIndex,row,rowIndex})" v-bind="getFormItemAttrs({item,colIndex,row,rowIndex})" :component="getComponentAttrs({item,colIndex,row,rowIndex})" />
       <slot name="append" v-bind="{row,rowIndex}"></slot>
     </template>
   </div>
 </template>
  
 <script>
-import itemsMinxin from "../utils/itemsMixin"
+import itemsMinxin from "../utils/itemsMixin";
 
 export default {
   name: "agel-form-inline",
   mixins: [itemsMinxin],
   inheritAttrs: false,
-}
+};
 </script>
  
  <style>

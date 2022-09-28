@@ -49,7 +49,7 @@ export default ({ Vue }) => {
     },
     "el-input": function () {
       return {
-        placeholder:'踩踩踩踩踩踩踩踩踩',
+        placeholder: '',
         clearable: true,
       }
     },
