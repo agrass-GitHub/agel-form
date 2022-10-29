@@ -4,15 +4,25 @@ sidebar: auto
 ---
 
 :::warning
-[#v.0.3.3](/log.html#v-0-3-3) 版本重构了部分代码，有破坏性更新，请按照升级提示操作。
+[#v.0.3.30](/log.html#v-0-3-30-2022-01-04) 版本重构了部分代码，有破坏性更新，请按照升级提示操作。
 
 有需要可联系作者:agrass-weixin。
 :::
 
+## v.0.3.37 （ #2022-10-29 ）
+
+#### agel-upload
+- `bug` onRemove 回调函数报错
+- `new` file.name 不再是必须，默认取 fiel.url 文件后缀作为 name
+- `new` 新增支持 string 类型 vlaue
+- `change` 移除了附件列表的过渡效果 
+
 ## v.0.3.36 （ #2022-09-28 ）
+
+#### agel-form
 - `bug` disabled 失效 优先级调整
 - `bug` placeholder 优先级调整
-- `new` 支持动态增减表单 display show 为函数时可拿到当前表单数据 （tableditor display 除外）
+- `new` 支持动态增减表单 display show 取到当前行数据 （tableditor display 除外）
 
 ## v.0.3.35 （ #2022-09-25 ）
 
@@ -21,7 +31,7 @@ sidebar: auto
 - `new` 新增支持 placeholder 属性在全局配置
 - `new` 新增支持 disabled 属性在全局配置
 
-## v.0.3.34
+## v.0.3.34 （ #2022-01-12 ）
 
 #### agel-form
 - `new` 新增在验证错误时返回验证信息 form.validate(call,errCall([errorInfo]())) 
@@ -33,7 +43,7 @@ sidebar: auto
 - `bug` 修复折叠报错的问题
 - `new` 新增 getRef 方法
 
-## v.0.3.33
+## v.0.3.33（ #2022-01-10 ）
 
 #### agel-form
 - `bug` 修复form.data 被赋值新对象时回填默认值未生效 [[bug by v.0.3.3]]()
@@ -61,7 +71,7 @@ sidebar: auto
 - `bug` 修复调用 clearFiles 方法报错
 
 
-## v.0.3.32
+## v.0.3.32（ #2022-01-06 ）
 
 #### agel-select
 - `bug` 修复开启 remote remote-method 异常展示的问题 [issues[5]](https://github.com/agrass-GitHub/agel-form/issues/5)
@@ -70,7 +80,7 @@ sidebar: auto
 - `bug` 修复 :value="xx" 时未绑定事件报错的问题
 - `bug` 修复 :value="xx" 时未绑定 @input，@change 值为空的问题
 
-## v.0.3.3
+## v.0.3.30 （ #2022-01-04 ）
 
 #### agel-form
 - `bug` 修复 agel-radio 组件因初始值为 undefined 时触发表单 rules，初始值调整为 ""

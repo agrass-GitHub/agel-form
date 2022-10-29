@@ -8,7 +8,17 @@ import {
   guid,
 } from "../utils/utils"
 
-import { agItemProps, agItemPropKeys, formItemPropKeys, inputArr, selectArr, componentDefaultValue, defaultComponentName, agComponentNames, layoutComponentNames } from "./const"
+import {
+  agItemProps,
+  agItemPropKeys,
+  formItemPropKeys,
+  inputArr,
+  selectArr,
+  componentDefaultValue,
+  defaultComponentName,
+  agComponentNames,
+  layoutComponentNames
+} from "./const"
 
 export default {
   inject: {

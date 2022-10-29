@@ -34,6 +34,7 @@
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
+| value       | String/Array  | -        | 绑定值              |  
 | options     | String/Array/Function/Promise    |  -     | option 配置项         | 
 | props       | Object        |  {label,value}     | 数据配置选项          |
 | border      | Boolean       |  -                 | 是否开启 border 样式         |

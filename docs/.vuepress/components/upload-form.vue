@@ -13,8 +13,8 @@ export default {
         data: {
           files1: [
             {
-              name: "这是一个图片文件.png",
-              url: "https://cn.vuejs.org/images/components.png",
+              name: "这是一个图片文件.jpeg",
+              url: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
             },
             {
               name: "这是一个视频文件.mp4",
@@ -37,16 +37,12 @@ export default {
               url: "",
             },
           ],
-          files2: [
-            {
-              name: "这是一个图片文件.png",
-              url: "https://cn.vuejs.org/images/components.png",
-            },
-          ],
+          // v.0.3.37 更新，支持 string类型的 value
+          files2:
+            "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
           files3: [
             {
-              name: "这是一个图片文件.png",
-              url: "https://cn.vuejs.org/images/components.png",
+              url: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
             },
           ],
         },
@@ -60,7 +56,10 @@ export default {
             preview: (file) => (file.url ? true : false),
             onSuccess: (res) => {
               // 需要 return 一个包含 name，url 的对象 {name:"xx.jpg",url:'http://xxx.jpg}
-              return { name: res.fileName, url: res.fileUrl };
+              return { name: res.data.fileName, url: res.data.fileUrl };
+            },
+            onRemove: (file, filelist) => {
+              console.log(file, filelist);
             },
           },
           files2: {
@@ -71,6 +70,10 @@ export default {
             limit: 1,
             limitHide: true, // 超出允许上传个数，隐藏上传按钮
             tip: "最大只能上传一个，超出自动隐藏上传按钮",
+            onSuccess: (res) => {
+              //  v.0.3.37 更新，支持 string类型的 value
+              return res.data.fileUrl;
+            },
           },
           files3: {
             label: "picture 样式",

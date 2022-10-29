@@ -1,5 +1,5 @@
 <template>
-  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" :listType="listType" :autoUpload="autoUpload" :file-list="value" :before-upload="beforeUpload" :on-success="onSuccess" :on-remove="onRemove" :on-exceed="onExceed" :on-preview="onPreview" :on-error="onError" :on-change="onChange" v-bind="$attrs" v-on="$listeners">
+  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" :listType="listType" :autoUpload="autoUpload" :file-list="valueFileList" :before-upload="beforeUpload" :on-success="onSuccess" :on-remove="onRemove" :on-exceed="onExceed" :on-preview="onPreview" :on-error="onError" :on-change="onChange" v-bind="$attrs" v-on="$listeners">
     <slot slot="trigger" name="trigger"> </slot>
     <template v-slot:default>
       <slot name="default">
@@ -37,7 +37,7 @@ export default {
   },
   props: {
     value: {
-      type: Array,
+      type: [Array, String],
       default: () => new Array(),
     },
     preview: {
@@ -59,7 +59,27 @@ export default {
   },
   computed: {
     isLimitHideTrigger() {
-      return (this.limitHide && this.value.length >= this.$attrs.limit) || 0;
+      let length = Array.isArray(this.value) ? this.value.length : 1;
+      return this.limitHide && this.$attrs.limit && length >= this.$attrs.limit;
+    },
+    valueFileList() {
+      let list = this.value;
+      if (typeof this.value == "string") {
+        if (this.value == "") {
+          list = [];
+        } else {
+          list = [{ url: this.value, name: "" }];
+        }
+      }
+      return list.map((file) => {
+        let url = file.url;
+        let suffixName = url.substring(
+          url.lastIndexOf("/") + 1,
+          url.lastIndexOf("?") != -1 ? url.lastIndexOf("?") : url.length - 1
+        );
+        let name = file.name || suffixName;
+        return { url, name };
+      });
     },
   },
   created() {
@@ -94,24 +114,36 @@ export default {
       return true;
     },
     onRemove(file, fileList) {
-      this.$emit("input", fileList);
+      this.$emit("input", Array.isArray(this.value) ? fileList : "");
       let onRemove = getProp(this.$attrs, "onRemove");
-      onRemove && onRemove(file, list);
+      onRemove && onRemove(file, fileList);
     },
     onSuccess(response, file, fileList) {
-      // 需经过函数返回一个 {name:"xx",url:"xxx"} 结构的对象
+      // 需经过函数返回一个 {name:"xx",url:"xxx"} 结构的对象 或者 url 字符串
       let onSuccess = getProp(this.$attrs, "onSuccess");
       if (onSuccess) {
         let resFile = onSuccess(response, file, fileList);
-        if (resFile && resFile.url && resFile.name) {
-          this.$emit("input", this.value.concat([resFile]));
+        if (
+          (typeof resFile === "string" && resFile !== "") ||
+          (typeof resFile === "object" && resFile.url)
+        ) {
+          if (typeof resFile === "string") {
+            resFile = { url: resFile, name: "" };
+          }
+          this.$emit(
+            "input",
+            Array.isArray(this.value)
+              ? this.value.concat([resFile])
+              : resFile.url
+          );
         }
       }
     },
     onChange(file, fileList) {
       let onChange = getProp(this.$attrs, "onChange");
       if (!this.autoUpload) {
-        this.$emit("input", fileList);
+        let url = fileList[0] ? fileList[0].url : "";
+        this.$emit("input", Array.isArray(this.value) ? fileList : url);
       }
       onChange && onChange(file, fileList);
     },
@@ -198,7 +230,7 @@ export default {
     },
     clearFiles() {
       this.$refs.ref.clearFiles();
-      this.$emit("input", []);
+      this.$emit("input", Array.isArray(this.value) ? [] : "");
     },
   },
   install(vue) {
@@ -239,7 +271,7 @@ export default {
   display: none !important;
 }
 
-.agel-upload .el-upload-list--picture-card .el-upload-list__item {
+.agel-upload .el-upload-list__item {
   transition: inherit;
 }
 

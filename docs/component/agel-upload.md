@@ -33,6 +33,7 @@
  
 | 属性        | 类型         | 默认值  | 说明                                 | 
 | ----------- | ------------  | ------ | ------------------------------------ | 
+| value       | Array/String  | []       | 附件列表，[{name,url}] / url                | 
 | drag        | Boolean         | false       | 是否开启拖拽                | 
 | tip         | String          | -           | 提示语                      | 
 | limitSize   | Number          | -           | 文件大小限制,单位kb                     | 

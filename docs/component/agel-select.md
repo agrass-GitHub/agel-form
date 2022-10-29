@@ -28,7 +28,8 @@
 ## Select Attributes
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
-| ----------- | ------------  | ------ | ------------------------------------ | 
+| ----------- | ------------  | ------ | ------------------------------------ |
+| value       | String/Array  | -        | 绑定值                |   
 | filter      | Boolean       | false       | 是否开启过滤查询                | 
 | options     | String/Array/Function/Promise    |  -     | option 配置项         | 
 | props       | Object        |  {label,value}     | 数据配置选项          |

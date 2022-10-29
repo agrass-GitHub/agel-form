@@ -33,6 +33,7 @@
 | confirmBtn  | String/Boolean       | 确定  | 确定按钮文字或关闭                |  
 | closeOnPressEscape     | Boolean       | false         |                 |  
 | closeOnClickModal      | Boolean       | false         |                 |  
+| ......      | ......        | .........   |  [el-dialog 属性](https://element.eleme.cn/#/zh-CN/component/dialog#attributes)      | 
 
 
 ## formDialog Events

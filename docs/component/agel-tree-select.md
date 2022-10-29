@@ -29,7 +29,8 @@
 ## TreeSelect Attributes
 
 | 属性        | 类型         | 默认值  | 说明                                 | 
-| ----------- | ------------  | ------ | ------------------------------------ | 
+| ----------- | ------------  | ------ | ------------------------------------ |
+| value       | String/Array  | -        |     绑定值           |  
 | options     | Array/Function/Promise        | -    |  treeData 数据         | 
 | nodeKey     | Boolean         | label       | 继承自 el-tree，绑定表单的字段名    | 
 | props       | Boolean         | label       | 继承自 el-tree，数据配置选项    | 
