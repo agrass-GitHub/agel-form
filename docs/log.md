@@ -9,6 +9,11 @@ sidebar: auto
 有需要可联系作者:agrass-weixin。
 :::
 
+## v.0.3.38 （ #2022-10-30 ）
+
+#### tableditor-menu-column
+- `bug` del 设置false 失效
+
 ## v.0.3.37 （ #2022-10-29 ）
 
 #### agel-upload

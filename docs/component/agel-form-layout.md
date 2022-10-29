@@ -109,6 +109,7 @@ item 配置项可额外支持 [el-table-column 属性](https://element.eleme.cn/
 
 | 属性           | 类型         | 默认值  | 说明                                 | 
 | -------------- | ------------  | ------ | ------------------------------------ | 
+| data           | Array         | true   |  表格数据     | 
 | add            | Boolean/Function(done,scopd)      | true   |  是否显示/ done(要新增的数据)     | 
 | edit           | Boolean/Function(done,scopd)      | true   |  是否显示/ done(保存是否成功) |
 | del            | Boolean/Function(done,scopd)      | true   |  是否显示/ done(删除是否成功)       | 

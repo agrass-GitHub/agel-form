@@ -14,9 +14,7 @@
         <el-link v-if="edit" size="mini" type="primary" style="margin:0px 3px" @click="editRow(scope)">
           {{scope.row._view_?'编辑':'保存'}}
         </el-link>
-        <slot name="del">
-          <el-link size="mini" type="primary" style="margin:0px 3px" @click="delRow(scope)">删除</el-link>
-        </slot>
+        <el-link v-if="del" size="mini" type="primary" style="margin:0px 3px" @click="delRow(scope)">删除</el-link>
       </template>
     </template>
   </el-table-column>
