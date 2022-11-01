@@ -9,6 +9,13 @@ sidebar: auto
 有需要可联系作者:agrass-weixin。
 :::
 
+
+## v.0.3.39 （ #2022-11-01 ）
+
+#### agel-upload
+- `bug` 当 value 为空字符串，limitHide 显示异常
+- `new` limitHide 支持 limit 为 0 的情况
+
 ## v.0.3.38 （ #2022-10-30 ）
 
 #### tableditor-menu-column

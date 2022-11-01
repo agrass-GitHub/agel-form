@@ -101,6 +101,8 @@ export default {
         return this.noDataText;
       } else if (this.filterOptions.length == 0) {
         return this.noMatchText;
+      } else {
+        return "";
       }
     },
   },

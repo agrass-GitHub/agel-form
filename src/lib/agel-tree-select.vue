@@ -98,6 +98,7 @@ export default {
       ];
     },
     selectListeners() {
+      // eslint-disable-next-line no-unused-vars
       const { input, change, ...otherEvent } = this.$listeners;
       return otherEvent;
     },

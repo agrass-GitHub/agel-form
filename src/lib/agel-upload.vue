@@ -59,13 +59,19 @@ export default {
   },
   computed: {
     isLimitHideTrigger() {
-      let length = Array.isArray(this.value) ? this.value.length : 1;
-      return this.limitHide && this.$attrs.limit && length >= this.$attrs.limit;
+      let length = 0;
+      let limit = this.$attrs.limit;
+      if (Array.isArray(this.value)) {
+        length = this.value.length;
+      } else if (typeof this.value == "string") {
+        length = this.value.trim() == "" ? 0 : 1;
+      }
+      return this.limitHide && !isNaN(limit) && length >= limit;
     },
     valueFileList() {
       let list = this.value;
       if (typeof this.value == "string") {
-        if (this.value == "") {
+        if (this.value.trim() == "") {
           list = [];
         } else {
           list = [{ url: this.value, name: "" }];
@@ -165,7 +171,16 @@ export default {
       if (file.url && isPreview && this.$msgbox) {
         const h = this.$createElement;
         const image = ["png", "jpg", "jpeg", "bmp", "gif"];
-        const xdoc = ["doc", "docx", "xls", "xlsx", "csv"];
+        const xdoc = [
+          "doc",
+          "docx",
+          "xls",
+          "xlsx",
+          "csv",
+          ".pptx",
+          ".pptm",
+          ".ppt",
+        ];
         const video = ["mp4", "ogg", "webm"];
         const audio = ["mp3", "wav", "ogg"];
         const includesSuffix = (arr) => {
