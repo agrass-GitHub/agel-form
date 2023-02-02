@@ -46,7 +46,7 @@ agelForm.install = function (vue, opts = {}) {
   })
 }
 
-export default agelForm;;
+export default agelForm
 
 export {
   // 核心组件

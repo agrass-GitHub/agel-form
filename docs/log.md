@@ -10,6 +10,11 @@ sidebar: auto
 :::
 
 
+## v.0.3.40 （ #2023-02-03 ）
+
+#### agel-dynamic-tags
+- `bug` 修复 `repeatable` 属性为生效的问题
+
 ## v.0.3.39 （ #2022-11-01 ）
 
 #### agel-upload

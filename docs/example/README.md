@@ -6,6 +6,8 @@
 [![npm](https://img.shields.io/npm/v/agel-form.svg)](https://www.npmjs.com/package/agel-form)
 [![download](https://img.shields.io/npm/dt/agel-form)](https://npmcharts.com/compare/agel-form?minimal=true)
 
+该组件适用于 vue2.x ，vue3.x 请转自 [element-plus-crx](https://github.com/agrass-GitHub/element-plus-crx)。
+
 ## 特性
 
 该组件的思想就是以一个 form 对象来做所有的操作，它做了如下事情：

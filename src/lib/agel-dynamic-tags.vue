@@ -1,12 +1,12 @@
 <template>
   <div class="agel-dynamic-tags">
-    <el-tag v-for="(tag,index) in value" :key="tag+'-'+index" :disable-transitions="true" v-bind="getTagProps(tag,index)"
-      @close="handleClose(tag,index)" @click="handleClick(tag,index)">
-      <span>{{tag}}</span>
+    <el-tag v-for="(tag, index) in value" :key="tag + '-' + index" :disable-transitions="true"
+      v-bind="getTagProps(tag, index)" @close="handleClose(tag, index)" @click="handleClick(tag, index)">
+      <span>{{ tag }}</span>
     </el-tag>
     <template v-if="createable">
-      <el-input v-if="inputVisible" class="new-tag-input" v-model="inputValue" disable-transitions :disabled="isDisabled" ref="saveTagInput"
-        @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
+      <el-input v-if="inputVisible" class="new-tag-input" v-model="inputValue" disable-transitions
+        :disabled="isDisabled" ref="saveTagInput" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm">
       </el-input>
       <el-button v-else class="new-tag-button" :disabled="isDisabled" @click="showInput">+ New Tag</el-button>
     </template>
@@ -92,7 +92,7 @@ export default {
     },
     handleInputConfirm() {
       let inputValue = this.inputValue;
-      if (inputValue && this.value.indexOf(inputValue) == -1) {
+      if (inputValue && (this.this.indexOf(inputValue.value) == -1 || this.repeatable)) {
         this.$emit("input", this.value.concat(this.inputValue));
         this.$emit("create", inputValue);
       }

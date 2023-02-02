@@ -4,7 +4,7 @@
 // 驼峰转短横线 
 export function kebabcase(v) {
   return v.replace(/([^-])([A-Z])/g, '$1-$2').toLowerCase()
-};
+}
 
 
 // 短横线转驼峰 
