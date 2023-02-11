@@ -10,7 +10,27 @@ module.exports = {
       { text: '首页', link: '/' },
       { text: '文档', link: '/example/' },
       { text: '更新日志', link: '/log' },
-      { text: 'Github', link: 'https://github.com/agrass-GitHub/agel-form' }
+      {
+        text: 'Github',
+        items: [
+          {
+            text: 'agel-form',
+            link: 'https://github.com/agrass-GitHub/agel-form',
+          },
+          {
+            text: 'agel-table',
+            link: 'https://github.com/agrass-GitHub/agel-table',
+          },
+          {
+            text: 'agel-admin',
+            link: 'https://github.com/agrass-GitHub/agel-admin',
+          },
+          {
+            text: 'element-plus-crx',
+            link: 'https://github.com/agrass-GitHub/element-plus-crx',
+          }
+        ]
+      }
     ],
     sidebar: [
       {
