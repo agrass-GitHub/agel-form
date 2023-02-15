@@ -85,7 +85,7 @@ export default {
           (Array.isArray(a) ? a : a.options).concat(b.options)
         )
         : this.proxyOptions;
-      const value = v ? vmodel.get(v, this.isProxyStrValue) : this.proxyValue;
+      const value = vmodel.get(v, this.isProxyStrValue)
       return this.multiple
         ? options.filter((v) => value.includes(v.value))
         : options.find((v) => value == v.value);

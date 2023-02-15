@@ -24,10 +24,12 @@
 import AMapLoader from "@amap/amap-jsapi-loader";
 export default {
   methods: {
-    mapLoader(reslove, plugins) {
+    mapLoader(reslove) {
       AMapLoader.load({
-        key: "xxxxxxxx",    // map key
-        plugins: plugins,   // 所需要插件列表
+       // map key
+        key: "xxxxxxxx",   
+        // 所需要插件列表，若是2.0高德地图，Autocomplete 改成 AutoComplete
+        plugins: ["AMap.PlaceSearch", "AMap.Autocomplete", "AMap.Geocoder"],
       }).then((AMap) => reslove(AMap));
     },
   },

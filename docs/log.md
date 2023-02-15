@@ -9,6 +9,13 @@ sidebar: auto
 有需要可联系作者:agrass-weixin。
 :::
 
+## v.0.3.41 （ #2023-02-15 ）
+
+#### agel-map-input
+- `new` 添加高德地图2.0的适配
+
+#### agel-select
+- `bug` 修复在change时，点击clearable，getValueOption 还能获取到值的问题
 
 ## v.0.3.40 （ #2023-02-03 ）
 

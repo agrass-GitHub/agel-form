@@ -1,7 +1,7 @@
 <template>
   <div class="agel-map-input">
-    <el-input ref="ref" :value="proxyValue" :clearable="clearable" :prefix-icon="prefixIcon" v-bind="elInputProps" v-on="$listeners" @clear="clear"
-      @focus="loadDialog">
+    <el-input ref="ref" :value="proxyValue" :clearable="clearable" :prefix-icon="prefixIcon" v-bind="elInputProps"
+      v-on="$listeners" @clear="clear" @focus="loadDialog">
       <template v-slot:prefix>
         <slot name="prefix"></slot>
       </template>
@@ -16,30 +16,32 @@
       </template>
     </el-input>
     <!-- 地图选择器 -->
-    <el-dialog v-if="dialog" width="800px" title="地图选择器" :visible.sync="open" append-to-body custom-class="agel-map-input-dialog"
-      :close-on-press-escape="false" @opened="loadMapInstance" @closed="dialogClosed">
+    <el-dialog v-if="dialog" width="800px" title="地图选择器" :visible.sync="open" append-to-body
+      custom-class="agel-map-input-dialog" :close-on-press-escape="false" @opened="loadMapInstance"
+      @closed="dialogClosed">
       <div class="ag-dialog-body">
         <div class="addr-row">
           <div class="addr-label">已选中地址</div>
           <el-input v-model="address" :readonly="!editable">
-            <span slot="append" v-if="Array.isArray(value)">{{lnglat? lnglat.lng+' , '+lnglat.lat:'无经纬度'}}</span>
+            <span slot="append" v-if="Array.isArray(value)">{{ lnglat? lnglat.lng + ' , ' + lnglat.lat: '无经纬度'}}</span>
           </el-input>
-          <div v-if="error" class="addr-error">{{error}}</div>
+          <div v-if="error" class="addr-error">{{ error }}</div>
         </div>
         <div class="addr-row">
           <div class="addr-label">关键字检索</div>
-          <el-autocomplete style="width:100%" v-model="search" popper-class="agel-map-input-popper" :fetch-suggestions="autocompleteFetch"
-            placeholder="输入关键字检索地址" value-key="name" clearable size="small" @select="autocompleteSelected" @clear="drawMarker">
+          <el-autocomplete style="width:100%" v-model="search" popper-class="agel-map-input-popper"
+            :fetch-suggestions="autocompleteFetch" placeholder="输入关键字检索地址" value-key="name" clearable size="small"
+            @select="autocompleteSelected" @clear="drawMarker">
             <template slot-scope="{ item }">
-              <span><i :class="item.location?'el-icon-location-information':'el-icon-search'"></i></span>
+              <span><i :class="item.location ? 'el-icon-location-information' : 'el-icon-search'"></i></span>
               <span class="name">{{ item.name }}</span>
-              <span class="addr">{{ item.district + item.address}}</span>
+              <span class="addr">{{ item.district + item.address }}</span>
             </template>
           </el-autocomplete>
         </div>
         <div class="agel-map-box" v-loading="!map.AMap" style="width:100%;height:400px;position:relative">
-          <div :id="'map-'+map.id" style="width:100%;height:100%"></div>
-          <div :id="'panel-'+map.id" class="agel-map-panel"></div>
+          <div :id="'map-' + map.id" style="width:100%;height:100%"></div>
+          <div :id="'panel-' + map.id" class="agel-map-panel"></div>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -165,7 +167,7 @@ export default {
       }
       this.map.map = new AMap.Map("map-" + this.map.id, { zoom: 12 });
       this.map.Geocoder = new AMap.Geocoder();
-      this.map.Autocomplete = new AMap.Autocomplete();
+      this.map.Autocomplete = new (AMap.Autocomplete || AMap.AutoComplete)();
       this.map.PlaceSearch = new AMap.PlaceSearch({
         map: this.map.map,
         pageSize: 5,
@@ -342,6 +344,7 @@ export default {
 .agel-map-panel .poi-more {
   display: none;
 }
+
 .agel-map-panel .pageLink {
   color: #409eff;
 }
