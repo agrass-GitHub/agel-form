@@ -9,7 +9,8 @@ module.exports = {
     nav: [
       { text: '首页', link: '/' },
       { text: '文档', link: '/example/' },
-      { text: '更新日志', link: '/log' },
+      { text: '更新', link: '/log' },
+      { text: '赞助', link: '/sponsor' },
       {
         text: 'Github',
         items: [
