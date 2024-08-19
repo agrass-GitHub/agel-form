@@ -1,22 +1,43 @@
 <template>
-  <el-upload ref="ref" :class="['agel-upload',{'limit-hide-trigger':isLimitHideTrigger}]" :listType="listType" :autoUpload="autoUpload" :file-list="valueFileList" :before-upload="beforeUpload" :on-success="onSuccess" :on-remove="onRemove" :on-exceed="onExceed" :on-preview="onPreview" :on-error="onError" :on-change="onChange" v-bind="$attrs" v-on="$listeners">
-    <slot slot="trigger" name="trigger"> </slot>
+  <el-upload
+    ref="ref"
+    :class="['agel-upload', { 'limit-hide-trigger': isLimitHideTrigger }]"
+    :listType="listType"
+    :autoUpload="autoUpload"
+    :file-list="valueFileList"
+    :before-upload="beforeUpload"
+    :on-success="onSuccess"
+    :on-remove="onRemove"
+    :on-exceed="onExceed"
+    :on-preview="onPreview"
+    :on-error="onError"
+    :on-change="onChange"
+    v-bind="$attrs"
+    v-on="$listeners"
+  >
+    <template v-slot:trigger>
+      <slot name="trigger"></slot>
+    </template>
     <template v-slot:default>
       <slot name="default">
-        <template v-if="$attrs.drag==''||$attrs.drag==true">
+        <template v-if="$attrs.drag == '' || $attrs.drag == true">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">
             将文件拖到此处，或
             <em>点击上传</em>
           </div>
         </template>
-        <i v-else-if="listType=='picture-card'" class="el-icon-plus"></i>
-        <el-button v-else size="small" type="primary">点击{{autoUpload?'上传':'选取'}}</el-button>
+        <i v-else-if="listType == 'picture-card'" class="el-icon-plus"></i>
+        <el-button v-else size="small" type="primary"
+          >点击{{ autoUpload ? "上传" : "选取" }}</el-button
+        >
       </slot>
     </template>
-    <slot slot="tip" name="tip">
-      <div v-if="tip" class="el-upload__tip">{{ tip }}</div>
-    </slot>
+    <template v-slot:tip>
+      <slot name="tip">
+        <div v-if="tip" class="el-upload__tip">{{ tip }}</div>
+      </slot>
+    </template>
   </el-upload>
 </template>
 
@@ -84,7 +105,7 @@ export default {
           url.lastIndexOf("?") != -1 ? url.lastIndexOf("?") : url.length - 1
         );
         let name = file.name || suffixName;
-        return { url, name };
+        return { ...file, url, name };
       });
     },
   },

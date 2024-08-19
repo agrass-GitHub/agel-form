@@ -27,7 +27,7 @@
           </el-input>
           <div v-if="error" class="addr-error">{{ error }}</div>
         </div>
-        <div class="addr-row">
+        <div class="addr-row" v-if="keywordSearch">
           <div class="addr-label">关键字检索</div>
           <el-autocomplete style="width:100%" v-model="search" popper-class="agel-map-input-popper"
             :fetch-suggestions="autocompleteFetch" placeholder="输入关键字检索地址" value-key="name" clearable size="small"
