@@ -31,7 +31,7 @@
     "element-ui": "^2.15.7",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "gh-pages": "^2.1.1",
+    "gh-pages": "^5.0.0",
     "vue": "^2.6.14",
     "vue-template-compiler": "^2.6.10",
     "vuepress": "^1.9.7",
