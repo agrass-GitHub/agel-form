@@ -7,6 +7,13 @@ sidebar: auto
 [#v.0.3.30](/log.html#v-0-3-30-2022-01-04) 版本重构了部分代码，有破坏性更新，请按照升级提示操作。
 :::
 
+## v.0.3.43 （ #2024-11-29 ）
+
+#### agel-dynamic-tags
+
+- 新增 button-text 属性用于自定义按钮文本，添加 margin-bottom 样式
+- 修复语法错误 [issuse](https://github.com/agrass-GitHub/agel-form/issues/23)
+
 ## v.0.3.42 （ #2024-08-19 ）
 
 #### agel-upload

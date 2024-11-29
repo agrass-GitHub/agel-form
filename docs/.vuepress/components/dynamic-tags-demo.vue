@@ -2,11 +2,12 @@
   <div class="demo border">
     <el-row type="flex">
       <span>动态标签：</span>
-      <agel-dynamic-tags v-model="value" :tagPropHandle="tagPropHandle" @click="tagClick"></agel-dynamic-tags>
+      <agel-dynamic-tags v-model="value" :tagPropHandle="tagPropHandle" button-text="+ 标签"
+        @click="tagClick"></agel-dynamic-tags>
     </el-row>
   </div>
 </template>
- 
+
 <script>
 export default {
   name: "agel-dynamic-tags-demo",
@@ -30,4 +31,3 @@ export default {
   },
 };
 </script>
- 
