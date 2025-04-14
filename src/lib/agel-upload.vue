@@ -100,10 +100,7 @@ export default {
       }
       return list.map((file) => {
         let url = file.url;
-        let suffixName = url.substring(
-          url.lastIndexOf("/") + 1,
-          url.lastIndexOf("?") != -1 ? url.lastIndexOf("?") : url.length - 1
-        );
+        let suffixName = url.substring(url.lastIndexOf('/') + 1)
         let name = file.name || suffixName;
         return { ...file, url, name };
       });
